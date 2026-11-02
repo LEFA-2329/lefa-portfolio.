@@ -1,3 +1,4 @@
+# Deploy the static portfolio after enabling GitHub Pages in repository settings.
 name: Deploy portfolio to GitHub Pages
 
 on:
