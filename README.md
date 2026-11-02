@@ -32,7 +32,20 @@ Open http://localhost:8000 in your browser.
 
 Edit `dist/index.html` in Visual Studio Code and preview locally. Replace the portrait or CV in `dist/` as needed. Commit and push your changes to keep this repository up to date.
 
-**Deployment:** this repository is a copy of the portfolio source. Pushing here does not currently update https://lefamalatji.co.za automatically. The live site still uses its existing hosting and DNS configuration. A GitHub deployment workflow must be configured separately.
+## Automatic deployment
+
+The workflow `.github/workflows/deploy-pages.yml` deploys `dist/` to GitHub Pages when files in `dist/` change on `main`. It can also be started manually from Actions.
+
+One-time setup:
+
+1. In this repository, open Settings > Pages.
+2. Under Build and deployment, set Source to GitHub Actions.
+3. Open Actions > Deploy portfolio to GitHub Pages > Run workflow.
+4. Wait for a successful deployment and open the URL shown by the deployment job.
+
+The workflow adjusts asset links in the deployment copy so the GitHub Pages project URL works. No build or account secrets are required.
+
+**Custom domain:** https://lefamalatji.co.za still points to its existing hosting. GitHub deployments will update the GitHub Pages site only until the custom domain is configured in Pages and its DNS records are switched. Verify the Pages deployment before changing DNS.
 
 ## Regenerate the CV (optional)
 
