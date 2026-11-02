@@ -20,7 +20,7 @@ def add(t,style='body'):flow.append(para(t,style))
 def heading(t):add(t.upper(),'head')
 def bullet(t):flow.append(Paragraph('- '+t,st['body']))
 def link(url,label=None):return '<link href="'+url+'" color="#315e65">'+(label or url.replace('https://','').replace('http://',''))+'</link>'
-photo=Image(str(ROOT/'dist/lefa-malatji.jpeg'),width=85,height=80.544)
+photo=Image(str(ROOT/'dist/lefa-malatji.jpeg'),width=85,height=85.589)
 intro=[para('LEFA LAZY MALATJI','name'),para('SOFTWARE DEVELOPER | AI &amp; NLP RESEARCHER','role'),para('Johannesburg, South Africa | +27 69 729 4309','small'),para(link('mailto:lazylefa@gmail.com','lazylefa@gmail.com')+' | '+link('https://lefamalatji.co.za','lefamalatji.co.za'),'small'),para(link('https://www.linkedin.com/in/lefa-malatji-574984276','LinkedIn')+' | '+link('https://github.com/LEFA-2329','GitHub'),'small')]
 header=Table([[intro,photo]],colWidths=[420,91]);header.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'TOP'),('LEFTPADDING',(0,0),(-1,-1),0),('RIGHTPADDING',(0,0),(-1,-1),0),('BOTTOMPADDING',(0,0),(-1,-1),10),('LINEBELOW',(0,0),(-1,-1),1,teal)]));flow.append(header)
 heading('Professional summary')
