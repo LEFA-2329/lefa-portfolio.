@@ -1,0 +1,52 @@
+name: Deploy portfolio to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'dist/**'
+      - '.github/workflows/deploy-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v6
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Prepare portable static files
+        run: |
+          mkdir -p _site
+          cp -R dist/. _site/
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('_site/index.html')
+          html = p.read_text()
+          for filename in ('lefa-malatji.jpeg', 'Lefa-Malatji-CV.pdf', 'favicon.svg', 'favicon.ico'):
+              html = html.replace('"/' + filename, '"./' + filename)
+          p.write_text(html)
+          assert p.exists()
+          assert Path('_site/Lefa-Malatji-CV.pdf').exists()
+          PY
+          touch _site/.nojekyll
+      - name: Upload static website
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
