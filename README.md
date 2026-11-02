@@ -22,7 +22,9 @@ Open http://localhost:8000 in your browser.
 
 ## Files
 
-- `dist/index.html`: page content, CSS and JavaScript
+- `dist/index.html`: indented page structure and content
+- `dist/styles.css`: formatted styles and responsive layouts
+- `dist/script.js`: formatted project filters and case-study interactions
 - `dist/lefa-malatji.jpeg`: portrait
 - `dist/Lefa-Malatji-CV.pdf`: downloadable CV
 - `dist/favicon.svg` and `dist/favicon.ico`: browser icons
@@ -30,7 +32,7 @@ Open http://localhost:8000 in your browser.
 
 ## Update the portfolio
 
-Edit `dist/index.html` in Visual Studio Code and preview locally. Replace the portrait or CV in `dist/` as needed. Commit and push your changes to keep this repository up to date.
+Edit page content in `dist/index.html`, styles in `dist/styles.css`, or interactions in `dist/script.js` using Visual Studio Code, then preview locally. Replace the portrait or CV in `dist/` as needed. Commit and push your changes to keep this repository up to date.
 
 ## Automatic deployment
 
