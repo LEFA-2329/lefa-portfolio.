@@ -3,45 +3,39 @@
  const launch=document.querySelector('#assistant-launch');
  const panel=document.querySelector('#assistant-panel');
  if(!launch||!panel)return;
- let loaded=false;
- launch.addEventListener('click',()=>{
-  if(!loaded){initialise();loaded=true;}
+ let ready;
+ launch.addEventListener('click',async()=>{
   panel.showModal();
-  panel.querySelector('textarea').focus();
+  try {ready ||= import('./guide-core.mjs').then(initialise);await ready;panel.querySelector('textarea').focus();}
+  catch {panel.querySelector('#assistant-status').textContent='The guide could not load. Please use the email or WhatsApp links below.';ready=null;}
  });
- function initialise(){
-  const form=panel.querySelector('form');const input=form.querySelector('textarea');const send=form.querySelector('button');const log=panel.querySelector('#assistant-messages');const status=panel.querySelector('#assistant-status');
-  panel.querySelector('[data-close]').addEventListener('click',()=>panel.close());
-  panel.addEventListener('close',()=>launch.focus());
-  const endpoint=window.LEFA_ASSISTANT_ENDPOINT;
-  status.textContent=endpoint?'AI answers use portfolio information. Questions are sent to an AI provider. Please avoid personal or confidential information.':'Preview: AI connection pending. The suggested questions show saved portfolio facts.';
-  function message(who,text,sources=[]){
+ panel.querySelector('[data-close]').addEventListener('click',()=>panel.close());
+ panel.addEventListener('close',()=>launch.focus());
+ function initialise({topics,findTopics}) {
+  const form=panel.querySelector('form');const input=form.querySelector('textarea');const log=panel.querySelector('#assistant-messages');
+  panel.querySelector('#assistant-status').textContent='Prepared answers from my portfolio. This is a free guide, not generative AI. Your questions stay in this browser.';
+  function message(who,text,links=[]){
    const article=document.createElement('article');article.className='assistant-message';
    const label=document.createElement('strong');label.textContent=who;article.append(label);
    const p=document.createElement('p');p.textContent=text;article.append(p);
-   for(const source of sources){
-    let url;try{url=new URL(source.url,location.href);}catch{continue;}
-    if(!['https:'].includes(url.protocol)||!['lefamalatji.co.za','github.com'].includes(url.hostname))continue;
-    const a=document.createElement('a');a.href=url.href;a.textContent=source.title;a.target='_blank';a.rel='noopener noreferrer';article.append(a);
+   for(const [title,href] of links){
+    const a=document.createElement('a');a.href=href;a.textContent=title;
+    if(href.startsWith('https://')){a.target='_blank';a.rel='noopener noreferrer';}
+    else a.addEventListener('click',()=>panel.close());
+    article.append(a);
    }
-   log.append(article);article.scrollIntoView({block:'nearest'});
+   log.append(article);while(log.children.length>20)log.firstElementChild.remove();
+   article.scrollIntoView({block:'nearest'});
   }
-  const facts={experience:['Lefa is a lecturer at Rosebank College, completed a one-year software developer internship at Simplifon, and has three years of academic tutoring experience at the University of Limpopo.','Profile and experience','https://lefamalatji.co.za/#about'],projects:['Store Hub combines PHP, PostgreSQL and AI features. HelpDeskHub is an in-progress ASP.NET Core ticket API project. Other work includes pre-school and airport management systems.','Selected projects','https://lefamalatji.co.za/#work'],research:['Lefa’s MSc research investigates data scarcity in Sepedi–English code-switched text generation using FNet, LSTM and mBERT.','Research and education','https://lefamalatji.co.za/#about']};
-  panel.querySelectorAll('[data-topic]').forEach(button=>button.addEventListener('click',()=>{
-   if(endpoint){input.value=button.textContent;form.requestSubmit();}
-   else {const [text,title,url]=facts[button.dataset.topic];message('Saved portfolio fact',text,[{title,url}]);}
-  }));
-  form.addEventListener('submit',async event=>{
+  function show(key){const topic=topics[key];if(topic)message(topic.title,topic.answer,topic.links);}
+  panel.querySelectorAll('[data-topic]').forEach(button=>button.addEventListener('click',()=>show(button.dataset.topic)));
+  form.addEventListener('submit',event=>{
    event.preventDefault();const question=input.value.trim();if(!question)return;
-   if(!endpoint){message('Portfolio guide','Real AI answers are not connected in this preview. Try the suggested questions or contact Lefa using the links below.');return;}
-   if(send.disabled)return;send.disabled=true;input.disabled=true;status.textContent='Finding information in Lefa’s portfolio…';log.setAttribute('aria-busy','true');message('You',question);input.value='';
-   try {
-    const response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question}),signal:AbortSignal.timeout(22000)});
-    const data=await response.json();if(!response.ok)throw Error(data.error||'Assistant unavailable. Please contact Lefa directly.');
-    if(typeof data.answer!=='string'||!Array.isArray(data.sources))throw Error('Assistant unavailable. Please contact Lefa directly.');
-    message('Portfolio AI',data.answer,data.sources);
-   }catch(error){message('Portfolio guide',error.name==='TimeoutError'?'The assistant took too long. Please try again or contact Lefa directly.':error.message);}
-   finally{send.disabled=false;input.disabled=false;log.setAttribute('aria-busy','false');status.textContent='AI can make mistakes. Check the linked sources. Questions are sent to an AI provider.';input.focus();}
+   message('Your question',question);input.value='';
+   const matches=findTopics(question);
+   if(matches.length)matches.forEach(show);
+   else message('Portfolio guide','I don’t have a prepared answer for that. Choose a topic above, browse the projects or contact Lefa directly.',[['Browse projects','#work'],['Contact Lefa','#contact']]);
+   input.focus();
   });
  }
 })();
