@@ -1241,3 +1241,22 @@ dialog h3 {
     letter-spacing: -1px
   }
 }
+
+/* Recruiter contact actions */
+.recruiter-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0 0 24px;
+}
+.recruiter-contact .btn {
+  margin: 0;
+  max-width: 100%;
+}
+@media (max-width: 480px) {
+  .recruiter-contact .btn {
+    flex: 1 1 100%;
+    text-align: center;
+    justify-content: center;
+  }
+}
