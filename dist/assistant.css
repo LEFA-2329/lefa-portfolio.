@@ -1,0 +1,23 @@
+.assistant-launch{position:fixed;right:24px;bottom:24px;z-index:30;background:var(--lime,#cef47a);color:#111415;border:1px solid #85975d;border-radius:50px;padding:15px 22px;font:600 14px inherit;box-shadow:0 6px 30px #0005;cursor:pointer}
+#assistant-panel{width:min(520px,calc(100vw - 32px));max-height:calc(100dvh - 32px);padding:0;border:1px solid #46514a;border-radius:18px;background:#151b1b;color:#edf1ec;overflow:auto}
+#assistant-panel::backdrop{background:#0009}
+.assistant-header{display:flex;align-items:start;justify-content:space-between;gap:16px;padding:24px 24px 12px}
+.assistant-header h2{font-size:24px;line-height:1.2;letter-spacing:-.5px;margin:0}
+.assistant-header button{border:1px solid #57615c;background:transparent;color:inherit;border-radius:6px;padding:7px 12px;cursor:pointer}
+.assistant-body{padding:0 24px 24px}
+#assistant-status{font-size:12px;line-height:1.6;color:#bac5bf;margin:8px 0 18px}
+.assistant-suggestions{display:flex;flex-wrap:wrap;gap:8px}
+.assistant-suggestions button{background:#24312b;color:#e3f6ca;border:1px solid #4b614d;padding:9px 12px;border-radius:20px;font:inherit;font-size:12px;cursor:pointer}
+#assistant-messages{max-height:300px;overflow:auto;margin:16px 0;overscroll-behavior:contain}
+.assistant-message{padding:14px;background:#202a25;border-radius:10px;margin:10px 0;font-size:14px;line-height:1.6;overflow-wrap:anywhere}
+.assistant-message strong{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#c9e9a5}
+.assistant-message p{white-space:pre-wrap;margin:5px 0}
+.assistant-message a{display:block;color:#c9e9a5;text-decoration:underline;font-size:12px;margin-top:6px}
+#assistant-form label{display:block;font-size:13px;margin-bottom:8px}
+#assistant-form textarea{box-sizing:border-box;width:100%;resize:vertical;min-height:80px;max-height:160px;padding:12px;border:1px solid #697970;border-radius:8px;background:#101614;color:#fff;font:inherit;font-size:14px}
+#assistant-form button{background:#cef47a;color:#111415;border:0;border-radius:7px;padding:11px 20px;margin-top:10px;font-weight:600;cursor:pointer}
+#assistant-form button:disabled{opacity:.6;cursor:wait}
+.assistant-contact{display:flex;flex-wrap:wrap;gap:18px;margin-top:18px;font-size:13px}
+.assistant-contact a{color:#cef47a;text-decoration:underline}
+#assistant-panel :focus-visible,.assistant-launch:focus-visible{outline:3px solid #cef47a;outline-offset:3px}
+@media(max-width:480px){.assistant-launch{right:16px;bottom:16px;padding:13px 18px}.assistant-header{padding:20px 18px 10px}.assistant-body{padding:0 18px 20px}.assistant-header h2{font-size:21px}}
