@@ -64,3 +64,84 @@ export const notices={
  thanks:'You’re welcome. If you’d like to discuss an opportunity, use the email or WhatsApp links below.',
  unknown:'That detail is not provided in Lefa’s portfolio. For salary expectations, availability or other personal details, please contact Lefa directly using email or WhatsApp.'
 };
+
+
+const projects = {
+ store: {
+  name: 'Store Hub', match: /\b(store\s*hub|storehub|store|e\s*commerce|ecommerce|marketplace)\b/,
+  overview: 'Lefa built Store Hub, a multi-role e-commerce platform using PHP and PostgreSQL. It includes AI-driven personalisation, intelligent product search, business intelligence reports and a session-aware support chatbot.',
+  stack: 'Store Hub uses PHP and PostgreSQL. Other implementation details are not documented in this portfolio.',
+  database: 'Store Hub uses PostgreSQL to support the multi-role e-commerce application.',
+  features: 'Documented features include multi-role e-commerce, AI-driven personalisation, intelligent product search, business intelligence reports and a session-aware customer-support chatbot.',
+  links: [['Store Hub source code','https://github.com/LEFA-2329/Advanced-E-Commerce-Marketplace-Platform']]
+ },
+ helpdesk: {
+  name: 'HelpDeskHub', match: /\b(help\s*desk\s*hub|helpdesk(?:hub)?|ticket(?:s|ing)?)\b/,
+  overview: 'HelpDeskHub is Lefa’s in-progress ASP.NET Core help desk project. Its documented work covers ticket APIs, user identity and a PostgreSQL data layer. It is still in development.',
+  stack: 'HelpDeskHub uses C#, ASP.NET Core, PostgreSQL and Entity Framework. It includes REST APIs and user identity.',
+  database: 'HelpDeskHub uses PostgreSQL with Entity Framework for its relational data layer.',
+  features: 'Documented work includes ticket APIs, user identity and PostgreSQL integration. Workload-based staff assignment, notifications and additional workflow features are planned; they are not presented as completed.',
+  links: [['HelpDeskHub overview','#work']]
+ },
+ preschool: {
+  name: 'Pre-School Management System', match: /\b(pre\s*school|preschool|learners|borrowing)\b/,
+  overview: 'Lefa developed an administration dashboard with key statistics, secure login and management of learners, teachers, books and borrowing records.',
+  stack: 'The portfolio does not specify the Pre-School Management System’s programming language or database engine. Please check the source code or ask Lefa for those details.',
+  database: 'The project manages learners, teachers, books and borrowing records. Its database engine is not specified in the portfolio.',
+  features: 'The documented features are key statistics, secure admin login, learner and teacher management, and book and borrowing-record management.',
+  links: [['Pre-School Management System source','https://github.com/LEFA-2329/Pre-school-management-system']]
+ },
+ airport: {
+  name: 'Airport Sky Base System', match: /\b(airport|air\s*sky|sky\s*base)\b/,
+  overview: 'Lefa developed and tested an airport management application with an interface for accessing and managing airport information.',
+  stack: 'The portfolio does not specify the Airport Sky Base System’s programming language or database engine. The repository is available for more detail.',
+  database: 'The system manages airport information, but its database engine and schema are not specified in the portfolio.',
+  features: 'The documented scope is airport management operations and a user-friendly interface for accessing and managing airport information. Lefa also developed and tested the system.',
+  links: [['Airport Sky Base System source','https://github.com/LEFA-2329/Airport-Sky-Base-System']]
+ },
+ burzarsnet: {
+  name: 'Burzarsnet', match: /\b(burzarsnet|bursar(?:y|ies)|bursar(?:y|ies)\s*website)\b/,
+  overview: 'Lefa collaborated in a team of four to develop Burzarsnet, a South African bursary and internship website with administration management.',
+  stack: 'The portfolio does not specify Burzarsnet’s programming language or database engine. Lefa contributed as part of a four-person team.',
+  database: 'Burzarsnet includes administration management, but the portfolio does not specify its database engine.',
+  features: 'Burzarsnet provides bursary and internship information for South Africa, with administration management. Lefa worked in a team of four; his individual feature ownership is not specified.',
+  links: [['Burzarsnet project information','#work']]
+ }
+};
+Object.assign(topics, {
+ teaching: {title:'Lecturing at Rosebank College',answer:'Lefa teaches programming logic and design, software development and database concepts at Rosebank College. He guides students in C#, object-oriented programming, HTML/CSS, ASP.NET MVC and SQL, and assesses assignments and projects against rubrics with feedback.',links:[['Teaching experience','#about']]},
+ internship: {title:'Simplifon internship',answer:'During his one-year Software Developer internship at Simplifon, Lefa developed and maintained web-based applications and developed and managed PostgreSQL databases supporting those applications. Exact employment dates and performance metrics are not provided.',links:[['Professional experience','#about']]},
+ teamwork: {title:'Teamwork and communication',answer:'Lefa collaborated in a team of four on Burzarsnet, a South African bursary and internship platform. His lecturer and tutoring roles also involve explaining technical concepts and guiding students. The portfolio does not identify his individual Burzarsnet feature ownership.',links:[['Projects','#work'],['Experience','#about']]}
+});
+export const defaultSuggestions=['What did Lefa build with PHP?','Tell me about HelpDeskHub','What does he teach?'];
+const card = key => topics[key] ? {title:topics[key].title,answer:topics[key].answer,links:topics[key].links} : {title:'Portfolio guide',answer:notices[key]||notices.unknown,links:[['Contact Lefa','#contact']]};
+export function getResponse(question,context={}) {
+ if(typeof question!=='string'||!question.trim()||question.length>1000)return {cards:[],context,suggestions:defaultSuggestions};
+ const q=normalise(question);
+ const explicit=Object.entries(projects).find(([,project])=>project.match.test(q));
+ const neutral=/^(hi|hello|hey|thanks|thank you|bye|goodbye)$/.test(q);
+ if(neutral){const key=/thanks|thank you|bye/.test(q)?'thanks':'greeting';return {cards:[card(key)],context,suggestions:defaultSuggestions};}
+ if(/\b(salary|pay|notice|availability|available|interview|age|birthday|married|wife|husband|children|religion|address|id number)\b/.test(q))return {cards:[card('unknown')],context,suggestions:['How can I contact Lefa?','What experience does he have?']};
+ const followup=projects[context.project] && /\b(it|its|this|that|database|stack|technologies|language|features|completed|finished|status|demo|source|repository|built|developed)\b|^(tell me more|more|what else|continue|explain more|more details)$/.test(q);
+ let projectKey=explicit?.[0] || (followup?context.project:null);
+ // Technology-specific project questions use only verified project stacks.
+ if(!projectKey && /\b(project|projects|built|build|made|developed|application|applications)\b/.test(q)){
+  if(/\bphp\b/.test(q))projectKey='store';
+  else if(/\b(csharp|asp net|dotnet|dot net)\b/.test(q))projectKey='helpdesk';
+ }
+ if(projectKey){
+  const project=projects[projectKey];let answer=project.overview;
+  if(/\b(users|revenue|performance|benchmarks|metrics|customers|accuracy)\b/.test(q))answer='Verified user counts, revenue and performance metrics for '+project.name+' are not provided in the portfolio. Please ask Lefa for evidence or further details.';
+  else if(/\b(demo|live|deployed|deployment)\b/.test(q))answer='A verified live demo URL for '+project.name+' is not provided here. You can review the linked project information or contact Lefa to request a demonstration.';
+  else if(/\b(database|postgres|postgresql|mysql|sql|schema)\b/.test(q))answer=project.database;
+  else if(/\b(stack|technologies|technology|language|framework|tools|php|csharp)\b/.test(q))answer=project.stack;
+  else if(/\b(features|feature|more|functionality|does|planned|completed|finished|status)\b/.test(q))answer=project.features;
+  return {cards:[{title:project.name,answer,links:project.links}],context:{project:projectKey,topic:'projects'},suggestions:['Which database does it use?','What features does it have?','How can I contact Lefa?']};
+ }
+ if(/\b(teaches|teach|teaching|lecturer|lecturing|rosebank)\b/.test(q))return {cards:[card('teaching')],context:{topic:'teaching'},suggestions:['What did he do at Simplifon?','Tell me about his projects']};
+ if(/\b(simplifon|internship|intern)\b/.test(q))return {cards:[card('internship')],context:{topic:'internship'},suggestions:['What database experience does he have?','What does he teach?']};
+ if(/\b(team|teamwork|collaboration|collaborate|communication)\b/.test(q))return {cards:[card('teamwork')],context:{topic:'teamwork'},suggestions:['Tell me about Burzarsnet','What does he teach?']};
+ if(/\b(azure|aws|certification|certified|java|react|kubernetes|rag|agents)\b/.test(q))return {cards:[{title:'Information not documented',answer:'That specific skill, certification or experience is not documented in Lefa’s portfolio. Ask him directly to confirm; you can also review his listed technical skills.',links:[['Technical skills','#expertise'],['Contact Lefa','#contact']]}],context,suggestions:['What are his technical skills?','What did he build with PHP?']};
+ const keys=answerTopics(question,context.topic?[context.topic]:[]);
+ return {cards:keys.length?keys.map(card):[{title:'Try a related question',answer:'I couldn’t match that question confidently to Lefa’s information. Try a specific project name, a skill or one of the suggestions below. You can also contact Lefa directly.',links:[['Contact Lefa','#contact']]}],context:keys.length?{topic:keys[0]}:context,suggestions:defaultSuggestions};
+}

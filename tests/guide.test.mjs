@@ -17,3 +17,8 @@ test('supports follow-ups and honest unknown answers',()=>{
  assert.deepEqual(answerTopics('What is the weather?'),[]);
  assert.deepEqual(answerTopics('hello'),['greeting']);
 });
+import {getResponse} from '../dist/guide-core.mjs';
+test('specific technology question identifies the documented project',()=>{const r=getResponse('What did Lefa build with PHP?');assert.equal(r.context.project,'store');assert.match(r.cards[0].answer,/PHP and PostgreSQL/);});
+test('project follow-ups retain context and explicit switches win',()=>{let r=getResponse('Tell me about Store Hub');r=getResponse('Which database does it use?',r.context);assert.match(r.cards[0].answer,/Store Hub uses PostgreSQL/);r=getResponse('What about HelpDeskHub?',r.context);assert.equal(r.context.project,'helpdesk');r=getResponse('Is it completed?',r.context);assert.match(r.cards[0].answer,/planned/);});
+test('does not invent undocumented project stacks or metrics',()=>{assert.match(getResponse('Which database does the airport system use?').cards[0].answer,/not specified/);assert.match(getResponse('How many users does Store Hub have?').cards[0].answer,/not provided/);});
+test('clear topic changes and unknown answers preserve factual boundaries',()=>{const r=getResponse('Tell me about Store Hub');assert.match(getResponse('What does he teach?',r.context).cards[0].title,/Lecturing/);assert.match(getResponse('Is he Azure certified?').cards[0].answer,/not documented/);assert.ok(getResponse('What is the weather?').suggestions.length);assert.match(getResponse('How do I contact him?').cards[0].answer,/lazylefa/);});

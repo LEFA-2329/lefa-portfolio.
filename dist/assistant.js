@@ -6,7 +6,7 @@
  let ready;
  launch.addEventListener('click',async()=>{
   panel.showModal();
-  try {ready ||= import('./guide-core.mjs').then(initialise);await ready;if(panel.open)panel.querySelector('textarea').focus();}
+  try {ready ||= import('./guide-core.mjs?v=4').then(initialise);await ready;if(panel.open)panel.querySelector('textarea').focus();}
   catch {panel.querySelector('#assistant-status').textContent='The guide could not load. Please use the email or WhatsApp links below.';ready=null;}
  });
  const closeGuide = () => { if (panel.open) panel.close(); };
@@ -26,7 +26,7 @@
   backdropPress = false;
  });
  panel.addEventListener('close',()=>launch.focus());
- function initialise({topics,answerTopics,notices}) {
+ function initialise({topics,getResponse,defaultSuggestions}) {
   const form=panel.querySelector('#assistant-form');const input=form.querySelector('textarea');const log=panel.querySelector('#assistant-messages');
   panel.querySelector('#assistant-status').textContent='Ask in your own words about Lefa. This free guide finds relevant portfolio information; it does not generate new facts. Questions stay in your browser.';
   function message(who,text,links=[]){
@@ -42,19 +42,34 @@
    log.append(article);while(log.children.length>20)log.firstElementChild.remove();
    article.scrollIntoView({block:'nearest'});
   }
-  let previous=[];
-  function show(key){
-   if(notices[key]) { message('Portfolio guide',notices[key]); return; }
-   const topic=topics[key];if(topic){message(topic.title,topic.answer,topic.links);previous=[key];}
+  let context={};
+  const suggestions=document.createElement('div');
+  suggestions.className='assistant-suggestions';
+  suggestions.setAttribute('aria-label','Related questions');
+  form.before(suggestions);
+  function suggest(questions){
+   suggestions.replaceChildren();
+   for(const question of questions){
+    const button=document.createElement('button');button.type='button';button.textContent=question;
+    button.addEventListener('click',()=>ask(question));suggestions.append(button);
+   }
   }
-  panel.querySelectorAll('[data-topic]').forEach(button=>button.addEventListener('click',()=>show(button.dataset.topic)));
+  function ask(question){
+   message('Your question',question);
+   const result=getResponse(question,context);context=result.context;
+   result.cards.forEach(item=>message(item.title,item.answer,item.links));
+   suggest(result.suggestions);
+  }
+  panel.querySelectorAll('[data-topic]').forEach(button=>button.addEventListener('click',()=>{
+   const key=button.dataset.topic;const topic=topics[key];
+   if(topic){context={topic:key};message(topic.title,topic.answer,topic.links);suggest(defaultSuggestions);}
+  }));
+  suggest(defaultSuggestions);
   form.addEventListener('submit',event=>{
    event.preventDefault();const question=input.value.trim();if(!question)return;
-   message('Your question',question);input.value='';
-   const matches=answerTopics(question,previous);
-   if(matches.length)matches.forEach(show);
-   else message('Portfolio guide','I don’t have a prepared answer for that. Choose a topic above, browse the projects or contact Lefa directly.',[['Browse projects','#work'],['Contact Lefa','#contact']]);
+   input.value='';ask(question);
    input.focus();
   });
  }
 })();
+
