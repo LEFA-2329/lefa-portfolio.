@@ -1,0 +1,10 @@
+name = "lefa-portfolio-assistant-test"
+main = "worker.mjs"
+compatibility_date = "2026-11-01"
+# Secrets belong in the hosting provider's secure environment, never GitHub source.
+# Set OPENAI_API_KEY, OPENAI_MODEL and ALLOWED_ORIGINS before deployment.
+[durable_objects]
+bindings = [{ name = "GATE", class_name = "UsageGate" }]
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["UsageGate"]

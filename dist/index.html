@@ -10,6 +10,7 @@
   <link href="./styles.css" rel="stylesheet"/>
   <link href="/favicon.svg?v=2" rel="icon" type="image/svg+xml"/>
   <link href="/favicon.ico?v=2" rel="icon" type="image/x-icon"/>
+  <link rel="stylesheet" href="./assistant.css"/>
  </head>
  <body>
   <!-- Header and navigation -->
@@ -487,5 +488,34 @@
   </dialog>
   <script defer="True" src="./script.js">
   </script>
+ 
+  <button id="assistant-launch" class="assistant-launch" aria-haspopup="dialog" aria-controls="assistant-panel">Ask about my work</button>
+  <dialog id="assistant-panel" aria-labelledby="assistant-title" aria-describedby="assistant-status">
+   <div class="assistant-header">
+    <h2 id="assistant-title">Ask Lefa’s AI assistant</h2>
+    <button type="button" data-close aria-label="Close assistant">Close</button>
+   </div>
+   <div class="assistant-body">
+    <p id="assistant-status"></p>
+    <div class="assistant-suggestions" aria-label="Suggested questions">
+     <button type="button" data-topic="experience">What experience does Lefa have?</button>
+     <button type="button" data-topic="projects">Tell me about his projects</button>
+     <button type="button" data-topic="research">What is his NLP research?</button>
+    </div>
+    <div id="assistant-messages" role="log" aria-live="polite" aria-relevant="additions" aria-busy="false"></div>
+    <form id="assistant-form">
+     <label for="assistant-question">Ask about skills, projects or a job description</label>
+     <textarea id="assistant-question" maxlength="1600" required placeholder="What PostgreSQL experience does Lefa have?"></textarea>
+     <button type="submit">Ask assistant</button>
+    </form>
+    <div class="assistant-contact">
+     <a href="mailto:lazylefa@gmail.com">Email Lefa</a>
+     <a href="https://wa.me/27697294309" target="_blank" rel="noopener noreferrer">WhatsApp Lefa</a>
+    </div>
+   </div>
+  </dialog>
+  <script src="./assistant-config.js" defer></script>
+  <script src="./assistant.js" defer></script>
  </body>
 </html>
+
