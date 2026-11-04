@@ -4,8 +4,8 @@
   --line: #343b3c;
   --text: #f0f2ec;
   --muted: #a9b0aa;
-  
-  --lime:#333;
+  --lime: #d7fa72;
+
 }
 
 * {
@@ -506,7 +506,7 @@ h3 {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
   gap: 40px;
-  background: radial-gradient(ellipse at 0 100%, #283420, transparent 65%);
+  background: radial-gradient(ellipse at 0 100%, #333, transparent 65%);
 }
 
 .contact h2 {
