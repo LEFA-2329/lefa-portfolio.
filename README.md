@@ -25,6 +25,12 @@ Open http://localhost:8000 in your browser.
 - `dist/index.html`: indented page structure and content
 - `dist/styles.css`: formatted styles and responsive layouts
 - `dist/script.js`: formatted project filters and case-study interactions
+- `dist/assistant.js`: guide panel, buttons, messages and follow-up state
+- `dist/assistant.css`: guide panel layout and mobile styles
+- `dist/guide-core.mjs`: verified facts, project answers and question matching
+- `tests/guide.test.mjs`: guide behaviour checks
+- `.editorconfig`: indentation and line-ending settings for editors
+- `.prettierrc.json`: HTML, CSS and JavaScript formatting rules
 - `dist/lefa-malatji.jpeg`: portrait
 - `dist/Lefa-Malatji-CV.pdf`: downloadable CV
 - `dist/favicon.svg` and `dist/favicon.ico`: browser icons
@@ -47,9 +53,47 @@ One-time setup:
 
 The workflow adjusts asset links in the deployment copy so the GitHub Pages project URL works. No build or account secrets are required.
 
-**Custom domain:** https://lefamalatji.co.za still points to its existing hosting. GitHub deployments will update the GitHub Pages site only until the custom domain is configured in Pages and its DNS records are switched. Verify the Pages deployment before changing DNS.
+**Custom domain:** https://lefamalatji.co.za is served by GitHub Pages. Successful deployments from `main` update the live portfolio.
+
+## Keep code readable
+
+Use two spaces for HTML, CSS and JavaScript, and four spaces for Python. Keep each statement on its own line. HTML, styles and behaviour are in separate files.
+
+With Node.js installed, format the frontend and tests from the repository root:
+
+```bash
+npx prettier@3.6.2 --write "dist/**/*.{html,css,js,mjs}" "tests/*.mjs"
+```
+
+Check formatting without changing files:
+
+```bash
+npx prettier@3.6.2 --check "dist/**/*.{html,css,js,mjs}" "tests/*.mjs"
+```
+
+Run the guide checks after changing answers or matching logic:
+
+```bash
+node --test tests/guide.test.mjs
+```
+
+### Common edits
+
+| Change | File |
+| --- | --- |
+| Introduction, project cards or contact buttons | `dist/index.html` |
+| Main layout, colours or responsive styles | `dist/styles.css` |
+| Project filters and case-study dialogs | `dist/script.js` |
+| Guide answers, projects or matching rules | `dist/guide-core.mjs` |
+| Guide interactions and follow-up suggestions | `dist/assistant.js` |
+| Guide appearance | `dist/assistant.css` |
+| Downloadable CV | Replace `dist/Lefa-Malatji-CV.pdf` and update its version in `dist/index.html` |
+
+The guide runs locally in the visitor’s browser using prepared facts. No API key or AI billing is required.
 
 ## Regenerate the CV (optional)
+
+The generator below is a legacy template and predates the latest uploaded two-page CV. To preserve the current CV content and section order, replace the PDF directly instead of regenerating it from this script.
 
 ```bash
 python -m pip install -r requirements.txt
@@ -61,3 +105,4 @@ The generator expects DejaVu Sans fonts under `/usr/share/fonts/truetype/dejavu/
 ## Content
 
 Personal photographs, CV content and project descriptions belong to Lefa Malatji. No reuse licence has been granted.
+

@@ -4,16 +4,16 @@
   --line: #343b3c;
   --text: #f0f2ec;
   --muted: #a9b0aa;
-  --lime: #d7fa72
+  --lime: #d7fa72;
 }
 
 * {
-  box-sizing: border-box
+  box-sizing: border-box;
 }
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 100px
+  scroll-padding-top: 100px;
 }
 
 body {
@@ -21,29 +21,29 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: Arial, Helvetica, sans-serif;
-  line-height: 1.6
+  line-height: 1.6;
 }
 
 a {
   color: inherit;
-  text-decoration: none
+  text-decoration: none;
 }
 
 button {
   font: inherit;
-  cursor: pointer
+  cursor: pointer;
 }
 
 a:focus-visible,
 button:focus-visible {
   outline: 2px solid var(--lime);
-  outline-offset: 5px
+  outline-offset: 5px;
 }
 
 .wrap {
   max-width: 1240px;
   margin: auto;
-  padding: 0 5vw
+  padding: 0 5vw;
 }
 
 header {
@@ -51,7 +51,7 @@ header {
   background: #111415ed;
   position: sticky;
   top: 0;
-  z-index: 5
+  z-index: 5;
 }
 
 nav {
@@ -59,40 +59,40 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px
+  gap: 20px;
 }
 
 .logo {
   font-weight: 800;
   font-size: 24px;
-  letter-spacing: -1px
+  letter-spacing: -1px;
 }
 
 .logo span {
-  color: var(--lime)
+  color: var(--lime);
 }
 
 .links {
   display: flex;
   gap: 30px;
-  font-size: 13px
+  font-size: 13px;
 }
 
 .nav-cta {
   border: 1px solid var(--line);
   padding: 9px 17px;
-  border-radius: 30px
+  border-radius: 30px;
 }
 
 .eyebrow {
   font-size: 11px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--muted)
+  color: var(--muted);
 }
 
 .green {
-  color: var(--lime)
+  color: var(--lime);
 }
 
 .hero {
@@ -100,7 +100,7 @@ nav {
   display: grid;
   grid-template-columns: 1.6fr 1fr;
   gap: 55px;
-  align-items: center
+  align-items: center;
 }
 
 .status {
@@ -111,39 +111,39 @@ nav {
   border-radius: 30px;
   padding: 6px 13px;
   font-size: 11px;
-  color: var(--muted)
+  color: var(--muted);
 }
 
 .dot {
   height: 7px;
   width: 7px;
   border-radius: 50%;
-  background: var(--lime)
+  background: var(--lime);
 }
 
 h1 {
   font-size: clamp(48px, 6.2vw, 83px);
   line-height: 1.05;
   letter-spacing: -4px;
-  margin: 25px 0
+  margin: 25px 0;
 }
 
 h1 em {
   font-style: normal;
-  color: var(--lime)
+  color: var(--lime);
 }
 
 .intro {
   color: var(--muted);
   font-size: 17px;
-  max-width: 550px
+  max-width: 550px;
 }
 
 .actions {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-  margin-top: 30px
+  margin-top: 30px;
 }
 
 .btn {
@@ -156,13 +156,13 @@ h1 em {
   border: 1px solid var(--line);
   background: transparent;
   color: var(--text);
-  font-size: 13px
+  font-size: 13px;
 }
 
 .primary {
   background: var(--lime);
   color: #111415;
-  border-color: var(--lime)
+  border-color: var(--lime);
 }
 
 .hero-art {
@@ -171,7 +171,10 @@ h1 em {
   border: 1px solid var(--line);
   border-radius: 14px;
   overflow: hidden;
-  background: radial-gradient(ellipse at 50% 40%, #3a4731 0, transparent 62%), repeating-linear-gradient(0deg, transparent 0 35px, #ffffff05 36px), repeating-linear-gradient(90deg, transparent 0 35px, #ffffff05 36px)
+  background:
+    radial-gradient(ellipse at 50% 40%, #3a4731 0, transparent 62%),
+    repeating-linear-gradient(0deg, transparent 0 35px, #ffffff05 36px),
+    repeating-linear-gradient(90deg, transparent 0 35px, #ffffff05 36px);
 }
 
 .orbit {
@@ -182,19 +185,19 @@ h1 em {
   height: 235px;
   left: 50%;
   top: 43%;
-  transform: translate(-50%, -50%) rotate(-25deg)
+  transform: translate(-50%, -50%) rotate(-25deg);
 }
 
 .orbit:nth-child(2) {
   width: 300px;
   height: 125px;
-  transform: translate(-50%, -50%) rotate(50deg)
+  transform: translate(-50%, -50%) rotate(50deg);
 }
 
 .orbit:nth-child(3) {
   width: 300px;
   height: 125px;
-  transform: translate(-50%, -50%) rotate(-50deg)
+  transform: translate(-50%, -50%) rotate(-50deg);
 }
 
 .core {
@@ -205,19 +208,19 @@ h1 em {
   font-size: 56px;
   letter-spacing: -5px;
   font-weight: 700;
-  color: var(--lime)
+  color: var(--lime);
 }
 
 .art-tag {
   position: absolute;
   font-family: monospace;
   font-size: 11px;
-  color: var(--muted)
+  color: var(--muted);
 }
 
 .tag-top {
   top: 20px;
-  left: 20px
+  left: 20px;
 }
 
 .art-bottom {
@@ -228,7 +231,7 @@ h1 em {
   border-top: 1px solid var(--line);
   display: flex;
   justify-content: space-between;
-  font-size: 11px
+  font-size: 11px;
 }
 
 .strip {
@@ -239,11 +242,11 @@ h1 em {
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   font-size: 12px;
-  color: var(--muted)
+  color: var(--muted);
 }
 
 section {
-  padding: 80px 0
+  padding: 80px 0;
 }
 
 .section-head {
@@ -251,31 +254,31 @@ section {
   justify-content: space-between;
   gap: 25px;
   align-items: end;
-  margin-bottom: 32px
+  margin-bottom: 32px;
 }
 
 h2 {
   font-size: clamp(32px, 4vw, 48px);
   line-height: 1.15;
   letter-spacing: -2px;
-  margin: 12px 0
+  margin: 12px 0;
 }
 
 h3 {
   font-size: 23px;
-  letter-spacing: -.6px;
-  line-height: 1.3
+  letter-spacing: -0.6px;
+  line-height: 1.3;
 }
 
 .small {
   font-size: 13px;
-  color: var(--muted)
+  color: var(--muted);
 }
 
 .filters {
   display: flex;
   gap: 7px;
-  flex-wrap: wrap
+  flex-wrap: wrap;
 }
 
 .filter {
@@ -284,30 +287,30 @@ h3 {
   color: var(--muted);
   border-radius: 25px;
   padding: 7px 13px;
-  font-size: 12px
+  font-size: 12px;
 }
 
 .filter.active {
   background: var(--lime);
   color: #111415;
-  border-color: var(--lime)
+  border-color: var(--lime);
 }
 
 .projects {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 22px
+  gap: 22px;
 }
 
 .project {
   border: 1px solid var(--line);
   border-radius: 10px;
   overflow: hidden;
-  background: #171b1c
+  background: #171b1c;
 }
 
 .project[hidden] {
-  display: none
+  display: none;
 }
 
 .visual {
@@ -315,17 +318,17 @@ h3 {
   position: relative;
   padding: 25px;
   overflow: hidden;
-  border-bottom: 1px solid var(--line)
+  border-bottom: 1px solid var(--line);
 }
 
 .research {
   background: #d7e6bc;
-  color: #273222
+  color: #273222;
 }
 
 .visual .label {
   font-size: 10px;
-  letter-spacing: 2px
+  letter-spacing: 2px;
 }
 
 .sentence {
@@ -333,24 +336,24 @@ h3 {
   line-height: 1.5;
   letter-spacing: -1px;
   max-width: 330px;
-  margin-top: 24px
+  margin-top: 24px;
 }
 
 .sentence span {
   background: #273222;
   color: #d7e6bc;
-  padding: 0 6px
+  padding: 0 6px;
 }
 
 .visual-bottom {
   position: absolute;
   bottom: 20px;
   font-size: 10px;
-  letter-spacing: 1px
+  letter-spacing: 1px;
 }
 
 .software {
-  background: #263942
+  background: #263942;
 }
 
 .mock {
@@ -360,31 +363,31 @@ h3 {
   border-radius: 7px;
   padding: 15px;
   max-width: 360px;
-  transform: rotate(-3deg)
+  transform: rotate(-3deg);
 }
 
 .mock-title {
   font-size: 13px;
   display: flex;
-  justify-content: space-between
+  justify-content: space-between;
 }
 
 .mock-title span {
   color: var(--lime);
-  font-size: 10px
+  font-size: 10px;
 }
 
 .bars {
   display: flex;
   gap: 8px;
-  margin: 14px 0
+  margin: 14px 0;
 }
 
 .bars i {
   height: 37px;
   background: #334c54;
   flex: 1;
-  border-radius: 4px
+  border-radius: 4px;
 }
 
 .mock-row {
@@ -393,22 +396,22 @@ h3 {
   padding: 6px 0;
   border-top: 1px solid #334c54;
   font-size: 10px;
-  color: #b9c9ce
+  color: #b9c9ce;
 }
 
 .project-copy {
-  padding: 25px
+  padding: 25px;
 }
 
 .project-copy h3 {
-  margin: 11px 0
+  margin: 11px 0;
 }
 
 .chips {
   display: flex;
   gap: 7px;
   flex-wrap: wrap;
-  margin: 20px 0
+  margin: 20px 0;
 }
 
 .chips span {
@@ -416,7 +419,7 @@ h3 {
   border-radius: 4px;
   padding: 3px 8px;
   font-size: 10px;
-  color: var(--muted)
+  color: var(--muted);
 }
 
 .text-btn {
@@ -428,71 +431,71 @@ h3 {
   color: var(--text);
   display: flex;
   justify-content: space-between;
-  font-size: 12px
+  font-size: 12px;
 }
 
 .skills-section {
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  background: #181c1d
+  background: #181c1d;
 }
 
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 28px;
-  margin-top: 40px
+  margin-top: 40px;
 }
 
 .skill-number {
   color: var(--lime);
   font-family: monospace;
-  font-size: 12px
+  font-size: 12px;
 }
 
 .skills-grid h3 {
-  font-size: 18px
+  font-size: 18px;
 }
 
 .skills-grid p {
   color: var(--muted);
-  font-size: 13px
+  font-size: 13px;
 }
 
 .skill-list {
   font-size: 12px;
   line-height: 2;
-  color: #d1d5cd
+  color: #d1d5cd;
 }
 
 .about {
   display: grid;
   grid-template-columns: 1fr 1.2fr;
-  gap: 90px
+  gap: 90px;
 }
 
 .about p {
-  color: var(--muted)
+  color: var(--muted);
 }
 
 .timeline {
   border-left: 1px solid var(--line);
   padding-left: 25px;
-  margin-top: 28px
+  margin-top: 28px;
 }
 
 .timeline div {
-  margin: 22px 0
+  margin: 22px 0;
 }
 
 .timeline strong {
   display: block;
-  font-size: 14px
+  font-size: 14px;
 }
 
 .timeline span {
   font-size: 12px;
-  color: var(--muted)
+  color: var(--muted);
 }
 
 .contact {
@@ -502,26 +505,26 @@ h3 {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
   gap: 40px;
-  background: radial-gradient(ellipse at 0 100%, #283420, transparent 65%)
+  background: radial-gradient(ellipse at 0 100%, #283420, transparent 65%);
 }
 
 .contact h2 {
-  margin-top: 15px
+  margin-top: 15px;
 }
 
 .contact p {
   color: var(--muted);
-  font-size: 14px
+  font-size: 14px;
 }
 
 .contact-note {
   border-left: 2px solid var(--lime);
   padding-left: 20px;
-  align-self: center
+  align-self: center;
 }
 
 .print {
-  margin-top: 14px
+  margin-top: 14px;
 }
 
 footer {
@@ -530,7 +533,7 @@ footer {
   border-top: 1px solid var(--line);
   padding: 25px 0;
   color: var(--muted);
-  font-size: 11px
+  font-size: 11px;
 }
 
 dialog {
@@ -540,16 +543,16 @@ dialog {
   border-radius: 12px;
   max-width: 650px;
   width: 90%;
-  padding: 35px
+  padding: 35px;
 }
 
 dialog::backdrop {
   background: #000b;
-  backdrop-filter: blur(5px)
+  backdrop-filter: blur(5px);
 }
 
 dialog p {
-  color: var(--muted)
+  color: var(--muted);
 }
 
 .close {
@@ -559,153 +562,152 @@ dialog p {
   color: var(--text);
   border-radius: 50%;
   width: 35px;
-  height: 35px
+  height: 35px;
 }
 
 dialog h3 {
-  margin-top: 30px
+  margin-top: 30px;
 }
 
-@media(max-width:760px) {
+@media (max-width: 760px) {
   .hero {
     grid-template-columns: 1fr;
     padding-top: 45px;
-    gap: 35px
+    gap: 35px;
   }
 
   h1 {
-    letter-spacing: -2.5px
+    letter-spacing: -2.5px;
   }
 
   .hero-art {
-    min-height: 300px
+    min-height: 300px;
   }
 
   .links {
     gap: 14px;
-    font-size: 11px
+    font-size: 11px;
   }
 
   .nav-cta {
-    display: none
+    display: none;
   }
 
   .strip {
     flex-wrap: wrap;
-    justify-content: start
+    justify-content: start;
   }
 
   .section-head {
     align-items: start;
-    flex-direction: column
+    flex-direction: column;
   }
 
   .projects,
   .about,
   .contact {
-    grid-template-columns: 1fr
+    grid-template-columns: 1fr;
   }
 
   .skills-grid {
-    grid-template-columns: 1fr 1fr
+    grid-template-columns: 1fr 1fr;
   }
 
   .about {
-    gap: 25px
+    gap: 25px;
   }
 
   section {
-    padding: 55px 0
+    padding: 55px 0;
   }
 
   .contact {
-    padding: 25px
+    padding: 25px;
   }
 
   footer {
-    gap: 20px
+    gap: 20px;
   }
 
   .visual {
-    height: 215px
+    height: 215px;
   }
 }
 
 @media print {
-
   header,
   .hero-art,
   .filters,
   .text-btn,
   .actions,
   .print {
-    display: none
+    display: none;
   }
 
   body {
     background: white;
-    color: black
+    color: black;
   }
 
   .projects,
   .skills-grid {
-    display: block
+    display: block;
   }
 
   .visual {
-    display: none
+    display: none;
   }
 
   section {
-    padding: 20px 0
+    padding: 20px 0;
   }
 
   .contact {
-    display: block
+    display: block;
   }
 
   p,
   .small,
   .skill-list {
-    color: #333 !important
+    color: #333 !important;
   }
 
   .project {
     break-inside: avoid;
-    background: white
+    background: white;
   }
 
   .project[hidden] {
-    display: block
+    display: block;
   }
 
   .chips span {
-    color: #333
+    color: #333;
   }
 
   .hero {
     display: block;
-    padding: 20px 0
+    padding: 20px 0;
   }
 }
 
 .store {
   background: #aabce0;
-  color: #1e2a47
+  color: #1e2a47;
 }
 
 .store-layout {
-  margin-top: 15px
+  margin-top: 15px;
 }
 
 .store-word {
   font-size: 38px;
   font-weight: 700;
-  letter-spacing: -2px
+  letter-spacing: -2px;
 }
 
 .store-word span {
-  font-weight: 400
+  font-weight: 400;
 }
 
 .store-search {
@@ -714,34 +716,34 @@ dialog h3 {
   border-radius: 5px;
   max-width: 300px;
   font-size: 12px;
-  margin-top: 9px
+  margin-top: 9px;
 }
 
 .store-features {
   display: flex;
   gap: 9px;
   margin-top: 12px;
-  font-size: 9px
+  font-size: 9px;
 }
 
 .store-features span {
   border: 1px solid #1e2a4750;
   border-radius: 20px;
-  padding: 3px 7px
+  padding: 3px 7px;
 }
 
 .project-actions {
   display: flex;
-  gap: 20px
+  gap: 20px;
 }
 
 .project-actions .text-btn {
-  flex: 1
+  flex: 1;
 }
 
 .contact-email {
   font-size: clamp(16px, 2vw, 24px);
-  letter-spacing: -.5px
+  letter-spacing: -0.5px;
 }
 
 .contact-links {
@@ -749,7 +751,7 @@ dialog h3 {
   gap: 23px;
   font-size: 13px;
   color: var(--lime);
-  margin: 18px 0
+  margin: 18px 0;
 }
 
 .publication {
@@ -757,50 +759,50 @@ dialog h3 {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 8px;
-  margin-top: 30px
+  margin-top: 30px;
 }
 
 .publication h3 {
-  font-size: 18px
+  font-size: 18px;
 }
 
 .publication p {
-  margin-bottom: 0
+  margin-bottom: 0;
 }
 
-@media(max-width:420px) {
+@media (max-width: 420px) {
   .store-features {
     gap: 4px;
-    font-size: 8px
+    font-size: 8px;
   }
 
   .project-actions {
-    gap: 10px
+    gap: 10px;
   }
 }
 
 .hero {
   grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
   gap: 65px;
-  padding: 64px 0 44px
+  padding: 64px 0 44px;
 }
 
 .hero h1 {
   font-size: clamp(45px, 5.2vw, 69px);
   letter-spacing: -3px;
-  margin: 18px 0 23px
+  margin: 18px 0 23px;
 }
 
 .hero-name {
   margin-top: 26px;
   color: #d0d5cb;
   font-size: 10px;
-  letter-spacing: 1.5px
+  letter-spacing: 1.5px;
 }
 
 .hero .intro {
   font-size: 16px;
-  line-height: 1.8
+  line-height: 1.8;
 }
 
 .portrait-card {
@@ -810,7 +812,7 @@ dialog h3 {
   border-radius: 12px;
   border: 1px solid var(--line);
   background: var(--panel);
-  box-shadow: 20px 20px 0 -10px #d7fa7210
+  box-shadow: 20px 20px 0 -10px #d7fa7210;
 }
 
 .portrait-card img {
@@ -818,7 +820,7 @@ dialog h3 {
   width: 100%;
   height: 420px;
   object-fit: cover;
-  object-position: 50% 25%
+  object-position: 50% 25%;
 }
 
 .portrait-card figcaption {
@@ -826,31 +828,31 @@ dialog h3 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 15px
+  gap: 15px;
 }
 
 .portrait-card strong {
   display: block;
   font-size: 17px;
-  letter-spacing: -.3px
+  letter-spacing: -0.3px;
 }
 
 .portrait-card figcaption span {
   display: block;
   font-size: 10px;
-  color: var(--muted)
+  color: var(--muted);
 }
 
 .portrait-location {
   max-width: 80px;
-  text-align: right
+  text-align: right;
 }
 
 .hero-contact {
   font-size: 12px;
   align-self: center;
   color: var(--lime);
-  padding: 10px 0
+  padding: 10px 0;
 }
 
 .credibility {
@@ -859,12 +861,12 @@ dialog h3 {
   gap: 30px;
   margin: 12px 0 32px;
   padding: 23px 0;
-  border-top: 1px solid var(--line)
+  border-top: 1px solid var(--line);
 }
 
 .credibility span {
   font-size: 11px;
-  color: var(--muted)
+  color: var(--muted);
 }
 
 .credibility strong {
@@ -872,46 +874,46 @@ dialog h3 {
   font-size: 15px;
   color: var(--text);
   font-weight: 600;
-  margin-bottom: 4px
+  margin-bottom: 4px;
 }
 
 .projects {
-  align-items: stretch
+  align-items: stretch;
 }
 
 .project {
   display: flex;
-  flex-direction: column
+  flex-direction: column;
 }
 
 .project-copy {
   flex: 1;
   display: flex;
-  flex-direction: column
+  flex-direction: column;
 }
 
 .project-copy .small {
-  margin-bottom: auto
+  margin-bottom: auto;
 }
 
 .project-copy .chips {
-  margin-top: 20px
+  margin-top: 20px;
 }
 
-.project-copy>.text-btn {
-  margin-top: 0
+.project-copy > .text-btn {
+  margin-top: 0;
 }
 
 .text-btn {
-  line-height: 1.5
+  line-height: 1.5;
 }
 
 .contact .btn {
-  justify-content: space-between
+  justify-content: space-between;
 }
 
 .timeline div {
-  position: relative
+  position: relative;
 }
 
 .timeline div:before {
@@ -922,118 +924,118 @@ dialog h3 {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--lime)
+  background: var(--lime);
 }
 
-@media(max-width:900px) {
+@media (max-width: 900px) {
   .hero {
-    gap: 32px
+    gap: 32px;
   }
 
   .portrait-card img {
-    height: 370px
+    height: 370px;
   }
 
   .hero h1 {
-    letter-spacing: -2px
+    letter-spacing: -2px;
   }
 
   .hero .actions {
-    gap: 10px
+    gap: 10px;
   }
 
   .btn {
-    gap: 20px
+    gap: 20px;
   }
 
   .portrait-card figcaption {
-    padding: 15px
+    padding: 15px;
   }
 
   .portrait-location {
-    display: none !important
+    display: none !important;
   }
 }
 
-@media(max-width:760px) {
+@media (max-width: 760px) {
   .hero {
     grid-template-columns: 1fr;
     padding-top: 38px;
-    gap: 35px
+    gap: 35px;
   }
 
   .hero h1 {
-    font-size: clamp(43px, 9vw, 64px)
+    font-size: clamp(43px, 9vw, 64px);
   }
 
   .portrait-card {
     max-width: 440px;
     width: 100%;
-    justify-self: center
+    justify-self: center;
   }
 
   .portrait-card img {
-    height: 400px
+    height: 400px;
   }
 
   .credibility {
     grid-template-columns: 1fr;
     gap: 17px;
-    margin-top: 12px
+    margin-top: 12px;
   }
 
   .credibility span {
-    display: block
+    display: block;
   }
 
   .credibility strong {
     display: inline;
-    margin-right: 8px
+    margin-right: 8px;
   }
 
   .hero-contact {
-    padding: 13px 0
+    padding: 13px 0;
   }
 
   .project-copy .small {
-    margin-bottom: 0
+    margin-bottom: 0;
   }
 
   .portrait-card figcaption {
-    padding: 17px 21px
+    padding: 17px 21px;
   }
 }
 
 @media print {
   .portrait-card {
     width: 120px;
-    float: right
+    float: right;
   }
 
   .portrait-card img {
-    height: 130px
+    height: 130px;
   }
 
   .portrait-card figcaption,
   .credibility,
   .hero-contact {
-    display: none
+    display: none;
   }
 
   .hero h1 {
-    font-size: 34px
+    font-size: 34px;
   }
 
   .hero-name {
-    color: #333
+    color: #333;
   }
 
   .project {
-    display: block
+    display: block;
   }
 
   .hero {
-    display: block
+    display: block;
   }
 }
 
@@ -1043,7 +1045,7 @@ dialog h3 {
   min-height: 230px;
   display: flex;
   flex-direction: column;
-  gap: 16px
+  gap: 16px;
 }
 
 .visual-bottom {
@@ -1052,193 +1054,193 @@ dialog h3 {
   padding-top: 8px;
   font-size: 10px;
   line-height: 1.6;
-  overflow-wrap: anywhere
+  overflow-wrap: anywhere;
 }
 
 .store-layout {
-  margin-top: 0
+  margin-top: 0;
 }
 
 .store-features {
   flex-wrap: wrap;
   gap: 7px;
   font-size: 10px;
-  line-height: 1.6
+  line-height: 1.6;
 }
 
 .store-features span {
   white-space: normal;
-  padding: 4px 9px
+  padding: 4px 9px;
 }
 
 .sentence {
   margin-top: 0;
   margin-bottom: 0;
-  font-size: 27px
+  font-size: 27px;
 }
 
 .mock {
   width: 100%;
   margin: 0 auto;
-  transform: none
+  transform: none;
 }
 
 .project,
 .project-copy,
-.hero>div,
-.contact>div,
-.about>div,
-.skills-grid>div {
-  min-width: 0
+.hero > div,
+.contact > div,
+.about > div,
+.skills-grid > div {
+  min-width: 0;
 }
 
 .contact-email {
-  overflow-wrap: anywhere
+  overflow-wrap: anywhere;
 }
 
 .links {
-  flex-wrap: wrap
+  flex-wrap: wrap;
 }
 
 .btn {
-  max-width: 100%
+  max-width: 100%;
 }
 
-@media(max-width:760px) {
+@media (max-width: 760px) {
   .visual {
     height: auto;
     min-height: 230px;
     padding: 22px;
-    gap: 17px
+    gap: 17px;
   }
 
   .store-features {
     font-size: 10px;
-    gap: 7px
+    gap: 7px;
   }
 
   .visual-bottom {
     font-size: 9px;
-    letter-spacing: .8px
+    letter-spacing: 0.8px;
   }
 
   .hero .actions {
-    align-items: stretch
+    align-items: stretch;
   }
 
   .hero .actions .btn {
-    flex: 1 1 140px
+    flex: 1 1 140px;
   }
 
   .hero-contact {
-    flex-basis: 100%
+    flex-basis: 100%;
   }
 
   .portrait-card img {
     height: auto;
     max-height: 440px;
-    object-fit: contain
+    object-fit: contain;
   }
 
   .section-head {
-    width: 100%
+    width: 100%;
   }
 
   .filters {
-    gap: 8px
+    gap: 8px;
   }
 
   .filter {
-    padding: 9px 13px
+    padding: 9px 13px;
   }
 
   .contact-links {
-    flex-wrap: wrap
+    flex-wrap: wrap;
   }
 
   .contact .btn {
-    width: 100%
+    width: 100%;
   }
 }
 
-@media(max-width:420px) {
+@media (max-width: 420px) {
   nav {
     gap: 12px;
     height: auto;
     min-height: 76px;
     padding-top: 14px !important;
-    padding-bottom: 14px !important
+    padding-bottom: 14px !important;
   }
 
   .links {
     gap: 10px;
     font-size: 10px;
-    justify-content: flex-end
+    justify-content: flex-end;
   }
 
   .hero h1 {
     font-size: clamp(35px, 10vw, 43px);
-    letter-spacing: -1.8px
+    letter-spacing: -1.8px;
   }
 
   .hero .status {
     max-width: 100%;
     font-size: 10px;
-    line-height: 1.5
+    line-height: 1.5;
   }
 
   .hero .intro {
-    font-size: 15px
+    font-size: 15px;
   }
 
   .skills-grid {
     grid-template-columns: 1fr;
-    gap: 24px
+    gap: 24px;
   }
 
   .project-copy {
-    padding: 21px
+    padding: 21px;
   }
 
   .project-actions {
     flex-direction: column;
-    gap: 12px
+    gap: 12px;
   }
 
   .store-word {
-    font-size: 34px
+    font-size: 34px;
   }
 
   .store-search {
     font-size: 11px;
-    width: 100%
+    width: 100%;
   }
 
   .store-features {
     font-size: 10px;
-    gap: 6px
+    gap: 6px;
   }
 
   .visual {
     padding: 20px;
-    min-height: 245px
+    min-height: 245px;
   }
 
   .sentence {
-    font-size: 25px
+    font-size: 25px;
   }
 
   .portrait-card figcaption {
-    padding: 15px
+    padding: 15px;
   }
 
   footer {
     flex-wrap: wrap;
-    gap: 12px
+    gap: 12px;
   }
 
   h2 {
-    letter-spacing: -1px
+    letter-spacing: -1px;
   }
 }
 

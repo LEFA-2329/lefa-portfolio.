@@ -1,16 +1,21 @@
 const cards = [...document.querySelectorAll('.project')];
-document.querySelectorAll('[data-filter]').forEach(btn => btn.addEventListener('click', () => {
-  document.querySelectorAll('[data-filter]').forEach(b => {
-    b.classList.toggle('active', b === btn);
-    b.setAttribute('aria-pressed', String(b === btn))
-  });
-  let n = 0;
-  cards.forEach(c => {
-    c.hidden = btn.dataset.filter !== 'all' && !c.dataset.category.split(' ').includes(btn.dataset.filter);
-    if (!c.hidden) n++
-  });
-  document.querySelector('#filter-status').textContent = `Showing ${n} project${n===1?'':'s'}`
-}));
+document.querySelectorAll('[data-filter]').forEach((btn) =>
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-filter]').forEach((b) => {
+      b.classList.toggle('active', b === btn);
+      b.setAttribute('aria-pressed', String(b === btn));
+    });
+    let n = 0;
+    cards.forEach((c) => {
+      c.hidden =
+        btn.dataset.filter !== 'all' &&
+        !c.dataset.category.split(' ').includes(btn.dataset.filter);
+      if (!c.hidden) n++;
+    });
+    document.querySelector('#filter-status').textContent =
+      `Showing ${n} project${n === 1 ? '' : 's'}`;
+  }),
+);
 const cases = {
   store: `
 <div class="eyebrow green">
@@ -117,17 +122,25 @@ const cases = {
   Identity
  </span>
 </div>
-`
+`,
 };
 const dialog = document.querySelector('dialog');
-document.querySelectorAll('[data-case]').forEach(b => b.addEventListener('click', () => {
-  document.querySelector('#case-content').innerHTML = cases[b.dataset.case];
-  dialog.showModal()
-}));
+document.querySelectorAll('[data-case]').forEach((b) =>
+  b.addEventListener('click', () => {
+    document.querySelector('#case-content').innerHTML = cases[b.dataset.case];
+    dialog.showModal();
+  }),
+);
 document.querySelector('.close').addEventListener('click', () => dialog.close());
-dialog.addEventListener('click', e => {
+dialog.addEventListener('click', (e) => {
   if (e.target === dialog) {
     const r = dialog.getBoundingClientRect();
-    if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) dialog.close()
+    if (
+      e.clientX < r.left ||
+      e.clientX > r.right ||
+      e.clientY < r.top ||
+      e.clientY > r.bottom
+    )
+      dialog.close();
   }
 });
