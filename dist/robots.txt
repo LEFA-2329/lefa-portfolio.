@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lefamalatji.co.za/sitemap.xml
