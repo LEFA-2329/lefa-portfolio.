@@ -32,13 +32,13 @@ export const topics = {
   research: {
     title: 'NLP research',
     answer:
-      'Lefa’s MSc research investigates how data scarcity affects Sepedi–English code-switched text generation using FNet, LSTM and mBERT. He co-authored published research with Thipe I. Modipa on Sepedi–English generation using FNet.',
+      'Lefa’s MSc research investigates how data scarcity affects Sepedi-English code-switched text generation using FNet, LSTM and mBERT. He co-authored published research with Thipe I. Modipa on Sepedi-English generation using FNet.',
     links: [['Research and publication', '#about']],
   },
   education: {
     title: 'Education',
     answer:
-      'University of Limpopo: MSc in Computer Science, 2026–present; BSc Honours in Computer Science, 2025; BSc in Mathematical Sciences, 2021–2024, with majors in Computer Science and Statistics.',
+      'University of Limpopo: MSc in Computer Science, 2026-present; BSc Honours in Computer Science, 2025; BSc in Mathematical Sciences, 2021-2024, with majors in Computer Science and Statistics.',
     links: [['Education details', '#about']],
   },
   contact: {

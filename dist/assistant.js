@@ -7,7 +7,7 @@
   launch.addEventListener('click', async () => {
     panel.showModal();
     try {
-      ready ||= import('./guide-core.mjs?v=4').then(initialise);
+      ready ||= import('./guide-core.mjs?v=5').then(initialise);
       await ready;
       if (panel.open) panel.querySelector('textarea').focus();
     } catch {
