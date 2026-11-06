@@ -17,114 +17,15 @@ document.querySelectorAll('[data-filter]').forEach((btn) =>
   }),
 );
 const cases = {
-  store: `
-<div class="eyebrow green">
- Featured engineering project
-</div>
-<h2 id="case-title">
- Store Hub
-</h2>
-<p>
- A PHP and PostgreSQL e-commerce platform supporting multiple user roles.
-</p>
-<h3>
- AI capabilities
-</h3>
-<p>
- AI-driven personalisation and intelligent product search support product discovery. A session-aware customer-support chatbot helps shoppers, while AI business intelligence reporting supports business decisions.
-</p>
-<h3>
- Technical foundation
-</h3>
-<p>
- The platform combines PHP application logic with a PostgreSQL relational database. Multiple user roles support different platform responsibilities.
-</p>
-<a class="btn primary" href="https://github.com/LEFA-2329/Advanced-E-Commerce-Marketplace-Platform" rel="noopener noreferrer" target="_blank">
- Explore the repository
-</a>
-`,
-  research: `
-<div class="eyebrow green">
- Research overview
-</div>
-<h2 id="case-title">
- Sepedi-English text generation
-</h2>
-<p>
- My MSc research investigates data-scarcity effects on the development of a Sepedi-English text generation model.
-</p>
-<h3>
- The problem
-</h3>
-<p>
- Code-switched language combines languages within a sentence. Limited training data makes it difficult to model this naturally, particularly for underrepresented languages such as Sepedi.
-</p>
-<h3>
- The approach
-</h3>
-<p>
- The work uses code-switched radio-news text and compares FNet and LSTM approaches, with mBERT included in the broader research scope. Preprocessing, consistent dataset splits and BLEU / ROUGE evaluation support model comparison.
-</p>
-<h3>
- Research focus
-</h3>
-<p>
- Understanding how corpus size, vocabulary coverage and model choices affect generated language, with attention to the presence of English and unknown tokens.
-</p>
-<div class="chips">
- <span>
-  Low-resource NLP
- </span>
- <span>
-  Text generation
- </span>
- <span>
-  Experimental evaluation
- </span>
-</div>
-`,
-  helpdesk: `
-<div class="eyebrow green">
- Engineering overview · In development
-</div>
-<h2 id="case-title">
- HelpDeskHub
-</h2>
-<p>
- A help desk application project built around an ASP.NET Core REST API and PostgreSQL.
-</p>
-<h3>
- Implemented foundation
-</h3>
-<p>
- Ticket, department and user API work; Entity Framework migrations; and ASP.NET Identity integration with relationships between tickets, users, comments and history.
-</p>
-<h3>
- Engineering decisions
-</h3>
-<p>
- DTOs structure API responses, Swagger supports endpoint testing, and a relational data model connects tickets to their creators and assigned staff.
-</p>
-<h3>
- Planned development
-</h3>
-<p>
- An MVC front end, workload-based staff assignment, assignment notifications and role-scoped reporting are part of the roadmap. These are planned capabilities, rather than claims of a completed production deployment.
-</p>
-<div class="chips">
- <span>
-  REST API
- </span>
- <span>
-  Relational modelling
- </span>
- <span>
-  Identity
- </span>
-</div>
-`,
+  "school": "<div class=\"eyebrow green\">Live website | Active development</div>\n<h2 id=\"case-title\">Diopong Primary School</h2>\n<h3>The problem</h3><p>Families and learners need an accessible place to find school information and supplementary learning resources in English and Sepedi.</p>\n<h3>My contribution</h3><p>I built the responsive public website and bilingual learning hub, connected grade, subject and topic filters, and added quizzes, downloadable learning packs and browser-generated achievement certificates.</p>\n<h3>Technologies and approach</h3><p>HTML, CSS and JavaScript; GitHub Pages hosting with GitHub Actions deployment. Worksheet and certificate generation runs in the browser without learner accounts.</p>\n<h3>What it delivers</h3><p>The live site offers 160 bilingual activities, 20 per grade from Grade R to 7, PDF and editable Word worksheets, separate answers, and quiz certificates for Grades 4-7 at a score of at least 70%.</p>\n<h3>Current status</h3><p>The website is live and maintained as it develops. School-approved information is being added as supplied. Learning content and Sepedi translations await teacher review; the staff dashboard is deferred.</p>\n<div class=\"project-actions\"><a class=\"text-btn\" href=\"https://diopong.lefamalatji.co.za/\" rel=\"noopener noreferrer\" target=\"_blank\">Visit live website</a>\n<a class=\"text-btn\" href=\"https://github.com/LEFA-2329/diopong-primary-school\" rel=\"noopener noreferrer\" target=\"_blank\">View repository</a></div>",
+  "store": "<div class=\"eyebrow green\">E-commerce engineering project</div>\n<h2 id=\"case-title\">Store Hub</h2>\n<h3>The problem</h3><p>An e-commerce application needs to connect product discovery, customer support and administrative information across different user roles.</p>\n<h3>My contribution</h3><p>I developed a multi-role PHP and PostgreSQL platform with AI-driven personalisation, intelligent product search, a session-aware support chatbot and business intelligence reporting.</p>\n<h3>Technologies and approach</h3><p>PHP application logic and a PostgreSQL relational database, with separate platform responsibilities supported through multiple user roles.</p>\n<h3>What it delivers</h3><p>The project brings storefront and management capabilities together in one application. Source code is available for reviewing the implementation.</p>\n<h3>Current status</h3><p>The repository is the reviewable project output; this portfolio does not present it as a verified production deployment.</p>\n<div class=\"project-actions\"><a class=\"text-btn\" href=\"https://github.com/LEFA-2329/Advanced-E-Commerce-Marketplace-Platform\" rel=\"noopener noreferrer\" target=\"_blank\">Explore the repository</a></div>",
+  "research": "<div class=\"eyebrow green\">MSc research | In progress</div>\n<h2 id=\"case-title\">Sepedi-English text generation</h2>\n<h3>The problem</h3><p>Limited code-switched training data and vocabulary coverage make natural text generation difficult for underrepresented languages such as Sepedi.</p>\n<h3>My contribution</h3><p>I investigate data-scarcity effects using Sepedi-English radio-news text, preparing the corpus, training language models and comparing their generated outputs.</p>\n<h3>Technologies and approach</h3><p>Python and TensorFlow / Keras; text preprocessing and tokenisation; FNet and LSTM experiments, with mBERT in the broader research scope. Consistent dataset splits and BLEU / ROUGE evaluation support comparison.</p>\n<h3>What it delivers</h3><p>The work produces model comparisons and generated-text examples to examine the effects of corpus size, English coverage and unknown tokens. I also co-authored published research with Thipe I. Modipa on Sepedi-English generation using FNet.</p>\n<h3>Current status</h3><p>The MSc investigation is ongoing. Published work and continuing MSc experiments are distinct research outputs.</p>\n<div class=\"project-actions\"></div>",
+  "helpdesk": "<div class=\"eyebrow green\">API project | In development</div>\n<h2 id=\"case-title\">HelpDeskHub</h2>\n<h3>The problem</h3><p>A help desk needs a structured way to connect support tickets with requesters, assigned staff, departments, comments and ticket history.</p>\n<h3>My contribution</h3><p>I built the ASP.NET Core REST API foundation, worked on ticket, department and user endpoints, integrated ASP.NET Identity, and updated database relationships through Entity Framework migrations.</p>\n<h3>Technologies and approach</h3><p>C#, ASP.NET Core, PostgreSQL, Entity Framework Core, ASP.NET Identity, DTOs and Swagger for endpoint testing.</p>\n<h3>What it delivers</h3><p>The project has a working API foundation and relational data layer that support continued ticket-workflow development.</p>\n<h3>Current status</h3><p>An MVC front end, workload-based assignment, notifications and reporting remain on the roadmap. This is a development project, not a completed production service.</p>\n<div class=\"project-actions\"></div>",
+  "preschool": "<div class=\"eyebrow green\">Application and data management project</div>\n<h2 id=\"case-title\">Pre-School Management System</h2>\n<h3>The problem</h3><p>Managing learners, teachers, books and borrowing records requires consistent records and a clear administrative interface.</p>\n<h3>My contribution</h3><p>My project brings these records into an administrative application with login, a dashboard and create, read, update and delete operations.</p>\n<h3>Technologies and approach</h3><p>Admin dashboard, database-backed record management and CRUD workflows. The repository provides the implementation details.</p>\n<h3>What it delivers</h3><p>The application combines key statistics and administrative record management in one place.</p>\n<h3>Current status</h3><p>Source code is available for review. No live production deployment is claimed here.</p>\n<div class=\"project-actions\"><a class=\"text-btn\" href=\"https://github.com/LEFA-2329/Pre-school-management-system\" rel=\"noopener noreferrer\" target=\"_blank\">View repository</a></div>",
+  "airport": "<div class=\"eyebrow green\">Application development project</div>\n<h2 id=\"case-title\">Airport Sky Base System</h2>\n<h3>The problem</h3><p>Airport information needs a usable interface that supports access to records and operational workflows.</p>\n<h3>My contribution</h3><p>I developed and tested an airport management application focused on accessing and managing airport information.</p>\n<h3>Technologies and approach</h3><p>Application interface design, information management and functional testing. Implementation details are available in the repository.</p>\n<h3>What it delivers</h3><p>The project provides a user interface for working with airport information and demonstrates application development and testing.</p>\n<h3>Current status</h3><p>This is a repository-based project; it is not presented as a live airport operations system.</p>\n<div class=\"project-actions\"><a class=\"text-btn\" href=\"https://github.com/LEFA-2329/Airport-Sky-Base-System\" rel=\"noopener noreferrer\" target=\"_blank\">View repository</a></div>",
+  "burzarsnet": "<div class=\"eyebrow green\">Team project | Four contributors</div>\n<h2 id=\"case-title\">Burzarsnet</h2>\n<h3>The problem</h3><p>South African applicants need a way to find bursary and internship opportunities, while administrators need to manage the information published.</p>\n<h3>My contribution</h3><p>I collaborated with three other contributors to develop the bursary and internship website. This was a shared team delivery.</p>\n<h3>Technologies and approach</h3><p>Web application development, administrative content management and team collaboration.</p>\n<h3>What it delivers</h3><p>The team developed a platform for bursary and internship listings with administration capabilities.</p>\n<h3>Current status</h3><p>My contribution is presented as part of a four-person team, without attributing the entire implementation to me.</p>\n<div class=\"project-actions\"><a class=\"text-btn\" href=\"http://burzarsnet.com\" rel=\"noopener noreferrer\" target=\"_blank\">Visit website</a></div>"
 };
-const dialog = document.querySelector('dialog');
+const dialog = document.querySelector('#case-dialog');
 document.querySelectorAll('[data-case]').forEach((b) =>
   b.addEventListener('click', () => {
     document.querySelector('#case-content').innerHTML = cases[b.dataset.case];
