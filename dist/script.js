@@ -48,10 +48,10 @@ const cases = {
  Research overview
 </div>
 <h2 id="case-title">
- Sepedi–English text generation
+ Sepedi-English text generation
 </h2>
 <p>
- My MSc research investigates data-scarcity effects on the development of a Sepedi–English text generation model.
+ My MSc research investigates data-scarcity effects on the development of a Sepedi-English text generation model.
 </p>
 <h3>
  The problem
