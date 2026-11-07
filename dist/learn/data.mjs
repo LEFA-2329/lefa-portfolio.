@@ -62,7 +62,7 @@ export const lessons = [
     "sections": [
       {
         "heading": "What is a program?",
-        "text": "A program is a set of instructions that a computer executes. Hardware performs the work; software specifies the instructions. An algorithm is a finite, ordered procedure for solving a problem. It should be clear enough that each step can be followed without guessing."
+        "text": "A program is a set of instructions that a computer executes. Hardware performs the work; software specifies the instructions. An algorithm is a finite, ordered method for solving a problem. It should be clear enough that each step can be followed without guessing."
       },
       {
         "heading": "Start with the problem",
@@ -794,7 +794,7 @@ export const lessons = [
       },
       {
         "heading": "Method headers",
-        "text": "A header names the method and describes its parameters. A function also specifies a result type in many notations. Procedures perform work without an explicit returned result; functions return a result."
+        "text": "A header names the method and describes its parameters. A function also specifies a result type in many notations. Methods perform work without an explicit returned result; functions return a result."
       },
       {
         "heading": "Hierarchy charts",
@@ -805,7 +805,7 @@ export const lessons = [
         "text": "Cohesion is how closely a module’s tasks belong together. Coupling describes dependencies between modules. Prefer focused modules with clear interfaces instead of modules that rely on many unrelated global variables."
       }
     ],
-    "example": "PROCEDURE readData()\n  INPUT value\nENDPROCEDURE\nPROCEDURE showResult()\n  OUTPUT \"Result ready\"\nENDPROCEDURE\nBEGIN\n  CALL readData()\n  CALL showResult()\nEND",
+    "example": "METHOD readData()\n  INPUT value\nENDMETHOD\nMETHOD showResult()\n  OUTPUT \"Result ready\"\nENDMETHOD\nBEGIN\n  CALL readData()\n  CALL showResult()\nEND",
     "quiz": {
       "question": "What does a hierarchy chart primarily show?",
       "options": [
@@ -817,7 +817,7 @@ export const lessons = [
       "explanation": "A hierarchy chart describes the module structure and call relationships."
     },
     "bug": {
-      "code": "PROCEDURE showResult()\nOUTPUT \"Result ready\"\nENDPROCEDURE\nBEGIN\nCALL showResults()\nEND",
+      "code": "METHOD showResult()\nOUTPUT \"Result ready\"\nENDMETHOD\nBEGIN\nCALL showResults()\nEND",
       "line": 5,
       "category": "Syntax",
       "options": [
@@ -857,7 +857,7 @@ export const lessons = [
         "text": "A method can take no parameters when it needs no caller-supplied values. Avoid replacing clear parameters with unnecessary shared global state."
       }
     ],
-    "example": "PROCEDURE displayName(name)\n  OUTPUT name\nENDPROCEDURE\nBEGIN\n  CALL displayName(\"Lebo\")\nEND",
+    "example": "METHOD displayName(name)\n  OUTPUT name\nENDMETHOD\nBEGIN\n  CALL displayName(\"Lebo\")\nEND",
     "quiz": {
       "question": "In CALL displayName(\"Lebo\"), what is \"Lebo\"?",
       "options": [
@@ -869,7 +869,7 @@ export const lessons = [
       "explanation": "The actual supplied value is an argument; name is the parameter in the method definition."
     },
     "bug": {
-      "code": "PROCEDURE displayPair(first, second)\nOUTPUT first, second\nENDPROCEDURE\nBEGIN\nCALL displayPair(\"Lebo\")\nEND",
+      "code": "METHOD displayPair(first, second)\nOUTPUT first, second\nENDMETHOD\nBEGIN\nCALL displayPair(\"Lebo\")\nEND",
       "line": 5,
       "category": "Syntax",
       "options": [
@@ -906,7 +906,7 @@ export const lessons = [
       },
       {
         "heading": "Converter scope",
-        "text": "The chart lab builds control-flow diagrams for its documented statement subset. RETURN is available for module hierarchy parsing, but flowcharts with early returns are deliberately rejected in this first release instead of drawing misleading paths."
+        "text": "The chart lab builds control-flow diagrams for its documented statement subset. RETURN is shown as a terminal exit in a method flowchart. Select the method body in the lab to inspect each return path."
       }
     ],
     "example": "FUNCTION add(a, b) RETURNS REAL\n  RETURN a + b\nENDFUNCTION\nBEGIN\n  SET result = add(4, 6)\n  OUTPUT result\nEND",
@@ -961,7 +961,7 @@ export const lessons = [
         "text": "Specify what the method receives, what it returns and whether it changes the original elements. Tests should check both the result and any intended changes."
       }
     ],
-    "example": "PROCEDURE displayValues(values, count)\n  FOR i = 0 TO count - 1\n    OUTPUT values[i]\n  ENDFOR\nENDPROCEDURE\nBEGIN\n  CALL displayValues(marks, 4)\nEND",
+    "example": "METHOD displayValues(values, count)\n  FOR i = 0 TO count - 1\n    OUTPUT values[i]\n  ENDFOR\nENDMETHOD\nBEGIN\n  CALL displayValues(marks, 4)\nEND",
     "quiz": {
       "question": "Why might a method need count as well as the array?",
       "options": [
@@ -973,7 +973,7 @@ export const lessons = [
       "explanation": "The method may need to process only the meaningful portion of a partially filled array."
     },
     "bug": {
-      "code": "PROCEDURE displayValues(values, count)\nFOR i = 0 TO count\nOUTPUT values[i]\nENDFOR\nENDPROCEDURE",
+      "code": "METHOD displayValues(values, count)\nFOR i = 0 TO count\nOUTPUT values[i]\nENDFOR\nENDMETHOD",
       "line": 2,
       "category": "Boundary",
       "options": [
@@ -1196,3 +1196,4 @@ export const lessons = [
     "diagram": "class"
   }
 ];
+
