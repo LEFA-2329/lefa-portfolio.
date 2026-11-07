@@ -10,6 +10,8 @@ function normaliseLine(raw) {
   text = text.trim().replace(/;$/, '').trim();
   if (/^```/.test(text)) return '';
   text = text.replace(/^END\s+(IF|WHILE|FOR|CASE|METHOD|MODULE|FUNCTION)$/i, (_, k) => 'END' + k.toUpperCase());
+  text = text.replace(/^SWITCH\s+(.+)$/i, 'CASE $1 OF').replace(/^END\s*SWITCH$/i, 'ENDCASE').replace(/^DEFAULT\s*:?$/i, 'OTHERWISE:');
+  if (/^CASE\s+.+:?$/i.test(text) && !/\sOF$/i.test(text)) text = text.replace(/^CASE\s+/i, 'WHEN ');
   text = text.replace(/^ELSE\s+IF\b/i, 'ELSEIF').replace(/^DO\s+WHILE\b/i, 'WHILE');
   text = text.replace(/^PROCEDURE\b/i, 'METHOD').replace(/^ENDPROCEDURE$/i, 'ENDMETHOD');
   text = text.replace(/^(START|MAIN)$/i, 'BEGIN').replace(/^(STOP|ENDMAIN)$/i, 'END');

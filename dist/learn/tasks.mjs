@@ -488,5 +488,257 @@ export const taskBank = [
       "Class syntax is written practice; the flowchart converter does not parse classes."
     ],
     "diagram": false
+  },
+  {
+    "id": "array-traverse",
+    "title": "Visit every array element",
+    "topic": "Arrays",
+    "level": "Foundation",
+    "prompt": "Declare an INTEGER array of five elements. Input each element, then display every value with its zero-based index.",
+    "solution": "BEGIN\n  DECLARE values[5] AS INTEGER\n  FOR i = 0 TO 4\n    INPUT values[i]\n  ENDFOR\n  FOR i = 0 TO 4\n    OUTPUT i, values[i]\n  ENDFOR\nEND",
+    "checklist": [
+      "The indices are 0, 1, 2, 3 and 4.",
+      "Input fills each element before it is displayed.",
+      "Use one array rather than separate variables."
+    ],
+    "diagram": true
+  },
+  {
+    "id": "array-total",
+    "title": "Array total and average",
+    "topic": "Arrays",
+    "level": "Foundation",
+    "prompt": "Given values [12, 8, 20, 10], compute their total and average using a loop. Explain the accumulator.",
+    "solution": "BEGIN\n  SET values = [12, 8, 20, 10]\n  SET total = 0\n  FOR i = 0 TO 3\n    SET total = total + values[i]\n  ENDFOR\n  OUTPUT total, total / 4.0\nEND",
+    "checklist": [
+      "The total is 50 and the average is 12.5.",
+      "Initialise total once before the loop.",
+      "For an unknown length, check it is positive before division."
+    ],
+    "diagram": true
+  },
+  {
+    "id": "array-max",
+    "title": "Maximum in a single array",
+    "topic": "Arrays",
+    "level": "Developing",
+    "prompt": "Find the maximum of [-8, -3, -12, -5]. Initialise from an array element so the solution works for negative values.",
+    "solution": "BEGIN\n  SET values = [-8, -3, -12, -5]\n  SET maximum = values[0]\n  FOR i = 1 TO 3\n    IF values[i] > maximum THEN\n      SET maximum = values[i]\n    ENDIF\n  ENDFOR\n  OUTPUT maximum\nEND",
+    "checklist": [
+      "Expected maximum: -3.",
+      "Starting at zero would give an incorrect result.",
+      "Assume a non-empty array."
+    ],
+    "diagram": true
+  },
+  {
+    "id": "array-search-all",
+    "title": "Find every matching index",
+    "topic": "Arrays",
+    "level": "Developing",
+    "prompt": "Search [4, 7, 4, 9, 4] for an input target. Display every matching index and the total match count.",
+    "solution": "BEGIN\n  SET values = [4, 7, 4, 9, 4]\n  INPUT target\n  SET count = 0\n  FOR i = 0 TO 4\n    IF values[i] = target THEN\n      OUTPUT i\n      SET count = count + 1\n    ENDIF\n  ENDFOR\n  OUTPUT count\nEND",
+    "checklist": [
+      "For target 4: indices 0, 2, 4 and count 3.",
+      "A missing target gives count 0.",
+      "Continue searching after the first match."
+    ],
+    "diagram": true
+  },
+  {
+    "id": "array-reverse",
+    "title": "Reverse an array in place",
+    "topic": "Arrays",
+    "level": "Challenge",
+    "prompt": "Reverse [2, 4, 6, 8, 10] in place using a left and right index. Use a temporary variable when swapping.",
+    "solution": "BEGIN\n  SET values = [2, 4, 6, 8, 10]\n  SET left = 0\n  SET right = 4\n  WHILE left < right DO\n    SET temp = values[left]\n    SET values[left] = values[right]\n    SET values[right] = temp\n    SET left = left + 1\n    SET right = right - 1\n  ENDWHILE\n  OUTPUT values\nEND",
+    "checklist": [
+      "Expected: [10, 8, 6, 4, 2].",
+      "Stop when the indices meet or cross.",
+      "The middle element remains in place."
+    ],
+    "diagram": true
+  },
+  {
+    "id": "array-2d",
+    "title": "Traverse a two-dimensional array",
+    "topic": "Arrays",
+    "level": "Challenge",
+    "prompt": "Input a 2 by 3 INTEGER matrix. Use nested loops to calculate and display the sum of each row. State valid row and column indices.",
+    "solution": "BEGIN\n  DECLARE matrix[2][3] AS INTEGER\n  FOR row = 0 TO 1\n    SET rowTotal = 0\n    FOR col = 0 TO 2\n      INPUT matrix[row][col]\n      SET rowTotal = rowTotal + matrix[row][col]\n    ENDFOR\n    OUTPUT row, rowTotal\n  ENDFOR\nEND",
+    "checklist": [
+      "Rows are 0 to 1 and columns 0 to 2.",
+      "Reset rowTotal at the start of each row.",
+      "Rows [1, 2, 3] and [4, 5, 6] give 6 and 15."
+    ],
+    "diagram": true
+  },
+  {
+    "id": "if-pass",
+    "title": "IF ELSE pass decision",
+    "topic": "IF / ELSE",
+    "level": "Foundation",
+    "prompt": "Input a valid mark from 0 to 100. Display Pass if it is at least 50, otherwise display Revise.",
+    "solution": "BEGIN\n  INPUT mark\n  IF mark >= 50 THEN\n    OUTPUT \"Pass\"\n  ELSE\n    OUTPUT \"Revise\"\n  ENDIF\nEND",
+    "checklist": [
+      "49 gives Revise.",
+      "50 gives Pass.",
+      "Use ELSE for the alternative path."
+    ],
+    "diagram": true
+  },
+  {
+    "id": "if-even",
+    "title": "Odd or even",
+    "topic": "IF / ELSE",
+    "level": "Foundation",
+    "prompt": "Input an integer. Use IF ELSE and MOD to report whether it is even or odd.",
+    "solution": "BEGIN\n  INPUT number\n  IF number MOD 2 = 0 THEN\n    OUTPUT \"Even\"\n  ELSE\n    OUTPUT \"Odd\"\n  ENDIF\nEND",
+    "checklist": [
+      "0 is even.",
+      "8 is even and 7 is odd.",
+      "MOD returns the remainder."
+    ],
+    "diagram": true
+  },
+  {
+    "id": "if-range",
+    "title": "Validate a mark range",
+    "topic": "IF / ELSE",
+    "level": "Developing",
+    "prompt": "Read a mark. Display Valid only when the mark lies between 0 and 100 inclusive, otherwise display Invalid. Use AND.",
+    "solution": "BEGIN\n  INPUT mark\n  IF mark >= 0 AND mark <= 100 THEN\n    OUTPUT \"Valid\"\n  ELSE\n    OUTPUT \"Invalid\"\n  ENDIF\nEND",
+    "checklist": [
+      "0 and 100 are valid.",
+      "-1 and 101 are invalid.",
+      "Both bounds must hold at the same time."
+    ],
+    "diagram": true
+  },
+  {
+    "id": "if-grade",
+    "title": "An ELSEIF grade ladder",
+    "topic": "IF / ELSE",
+    "level": "Developing",
+    "prompt": "Assume a valid mark. Display Distinction for 75 or above, Pass for 50 to 74, and Revise below 50. Use IF ELSEIF ELSE.",
+    "solution": "BEGIN\n  INPUT mark\n  IF mark >= 75 THEN\n    OUTPUT \"Distinction\"\n  ELSEIF mark >= 50 THEN\n    OUTPUT \"Pass\"\n  ELSE\n    OUTPUT \"Revise\"\n  ENDIF\nEND",
+    "checklist": [
+      "Test 49, 50, 74 and 75.",
+      "The first true branch runs.",
+      "Check the highest threshold first."
+    ],
+    "diagram": true
+  },
+  {
+    "id": "if-nested",
+    "title": "Nested eligibility decisions",
+    "topic": "IF / ELSE",
+    "level": "Developing",
+    "prompt": "A fictional activity requires age at least 16 and guardian approval. Use nested IF statements to display Too young, Approval required or Eligible. Assume age is valid and approval is Boolean.",
+    "solution": "BEGIN\n  INPUT age\n  INPUT approved\n  IF age >= 16 THEN\n    IF approved = TRUE THEN\n      OUTPUT \"Eligible\"\n    ELSE\n      OUTPUT \"Approval required\"\n    ENDIF\n  ELSE\n    OUTPUT \"Too young\"\n  ENDIF\nEND",
+    "checklist": [
+      "Aged 15: Too young.",
+      "Aged 16 and FALSE: Approval required.",
+      "Aged 16 and TRUE: Eligible."
+    ],
+    "diagram": true
+  },
+  {
+    "id": "if-discount",
+    "title": "Calculate a conditional discount",
+    "topic": "IF / ELSE",
+    "level": "Challenge",
+    "prompt": "Read a non-negative total and a Boolean membership value. Members spending at least 500 receive 10% off. Everyone else pays the original total. Display the amount due.",
+    "solution": "BEGIN\n  INPUT total\n  INPUT isMember\n  IF isMember AND total >= 500 THEN\n    SET due = total * 0.9\n  ELSE\n    SET due = total\n  ENDIF\n  OUTPUT due\nEND",
+    "checklist": [
+      "Member spending 500 pays 450.",
+      "Non-member spending 500 pays 500.",
+      "Set due on both paths before OUTPUT."
+    ],
+    "diagram": true
+  },
+  {
+    "id": "switch-menu",
+    "title": "SWITCH menu",
+    "topic": "SWITCH / CASE",
+    "level": "Foundation",
+    "prompt": "Input menu option 1, 2 or 3. Display Add, View or Exit. Other values must display Invalid option. In this pseudocode dialect branches do not fall through and BREAK is unnecessary.",
+    "solution": "BEGIN\n  INPUT option\n  SWITCH option\n    CASE 1:\n      OUTPUT \"Add\"\n    CASE 2:\n      OUTPUT \"View\"\n    CASE 3:\n      OUTPUT \"Exit\"\n    DEFAULT:\n      OUTPUT \"Invalid option\"\n  ENDSWITCH\nEND",
+    "checklist": [
+      "Match the selector against exact CASE values.",
+      "Use DEFAULT when no value matches.",
+      "Execute only the matching branch, then continue after ENDSWITCH."
+    ],
+    "diagram": true
+  },
+  {
+    "id": "switch-day",
+    "title": "Day name lookup",
+    "topic": "SWITCH / CASE",
+    "level": "Developing",
+    "prompt": "Input a number from 1 to 3 to select Monday, Tuesday or Wednesday. Use DEFAULT for unsupported values. In this pseudocode dialect branches do not fall through and BREAK is unnecessary.",
+    "solution": "BEGIN\n  INPUT day\n  SWITCH day\n    CASE 1:\n      OUTPUT \"Monday\"\n    CASE 2:\n      OUTPUT \"Tuesday\"\n    CASE 3:\n      OUTPUT \"Wednesday\"\n    DEFAULT:\n      OUTPUT \"Unsupported day\"\n  ENDSWITCH\nEND",
+    "checklist": [
+      "Match the selector against exact CASE values.",
+      "Use DEFAULT when no value matches.",
+      "Execute only the matching branch, then continue after ENDSWITCH."
+    ],
+    "diagram": true
+  },
+  {
+    "id": "switch-size",
+    "title": "Text values in SWITCH",
+    "topic": "SWITCH / CASE",
+    "level": "Foundation",
+    "prompt": "Input size S, M or L. Display Small, Medium or Large. Use case-sensitive exact matches and handle unsupported sizes. In this pseudocode dialect branches do not fall through and BREAK is unnecessary.",
+    "solution": "BEGIN\n  INPUT size\n  SWITCH size\n    CASE \"S\":\n      OUTPUT \"Small\"\n    CASE \"M\":\n      OUTPUT \"Medium\"\n    CASE \"L\":\n      OUTPUT \"Large\"\n    DEFAULT:\n      OUTPUT \"Unknown size\"\n  ENDSWITCH\nEND",
+    "checklist": [
+      "Match the selector against exact CASE values.",
+      "Use DEFAULT when no value matches.",
+      "Execute only the matching branch, then continue after ENDSWITCH."
+    ],
+    "diagram": true
+  },
+  {
+    "id": "switch-calculator",
+    "title": "A small calculator",
+    "topic": "SWITCH / CASE",
+    "level": "Developing",
+    "prompt": "Read two numbers and an operator + or *. Use SWITCH to display their sum or product. Reject other operators. In this pseudocode dialect branches do not fall through and BREAK is unnecessary.",
+    "solution": "BEGIN\n  INPUT a\n  INPUT b\n  INPUT operator\n  SWITCH operator\n    CASE \"+\":\n      OUTPUT a + b\n    CASE \"*\":\n      OUTPUT a * b\n    DEFAULT:\n      OUTPUT \"Unsupported operator\"\n  ENDSWITCH\nEND",
+    "checklist": [
+      "Match the selector against exact CASE values.",
+      "Use DEFAULT when no value matches.",
+      "Execute only the matching branch, then continue after ENDSWITCH."
+    ],
+    "diagram": true
+  },
+  {
+    "id": "switch-rate",
+    "title": "Select a delivery charge",
+    "topic": "SWITCH / CASE",
+    "level": "Foundation",
+    "prompt": "Input zone 1, 2 or 3. Their delivery charges are R30, R50 and R80 respectively. Display the charge or Invalid zone. In this pseudocode dialect branches do not fall through and BREAK is unnecessary.",
+    "solution": "BEGIN\n  INPUT zone\n  SWITCH zone\n    CASE 1:\n      OUTPUT 30\n    CASE 2:\n      OUTPUT 50\n    CASE 3:\n      OUTPUT 80\n    DEFAULT:\n      OUTPUT \"Invalid zone\"\n  ENDSWITCH\nEND",
+    "checklist": [
+      "Match the selector against exact CASE values.",
+      "Use DEFAULT when no value matches.",
+      "Execute only the matching branch, then continue after ENDSWITCH."
+    ],
+    "diagram": true
+  },
+  {
+    "id": "switch-trace",
+    "title": "Trace a SWITCH decision",
+    "topic": "SWITCH / CASE",
+    "level": "Developing",
+    "prompt": "Create a SWITCH for option 1 = Start and 2 = Help. Other values display Try again. Trace inputs 2 and 9 and explain why exactly one branch runs. In this pseudocode dialect branches do not fall through and BREAK is unnecessary.",
+    "solution": "BEGIN\n  INPUT option\n  SWITCH option\n    CASE 1:\n      OUTPUT \"Start\"\n    CASE 2:\n      OUTPUT \"Help\"\n    DEFAULT:\n      OUTPUT \"Try again\"\n  ENDSWITCH\nEND",
+    "checklist": [
+      "Match the selector against exact CASE values.",
+      "Use DEFAULT when no value matches.",
+      "Execute only the matching branch, then continue after ENDSWITCH."
+    ],
+    "diagram": true
   }
 ];
