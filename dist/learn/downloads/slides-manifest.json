@@ -2,31 +2,31 @@
   {
     "unit": 1,
     "title": "Programming foundations",
-    "slides": 49,
-    "file": "logiclab-unit-1-indented.pptx"
+    "slides": 55,
+    "file": "logiclab-unit-1.pptx"
   },
   {
     "unit": 2,
     "title": "Decisions and loops",
-    "slides": 52,
-    "file": "logiclab-unit-2-indented.pptx"
+    "slides": 60,
+    "file": "logiclab-unit-2.pptx"
   },
   {
     "unit": 3,
     "title": "Arrays and algorithms",
-    "slides": 42,
-    "file": "logiclab-unit-3-indented.pptx"
+    "slides": 49,
+    "file": "logiclab-unit-3.pptx"
   },
   {
     "unit": 4,
     "title": "Methods and modules",
-    "slides": 49,
-    "file": "logiclab-unit-4-indented.pptx"
+    "slides": 54,
+    "file": "logiclab-unit-4.pptx"
   },
   {
     "unit": 5,
     "title": "Object-oriented design",
-    "slides": 31,
-    "file": "logiclab-unit-5-indented.pptx"
+    "slides": 39,
+    "file": "logiclab-unit-5.pptx"
   }
 ]

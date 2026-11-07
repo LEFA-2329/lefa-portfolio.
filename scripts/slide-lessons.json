@@ -1,0 +1,354 @@
+{
+  "lesson-1": {
+    "prompt": "A shop inputs a non-negative price and quantity. Calculate and display the total. Worked inputs: price = 20 and quantity = 3.",
+    "code": "BEGIN\n  DECLARE price AS REAL\n  DECLARE quantity AS INTEGER\n  DECLARE total AS REAL\n  INPUT price\n  INPUT quantity\n  SET total = price * quantity\n  OUTPUT total\nEND",
+    "trace": [
+      "INPUT stores price = 20 and quantity = 3.",
+      "The process multiplies the inputs: 20 * 3 = 60.",
+      "OUTPUT displays 60. A quantity of 0 gives total 0."
+    ],
+    "exercise": "A delivery charge is weight * rate. Write a complete program. Assume valid non-negative inputs. Test weight = 3 and rate = 12.",
+    "solution": "BEGIN\n  DECLARE weight AS REAL\n  DECLARE rate AS REAL\n  DECLARE charge AS REAL\n  INPUT weight\n  INPUT rate\n  SET charge = weight * rate\n  OUTPUT charge\nEND",
+    "answer": [
+      "weight = 3 and rate = 12.",
+      "charge = 3 * 12 = 36. The displayed answer is 36.",
+      "For weight = 0, charge = 0."
+    ]
+  },
+  "lesson-2": {
+    "prompt": "Input an age. Display Adult for age at least 18 and Minor otherwise. Assume a valid non-negative whole number. Worked input: 18.",
+    "code": "BEGIN\n  DECLARE age AS INTEGER\n  INPUT age\n  IF age >= 18 THEN\n    OUTPUT \"Adult\"\n  ELSE\n    OUTPUT \"Minor\"\n  ENDIF\nEND",
+    "trace": [
+      "age receives 18. The test 18 >= 18 is TRUE.",
+      "Only the first branch runs. Output: Adult.",
+      "With age 17, the condition is FALSE and output is Minor."
+    ],
+    "exercise": "Read a temperature. Display Cold below 15, otherwise Mild or warm. Give outputs for 14 and 15. Sketch a flowchart with labelled branches.",
+    "solution": "BEGIN\n  DECLARE temperature AS REAL\n  INPUT temperature\n  IF temperature < 15 THEN\n    OUTPUT \"Cold\"\n  ELSE\n    OUTPUT \"Mild or warm\"\n  ENDIF\nEND",
+    "answer": [
+      "14 < 15 is TRUE, so display Cold.",
+      "15 < 15 is FALSE, so display Mild or warm.",
+      "Flowchart: input parallelogram, decision diamond, two output branches and a shared end."
+    ]
+  },
+  "lesson-3": {
+    "prompt": "Choose suitable types for a learner identifier, item count, average and active flag. Calculate an average for total = 150 and count = 2.",
+    "code": "BEGIN\n  DECLARE learnerId AS STRING\n  DECLARE count AS INTEGER\n  DECLARE total AS REAL\n  DECLARE average AS REAL\n  DECLARE active AS BOOLEAN\n  SET learnerId = \"0017\"\n  SET count = 2\n  SET total = 150.0\n  SET active = TRUE\n  SET average = total / count\n  OUTPUT learnerId, average, active\nEND",
+    "trace": [
+      "STRING preserves the leading zeros in \"0017\". INTEGER stores the whole-item count 2.",
+      "REAL allows a fractional average. Here 150.0 / 2 = 75.0.",
+      "BOOLEAN holds TRUE or FALSE. Displayed values: 0017, 75.0, TRUE."
+    ],
+    "exercise": "Read three REAL numbers using a FOR loop. Return their product as program output. Test inputs 2, 3 and 4. Choose types and initialise correctly.",
+    "solution": "BEGIN\n  DECLARE value AS REAL\n  DECLARE product AS REAL\n  DECLARE i AS INTEGER\n  SET product = 1\n  FOR i = 1 TO 3\n    INPUT value\n    SET product = product * value\n  ENDFOR\n  OUTPUT product\nEND",
+    "answer": [
+      "Before the loop, product = 1.",
+      "After inputs 2, 3 and 4, product becomes 2, then 6, then 24.",
+      "Output: 24. Initialising to 0 would incorrectly keep every product at 0."
+    ]
+  },
+  "lesson-4": {
+    "prompt": "Read two valid marks and display their average. Worked inputs: 40 and 60. Show why parentheses are necessary.",
+    "code": "BEGIN\n  DECLARE mark1 AS REAL\n  DECLARE mark2 AS REAL\n  DECLARE average AS REAL\n  INPUT mark1\n  INPUT mark2\n  SET average = (mark1 + mark2) / 2.0\n  OUTPUT average\nEND",
+    "trace": [
+      "Parentheses first: 40 + 60 = 100.",
+      "Then divide: 100 / 2.0 = 50.0. Output: 50.0.",
+      "Without parentheses, 40 + 60 / 2.0 would give 70.0."
+    ],
+    "exercise": "Read price and quantity, compute a subtotal and apply a 10% discount. Display the amount due. Test price = 20 and quantity = 3.",
+    "solution": "BEGIN\n  DECLARE price AS REAL\n  DECLARE quantity AS INTEGER\n  DECLARE subtotal AS REAL\n  DECLARE due AS REAL\n  INPUT price\n  INPUT quantity\n  SET subtotal = price * quantity\n  SET due = subtotal * (1 - 0.10)\n  OUTPUT due\nEND",
+    "answer": [
+      "subtotal = 20 * 3 = 60.",
+      "Discount factor = 1 - 0.10 = 0.90.",
+      "due = 60 * 0.90 = 54. Output: 54."
+    ]
+  },
+  "lesson-5": {
+    "prompt": "Trace assignment statements and show the final value of x. Each assignment changes x before the next statement executes.",
+    "code": "BEGIN\n  DECLARE x AS INTEGER\n  SET x = 3\n  SET x = x * 2\n  SET x = x + 2\n  OUTPUT x\nEND",
+    "trace": [
+      "After SET x = 3: x is 3.",
+      "After SET x = x * 2: x is 6. After adding 2: x is 8.",
+      "OUTPUT displays 8, not an earlier value."
+    ],
+    "exercise": "Trace two variables. Set a to 4, b to a + 3, a to b - 2 and b to a * 2. Write a complete program and give both final values.",
+    "solution": "BEGIN\n  DECLARE a AS INTEGER\n  DECLARE b AS INTEGER\n  SET a = 4\n  SET b = a + 3\n  SET a = b - 2\n  SET b = a * 2\n  OUTPUT a, b\nEND",
+    "answer": [
+      "State after each assignment: (a,b) = (4,unset), (4,7), (5,7), (5,10).",
+      "The last expression uses the updated a = 5.",
+      "Final output: 5, 10."
+    ]
+  },
+  "lesson-6": {
+    "prompt": "Read a mark and display Valid when it is between 0 and 100 inclusive. Display Invalid otherwise. Worked input: 100.",
+    "code": "BEGIN\n  DECLARE mark AS REAL\n  INPUT mark\n  IF mark >= 0 AND mark <= 100 THEN\n    OUTPUT \"Valid\"\n  ELSE\n    OUTPUT \"Invalid\"\n  ENDIF\nEND",
+    "trace": [
+      "For mark 100: 100 >= 0 is TRUE and 100 <= 100 is TRUE.",
+      "TRUE AND TRUE is TRUE. Output: Valid.",
+      "Both boundaries are valid. -1 and 101 are invalid."
+    ],
+    "exercise": "Read a non-negative total and a Boolean membership flag. Members spending at least 500 receive 10% off. Display due for a member spending 500 and a non-member spending 500.",
+    "solution": "BEGIN\n  DECLARE total AS REAL\n  DECLARE due AS REAL\n  DECLARE isMember AS BOOLEAN\n  INPUT total\n  INPUT isMember\n  IF isMember AND total >= 500 THEN\n    SET due = total * 0.9\n  ELSE\n    SET due = total\n  ENDIF\n  OUTPUT due\nEND",
+    "answer": [
+      "Member with total 500: TRUE AND TRUE, so due = 500 * 0.9 = 450.",
+      "Non-member with total 500: FALSE AND TRUE, so due = 500.",
+      "Set due in both branches before displaying it."
+    ]
+  },
+  "lesson-7": {
+    "prompt": "Read a valid mark. Display Distinction at 75 or above, Pass at 50 to 74, otherwise Revise. Worked input: 74.",
+    "code": "BEGIN\n  DECLARE mark AS REAL\n  INPUT mark\n  IF mark >= 75 THEN\n    OUTPUT \"Distinction\"\n  ELSEIF mark >= 50 THEN\n    OUTPUT \"Pass\"\n  ELSE\n    OUTPUT \"Revise\"\n  ENDIF\nEND",
+    "trace": [
+      "74 >= 75 is FALSE, so continue to ELSEIF.",
+      "74 >= 50 is TRUE, so output Pass. The ELSE branch is skipped.",
+      "Boundary outputs: 49 gives Revise, 50 gives Pass, 75 gives Distinction."
+    ],
+    "exercise": "Use nested IF statements. A fictional activity requires age at least 16 and approval. Display Too young, Approval required or Eligible. Assume valid age and a Boolean approval flag.",
+    "solution": "BEGIN\n  DECLARE age AS INTEGER\n  DECLARE approved AS BOOLEAN\n  INPUT age\n  INPUT approved\n  IF age >= 16 THEN\n    IF approved THEN\n      OUTPUT \"Eligible\"\n    ELSE\n      OUTPUT \"Approval required\"\n    ENDIF\n  ELSE\n    OUTPUT \"Too young\"\n  ENDIF\nEND",
+    "answer": [
+      "Age 15 gives Too young. The inner decision is skipped.",
+      "Age 16 with FALSE gives Approval required.",
+      "Age 16 with TRUE gives Eligible. Each IF has its own ENDIF."
+    ]
+  },
+  "lesson-8": {
+    "prompt": "Input exactly three integers and display their total with a FOR loop. Worked inputs: 2, 3 and 4.",
+    "code": "BEGIN\n  DECLARE value AS INTEGER\n  DECLARE total AS INTEGER\n  DECLARE i AS INTEGER\n  SET total = 0\n  FOR i = 1 TO 3\n    INPUT value\n    SET total = total + value\n  ENDFOR\n  OUTPUT total\nEND",
+    "trace": [
+      "Initial total = 0. Iteration 1 reads 2, so total becomes 2.",
+      "Iteration 2 reads 3, so total becomes 5. Iteration 3 reads 4, so total becomes 9.",
+      "The inclusive bounds give three iterations. Output: 9."
+    ],
+    "exercise": "Read n positive-count student marks and count marks at least 50. Use FOR. Assume n > 0 and valid marks. Test n = 3 with marks 50, 49, 100.",
+    "solution": "BEGIN\n  DECLARE n AS INTEGER\n  DECLARE i AS INTEGER\n  DECLARE mark AS REAL\n  DECLARE passed AS INTEGER\n  INPUT n\n  SET passed = 0\n  FOR i = 1 TO n\n    INPUT mark\n    IF mark >= 50 THEN\n      SET passed = passed + 1\n    ENDIF\n  ENDFOR\n  OUTPUT passed\nEND",
+    "answer": [
+      "Start passed = 0. Mark 50 increments it to 1.",
+      "Mark 49 leaves it at 1. Mark 100 increments it to 2.",
+      "Output: 2. Do not reset passed inside the loop."
+    ]
+  },
+  "lesson-9": {
+    "prompt": "Read valid marks until the sentinel -1. Display their average, or No data when the first input is -1. Worked inputs: 10, 20, -1.",
+    "code": "BEGIN\n  DECLARE value AS REAL\n  DECLARE total AS REAL\n  DECLARE count AS INTEGER\n  SET total = 0\n  SET count = 0\n  INPUT value\n  WHILE value <> -1 DO\n    SET total = total + value\n    SET count = count + 1\n    INPUT value\n  ENDWHILE\n  IF count > 0 THEN\n    OUTPUT total / count\n  ELSE\n    OUTPUT \"No data\"\n  ENDIF\nEND",
+    "trace": [
+      "The priming input reads 10. After processing it: total = 10 and count = 1.",
+      "After 20: total = 30 and count = 2. The next input -1 stops the loop without being added.",
+      "Average = 30 / 2 = 15. If count stays 0, display No data and avoid division by zero."
+    ],
+    "exercise": "Read a mark repeatedly until it is between 0 and 100 inclusive. Display the accepted mark. Test input sequence 101, -5, 70.",
+    "solution": "BEGIN\n  DECLARE mark AS REAL\n  INPUT mark\n  WHILE mark < 0 OR mark > 100 DO\n    OUTPUT \"Enter a mark from 0 to 100\"\n    INPUT mark\n  ENDWHILE\n  OUTPUT mark\nEND",
+    "answer": [
+      "101 is above 100, so the loop requests another value.",
+      "-5 is below 0, so the loop requests another value.",
+      "70 is valid, so the loop ends. Full output: two validation messages followed by 70. The input changes on every retry."
+    ]
+  },
+  "lesson-10": {
+    "prompt": "Use nested loops for rows 1 to 2 and columns 1 to 3. Display row * col for each pair.",
+    "code": "BEGIN\n  DECLARE row AS INTEGER\n  DECLARE col AS INTEGER\n  DECLARE product AS INTEGER\n  FOR row = 1 TO 2\n    FOR col = 1 TO 3\n      SET product = row * col\n      OUTPUT product\n    ENDFOR\n  ENDFOR\nEND",
+    "trace": [
+      "row = 1 visits col 1, 2 and 3: output 1, 2, 3.",
+      "row = 2 restarts col at 1: output 2, 4, 6.",
+      "Total outputs = 2 * 3 = 6. The inner loop completes for each outer iteration."
+    ],
+    "exercise": "Input a 2 by 2 matrix using nested loops. Display the total of each row. Test rows [2,4] and [6,8].",
+    "solution": "BEGIN\n  DECLARE matrix[2][2] AS INTEGER\n  DECLARE row AS INTEGER\n  DECLARE col AS INTEGER\n  DECLARE rowTotal AS INTEGER\n  FOR row = 0 TO 1\n    SET rowTotal = 0\n    FOR col = 0 TO 1\n      INPUT matrix[row][col]\n      SET rowTotal = rowTotal + matrix[row][col]\n    ENDFOR\n    OUTPUT rowTotal\n  ENDFOR\nEND",
+    "answer": [
+      "At row 0, reset rowTotal to 0, then add 2 and 4. Output: 6.",
+      "At row 1, reset it again, then add 6 and 8. Output: 14.",
+      "Resetting outside the outer loop would wrongly produce a cumulative second total of 20."
+    ]
+  },
+  "lesson-11": {
+    "prompt": "Use a single INTEGER array [1,2,3,4,5]. Calculate its total and average. Show valid indices.",
+    "code": "BEGIN\n  DECLARE values[5] AS INTEGER\n  DECLARE i AS INTEGER\n  DECLARE total AS INTEGER\n  SET values = [1, 2, 3, 4, 5]\n  SET total = 0\n  FOR i = 0 TO 4\n    SET total = total + values[i]\n  ENDFOR\n  OUTPUT total, total / 5.0\nEND",
+    "trace": [
+      "Valid indices are 0 through 4. Length is 5.",
+      "Totals after successive elements: 1, 3, 6, 10, 15.",
+      "Output: total 15 and average 3.0."
+    ],
+    "exercise": "Find the maximum in [-8,-3,-12,-5]. Use one array and a loop. The solution must handle all-negative values.",
+    "solution": "BEGIN\n  DECLARE values[4] AS INTEGER\n  DECLARE maximum AS INTEGER\n  DECLARE i AS INTEGER\n  SET values = [-8, -3, -12, -5]\n  SET maximum = values[0]\n  FOR i = 1 TO 3\n    IF values[i] > maximum THEN\n      SET maximum = values[i]\n    ENDIF\n  ENDFOR\n  OUTPUT maximum\nEND",
+    "answer": [
+      "Initial maximum = -8. Comparing -3 replaces it with -3.",
+      "Neither -12 nor -5 is greater than -3.",
+      "Output: -3. Initialising maximum to 0 would give a wrong answer."
+    ]
+  },
+  "lesson-12": {
+    "prompt": "Find the first position of target 7 in [7,3,7,2]. Stop after the first match and use -1 for no match.",
+    "code": "BEGIN\n  DECLARE values[4] AS INTEGER\n  DECLARE target AS INTEGER\n  DECLARE foundAt AS INTEGER\n  DECLARE i AS INTEGER\n  SET values = [7, 3, 7, 2]\n  SET target = 7\n  SET foundAt = -1\n  SET i = 0\n  WHILE i < 4 AND foundAt = -1 DO\n    IF values[i] = target THEN\n      SET foundAt = i\n    ENDIF\n    SET i = i + 1\n  ENDWHILE\n  IF foundAt <> -1 THEN\n    OUTPUT foundAt\n  ELSE\n    OUTPUT \"Not found\"\n  ENDIF\nEND",
+    "trace": [
+      "Initially foundAt = -1 and i = 0. values[0] equals 7, so foundAt becomes 0.",
+      "After i becomes 1, foundAt = -1 is FALSE and the loop stops.",
+      "Output: 0. It is a valid index and differs from the not-found sentinel -1."
+    ],
+    "exercise": "Use the same four values to search for target 9. Write the full program and show the result when no match exists.",
+    "solution": "BEGIN\n  DECLARE values[4] AS INTEGER\n  DECLARE target AS INTEGER\n  DECLARE foundAt AS INTEGER\n  DECLARE i AS INTEGER\n  SET values = [7, 3, 7, 2]\n  SET target = 9\n  SET foundAt = -1\n  SET i = 0\n  WHILE i < 4 AND foundAt = -1 DO\n    IF values[i] = target THEN\n      SET foundAt = i\n    ENDIF\n    SET i = i + 1\n  ENDWHILE\n  IF foundAt <> -1 THEN\n    OUTPUT foundAt\n  ELSE\n    OUTPUT \"Not found\"\n  ENDIF\nEND",
+    "answer": [
+      "Comparisons at indices 0, 1, 2 and 3 all fail. foundAt remains -1.",
+      "i becomes 4, so i < 4 is FALSE. No out-of-bounds element is read.",
+      "Output: Not found. The program checks foundAt before using it as an index."
+    ]
+  },
+  "lesson-13": {
+    "prompt": "Store names [Lebo,Naledi,Thabo] and marks [64,81,72] in parallel arrays. Display each matching pair.",
+    "code": "BEGIN\n  DECLARE names[3] AS STRING\n  DECLARE marks[3] AS REAL\n  DECLARE i AS INTEGER\n  SET names = [\"Lebo\", \"Naledi\", \"Thabo\"]\n  SET marks = [64, 81, 72]\n  FOR i = 0 TO 2\n    OUTPUT names[i], marks[i]\n  ENDFOR\nEND",
+    "trace": [
+      "Index 0 pairs Lebo with 64. Index 1 pairs Naledi with 81.",
+      "Index 2 pairs Thabo with 72. Three pairs are displayed.",
+      "The same index identifies one record across both arrays."
+    ],
+    "exercise": "Using those parallel arrays, find and display the student with the highest mark. Keep the first student on a tie.",
+    "solution": "BEGIN\n  DECLARE names[3] AS STRING\n  DECLARE marks[3] AS REAL\n  DECLARE best AS INTEGER\n  DECLARE i AS INTEGER\n  SET names = [\"Lebo\", \"Naledi\", \"Thabo\"]\n  SET marks = [64, 81, 72]\n  SET best = 0\n  FOR i = 1 TO 2\n    IF marks[i] > marks[best] THEN\n      SET best = i\n    ENDIF\n  ENDFOR\n  OUTPUT names[best], marks[best]\nEND",
+    "answer": [
+      "Initial best = 0 with mark 64. At index 1, 81 > 64 sets best = 1.",
+      "At index 2, 72 > 81 is FALSE, so best stays 1.",
+      "Output: Naledi, 81. Strict > preserves the first occurrence on a tie."
+    ]
+  },
+  "lesson-14": {
+    "prompt": "Sort [5,2,4,1] into ascending order using bubble sort. Use adjacent comparisons and a temporary variable.",
+    "code": "BEGIN\n  DECLARE values[4] AS INTEGER\n  DECLARE pass AS INTEGER\n  DECLARE j AS INTEGER\n  DECLARE temp AS INTEGER\n  SET values = [5, 2, 4, 1]\n  FOR pass = 0 TO 2\n    FOR j = 0 TO 2 - pass\n      IF values[j] > values[j + 1] THEN\n        SET temp = values[j]\n        SET values[j] = values[j + 1]\n        SET values[j + 1] = temp\n      ENDIF\n    ENDFOR\n  ENDFOR\n  OUTPUT values\nEND",
+    "trace": [
+      "After pass 0: [2,4,1,5]. The largest value reaches the right end.",
+      "After pass 1: [2,1,4,5]. After pass 2: [1,2,4,5].",
+      "Output: [1,2,4,5]. A temporary variable preserves the left value during a swap."
+    ],
+    "exercise": "Perform exactly one left-to-right bubble-sort pass through [4,1,3,2]. Display the resulting array and explain why it may still need more passes.",
+    "solution": "BEGIN\n  DECLARE values[4] AS INTEGER\n  DECLARE j AS INTEGER\n  DECLARE temp AS INTEGER\n  SET values = [4, 1, 3, 2]\n  FOR j = 0 TO 2\n    IF values[j] > values[j + 1] THEN\n      SET temp = values[j]\n      SET values[j] = values[j + 1]\n      SET values[j + 1] = temp\n    ENDIF\n  ENDFOR\n  OUTPUT values\nEND",
+    "answer": [
+      "Compare 4 and 1: [1,4,3,2]. Then compare 4 and 3: [1,3,4,2].",
+      "Compare 4 and 2: [1,3,2,4]. Output: [1,3,2,4].",
+      "4 is in its final position, but 3 and 2 remain out of order."
+    ]
+  },
+  "lesson-15": {
+    "prompt": "Decompose a greeting program. ReadName returns a name, Greet receives it, and the main program connects the modules. Worked input: Lebo.",
+    "code": "METHOD ReadName() RETURNS STRING\n  DECLARE name AS STRING\n  INPUT name\n  RETURN name\nENDMETHOD\nMETHOD Greet(name AS STRING)\n  OUTPUT \"Hello\", name\nENDMETHOD\nBEGIN\n  DECLARE learner AS STRING\n  SET learner = ReadName()\n  CALL Greet(learner)\nEND",
+    "trace": [
+      "Main calls ReadName. INPUT captures Lebo, which RETURN sends back to learner.",
+      "Main calls Greet with learner as the argument. Greet displays Hello, Lebo.",
+      "Call hierarchy: Main calls ReadName and Greet. Data moves through return values and parameters."
+    ],
+    "exercise": "Write Area(length,width) returning rectangle area and ShowArea(area) displaying it. The main program must call both. Test dimensions 6 and 4.",
+    "solution": "METHOD Area(length AS REAL, width AS REAL) RETURNS REAL\n  RETURN length * width\nENDMETHOD\nMETHOD ShowArea(area AS REAL)\n  OUTPUT \"Area\", area\nENDMETHOD\nBEGIN\n  DECLARE result AS REAL\n  SET result = Area(6, 4)\n  CALL ShowArea(result)\nEND",
+    "answer": [
+      "Area receives length 6 and width 4. It returns 24.",
+      "Main stores 24 in result and passes it to ShowArea.",
+      "Output: Area, 24. Each method has one clear responsibility."
+    ]
+  },
+  "lesson-16": {
+    "prompt": "Write DisplayResult with name and mark parameters. Call it with Lebo and 68. Identify parameters versus arguments.",
+    "code": "METHOD DisplayResult(name AS STRING, mark AS REAL)\n  OUTPUT name, mark\nENDMETHOD\nBEGIN\n  CALL DisplayResult(\"Lebo\", 68)\nEND",
+    "trace": [
+      "name and mark are formal parameters in the method declaration.",
+      "\"Lebo\" and 68 are arguments supplied by the call, in matching order.",
+      "Output: Lebo, 68. Inside the method, name holds Lebo and mark holds 68."
+    ],
+    "exercise": "Assume scalar parameters are passed by value. Write Bump(number) that adds 1 and displays its local parameter. Main passes counter = 5, then displays counter. Explain both outputs.",
+    "solution": "METHOD Bump(number AS INTEGER)\n  SET number = number + 1\n  OUTPUT number\nENDMETHOD\nBEGIN\n  DECLARE counter AS INTEGER\n  SET counter = 5\n  CALL Bump(counter)\n  OUTPUT counter\nEND",
+    "answer": [
+      "Bump receives a copy of counter. Its number becomes 6, so the first output is 6.",
+      "Changing the local copy does not change the caller variable under this convention.",
+      "Back in Main, counter is still 5. Final outputs in order: 6, 5."
+    ]
+  },
+  "lesson-17": {
+    "prompt": "Write Larger(a,b) returning the larger INTEGER, including equality. Call Larger(8,5), Larger(3,9) and Larger(4,4).",
+    "code": "METHOD Larger(a AS INTEGER, b AS INTEGER) RETURNS INTEGER\n  IF a >= b THEN\n    RETURN a\n  ELSE\n    RETURN b\n  ENDIF\nENDMETHOD\nBEGIN\n  OUTPUT Larger(8, 5)\n  OUTPUT Larger(3, 9)\n  OUTPUT Larger(4, 4)\nEND",
+    "trace": [
+      "For (8,5), the TRUE branch returns 8. For (3,9), the FALSE branch returns 9.",
+      "For (4,4), equality follows the TRUE branch and returns 4.",
+      "Output: 8, 9, 4. Every possible path returns an INTEGER."
+    ],
+    "exercise": "Write HasPassed(mark) returning a BOOLEAN. Use the returned value in an IF to display Pass or Revise. Test a valid mark of 48.",
+    "solution": "METHOD HasPassed(mark AS REAL) RETURNS BOOLEAN\n  RETURN mark >= 50\nENDMETHOD\nBEGIN\n  IF HasPassed(48) THEN\n    OUTPUT \"Pass\"\n  ELSE\n    OUTPUT \"Revise\"\n  ENDIF\nEND",
+    "answer": [
+      "48 >= 50 evaluates to FALSE and is returned to the caller.",
+      "The IF uses that returned Boolean and selects ELSE. Output: Revise.",
+      "At mark 50, HasPassed returns TRUE and output becomes Pass."
+    ]
+  },
+  "lesson-18": {
+    "prompt": "Pass an array and a meaningful count to Total. Only the first three elements of [10,20,30,999,999] are data.",
+    "code": "METHOD Total(values AS REAL[], count AS INTEGER) RETURNS REAL\n  DECLARE total AS REAL\n  DECLARE i AS INTEGER\n  SET total = 0\n  FOR i = 0 TO count - 1\n    SET total = total + values[i]\n  ENDFOR\n  RETURN total\nENDMETHOD\nBEGIN\n  DECLARE marks[5] AS REAL\n  SET marks = [10, 20, 30, 999, 999]\n  OUTPUT Total(marks, 3)\nEND",
+    "trace": [
+      "count = 3 produces indices 0, 1 and 2. The running total is 10, then 30, then 60.",
+      "The method returns 60, which the caller displays. Spare values 999 are ignored.",
+      "Precondition: 0 <= count <= array capacity. At count 0, return the initial total 0."
+    ],
+    "exercise": "Write DisplayValues(values,count) to display only the first four elements of [2,4,6,8,999]. Pass both the array and count from Main.",
+    "solution": "METHOD DisplayValues(values AS INTEGER[], count AS INTEGER)\n  DECLARE i AS INTEGER\n  FOR i = 0 TO count - 1\n    OUTPUT values[i]\n  ENDFOR\nENDMETHOD\nBEGIN\n  DECLARE numbers[5] AS INTEGER\n  SET numbers = [2, 4, 6, 8, 999]\n  CALL DisplayValues(numbers, 4)\nEND",
+    "answer": [
+      "count is 4, so the loop visits indices 0 to 3.",
+      "Outputs in order: 2, 4, 6, 8. The spare element at index 4 is excluded.",
+      "Use the supplied count instead of assuming that every capacity slot contains meaningful data."
+    ]
+  },
+  "lesson-19": {
+    "prompt": "Write two Add methods, one for two INTEGER arguments and another for three. Show both calls. Assume the pseudocode dialect supports overloading.",
+    "code": "METHOD Add(a AS INTEGER, b AS INTEGER) RETURNS INTEGER\n  RETURN a + b\nENDMETHOD\nMETHOD Add(a AS INTEGER, b AS INTEGER,\n           c AS INTEGER) RETURNS INTEGER\n  RETURN a + b + c\nENDMETHOD\nBEGIN\n  OUTPUT Add(4, 6)\n  OUTPUT Add(4, 6, 2)\nEND",
+    "trace": [
+      "Add(4,6) selects the two-parameter signature and returns 10.",
+      "Add(4,6,2) selects the three-parameter signature and returns 12.",
+      "Outputs: 10, 12. Return type alone cannot distinguish overloads. Written practice: the diagram lab does not resolve overloaded names."
+    ],
+    "exercise": "Write overloaded CalculateArea methods for a square (one REAL parameter) and a rectangle (two REAL parameters). Show calls for 5.0 and (6.0,4.0).",
+    "solution": "METHOD CalculateArea(side AS REAL) RETURNS REAL\n  RETURN side * side\nENDMETHOD\nMETHOD CalculateArea(length AS REAL,\n                     width AS REAL) RETURNS REAL\n  RETURN length * width\nENDMETHOD\nBEGIN\n  OUTPUT CalculateArea(5.0)\n  OUTPUT CalculateArea(6.0, 4.0)\nEND",
+    "answer": [
+      "One argument selects the square overload: 5.0 * 5.0 = 25.0.",
+      "Two arguments select the rectangle overload: 6.0 * 4.0 = 24.0.",
+      "Outputs: 25.0 and 24.0. The parameter counts make these signatures distinct."
+    ]
+  },
+  "lesson-20": {
+    "prompt": "Create a Book class with a private title, a constructor and a GetTitle method. Construct two objects with different titles and display each title.",
+    "code": "CLASS Book\n  PRIVATE title AS STRING\n  CONSTRUCTOR Book(value AS STRING)\n    SET title = value\n  ENDCONSTRUCTOR\n  PUBLIC METHOD GetTitle() RETURNS STRING\n    RETURN title\n  ENDMETHOD\nENDCLASS\nBEGIN\n  DECLARE first AS Book\n  DECLARE second AS Book\n  SET first = NEW Book(\"Algorithms\")\n  SET second = NEW Book(\"Databases\")\n  OUTPUT first.GetTitle()\n  OUTPUT second.GetTitle()\nEND",
+    "trace": [
+      "The first constructor stores Algorithms in the first object. The second stores Databases in another object.",
+      "The objects share one class definition but hold separate state.",
+      "Outputs: Algorithms, then Databases. This is written OOP notation, outside the flowchart parser grammar."
+    ],
+    "exercise": "Write NumberPrinter with a public DisplayNumbers() method that displays 1 to 5 using FOR. Create an object and call the method.",
+    "solution": "CLASS NumberPrinter\n  PUBLIC METHOD DisplayNumbers()\n    DECLARE i AS INTEGER\n    FOR i = 1 TO 5\n      OUTPUT i\n    ENDFOR\n  ENDMETHOD\nENDCLASS\nBEGIN\n  DECLARE printer AS NumberPrinter\n  SET printer = NEW NumberPrinter()\n  CALL printer.DisplayNumbers()\nEND",
+    "answer": [
+      "NEW creates a NumberPrinter object. The call invokes its public method.",
+      "The inclusive FOR loop visits i = 1, 2, 3, 4, 5.",
+      "Output: 1, 2, 3, 4, 5. This class uses an implicit no-argument constructor."
+    ]
+  },
+  "lesson-21": {
+    "prompt": "Use a base Shape and a Rectangle subclass. Rectangle stores private dimensions and overrides Area. Call it through a Shape reference to show polymorphism.",
+    "code": "CLASS Shape\n  PUBLIC METHOD Area() RETURNS REAL\n    RETURN 0\n  ENDMETHOD\nENDCLASS\nCLASS Rectangle INHERITS Shape\n  PRIVATE width AS REAL\n  PRIVATE height AS REAL\n  CONSTRUCTOR Rectangle(w AS REAL, h AS REAL)\n    SET width = w\n    SET height = h\n  ENDCONSTRUCTOR\n  PUBLIC OVERRIDE METHOD Area() RETURNS REAL\n    RETURN width * height\n  ENDMETHOD\nENDCLASS\nBEGIN\n  DECLARE shape AS Shape\n  SET shape = NEW Rectangle(3, 4)\n  OUTPUT shape.Area()\nEND",
+    "trace": [
+      "Inheritance: Rectangle is a Shape. Encapsulation: width and height are private.",
+      "The object is a Rectangle, so the overridden Area method runs even through a Shape reference.",
+      "Area = 3 * 4 = 12. Output: 12. The base implementation supplies 0 for a plain Shape in this illustrative design."
+    ],
+    "exercise": "Design Account with a private balance. Its constructor takes a non-negative opening balance. Deposit accepts only positive amounts. Display the balance after opening with 100 and depositing 50.",
+    "solution": "CLASS Account\n  PRIVATE balance AS REAL\n  CONSTRUCTOR Account(opening AS REAL)\n    SET balance = opening\n  ENDCONSTRUCTOR\n  PUBLIC METHOD Deposit(amount AS REAL)\n    IF amount > 0 THEN\n      SET balance = balance + amount\n    ENDIF\n  ENDMETHOD\n  PUBLIC METHOD GetBalance() RETURNS REAL\n    RETURN balance\n  ENDMETHOD\nENDCLASS\nBEGIN\n  DECLARE account AS Account\n  SET account = NEW Account(100)\n  CALL account.Deposit(50)\n  OUTPUT account.GetBalance()\nEND",
+    "answer": [
+      "Constructor stores balance = 100. Deposit receives 50, which passes the amount > 0 test.",
+      "The controlled update sets balance = 100 + 50 = 150. Output: 150.",
+      "Private balance prevents direct caller assignment. Depositing 0 or a negative amount leaves it unchanged."
+    ]
+  },
+  "lesson-22": {
+    "prompt": "Model a Learner enrolled in a Course. Define both classes and show the object creation, enrolment and output. A Learner has a Course association.",
+    "code": "CLASS Course\n  PRIVATE title AS STRING\n  CONSTRUCTOR Course(value AS STRING)\n    SET title = value\n  ENDCONSTRUCTOR\n  PUBLIC METHOD GetTitle() RETURNS STRING\n    RETURN title\n  ENDMETHOD\nENDCLASS\nCLASS Learner\n  PRIVATE name AS STRING\n  PRIVATE course AS Course\n  CONSTRUCTOR Learner(value AS STRING)\n    SET name = value\n  ENDCONSTRUCTOR\n  PUBLIC METHOD Enrol(value AS Course)\n    SET course = value\n  ENDMETHOD\n  PUBLIC METHOD DisplayDetails()\n    OUTPUT name, course.GetTitle()\n  ENDMETHOD\nENDCLASS\nBEGIN\n  DECLARE course AS Course\n  DECLARE learner AS Learner\n  SET course = NEW Course(\"PLD\")\n  SET learner = NEW Learner(\"Lebo\")\n  CALL learner.Enrol(course)\n  CALL learner.DisplayDetails()\nEND",
+    "trace": [
+      "Create a Course with title PLD and a Learner with name Lebo. Enrol stores a reference to the Course.",
+      "DisplayDetails reads the learner name and calls the course getter. Output: Lebo, PLD.",
+      "The class diagram uses two boxes and an association line. This is has-a, not inheritance. Precondition: enrol before displaying details."
+    ],
+    "exercise": "Design LibraryBook with a private borrowed flag initially FALSE. Borrow returns TRUE and changes the flag on the first call. Later calls return FALSE. Show two calls on the same object.",
+    "solution": "CLASS LibraryBook\n  PRIVATE borrowed AS BOOLEAN\n  CONSTRUCTOR LibraryBook()\n    SET borrowed = FALSE\n  ENDCONSTRUCTOR\n  PUBLIC METHOD Borrow() RETURNS BOOLEAN\n    IF borrowed THEN\n      RETURN FALSE\n    ELSE\n      SET borrowed = TRUE\n      RETURN TRUE\n    ENDIF\n  ENDMETHOD\nENDCLASS\nBEGIN\n  DECLARE book AS LibraryBook\n  SET book = NEW LibraryBook()\n  OUTPUT book.Borrow()\n  OUTPUT book.Borrow()\nEND",
+    "answer": [
+      "After construction, borrowed = FALSE. The first call selects ELSE, stores TRUE and returns TRUE.",
+      "The second call sees borrowed = TRUE and returns FALSE without changing it.",
+      "Outputs in order: TRUE, FALSE. In the class diagram, Borrow is public and returns BOOLEAN."
+    ]
+  }
+}
