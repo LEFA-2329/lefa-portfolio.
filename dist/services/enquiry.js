@@ -3,6 +3,18 @@
   const form = document.querySelector('#enquiry-form');
   const status = document.querySelector('#enquiry-status');
   const fallback = document.querySelector('#enquiry-fallback');
+  document.querySelectorAll('[data-package]').forEach((link) => {
+    link.addEventListener('click', () => {
+      form.elements.service.value = link.dataset.service;
+      const brief = form.elements.brief;
+      const interest = 'I am interested in the ' + link.dataset.package + ' package.';
+      if (!brief.value.trim()) brief.value = interest + '\n\nMy project requirements: ';
+      else if (!brief.value.includes(interest)) brief.value += '\n\n' + interest;
+      status.textContent = link.dataset.package + ' selected. Add your name and requirements, then prepare your enquiry.';
+      fallback.hidden = true;
+      form.elements.name.focus({preventScroll:true});
+    });
+  });
   form.addEventListener('submit', (event) => {
     event.preventDefault();
     if (!form.reportValidity()) return;

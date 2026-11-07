@@ -11,3 +11,20 @@
 .about-strip .about-detail{padding-left:25px}
 @media(max-width:950px){.about-strip{grid-template-columns:160px minmax(0,1fr);gap:25px}.about-strip .about-detail{grid-column:2;border:0;padding-left:0}.developer-photo{grid-row:span 2}.developer-photo img{height:300px}}
 @media(max-width:700px){.about-strip{grid-template-columns:1fr}.developer-photo{grid-row:auto;max-width:260px;width:100%}.developer-photo img{height:auto;aspect-ratio:3/4}.about-strip .about-detail{grid-column:auto;border-top:1px solid #bccbb6;padding-top:15px}}
+
+/* Clear scopes and accessible package enquiry links. */
+.package-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.package-card{display:flex;flex-direction:column;min-width:0;padding:28px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.package-card.highlighted{background:var(--green);border-color:#aebfa0}
+.package-card .tag{color:var(--muted);font-size:9px;min-height:30px}
+.package-card h3{font-size:27px;margin:10px 0}.package-price{font-weight:700;color:var(--ink)!important}
+.package-card p,.package-card li{font-size:13px;color:var(--muted)}
+.package-card h4{font-size:12px;margin:15px 0 0}.package-card ul{padding-left:18px;margin:12px 0}.package-card li{margin:10px 0}
+.package-card .package-note{font-size:12px;border-top:1px solid var(--line);padding-top:18px;margin-bottom:25px}
+.package-card .button{margin-top:auto;font-size:12px;min-height:46px}
+.package-footnote{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:30px;padding:28px;background:var(--green);border-radius:10px}
+.package-footnote h3{font-size:19px;margin-top:0}.package-footnote p{font-size:13px;color:var(--muted)}
+.nav-links{flex-wrap:wrap}.nav-links a{display:inline-flex;align-items:center;min-height:44px}
+input,select,textarea{font-size:16px}
+@media(max-width:950px){.package-grid{grid-template-columns:1fr}.package-card .tag{min-height:0}.package-card .button{align-self:flex-start}}
+@media(max-width:700px){.package-footnote{grid-template-columns:1fr;gap:20px;padding:23px}.package-card{padding:23px}.nav-links{column-gap:18px;row-gap:0;justify-content:flex-start}.developer-photo img{object-position:50% 20%}}
