@@ -28,3 +28,9 @@
 input,select,textarea{font-size:16px}
 @media(max-width:950px){.package-grid{grid-template-columns:1fr}.package-card .tag{min-height:0}.package-card .button{align-self:flex-start}}
 @media(max-width:700px){.package-footnote{grid-template-columns:1fr;gap:20px;padding:23px}.package-card{padding:23px}.nav-links{column-gap:18px;row-gap:0;justify-content:flex-start}.developer-photo img{object-position:50% 20%}}
+
+/* Persistent navigation with room for section anchors. */
+header{position:sticky;top:0;z-index:30;background:var(--ink);box-shadow:0 1px 0 #ffffff20}
+html{scroll-padding-top:120px}
+@media(max-width:700px){nav{padding-top:12px;padding-bottom:12px;row-gap:6px;min-height:0}.nav-links{row-gap:0}.nav-links a{min-height:36px}html{scroll-padding-top:150px}}
+@media print{header{position:static}}
