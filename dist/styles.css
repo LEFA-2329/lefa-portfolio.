@@ -1280,3 +1280,8 @@ html{scroll-padding-top:110px}
 /* Additional photography, preserving the original portfolio layout. */
 .photo-gallery{border-top:1px solid var(--line);padding-top:65px}.photo-gallery-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:30px;max-width:900px}.photo-gallery figure{margin:0;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}.photo-gallery img{display:block;width:100%;height:auto;aspect-ratio:2/3;object-fit:contain;background:#171c1b}.photo-gallery figcaption{padding:18px 20px;font-size:13px;line-height:1.65;color:var(--muted)}
 @media(max-width:650px){.photo-gallery-grid{grid-template-columns:1fr;gap:24px;max-width:430px}.photo-gallery{padding-top:45px}.photo-gallery figcaption{padding:16px 18px}}
+
+
+/* A compact four-photo gallery. */
+.photo-gallery-grid{max-width:none;gap:24px}.photo-gallery img{height:300px;aspect-ratio:auto;object-fit:contain}.photo-gallery figcaption{padding:14px 18px;font-size:12px}
+@media(max-width:650px){.photo-gallery-grid{max-width:430px;gap:20px}.photo-gallery img{height:260px}.photo-gallery figcaption{padding:13px 16px}}
