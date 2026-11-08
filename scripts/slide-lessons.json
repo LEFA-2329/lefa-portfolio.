@@ -337,10 +337,10 @@
   },
   "lesson-22": {
     "prompt": "Model a Learner associated with a Course. Define both classes. The Learner constructor must initialise both name and course before DisplayDetails can read them. Create the objects and display the result.",
-    "code": "CLASS Course\n  PRIVATE title AS STRING\n  CONSTRUCTOR Course(value AS STRING)\n    SET title = value\n  ENDCONSTRUCTOR\n  PUBLIC METHOD GetTitle() RETURNS STRING\n    RETURN title\n  ENDMETHOD\nENDCLASS\nCLASS Learner\n  PRIVATE name AS STRING\n  PRIVATE course AS Course\n  CONSTRUCTOR Learner(value AS STRING, enrolledCourse AS Course)\n    SET name = value\n    SET course = enrolledCourse\n  ENDCONSTRUCTOR\n  PUBLIC METHOD DisplayDetails()\n    OUTPUT name, course.GetTitle()\n  ENDMETHOD\nENDCLASS\nBEGIN\n  DECLARE course AS Course\n  DECLARE learner AS Learner\n  SET course = NEW Course(\"PLD\")\n  SET learner = NEW Learner(\"Lebo\", course)\n  CALL learner.DisplayDetails()\nEND",
+    "code": "CLASS Course\n  PRIVATE title AS STRING\n  CONSTRUCTOR Course(value AS STRING)\n    SET title = value\n  ENDCONSTRUCTOR\n  PUBLIC METHOD GetTitle() RETURNS STRING\n    RETURN title\n  ENDMETHOD\nENDCLASS\nCLASS Learner\n  PRIVATE name AS STRING\n  PRIVATE course AS Course\n  CONSTRUCTOR Learner(value AS STRING, enrolledCourse AS Course)\n    SET name = value\n    SET course = enrolledCourse\n  ENDCONSTRUCTOR\n  PUBLIC METHOD DisplayDetails()\n    OUTPUT name, course.GetTitle()\n  ENDMETHOD\nENDCLASS\nBEGIN\n  DECLARE course AS Course\n  DECLARE learner AS Learner\n  SET course = NEW Course(\"PRLD\")\n  SET learner = NEW Learner(\"Lebo\", course)\n  CALL learner.DisplayDetails()\nEND",
     "trace": [
-      "Create the Course with title PLD first. Pass that declared object reference into the Learner constructor together with Lebo.",
-      "The constructor initialises name and course. DisplayDetails can therefore read both fields safely. Output: Lebo, PLD.",
+      "Create the Course with title PRLD first. Pass that declared object reference into the Learner constructor together with Lebo.",
+      "The constructor initialises name and course. DisplayDetails can therefore read both fields safely. Output: Lebo, PRLD.",
       "The two classes have an association: Learner has a Course. They do not use inheritance. Each parameter is declared in its constructor header."
     ],
     "exercise": "Design LibraryBook with a private borrowed flag initially FALSE. Borrow returns TRUE and changes the flag on the first call. Later calls return FALSE. Show two calls on the same object.",

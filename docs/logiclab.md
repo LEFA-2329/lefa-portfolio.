@@ -1,4 +1,4 @@
-# LogicLab: first PLD release
+# LogicLab: first PRLD release
 
 Live path: `/learn/` on the existing portfolio GitHub Pages deployment.
 
