@@ -51,12 +51,12 @@ dialog.addEventListener('click', (e) => {
 // Native dialog keeps enlarged photos keyboard accessible and returns focus on close.
 const photoDialog = document.querySelector('#photo-dialog');
 const photoFull = document.querySelector('#photo-full');
-document.querySelectorAll('.photo-gallery-grid figure').forEach((figure,index)=>{
+document.querySelectorAll('.photo-gallery-grid figure, .project-screenshot').forEach((figure,index)=>{
   const image=figure.querySelector('img');
   const button=document.createElement('button');
-  button.type='button';button.className='photo-open';button.setAttribute('aria-label','Enlarge photo '+(index+1)+': '+image.alt);
+  button.type='button';button.className='photo-open';button.setAttribute('aria-label',(figure.classList.contains('project-screenshot')?'Enlarge project screenshot: ':'Enlarge photo: ')+image.alt);
   image.before(button);button.append(image);
-  button.addEventListener('click',()=>{photoFull.src=image.src;photoFull.alt=image.alt;document.querySelector('#photo-caption').textContent=figure.querySelector('figcaption')?.textContent||'';photoDialog.showModal();});
+  button.addEventListener('click',()=>{document.querySelector('#photo-title').textContent=figure.classList.contains('project-screenshot')?'Project screenshot':'Gallery photo';photoFull.src=image.src;photoFull.alt=image.alt;document.querySelector('#photo-caption').textContent=figure.querySelector('figcaption')?.textContent||'';photoDialog.showModal();});
 });
 document.querySelector('#photo-close').addEventListener('click',()=>photoDialog.close());
 photoDialog.addEventListener('click',e=>{if(e.target===photoDialog){const b=photoDialog.getBoundingClientRect();if(e.clientX<b.left||e.clientX>b.right||e.clientY<b.top||e.clientY>b.bottom)photoDialog.close();}});
