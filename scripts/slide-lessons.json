@@ -289,14 +289,14 @@
   },
   "lesson-19": {
     "prompt": "Write two Add methods, one for two INTEGER arguments and another for three. Show both calls. Assume the pseudocode dialect supports overloading.",
-    "code": "METHOD Add(a AS INTEGER, b AS INTEGER) RETURNS INTEGER\n  RETURN a + b\nENDMETHOD\nMETHOD Add(a AS INTEGER, b AS INTEGER,\n           c AS INTEGER) RETURNS INTEGER\n  RETURN a + b + c\nENDMETHOD\nBEGIN\n  OUTPUT Add(4, 6)\n  OUTPUT Add(4, 6, 2)\nEND",
+    "code": "METHOD Add(a AS INTEGER, b AS INTEGER) RETURNS INTEGER\n  RETURN a + b\nENDMETHOD\nMETHOD Add(a AS INTEGER, b AS INTEGER, c AS INTEGER) RETURNS INTEGER\n  RETURN a + b + c\nENDMETHOD\nBEGIN\n  OUTPUT Add(4, 6)\n  OUTPUT Add(4, 6, 2)\nEND",
     "trace": [
       "Add(4,6) selects the two-parameter signature and returns 10.",
       "Add(4,6,2) selects the three-parameter signature and returns 12.",
       "Outputs: 10, 12. Return type alone cannot distinguish overloads. Written practice: the diagram lab does not resolve overloaded names."
     ],
     "exercise": "Write overloaded CalculateArea methods for a square (one REAL parameter) and a rectangle (two REAL parameters). Show calls for 5.0 and (6.0,4.0).",
-    "solution": "METHOD CalculateArea(side AS REAL) RETURNS REAL\n  RETURN side * side\nENDMETHOD\nMETHOD CalculateArea(length AS REAL,\n                     width AS REAL) RETURNS REAL\n  RETURN length * width\nENDMETHOD\nBEGIN\n  OUTPUT CalculateArea(5.0)\n  OUTPUT CalculateArea(6.0, 4.0)\nEND",
+    "solution": "METHOD CalculateArea(side AS REAL) RETURNS REAL\n  RETURN side * side\nENDMETHOD\nMETHOD CalculateArea(length AS REAL, width AS REAL) RETURNS REAL\n  RETURN length * width\nENDMETHOD\nBEGIN\n  OUTPUT CalculateArea(5.0)\n  OUTPUT CalculateArea(6.0, 4.0)\nEND",
     "answer": [
       "One argument selects the square overload: 5.0 * 5.0 = 25.0.",
       "Two arguments select the rectangle overload: 6.0 * 4.0 = 24.0.",
@@ -312,19 +312,19 @@
       "Outputs: Algorithms, then Databases. This is written OOP notation, outside the flowchart parser grammar."
     ],
     "exercise": "Write NumberPrinter with a public DisplayNumbers() method that displays 1 to 5 using FOR. Create an object and call the method.",
-    "solution": "CLASS NumberPrinter\n  PUBLIC METHOD DisplayNumbers()\n    DECLARE i AS INTEGER\n    FOR i = 1 TO 5\n      OUTPUT i\n    ENDFOR\n  ENDMETHOD\nENDCLASS\nBEGIN\n  DECLARE printer AS NumberPrinter\n  SET printer = NEW NumberPrinter()\n  CALL printer.DisplayNumbers()\nEND",
+    "solution": "CLASS NumberPrinter\n  CONSTRUCTOR NumberPrinter()\n    // No fields need initial values\n  ENDCONSTRUCTOR\n  PUBLIC METHOD DisplayNumbers()\n    DECLARE i AS INTEGER\n    FOR i = 1 TO 5\n      OUTPUT i\n    ENDFOR\n  ENDMETHOD\nENDCLASS\nBEGIN\n  DECLARE printer AS NumberPrinter\n  SET printer = NEW NumberPrinter()\n  CALL printer.DisplayNumbers()\nEND",
     "answer": [
       "NEW creates a NumberPrinter object. The call invokes its public method.",
       "The inclusive FOR loop visits i = 1, 2, 3, 4, 5.",
-      "Output: 1, 2, 3, 4, 5. This class uses an implicit no-argument constructor."
+      "Output: 1, 2, 3, 4, 5. The explicitly declared no-argument constructor creates an object with no fields to initialise."
     ]
   },
   "lesson-21": {
     "prompt": "Use a base Shape and a Rectangle subclass. Rectangle stores private dimensions and overrides Area. Call it through a Shape reference to show polymorphism.",
-    "code": "CLASS Shape\n  PUBLIC METHOD Area() RETURNS REAL\n    RETURN 0\n  ENDMETHOD\nENDCLASS\nCLASS Rectangle INHERITS Shape\n  PRIVATE width AS REAL\n  PRIVATE height AS REAL\n  CONSTRUCTOR Rectangle(w AS REAL, h AS REAL)\n    SET width = w\n    SET height = h\n  ENDCONSTRUCTOR\n  PUBLIC OVERRIDE METHOD Area() RETURNS REAL\n    RETURN width * height\n  ENDMETHOD\nENDCLASS\nBEGIN\n  DECLARE shape AS Shape\n  SET shape = NEW Rectangle(3, 4)\n  OUTPUT shape.Area()\nEND",
+    "code": "CLASS Shape\n  PUBLIC VIRTUAL METHOD Area() RETURNS REAL\n    RETURN 0\n  ENDMETHOD\nENDCLASS\nCLASS Rectangle INHERITS Shape\n  PRIVATE width AS REAL\n  PRIVATE height AS REAL\n  CONSTRUCTOR Rectangle(w AS REAL, h AS REAL)\n    SET width = w\n    SET height = h\n  ENDCONSTRUCTOR\n  PUBLIC OVERRIDE METHOD Area() RETURNS REAL\n    RETURN width * height\n  ENDMETHOD\nENDCLASS\nBEGIN\n  DECLARE shape AS Shape\n  SET shape = NEW Rectangle(3, 4)\n  OUTPUT shape.Area()\nEND",
     "trace": [
       "Inheritance: Rectangle is a Shape. Encapsulation: width and height are private.",
-      "The object is a Rectangle, so the overridden Area method runs even through a Shape reference.",
+      "The base method is VIRTUAL, so a subclass may override it. A Rectangle object selects the overridden Area even through a Shape reference.",
       "Area = 3 * 4 = 12. Output: 12. The base implementation supplies 0 for a plain Shape in this illustrative design."
     ],
     "exercise": "Design Account with a private balance. Its constructor takes a non-negative opening balance. Deposit accepts only positive amounts. Display the balance after opening with 100 and depositing 50.",
@@ -336,12 +336,12 @@
     ]
   },
   "lesson-22": {
-    "prompt": "Model a Learner enrolled in a Course. Define both classes and show the object creation, enrolment and output. A Learner has a Course association.",
-    "code": "CLASS Course\n  PRIVATE title AS STRING\n  CONSTRUCTOR Course(value AS STRING)\n    SET title = value\n  ENDCONSTRUCTOR\n  PUBLIC METHOD GetTitle() RETURNS STRING\n    RETURN title\n  ENDMETHOD\nENDCLASS\nCLASS Learner\n  PRIVATE name AS STRING\n  PRIVATE course AS Course\n  CONSTRUCTOR Learner(value AS STRING)\n    SET name = value\n  ENDCONSTRUCTOR\n  PUBLIC METHOD Enrol(value AS Course)\n    SET course = value\n  ENDMETHOD\n  PUBLIC METHOD DisplayDetails()\n    OUTPUT name, course.GetTitle()\n  ENDMETHOD\nENDCLASS\nBEGIN\n  DECLARE course AS Course\n  DECLARE learner AS Learner\n  SET course = NEW Course(\"PLD\")\n  SET learner = NEW Learner(\"Lebo\")\n  CALL learner.Enrol(course)\n  CALL learner.DisplayDetails()\nEND",
+    "prompt": "Model a Learner associated with a Course. Define both classes. The Learner constructor must initialise both name and course before DisplayDetails can read them. Create the objects and display the result.",
+    "code": "CLASS Course\n  PRIVATE title AS STRING\n  CONSTRUCTOR Course(value AS STRING)\n    SET title = value\n  ENDCONSTRUCTOR\n  PUBLIC METHOD GetTitle() RETURNS STRING\n    RETURN title\n  ENDMETHOD\nENDCLASS\nCLASS Learner\n  PRIVATE name AS STRING\n  PRIVATE course AS Course\n  CONSTRUCTOR Learner(value AS STRING, enrolledCourse AS Course)\n    SET name = value\n    SET course = enrolledCourse\n  ENDCONSTRUCTOR\n  PUBLIC METHOD DisplayDetails()\n    OUTPUT name, course.GetTitle()\n  ENDMETHOD\nENDCLASS\nBEGIN\n  DECLARE course AS Course\n  DECLARE learner AS Learner\n  SET course = NEW Course(\"PLD\")\n  SET learner = NEW Learner(\"Lebo\", course)\n  CALL learner.DisplayDetails()\nEND",
     "trace": [
-      "Create a Course with title PLD and a Learner with name Lebo. Enrol stores a reference to the Course.",
-      "DisplayDetails reads the learner name and calls the course getter. Output: Lebo, PLD.",
-      "The class diagram uses two boxes and an association line. This is has-a, not inheritance. Precondition: enrol before displaying details."
+      "Create the Course with title PLD first. Pass that declared object reference into the Learner constructor together with Lebo.",
+      "The constructor initialises name and course. DisplayDetails can therefore read both fields safely. Output: Lebo, PLD.",
+      "The two classes have an association: Learner has a Course. They do not use inheritance. Each parameter is declared in its constructor header."
     ],
     "exercise": "Design LibraryBook with a private borrowed flag initially FALSE. Borrow returns TRUE and changes the flag on the first call. Later calls return FALSE. Show two calls on the same object.",
     "solution": "CLASS LibraryBook\n  PRIVATE borrowed AS BOOLEAN\n  CONSTRUCTOR LibraryBook()\n    SET borrowed = FALSE\n  ENDCONSTRUCTOR\n  PUBLIC METHOD Borrow() RETURNS BOOLEAN\n    IF borrowed THEN\n      RETURN FALSE\n    ELSE\n      SET borrowed = TRUE\n      RETURN TRUE\n    ENDIF\n  ENDMETHOD\nENDCLASS\nBEGIN\n  DECLARE book AS LibraryBook\n  SET book = NEW LibraryBook()\n  OUTPUT book.Borrow()\n  OUTPUT book.Borrow()\nEND",

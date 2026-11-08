@@ -5,6 +5,8 @@ import {finalizePresentation} from '/home/agent/.codex/skills/builtins/presentat
 const root=process.cwd();
 const C=JSON.parse(await fs.readFile(root+'/build/course.json','utf8'));
 const solved=JSON.parse(await fs.readFile(root+'/scripts/slide-lessons.json','utf8'));
+const foundations=JSON.parse(await fs.readFile(root+'/scripts/slide-foundations.json','utf8'));
+const {explainProgram}=await import(root+'/scripts/slide-audit.mjs');
 const buildId=Date.now().toString();
 const theme={ink:'#17334a',muted:'#50677a',teal:'#0f766e',blue:'#225d8c',paper:'#f4f8fb',dark:'#122b3c'};
 const clean=s=>String(s).replace(/[—–]/g,'-').replace(/→/g,' to ');
@@ -32,19 +34,32 @@ for(const u of C.units.filter(u=>!process.argv[2]||process.argv.slice(2).map(Num
  s.shapes.items.find(x=>x.name==='title').text.color='#ffffff';s.shapes.items.find(x=>x.name==='footer').text.color='#bdd7e0';
  s=slide('Learning outcomes');text(s,'outcomes',ls.map((l,i)=>`${i+1}. ${l.title}`).join('\n\n'),66,190,1140,445,29);
  function codeSlides(title,code,notes,kind='Complete worked solution'){
-  const raw=clean(code).split('\n'),lines=[];
+  const explanations=explainProgram(code);
+  const raw=clean(code).split('\n').map((line,i)=>`${String(i+1).padStart(2,'0')}  ${line}`),lines=[];
   for(const ln of raw){if(ln.length<=72)lines.push(ln);else {let rest=ln;while(rest.length>72){let cut=rest.lastIndexOf(' ',72);if(cut<15)cut=72;lines.push(rest.slice(0,cut));rest='    '+rest.slice(cut).trimStart();}lines.push(rest);}}
   const parts=Math.ceil(lines.length/15),chunkSize=Math.ceil(lines.length/parts);
   for(let i=0;i<lines.length;i+=chunkSize){const z=slide(title,`${kind} - part ${Math.floor(i/chunkSize)+1} of ${parts}`);z.background.fill='#ffffff';text(z,'code',lines.slice(i,i+chunkSize).join('\n'),66,202,1145,435,24,theme.ink,false,'DejaVu Sans Mono');}
+  for(let i=0;i<explanations.length;i+=4){
+   const group=explanations.slice(i,i+4);const z=slide('How the code works',`${title} - logical lines ${group[0].line} to ${group.at(-1).line}`);
+   group.forEach((entry,j)=>{text(z,'line-'+entry.line,String(entry.line).padStart(2,'0'),66,207+j*104,52,90,25,theme.teal,true);text(z,'meaning-'+entry.line,entry.explanation,135,207+j*104,1075,94,24);});
+  }
   const z=slide('Trace and final answer',title);text(z,'explanation',notes,66,207,1135,430,29,theme.muted);
  }
- if(u.id===1){
+ function dataTypeDefinition(){
   s=slide('Data type definition');
   text(s,'definition','A data type defines the kind of values a variable can hold and the operations that are valid for those values.',66,198,1135,110,31,theme.ink,true);
   text(s,'type-examples','INTEGER: whole numbers such as -2, 0 and 17.\nREAL: numbers with fractional parts such as 12.5.\nSTRING: text such as "Lebo" or the identifier "0017".\nBOOLEAN: logical values TRUE and FALSE.\nCHARACTER: one character such as \'A\' in dialects that support it.',66,337,1135,235,27);
   text(s,'type-meaning','Choose a type from the meaning of the data. A student identifier uses STRING when leading zeros must be preserved.',66,590,1135,64,24,theme.teal);
  }
+ function teachingSlides(title,items,subtitle='Concepts before code'){
+  for(let i=0;i<items.length;i+=3){const z=slide(title,subtitle);items.slice(i,i+3).forEach((item,j)=>text(z,'concept-'+j,item,66,205+j*145,1140,132,26));}
+ }
+ for(const [i,section] of foundations.units[String(u.id)].entries()){
+  teachingSlides(section.title,section.items);
+  if(u.id===1&&i===1)dataTypeDefinition();
+ }
  for(const l of ls){const b=C.practice[l.id];
+  teachingSlides(l.title,foundations.lessons[l.id.split('-')[1]],'New notation and assumptions');
   for(let i=0;i<l.sections.length;i+=2){s=slide(l.title,`Theory ${i/2+1} of ${Math.ceil(l.sections.length/2)}`);let y=207;for(const sec of l.sections.slice(i,i+2)){text(s,'heading-'+i+'-'+y,sec.heading,66,y,1145,50,29,theme.teal,true);text(s,'body-'+y,sec.text,66,y+55,1145,145,27);y+=218;}}
 
   const worked=solved[l.id];
@@ -58,17 +73,17 @@ for(const u of C.units.filter(u=>!process.argv[2]||process.argv.slice(2).map(Num
  // Extra concrete diagrams and the requested additional topics.
  if(u.id===1){s=slide('Flowchart symbols');block(s,'terminal','Start / End',80,210,420,90,'roundRect');block(s,'process','Calculation or assignment',650,210,500,90);block(s,'input','Input / Output',80,410,420,100,'parallelogram');block(s,'decision','Condition?',650,370,500,190,'diamond');text(s,'symbol-note','Label decision exits True and False. Arrows show the order of control.',66,592,1140,55,26,theme.teal);}
  if(u.id===2){
-  s=slide('IF ELSE control flow');block(s,'test','mark >= 50?',420,195,430,140,'diamond','#fff0ce');block(s,'pass','OUTPUT "Pass"',80,430,400,90,'parallelogram');block(s,'revise','OUTPUT "Revise"',800,430,400,90,'parallelogram');line(s,420,265,280,265);line(s,280,265,280,430);line(s,850,265,1000,265);line(s,1000,265,1000,430);text(s,'true','True',295,290,100,40,23);text(s,'false','False',1015,290,120,40,23);text(s,'if-note','Exactly one branch runs. Test marks 49, 50 and 51.',66,575,1130,65,28,theme.teal);
+  s=slide('IF ELSE control flow');block(s,'test','mark >= 50?',420,195,430,140,'diamond','#fff0ce');block(s,'pass','OUTPUT "Pass"',80,430,400,90,'parallelogram');block(s,'revise','OUTPUT "Revise"',800,430,400,90,'parallelogram');line(s,420,265,280,265);line(s,280,265,280,430);line(s,850,265,1000,265);line(s,1000,265,1000,430);text(s,'true','True',295,290,100,40,23);text(s,'false','False',1015,290,120,40,23);text(s,'if-note','Decision excerpt for the declared mark in the worked example. Exactly one branch runs.',66,575,1130,65,28,theme.teal);
   codeSlides('SWITCH CASE selection','BEGIN\n  DECLARE option AS INTEGER\n  INPUT option\n  SWITCH option\n    CASE 1:\n      OUTPUT "Add"\n    CASE 2:\n      OUTPUT "View"\n    DEFAULT:\n      OUTPUT "Invalid option"\n  ENDSWITCH\nEND','A selector matches exact values. DEFAULT handles an unmatched value.\n\nThis pseudocode dialect has no fall-through and needs no BREAK.\n\nUse IF / ELSE for ranges or compound conditions.');
   s=slide('SWITCH CASE exercise');text(s,'switch-exercise','Input day code 1, 2 or 3. Display Monday, Tuesday or Wednesday. Other inputs display Unsupported day. Write a full program and trace inputs 2 and 9.',66,212,1135,260,31);text(s,'try-switch','Try the exercise before continuing to the worked answer.',66,530,1135,70,27,theme.teal,true);
   codeSlides('SWITCH exercise solution','BEGIN\n  DECLARE day AS INTEGER\n  INPUT day\n  SWITCH day\n    CASE 1:\n      OUTPUT "Monday"\n    CASE 2:\n      OUTPUT "Tuesday"\n    CASE 3:\n      OUTPUT "Wednesday"\n    DEFAULT:\n      OUTPUT "Unsupported day"\n  ENDSWITCH\nEND','Input 2 matches CASE 2 and displays Tuesday.\n\nInput 9 matches no case, so DEFAULT displays Unsupported day.\n\nThis pseudocode dialect executes one branch without fall-through.','Worked exercise answer');
  }
  if(u.id===3){
-  s=slide('Single array indices and values');text(s,'array-label','values = [12, 8, 20, 10]',66,195,1140,55,32,theme.teal,true);for(let i=0;i<4;i++){block(s,'cell-'+i,String([12,8,20,10][i]),130+i*250,315,220,110);text(s,'index-'+i,'index '+i,130+i*250,445,220,45,24,theme.muted);}text(s,'array-note','Length is 4. Valid indices are 0 to 3. The total is 50 and the average is 12.5.',66,555,1130,80,28);
+  s=slide('Single array indices and values');text(s,'array-label','DECLARE values[4] AS INTEGER\nSET values = [12, 8, 20, 10]',66,195,1140,100,27,theme.teal,true);for(let i=0;i<4;i++){block(s,'cell-'+i,String([12,8,20,10][i]),130+i*250,315,220,110);text(s,'index-'+i,'index '+i,130+i*250,445,220,45,24,theme.muted);}text(s,'array-note','Length is 4. Valid indices are 0 to 3. The total is 50 and the average is 12.5.',66,555,1130,80,28);
   codeSlides('Two-dimensional arrays','BEGIN\n  DECLARE matrix[2][3] AS INTEGER\n  DECLARE row AS INTEGER\n  DECLARE col AS INTEGER\n  DECLARE rowTotal AS INTEGER\n  FOR row = 0 TO 1\n    SET rowTotal = 0\n    FOR col = 0 TO 2\n      INPUT matrix[row][col]\n      SET rowTotal = rowTotal + matrix[row][col]\n    ENDFOR\n    OUTPUT row, rowTotal\n  ENDFOR\nEND','The outer loop selects a row. The inner loop visits its columns.\n\nReset rowTotal for every row.\n\nRows [1, 2, 3] and [4, 5, 6] give totals 6 and 15.');
  }
- if(u.id===4){s=slide('Module hierarchy');block(s,'main','Main',470,205,340,90);for(const[x,label]of[[70,'Read inputs'],[470,'Calculate'],[870,'Display results']]){block(s,label,label,x,440,340,90);line(s,x+170,365,x+170,440);}line(s,640,295,640,365);line(s,240,365,1040,365);text(s,'hierarchy-note','A hierarchy chart shows which module calls another. It does not show IF branches or loop iterations.',66,575,1140,75,27,theme.teal);}
- if(u.id===5){s=slide('Class structure and visibility');block(s,'class-header','Learner',300,195,680,65,'rect','#d9efec');block(s,'attributes','- name : STRING\n- marks : REAL[]',300,260,680,120,'rect','#ffffff');block(s,'methods','+ SetName(value : STRING)\n+ Average() : REAL',300,380,680,130,'rect','#ffffff');text(s,'class-note','Minus indicates private data. Plus indicates a public operation. Objects are instances of this class.',66,555,1140,90,28,theme.teal);}
+ if(u.id===4){s=slide('Module hierarchy');block(s,'main','Main',470,205,340,90);for(const[x,label]of[[150,'ReadName'],[790,'Greet']]){block(s,label,label,x,440,340,90);line(s,x+170,365,x+170,440);}line(s,640,295,640,365);line(s,320,365,960,365);text(s,'hierarchy-note','Matches the declared ReadName and Greet methods in the worked example. Main calls each module.',66,575,1140,75,27,theme.teal);}
+ if(u.id===5){s=slide('Class structure and visibility');block(s,'class-header','Learner',300,195,680,65,'rect','#d9efec');block(s,'attributes','- name : STRING\n- course : Course',300,260,680,120,'rect','#ffffff');block(s,'methods','+ DisplayDetails() : VOID',300,380,680,130,'rect','#ffffff');text(s,'class-note','Matches the worked Learner class. Minus is PRIVATE and plus is PUBLIC. The constructor is omitted from this diagram.',66,555,1140,90,28,theme.teal);}
  s=slide('Unit revision');text(s,'revision',`Review the learning outcomes for Unit ${u.id}.\n\nWrite a solution without looking at the worked example.\n\nTrace normal and boundary test cases.\n\nUse the task library and the downloadable question and answer packs for further practice.`,66,210,1140,365,29);text(s,'convention','Conventions: zero-based arrays, inclusive FOR bounds, METHOD / MODULE names and structured block endings.',66,588,1140,65,22,theme.muted);
  const staging=root+'/build/solved-'+buildId+'-unit-'+u.id;await fs.mkdir(staging,{recursive:true});const candidate=staging+'/candidate.pptx';await(await PresentationFile.exportPptx(p)).save(candidate);
  await fs.mkdir(staging+'/output',{recursive:true});

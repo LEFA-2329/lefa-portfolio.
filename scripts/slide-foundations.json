@@ -1,0 +1,275 @@
+{
+  "units": {
+    "1": [
+      {
+        "title": "Pseudocode and program structure",
+        "items": [
+          "Pseudocode is a readable design notation rather than one universal programming language. These decks use a consistent teaching dialect. Indentation shows which statements belong to a block.",
+          "BEGIN marks the main program entry and END closes it. METHOD and CLASS definitions describe reusable parts outside that main program. Their detailed syntax is introduced in later units.",
+          "A complete solution states inputs, processing and outputs. A precondition describes assumed valid inputs. Validation is extra logic that checks whether an input satisfies those rules."
+        ]
+      },
+      {
+        "title": "Variables declarations and data types",
+        "items": [
+          "A variable is a named storage location. DECLARE price AS REAL introduces price and its type. A declaration alone does not provide an input value or an initial value in this teaching notation.",
+          "INTEGER holds whole numbers. REAL allows fractional numbers. STRING holds text. BOOLEAN holds TRUE or FALSE. The data-type theory slide gives further examples.",
+          "A parameter is also a declared variable: a method header declares it and a method call supplies its value. A field declaration introduces data belonging to each object."
+        ]
+      },
+      {
+        "title": "Initial values and literals",
+        "items": [
+          "SET price = 20.0 assigns a value to the previously declared price. SET replaces its old value. A later expression reads the value stored at that point in execution.",
+          "A literal is a value written directly in the code, such as 20.0, 3, TRUE or \"Lebo\". Literals do not need DECLARE. Quoted text is a STRING literal, while an unquoted identifier names a variable.",
+          "A constant is a named value that remains fixed after definition. Variables may change. A zero-based index starts at 0. Counting items and identifying positions are different uses of numbers."
+        ]
+      },
+      {
+        "title": "Input output and expressions",
+        "items": [
+          "INPUT stores the next supplied value in an already declared variable or array element. OUTPUT displays the current value of an expression. Commas separate multiple output items.",
+          "An expression combines values with operators. + adds, - subtracts, * multiplies and / divides. Parentheses group calculations. Division requires a nonzero divisor.",
+          "SET uses = for assignment. Inside a condition, = tests equality. Comparisons such as >= produce a BOOLEAN result. These contexts determine how the same symbol is read."
+        ]
+      },
+      {
+        "title": "Tracing and reading code",
+        "items": [
+          "A trace records values after statements or loop iterations. A test input is data supplied through INPUT. Expected output is the result you calculate independently to check the program.",
+          "A comment begins with // and explains the code without executing. Block endings such as ENDIF close their matching opening statement. They do not display a value.",
+          "Line numbers are reading labels, not executable code or variables. They match the walkthroughs and count logical statements. Long statements may wrap visually. Declare every named variable in its own scope before use."
+        ]
+      }
+    ],
+    "2": [
+      {
+        "title": "Boolean expressions and comparisons",
+        "items": [
+          "A BOOLEAN expression evaluates to TRUE or FALSE. = tests equality, <> tests inequality, and <, <=, >, >= compare ordered values. A boundary value sits exactly on a stated limit.",
+          "AND is true only when both operands are true. OR is inclusive: either or both operands may be true. NOT reverses a Boolean value. A Boolean variable can be used directly as a condition.",
+          "This course evaluates arithmetic and comparisons before NOT, then AND, then OR. Parentheses make the intended grouping explicit. Type correctness does not by itself make a condition logically correct."
+        ]
+      },
+      {
+        "title": "Selection structures before use",
+        "items": [
+          "IF condition THEN selects a path. ELSE gives its alternative. ENDIF closes that decision. Exactly one alternative runs in an IF/ELSE structure.",
+          "ELSEIF adds another condition only after earlier conditions were false. A nested IF is a separate decision inside another branch, with its own ENDIF.",
+          "SWITCH chooses a branch by exact CASE values. DEFAULT handles no match. ENDSWITCH closes it. In this teaching dialect, one branch runs with no fall-through, so BREAK is unnecessary."
+        ]
+      },
+      {
+        "title": "Loop control and changing state",
+        "items": [
+          "FOR counter = start TO end visits inclusive integer bounds. It increases by 1 unless STEP states otherwise. Declare the counter first. If start exceeds end for a positive step, the body runs zero times.",
+          "A counter counts events or iterations. An accumulator combines values, for example a running sum. Initialise a sum to 0 and a product to 1 before their accumulation loops.",
+          "WHILE condition DO checks before its body and may run zero times. Update the condition inputs in the body so the loop can end. ENDWHILE returns control to the next condition check."
+        ]
+      },
+      {
+        "title": "Sentinels post test loops and nesting",
+        "items": [
+          "A sentinel is a special input that ends repetition. Priming input reads the first value before the initial WHILE test. The sentinel is excluded from totals and counts.",
+          "REPEAT executes its body before testing UNTIL. Repetition stops when the UNTIL condition is TRUE, so the body executes at least once. This differs from WHILE.",
+          "In a nested loop, the inner loop completes for every outer iteration. Reset per-row totals inside the outer loop, and use separate counters for independent levels."
+        ]
+      }
+    ],
+    "3": [
+      {
+        "title": "Arrays elements and valid indices",
+        "items": [
+          "An array groups elements of a stated type under one name. DECLARE values[4] AS INTEGER declares four INTEGER elements. The brackets here state capacity, not a populated list of values.",
+          "The valid indices are 0, 1, 2 and 3. values[0] means the first element. A length of n gives indices 0 through n - 1. Reading outside that range is an out-of-bounds error.",
+          "SET values = [12, 8, 20, 10] supplies the four element values. An array literal uses brackets around a list. Declare the array before assigning the list or reading its elements."
+        ]
+      },
+      {
+        "title": "Traversal two dimensions and parallel arrays",
+        "items": [
+          "Traversal visits elements with an index variable. Declare that index, initialise it and check bounds. A loop using i < count processes exactly count meaningful entries starting at index 0.",
+          "DECLARE matrix[2][3] AS INTEGER declares two rows and three columns. matrix[row][col] addresses one element. Both row and col are separately declared loop counters.",
+          "Parallel arrays store related attributes at the same index. If one array is reordered, move the corresponding elements in the others so a name remains paired with the correct mark."
+        ]
+      },
+      {
+        "title": "Search sort and complexity notation",
+        "items": [
+          "Linear search compares the target with array elements in sequence. -1 is an invalid index used here to mean no match. Index 0 is a valid match, so it cannot mean not found.",
+          "Bubble sort compares neighbouring elements and swaps out-of-order pairs. A temporary variable preserves one value while the other array slot is overwritten. Each full pass moves a large value rightwards.",
+          "n means the number of elements. O(n) describes linear growth in work. O(n squared) describes quadratic growth, such as simple nested-loop sorting. It is a growth description, not a time in seconds."
+        ]
+      }
+    ],
+    "4": [
+      {
+        "title": "Method headers parameters and calls",
+        "items": [
+          "A method or module is a named unit of work. METHOD declares its name and parameter list. ENDMETHOD ends the definition. FUNCTION is another label often used for a method that returns a value.",
+          "In METHOD Square(number AS INTEGER) RETURNS INTEGER, the header declares parameter number and a promised INTEGER result. No separate DECLARE for that same parameter is needed.",
+          "A call supplies arguments to those declared parameters. Argument count, order and types must match the selected signature. The method has its own local scope, separate from the caller."
+        ]
+      },
+      {
+        "title": "Return values output and no value methods",
+        "items": [
+          "RETURN expression sends a result to the caller and ends that method invocation. OUTPUT displays information instead. A caller can store or use a returned value in another expression.",
+          "RETURNS states the result type. All normal paths in a returning method must return a suitable value. A method without RETURNS in these examples is a no-value method, often described as VOID.",
+          "CALL invokes a no-value method for its action. A value-returning call may appear on the right side of SET or inside OUTPUT. A hierarchy chart shows calls, rather than decision paths."
+        ]
+      },
+      {
+        "title": "Scope arrays and method contracts",
+        "items": [
+          "Scope determines where a name is accessible. DECLARE inside a method introduces a local variable. A parameter belongs to that invocation. A same-named variable in the caller is separate.",
+          "Scalar parameters use pass-by-value in these examples: changing a local parameter does not change the caller variable. Array parameters refer to the supplied collection. These examples do not modify it.",
+          "REAL[] means an array of REAL elements in a parameter declaration. A count states how many entries are meaningful. The contract requires 0 <= count <= capacity before a method accesses those entries."
+        ]
+      },
+      {
+        "title": "Overloading signatures and assumptions",
+        "items": [
+          "Overloading uses one method name with different parameter counts or types. The argument list selects a compatible signature. Changing only a return type or a parameter name does not create a new overload.",
+          "An INTEGER literal is a whole number. A REAL example such as 5.0 explicitly illustrates a fractional-capable type. The worked overload assumes a dialect that distinguishes those argument types.",
+          "Overloaded methods are written teaching examples. The diagram lab requires unique method names and does not resolve overloads. It checks structure rather than executing arbitrary pseudocode."
+        ]
+      }
+    ],
+    "5": [
+      {
+        "title": "Classes objects and members",
+        "items": [
+          "CLASS defines a type with data and behaviour. ENDCLASS closes it. An object is one instance of that type. A field or attribute stores state, and a method describes an operation on that state.",
+          "PRIVATE title AS STRING is a field declaration. Each object owns its own title value. Inside its methods, the unqualified field name refers to that current object.",
+          "DECLARE first AS Book declares an object-reference variable. NEW Book(\"Algorithms\") constructs a Book object and returns a reference to it. The assignment stores that reference in first."
+        ]
+      },
+      {
+        "title": "Access modifiers before the first class example",
+        "items": [
+          "An access modifier controls where code may directly use a member. PUBLIC allows callers to use that member through the object reference, subject to the language access rules.",
+          "PRIVATE restricts direct access to the declaring class. Callers use suitable public methods to read or update private fields. This controls program access, rather than encrypting stored data.",
+          "PROTECTED permits access within the class and its subclasses. It differs from PRIVATE and is useful when discussing inheritance. The worked examples keep their fields private unless a design explicitly needs otherwise."
+        ]
+      },
+      {
+        "title": "Constructors initial state and member access",
+        "items": [
+          "CONSTRUCTOR names the initialisation operation invoked by NEW. Its header declares its parameters. It initialises object fields and has no RETURNS clause. ENDCONSTRUCTOR closes it.",
+          "A no-argument constructor takes no supplied values. A parameterised constructor requires matching arguments. Every field read by a worked method is initialised by its constructor or a stated earlier assignment.",
+          "The dot selects a member on an object reference. first.GetTitle() invokes GetTitle on first. A getter returns private state. A setter or another public operation can perform a controlled update."
+        ]
+      },
+      {
+        "title": "Inheritance overriding and polymorphism",
+        "items": [
+          "INHERITS defines an is-a relationship: Rectangle inherits from Shape. The derived class can add state and operations. An association instead represents a has-a relationship between objects.",
+          "VIRTUAL marks a base method that allows overriding. OVERRIDE provides the subclass implementation with a compatible signature. Overriding differs from overloading, which changes the parameter list.",
+          "Polymorphism selects the overridden implementation for the actual object. A Shape reference holding a Rectangle uses Rectangle.Area(). A compatible result type preserves the method contract."
+        ]
+      },
+      {
+        "title": "Class diagrams and visibility notation",
+        "items": [
+          "A class diagram separates the class name, attributes and operations. A colon separates a name from its type. Parentheses show operation parameters, and a result type follows the operation.",
+          "Visibility symbols correspond to access modifiers: + means PUBLIC, - means PRIVATE and # means PROTECTED. VOID means no returned result. Constructors or selected details may be omitted from a diagram.",
+          "A plain line shows an association. An inheritance line uses a hollow triangle pointing at the base class. Multiplicity 1 means one object and 0..* means zero or more. These are model labels, not undeclared variables."
+        ]
+      }
+    ]
+  },
+  "lessons": {
+    "1": [
+      "The first program declares price, quantity and total before use. INPUT supplies the two input values. total receives a calculated value before OUTPUT reads it.",
+      "The literal 3 is the test quantity, not a separate variable name. Text in a prompt describes requirements and is not an executable statement."
+    ],
+    "2": [
+      "A condition is a BOOLEAN expression. >= includes the boundary while < excludes it. THEN introduces the true branch and ELSE introduces the false branch.",
+      "The age or temperature name in each example is declared, then filled by INPUT before its comparison. Only the selected output branch runs."
+    ],
+    "3": [
+      "A declaration chooses a type but does not itself initialise the variable. SET and INPUT provide initial values before expressions read them.",
+      "REAL can represent fractional values. A STRING identifier preserves leading zeros. BOOLEAN stores a logical state rather than the text \"TRUE\".",
+      "FOR repeats a block with a declared counter over inclusive start and end bounds. ENDFOR advances it. A product accumulator starts at 1 so multiplication preserves the supplied factors."
+    ],
+    "4": [
+      "An arithmetic expression produces a value. Parentheses group addition before division in an average. Multiplication and division precede addition without those parentheses.",
+      "The example uses / for fractional division. DIV means integer quotient and MOD means remainder in this course. Denominators must be nonzero.",
+      "A percentage means a value divided by 100. A 10% discount is 0.10 of the subtotal, so multiplying by 1 - 0.10 leaves the 0.90 share that must be paid."
+    ],
+    "5": [
+      "A trace uses the newest value after every SET. The left side is the destination and the right side is evaluated before that destination changes.",
+      "Sequence, selection and repetition are the basic control structures. The worked assignment trace uses sequence only, so it executes each statement once in order."
+    ],
+    "6": [
+      "Inclusive limits use >= and <=. An AND expression requires both limit checks to hold. The membership flag in the exercise is a declared BOOLEAN.",
+      "A Boolean variable can appear directly in IF. Both branches assign due before the final output reads it."
+    ],
+    "7": [
+      "An ELSEIF is checked only after earlier branches fail. A nested IF has its own ENDIF and is evaluated only when its containing branch is selected.",
+      "A flag such as approved is declared BOOLEAN and set by INPUT. IF approved tests that stored logical value directly."
+    ],
+    "8": [
+      "A FOR header controls the declared counter. Inclusive bounds 1 through 3 mean three iterations. ENDFOR advances it and returns to the bound check.",
+      "A counter such as passed records events. A running total is an accumulator. Their initial values must be set outside the loop they summarise."
+    ],
+    "9": [
+      "The priming input gives the WHILE condition an initial value. The body reads the next value so repetition can terminate.",
+      "A sentinel is excluded from calculations. Guard an average with count > 0 to prevent dividing by zero when no data was entered."
+    ],
+    "10": [
+      "The row counter controls outer iterations and col controls inner iterations. Both counters are declared independently.",
+      "matrix[row][col] denotes a declared two-dimensional element. Reset rowTotal for each row before accumulating its values.",
+      "DECLARE matrix[2][2] AS INTEGER allocates two rows and two columns. Indices 0 and 1 are valid in each dimension. INPUT supplies each selected element before the program adds it to rowTotal."
+    ],
+    "11": [
+      "Capacity is the allocated number of elements. A valid zero-based index lies between 0 and capacity - 1. Array values must be supplied before use.",
+      "Starting a maximum at the first actual element handles all-negative data. Starting it at zero would introduce a value that may not exist in the data."
+    ],
+    "12": [
+      "foundAt is a declared index result. Its initial value -1 means no match yet. i is the declared traversal index and target is the declared search value.",
+      "The loop checks i < length before its body accesses values[i]. Stop after the first match when the requirement asks for its first position."
+    ],
+    "13": [
+      "An index links corresponding records in parallel arrays. names[i] and marks[i] belong to the same student because the data was stored in matching positions.",
+      "best stores an index, not the largest mark itself. Using that index accesses both the winning name and its mark."
+    ],
+    "14": [
+      "A pass is one traversal of adjacent pairs. j + 1 addresses the right neighbour, so the bound must leave that neighbour inside the array.",
+      "A swap needs a declared temporary variable. Save the left value before overwriting its slot, then copy the saved value to the right slot."
+    ],
+    "15": [
+      "Method definitions appear before Main. Main is the BEGIN/END section that calls them. Parameters and return values carry data without an undeclared shared variable.",
+      "ReadName returns a STRING. Greet receives a declared STRING parameter and returns no value. CALL performs that no-value operation."
+    ],
+    "16": [
+      "Parameters are declared in the method header. Arguments are the actual values in a call. The name in a caller is not automatically visible inside a method.",
+      "Pass-by-value copies the scalar argument. The exercise changes its local number parameter and then shows that the caller counter is unchanged."
+    ],
+    "17": [
+      "RETURNS declares the result type. RETURN supplies the actual value for that invocation and immediately ends it. OUTPUT only displays a value.",
+      "A returned Boolean can feed IF directly. Each normal path of the Larger method returns an INTEGER, including the equality case."
+    ],
+    "18": [
+      "REAL[] or INTEGER[] declares an array parameter. The separately declared count limits processing to meaningful elements, even if capacity is larger.",
+      "This contract permits count from 0 to capacity. The total method starts its accumulator at zero, so an empty meaningful prefix returns zero."
+    ],
+    "19": [
+      "A signature uses the method name and parameter list to distinguish operations. Different parameter counts or types create overloads.",
+      "The full definitions below use declared typed parameters. These examples explain overload selection in writing rather than running inside the diagram lab."
+    ],
+    "20": [
+      "PUBLIC, PRIVATE and constructors were introduced in the unit opening slides. The class code now applies those definitions to declared fields and parameters.",
+      "NEW creates an object, its constructor supplies field values, and the dot calls a public method on that particular object reference."
+    ],
+    "21": [
+      "The base Area method is explicitly VIRTUAL. Rectangle marks its implementation OVERRIDE. This makes the permission to replace the inherited implementation visible.",
+      "Private dimensions are initialised by the Rectangle constructor. The Account exercise controls updates through a public method and a private balance."
+    ],
+    "22": [
+      "The Course class is defined before a variable or field uses Course as a type. The Learner constructor declares both of its incoming parameters.",
+      "Both name and course are assigned during construction before DisplayDetails reads them. The association diagram describes that same relationship."
+    ]
+  }
+}
