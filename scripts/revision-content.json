@@ -1,0 +1,673 @@
+[
+  {
+    "unit": 1,
+    "title": "Programming foundations",
+    "slides": [
+      {
+        "type": "cover",
+        "title": "Programming foundations",
+        "body": "Short revision\nProgramming Logic and Design\nLefa Malatji"
+      },
+      {
+        "type": "text",
+        "title": "Programs, algorithms and quality",
+        "points": [
+          "A computer follows instructions to process data. Hardware is physical equipment. Software consists of programs and supporting data.",
+          "An algorithm is a finite set of unambiguous steps for solving a problem. A program implements those steps in a language.",
+          "Quality includes correctness, readable names, validation and tests. Test typical, boundary and invalid input."
+        ]
+      },
+      {
+        "type": "text",
+        "title": "Program development life cycle",
+        "points": [
+          "1. Analyse the problem: identify inputs, required outputs and constraints.",
+          "2. Design the algorithm with pseudocode, diagrams and test cases.",
+          "3. Implement the design and test the results against expectations.",
+          "4. Document, maintain and improve the program after release."
+        ]
+      },
+      {
+        "type": "table",
+        "title": "Data types and storage",
+        "rows": [
+          [
+            "Term",
+            "Meaning or example"
+          ],
+          [
+            "NUM",
+            "Whole or decimal numeric values: 7, 7.5"
+          ],
+          [
+            "INTEGER / REAL",
+            "INTEGER requires whole values. REAL accepts decimals too."
+          ],
+          [
+            "STRING / BOOLEAN",
+            "Text such as \"Lebo\" / TRUE or FALSE"
+          ],
+          [
+            "Variable / constant",
+            "A variable can change. A constant keeps its value."
+          ]
+        ],
+        "note": "Declare names before use. Give a value before reading a variable in an expression."
+      },
+      {
+        "type": "code",
+        "title": "Worked example: input and calculation",
+        "code": "BEGIN\n  DECLARE price AS NUM\n  DECLARE quantity AS INTEGER\n  DECLARE total AS NUM\n  INPUT price\n  INPUT quantity\n  SET total = price * quantity\n  OUTPUT total\nEND",
+        "points": [
+          "Inputs: price = 12.5 and quantity = 3.",
+          "Calculation: 12.5 * 3 = 37.5.",
+          "Output: 37.5. A type check alone does not reject a negative quantity. A business rule must do that."
+        ]
+      },
+      {
+        "type": "table",
+        "title": "Operators and precedence",
+        "rows": [
+          [
+            "Operator group",
+            "Evaluation rule"
+          ],
+          [
+            "( )",
+            "Evaluate grouped expressions first."
+          ],
+          [
+            "* / DIV MOD",
+            "Evaluate before + and -."
+          ],
+          [
+            "+ and -",
+            "Evaluate arithmetic before comparisons."
+          ],
+          [
+            "Comparison / NOT / AND / OR",
+            "Compare first, then NOT, then AND, then OR."
+          ]
+        ],
+        "note": "2 + 3 * 4 = 14. (2 + 3) * 4 = 20. DIV gives a truncated quotient. MOD gives the corresponding remainder."
+      },
+      {
+        "type": "flow",
+        "title": "Pseudocode and flowchart symbols",
+        "points": [
+          "Pseudocode expresses logic in readable steps. This course uses BEGIN, DECLARE, INPUT, SET and OUTPUT.",
+          "The chart calculates one more than the input.",
+          "Rounded terminals show start/end. Parallelograms show input/output. Rectangles show declarations and calculations."
+        ]
+      },
+      {
+        "type": "table",
+        "title": "Control structures and tracing",
+        "rows": [
+          [
+            "Structure",
+            "Purpose"
+          ],
+          [
+            "Sequence",
+            "Execute statements in order."
+          ],
+          [
+            "Selection",
+            "Choose a branch using a Boolean condition."
+          ],
+          [
+            "Iteration",
+            "Repeat statements while a rule permits."
+          ],
+          [
+            "Trace table",
+            "Record variable values and output after each step."
+          ]
+        ],
+        "note": "A trace follows actual execution. An untaken branch does not change the state."
+      },
+      {
+        "type": "code",
+        "title": "Practice and worked answer",
+        "code": "BEGIN\n  DECLARE total AS NUM = 5\n  SET total = total + 2\n  SET total = total * 3\n  OUTPUT total\nEND",
+        "points": [
+          "Question: What is the output? Write the value after each assignment.",
+          "Answer: total starts at 5, becomes 7, then becomes 21. Output is 21.",
+          "Question: Why is OUTPUT not an assignment? Answer: it displays the current value without replacing it."
+        ]
+      },
+      {
+        "type": "text",
+        "title": "Common mistakes and final checks",
+        "points": [
+          "Undeclared or unassigned values: declare the variable and assign or input a value before reading it.",
+          "Incorrect calculation order: apply precedence or use parentheses.",
+          "Missing validation: a valid numeric type can still contain an unacceptable value.",
+          "Before finishing: trace one normal case, one boundary case and one invalid case."
+        ]
+      }
+    ]
+  },
+  {
+    "unit": 2,
+    "title": "Decisions and loops",
+    "slides": [
+      {
+        "type": "cover",
+        "title": "Decisions and loops",
+        "body": "Short revision\nProgramming Logic and Design\nLefa Malatji"
+      },
+      {
+        "type": "table",
+        "title": "Boolean expressions",
+        "rows": [
+          [
+            "Expression",
+            "Meaning"
+          ],
+          [
+            "mark >= 50",
+            "TRUE when mark is at least 50."
+          ],
+          [
+            "A AND B",
+            "Both conditions must be TRUE."
+          ],
+          [
+            "A OR B",
+            "At least one condition must be TRUE."
+          ],
+          [
+            "NOT A",
+            "Reverse the Boolean value."
+          ]
+        ],
+        "note": "Comparisons bind before NOT, then AND, then OR. Parentheses make complex intent clear."
+      },
+      {
+        "type": "code",
+        "title": "Worked selection: IF and ELSE",
+        "code": "BEGIN\n  DECLARE mark AS NUM = 50\n  IF mark >= 50 THEN\n    OUTPUT \"Pass\"\n  ELSE\n    OUTPUT \"Revise\"\n  ENDIF\nEND",
+        "points": [
+          "At mark = 50, the condition is TRUE and output is Pass.",
+          "At mark = 49, output is Revise.",
+          "Nested IF places a second decision inside a branch. ELSEIF tests another condition after an earlier FALSE result."
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Worked selection: SWITCH",
+        "code": "BEGIN\n  DECLARE option AS INTEGER = 2\n  SWITCH option\n    CASE 1:\n      OUTPUT \"Add\"\n    CASE 2:\n      OUTPUT \"View\"\n    DEFAULT:\n      OUTPUT \"Invalid option\"\n  ENDSWITCH\nEND",
+        "points": [
+          "The output is View.",
+          "SWITCH selects a branch by matching a value. DEFAULT handles unmatched values.",
+          "This pseudocode dialect executes the selected case without fall-through."
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Worked FOR loop and accumulator",
+        "code": "BEGIN\n  DECLARE i AS INTEGER\n  DECLARE total AS NUM = 0\n  FOR i = 1 TO 3\n    SET total = total + i\n  ENDFOR\n  OUTPUT total\nEND",
+        "points": [
+          "An accumulator stores a running result. Initialise total before the loop.",
+          "i = 1: total becomes 1.\ni = 2: total becomes 3.\ni = 3: total becomes 6.",
+          "Both bounds are inclusive. Output is 6. A negative STEP can count down."
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Worked WHILE loop and priming input",
+        "code": "BEGIN\n  DECLARE value AS NUM\n  DECLARE total AS NUM = 0\n  INPUT value\n  WHILE value <> -1 DO\n    SET total = total + value\n    INPUT value\n  ENDWHILE\n  OUTPUT total\nEND",
+        "points": [
+          "The first INPUT is the priming input. It gives the condition an initial value.",
+          "-1 is a sentinel that ends input and is not added.",
+          "Inputs 10, 20, -1 produce output 30. A first input of -1 produces 0."
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Worked REPEAT loop",
+        "code": "BEGIN\n  DECLARE mark AS NUM\n  REPEAT\n    INPUT mark\n  UNTIL mark >= 0 AND mark <= 100\n  OUTPUT mark\nEND",
+        "points": [
+          "REPEAT tests after its body, so input happens at least once.",
+          "Inputs 120, -5, 70 cause three attempts. The final condition is TRUE for 70.",
+          "UNTIL TRUE ends the loop. WHILE TRUE continues its loop."
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Nested loops",
+        "code": "BEGIN\n  DECLARE row AS INTEGER\n  DECLARE column AS INTEGER\n  FOR row = 0 TO 1\n    FOR column = 0 TO 2\n      OUTPUT row, column\n    ENDFOR\n  ENDFOR\nEND",
+        "points": [
+          "The inner loop completes for each outer iteration.",
+          "Output pairs: (0,0), (0,1), (0,2), (1,0), (1,1), (1,2).",
+          "2 rows * 3 columns = 6 executions of OUTPUT."
+        ]
+      },
+      {
+        "type": "text",
+        "title": "Practice and worked answers",
+        "points": [
+          "Question: A loop starts at count = 1, displays count and increments it while count <= 3. What appears?",
+          "Answer: 1, then 2, then 3. count becomes 4 and the next condition is FALSE.",
+          "Question: What changes if count decreases by 1 instead?",
+          "Answer: count keeps satisfying count <= 3. The loop does not terminate unless another rule stops it."
+        ]
+      },
+      {
+        "type": "text",
+        "title": "Common mistakes and final checks",
+        "points": [
+          "A boundary error excludes or includes one value too many. Test the exact threshold.",
+          "A loop without a useful update may never end. A counter must move toward termination.",
+          "Reset an accumulator only where the intended group begins.",
+          "Before finishing: test zero iterations, one iteration and repeated iterations. REPEAT always runs its body at least once."
+        ]
+      }
+    ]
+  },
+  {
+    "unit": 3,
+    "title": "Arrays and algorithms",
+    "slides": [
+      {
+        "type": "cover",
+        "title": "Arrays and algorithms",
+        "body": "Short revision\nProgramming Logic and Design\nLefa Malatji"
+      },
+      {
+        "type": "table",
+        "title": "Array essentials",
+        "rows": [
+          [
+            "Concept",
+            "Rule"
+          ],
+          [
+            "Array",
+            "A collection of values accessed by index."
+          ],
+          [
+            "Length 3",
+            "Valid zero-based indexes are 0, 1 and 2."
+          ],
+          [
+            "Element",
+            "One position, for example values[1]."
+          ],
+          [
+            "Initial value",
+            "Allocation alone leaves each element unassigned."
+          ]
+        ],
+        "note": "A read needs an assigned element. Array sizes and indexes must be whole numbers."
+      },
+      {
+        "type": "code",
+        "title": "Worked array update",
+        "code": "BEGIN\n  DECLARE values[3] AS NUM\n  SET values[0] = 2\n  SET values[1] = 5\n  SET values[2] = 8\n  SET values[1] = values[0] + values[2]\n  OUTPUT values[1]\nEND",
+        "points": [
+          "Before the last assignment: [2, 5, 8].",
+          "values[1] becomes 2 + 8 = 10.",
+          "After: [2, 10, 8]. Output is 10."
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Input and total with a loop",
+        "code": "BEGIN\n  DECLARE values[3] AS NUM\n  DECLARE i AS INTEGER\n  DECLARE total AS NUM = 0\n  FOR i = 0 TO 2\n    INPUT values[i]\n    SET total = total + values[i]\n  ENDFOR\n  OUTPUT total\nEND",
+        "points": [
+          "Inputs 2, 3 and 4 fill indexes 0, 1 and 2.",
+          "The accumulator becomes 2, then 5, then 9.",
+          "Output is 9. The final valid index is length minus 1."
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Two-dimensional arrays",
+        "code": "BEGIN\n  DECLARE grid[2][3] AS NUM\n  DECLARE row AS INTEGER\n  DECLARE column AS INTEGER\n  FOR row = 0 TO 1\n    FOR column = 0 TO 2\n      INPUT grid[row][column]\n    ENDFOR\n  ENDFOR\nEND",
+        "points": [
+          "The first index is the row. The second is the column.",
+          "A 2 by 3 grid contains 6 cells. Rows range from 0 to 1 and columns from 0 to 2.",
+          "Input order: [0][0], [0][1], [0][2], [1][0], [1][1], [1][2]."
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Worked linear search",
+        "code": "DECLARE values[3] AS NUM\nDECLARE i AS INTEGER\nDECLARE foundAt AS INTEGER = -1\nDECLARE target AS NUM = 8\nSET values[0] = 2\nSET values[1] = 5\nSET values[2] = 8\nFOR i = 0 TO 2\n  IF values[i] = target THEN\n    SET foundAt = i\n  ENDIF\nENDFOR\nOUTPUT foundAt",
+        "points": [
+          "Compare each element with the target.",
+          "2 does not match. 5 does not match. 8 matches at index 2. Output is 2.",
+          "-1 means not found. This complete scan returns the last matching index when duplicates exist."
+        ]
+      },
+      {
+        "type": "table",
+        "title": "Parallel arrays",
+        "rows": [
+          [
+            "Index",
+            "names",
+            "marks"
+          ],
+          [
+            "0",
+            "Lebo",
+            "65"
+          ],
+          [
+            "1",
+            "Neo",
+            "72"
+          ],
+          [
+            "2",
+            "Amina",
+            "88"
+          ]
+        ],
+        "note": "For selected = 1, names[selected] is Neo and marks[selected] is 72. When sorting or moving records, move all related array values together."
+      },
+      {
+        "type": "code",
+        "title": "Worked bubble-sort comparison",
+        "code": "DECLARE values[2] AS NUM\nDECLARE temp AS NUM\nSET values[0] = 8\nSET values[1] = 3\nIF values[0] > values[1] THEN\n  SET temp = values[0]\n  SET values[0] = values[1]\n  SET values[1] = temp\nENDIF\nOUTPUT values[0], values[1]",
+        "points": [
+          "8 > 3 is TRUE. temp stores 8 before it is overwritten.",
+          "The pair changes from [8, 3] to [3, 8].",
+          "Full bubble sort repeats adjacent comparisons over passes. Each pass places the largest remaining value at the end of its range."
+        ]
+      },
+      {
+        "type": "text",
+        "title": "Practice and worked answers",
+        "points": [
+          "Question: For an array of length 4, is index 4 valid? Answer: no. The valid indexes are 0 through 3.",
+          "Question: How many inputs fill a 3 by 2 grid? Answer: 6 inputs.",
+          "Question: Searching [7, 2, 9] for 2 gives which index? Answer: index 1.",
+          "Question: Why use a temporary value in a swap? Answer: it preserves one value while the other position changes."
+        ]
+      },
+      {
+        "type": "text",
+        "title": "Common mistakes and final checks",
+        "points": [
+          "Starting at index 1 skips the first element in a zero-based array.",
+          "Using <= length accesses one position beyond the end. Use the last index, length - 1.",
+          "Sorting only one parallel array can attach a mark to the wrong learner.",
+          "Before finishing: test first/last positions, missing targets, duplicates and an already sorted list."
+        ]
+      }
+    ]
+  },
+  {
+    "unit": 4,
+    "title": "Methods and modules",
+    "slides": [
+      {
+        "type": "cover",
+        "title": "Methods and modules",
+        "body": "Short revision\nProgramming Logic and Design\nLefa Malatji"
+      },
+      {
+        "type": "table",
+        "title": "Definitions and method contracts",
+        "rows": [
+          [
+            "Term",
+            "Meaning"
+          ],
+          [
+            "Method or module",
+            "A named unit that performs a focused task."
+          ],
+          [
+            "Parameter",
+            "An input name declared in the method header."
+          ],
+          [
+            "Argument",
+            "An actual value supplied at a call."
+          ],
+          [
+            "Contract",
+            "Required inputs, result and any changes the method makes."
+          ]
+        ],
+        "note": "A returning method sends data back with RETURN. A method without a return value may perform output or another action."
+      },
+      {
+        "type": "hierarchy",
+        "title": "Decomposition and a hierarchy chart",
+        "points": [
+          "Main coordinates the program. Its child modules each handle one responsibility.",
+          "A hierarchy chart shows which modules call others. It does not show the timing of decisions or loop iterations.",
+          "ReadValues gathers inputs, CalculateTotal computes the result, and DisplayResult presents it."
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Method without parameters",
+        "code": "METHOD showWelcome()\n  OUTPUT \"Welcome to LogicLab\"\nENDMETHOD\nBEGIN\n  CALL showWelcome()\nEND",
+        "points": [
+          "The empty parentheses show that the method requires no parameters.",
+          "CALL invokes the method from the main program.",
+          "Output: Welcome to LogicLab. Control then returns to the caller."
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Parameters, arguments and scope",
+        "code": "METHOD showDouble(value AS NUM)\n  DECLARE doubled AS NUM\n  SET doubled = value * 2\n  OUTPUT doubled\nENDMETHOD\nBEGIN\n  CALL showDouble(4)\nEND",
+        "points": [
+          "value is a parameter. The argument 4 supplies its initial value.",
+          "doubled is local to the method. Its declaration does not create a main-program variable.",
+          "Output is 8. OUTPUT displays data without returning it as a result."
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Worked returning method",
+        "code": "METHOD difference(first AS NUM, second AS NUM)\n  RETURN first - second\nENDMETHOD\nBEGIN\n  DECLARE result AS NUM\n  SET result = difference(9, 4)\n  OUTPUT result\nEND",
+        "points": [
+          "first receives 9 and second receives 4.",
+          "The method returns 9 - 4 = 5. result receives 5, then OUTPUT displays it.",
+          "RETURN ends the current invocation. Statements after an unconditional RETURN cannot execute."
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Passing an array to a method",
+        "code": "METHOD sum(values[] AS NUM, size AS INTEGER)\n  DECLARE i AS INTEGER\n  DECLARE total AS NUM = 0\n  FOR i = 0 TO size - 1\n    SET total = total + values[i]\n  ENDFOR\n  RETURN total\nENDMETHOD\nBEGIN\n  DECLARE marks[2] AS NUM\n  SET marks[0] = 60\n  SET marks[1] = 80\n  OUTPUT sum(marks, 2)\nEND",
+        "points": [
+          "values[] declares an array parameter. size states how many assigned elements to process.",
+          "The call supplies marks and the size 2. The method adds 60 and 80. Output is 140.",
+          "Document whether a method may change the supplied array. This example only reads it."
+        ]
+      },
+      {
+        "type": "table",
+        "title": "Overloading and call checking",
+        "rows": [
+          [
+            "Header",
+            "Matching call"
+          ],
+          [
+            "METHOD area(side AS NUM)",
+            "area(3) uses one argument."
+          ],
+          [
+            "METHOD area(width AS NUM, height AS NUM)",
+            "area(3, 4) uses two arguments."
+          ],
+          [
+            "Signature",
+            "Name plus parameter count and types identifies an overload."
+          ],
+          [
+            "Return type alone",
+            "Changing only the return type does not identify a distinct overload."
+          ]
+        ],
+        "note": "A call must supply the expected number and compatible types of arguments. This table shows headers, not complete method bodies."
+      },
+      {
+        "type": "text",
+        "title": "Practice and worked answers",
+        "points": [
+          "Question: A method returns first - second. What does difference(4, 9) return? Answer: -5.",
+          "Question: Can a caller use a local variable declared inside another method? Answer: not directly. Pass data through parameters and return values.",
+          "Question: Why split input, calculation and output into modules? Answer: each responsibility becomes easier to test and change.",
+          "Method examples are written revision exercises. The live tracer currently executes main-program logic and arrays, rather than method calls."
+        ]
+      },
+      {
+        "type": "text",
+        "title": "Common mistakes and final checks",
+        "points": [
+          "Confusing OUTPUT with RETURN: a displayed value is not automatically available for assignment by the caller.",
+          "Wrong argument count or order: compare the call with its header.",
+          "Reading a local variable outside its scope: return the required value or pass it as an input.",
+          "Before finishing: test each method with normal and boundary inputs, then test the caller and its dependencies."
+        ]
+      }
+    ]
+  },
+  {
+    "unit": 5,
+    "title": "Object-oriented design",
+    "slides": [
+      {
+        "type": "cover",
+        "title": "Object-oriented design",
+        "body": "Short revision\nProgramming Logic and Design\nLefa Malatji"
+      },
+      {
+        "type": "table",
+        "title": "Classes, objects and constructors",
+        "rows": [
+          [
+            "Term",
+            "Meaning"
+          ],
+          [
+            "Class",
+            "A blueprint that declares fields and methods."
+          ],
+          [
+            "Object",
+            "An instance with its own field values."
+          ],
+          [
+            "Field / method",
+            "Stored state / behaviour that works with state."
+          ],
+          [
+            "Constructor",
+            "Initialises a new object when it is created."
+          ]
+        ],
+        "note": "NEW creates an object. A reference variable names the object being used. Separate instances normally keep separate instance fields."
+      },
+      {
+        "type": "table",
+        "title": "Access modifiers and encapsulation",
+        "rows": [
+          [
+            "Modifier or idea",
+            "Meaning"
+          ],
+          [
+            "PUBLIC",
+            "Code outside the class can access the member."
+          ],
+          [
+            "PRIVATE",
+            "Only code in the class can directly access the member."
+          ],
+          [
+            "PROTECTED",
+            "The class and derived classes can access the member."
+          ],
+          [
+            "Encapsulation",
+            "Group state and behaviour, and control changes through an interface."
+          ]
+        ],
+        "note": "These are the course pseudocode conventions. Exact access rules and syntax depend on the implementation language."
+      },
+      {
+        "type": "code",
+        "title": "Worked object state",
+        "code": "CLASS Counter\n  PRIVATE count AS NUM = 0\n  METHOD increment()\n    SET count = count + 1\n  ENDMETHOD\n  METHOD getCount()\n    RETURN count\n  ENDMETHOD\nENDCLASS",
+        "points": [
+          "The private field starts at 0 for each new Counter.",
+          "After two increment calls on one object, count is 2. getCount returns 2.",
+          "A second new Counter still starts at 0. Its state is independent of the first object."
+        ]
+      },
+      {
+        "type": "code",
+        "title": "A constructor with a parameter",
+        "code": "CLASS Learner\n  PRIVATE name AS STRING\n  CONSTRUCTOR(newName AS STRING)\n    SET name = newName\n  ENDCONSTRUCTOR\n  METHOD getName()\n    RETURN name\n  ENDMETHOD\nENDCLASS",
+        "points": [
+          "The constructor parameter newName introduces the incoming text.",
+          "Creating a Learner with \"Neo\" stores Neo in name. getName returns Neo.",
+          "A constructor establishes a valid initial state. These are design-level examples, not executable tracer syntax."
+        ]
+      },
+      {
+        "type": "text",
+        "title": "Inheritance and polymorphism",
+        "points": [
+          "Inheritance defines a specialised class from a more general class. Use it for an is-a relationship, such as SavingsAccount is an Account.",
+          "A derived class can reuse suitable base behaviour and override a method with a specialised implementation.",
+          "Polymorphism lets a call through a common interface select the behaviour of the actual object.",
+          "Overriding changes inherited behaviour. Overloading provides different parameter signatures under the same method name."
+        ]
+      },
+      {
+        "type": "class",
+        "title": "Reading a class diagram",
+        "points": [
+          "A class diagram separates the class name, fields and methods into compartments.",
+          "A minus sign means private. A plus sign means public. A hash sign means protected.",
+          "balance is private numeric state. deposit accepts a NUM amount. getBalance returns a NUM value."
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Validation inside a method",
+        "code": "CLASS Account\n  PRIVATE balance AS NUM = 0\n  METHOD deposit(amount AS NUM)\n    IF amount > 0 THEN\n      SET balance = balance + amount\n    ENDIF\n  ENDMETHOD\n  METHOD getBalance()\n    RETURN balance\n  ENDMETHOD\nENDCLASS",
+        "points": [
+          "deposit(50) changes balance from 0 to 50.",
+          "deposit(-10) leaves the balance at 50 because the condition is FALSE.",
+          "The method protects the rule that this deposit operation accepts only positive amounts."
+        ]
+      },
+      {
+        "type": "text",
+        "title": "Practice and worked answers",
+        "points": [
+          "Question: Is Learner a class or one particular learner? Answer: it is a class. A created Learner object is an instance.",
+          "Question: A private field has a value of 5. Does private mean the value can never change? Answer: no. Class methods can change it.",
+          "Question: Which relation fits a school containing learners? Answer: has-a, normally modelled with composition or association rather than School inheriting Learner.",
+          "Question: What should a class diagram show? Answer: relevant fields, method signatures and relationships with clear visibility."
+        ]
+      },
+      {
+        "type": "text",
+        "title": "Common mistakes and final checks",
+        "points": [
+          "Confusing class and object: define the blueprint, then identify the instances and their separate state.",
+          "Using inheritance for a has-a relationship: model ownership or association explicitly.",
+          "Exposing fields without validation can allow invalid state. Decide which changes methods should permit.",
+          "Before finishing: check constructor inputs, visibility, field types, method contracts and each required relationship."
+        ]
+      }
+    ]
+  }
+]
