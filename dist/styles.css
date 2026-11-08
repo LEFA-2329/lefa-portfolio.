@@ -1301,3 +1301,5 @@ html{scroll-padding-top:110px}
 
 /* Consistent project actions and direct feature links. */
 .project-tools{display:flex;flex-wrap:wrap;gap:8px 16px;margin:18px 0;font-size:12px}.project-tools a{color:var(--lime);text-decoration:underline;text-underline-offset:4px}.project-actions{flex-wrap:wrap;align-items:center}.project-actions .text-btn{font:inherit;font-size:12px;line-height:1.5;min-height:40px;padding:9px 0;text-align:left}.project-screenshot .photo-open{background:#f7f7f2}.project-screenshot .photo-open:hover{filter:brightness(.96)}
+
+.project-tools{height:auto;min-height:0;justify-content:flex-start}
