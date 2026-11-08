@@ -613,4 +613,3 @@ export function getResponse(question, context = {}) {
     suggestions: defaultSuggestions,
   };
 }
-

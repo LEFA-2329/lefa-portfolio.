@@ -192,6 +192,3 @@
   cursor: pointer;
   font: inherit;
 }
-
-/* Match the portfolio. */
-.assistant-launch{background:#d7fa72;border-color:#d7fa72;color:#161b13;border-radius:4px}#assistant-panel,.assistant-header{background:#1c2021;border-color:#3b505e}.assistant-suggestions button,.guide-done button{background:#263129;border-color:#576650;color:#f0f2ec}.assistant-message{background:#263129}.assistant-message strong,.assistant-message a,.assistant-contact a{color:#d7fa72}#assistant-form button{background:#d7fa72;color:#161b13}#assistant-form textarea{background:#111415;border-color:#60705d}#assistant-panel :focus-visible,.assistant-launch:focus-visible{outline-color:#d7fa72}
