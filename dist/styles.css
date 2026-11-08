@@ -1285,3 +1285,11 @@ html{scroll-padding-top:110px}
 /* A compact four-photo gallery. */
 .photo-gallery-grid{max-width:none;gap:24px}.photo-gallery img{height:300px;aspect-ratio:auto;object-fit:contain}.photo-gallery figcaption{padding:14px 18px;font-size:12px}
 @media(max-width:650px){.photo-gallery-grid{max-width:430px;gap:20px}.photo-gallery img{height:260px}.photo-gallery figcaption{padding:13px 16px}}
+
+/* A single horizontal row of photo cards. */
+.photo-gallery-grid{display:flex;flex-wrap:nowrap;gap:20px;max-width:none;overflow-x:auto;scroll-snap-type:x proximity;padding:2px 2px 16px;scrollbar-color:#82975a #202623}
+.photo-gallery-grid figure{flex:0 0 calc((100% - 60px)/4);min-width:0;scroll-snap-align:start}
+.photo-gallery img{height:250px;object-fit:contain}
+.photo-gallery figcaption{padding:14px;font-size:11px;line-height:1.6}
+@media(max-width:950px){.photo-gallery-grid figure{flex-basis:260px}.photo-gallery img{height:250px}}
+@media(max-width:650px){.photo-gallery-grid{display:flex;max-width:none;gap:16px}.photo-gallery-grid figure{flex-basis:260px}.photo-gallery img{height:250px}}
