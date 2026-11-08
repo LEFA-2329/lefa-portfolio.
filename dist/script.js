@@ -45,3 +45,11 @@ dialog.addEventListener('click', (e) => {
       dialog.close();
   }
 });
+
+
+const menuToggle = document.querySelector('.menu-toggle');
+const portfolioNav = document.querySelector('#portfolio-nav');
+function closeMenu(){menuToggle.setAttribute('aria-expanded','false');portfolioNav.classList.remove('is-open');}
+menuToggle.addEventListener('click',()=>{const open=menuToggle.getAttribute('aria-expanded')!=='true';menuToggle.setAttribute('aria-expanded',String(open));portfolioNav.classList.toggle('is-open',open);});
+portfolioNav.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});

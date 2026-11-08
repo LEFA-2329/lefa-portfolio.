@@ -8,10 +8,10 @@
       name="description"
     />
     <title>Lefa Malatji | Software Developer &amp; NLP Researcher</title>
-    <link href="./styles.css?v=photos-1" rel="stylesheet" />
+    <link href="./styles.css?v=navy-coral-1" rel="stylesheet" />
     <link href="/favicon.svg?v=2" rel="icon" type="image/svg+xml" />
     <link href="/favicon.ico?v=2" rel="icon" type="image/x-icon" />
-    <link rel="stylesheet" href="./assistant.css?v=3" />
+    <link rel="stylesheet" href="./assistant.css?v=navy-coral-1" />
     <link rel="canonical" href="https://lefamalatji.co.za/" />
     <meta name="author" content="Lefa Malatji" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
@@ -109,9 +109,9 @@
     <header>
       <nav class="wrap">
         <a aria-label="Lefa Malatji home" class="logo" href="#"
-          >LM<span>.</span></a
+          >Lefa Malatji</a
         >
-        <div class="links">
+        <button class="menu-toggle" aria-controls="portfolio-nav" aria-expanded="false" aria-label="Open navigation"><span></span><span></span></button><div class="links" id="portfolio-nav">
           <a href="#work"> Selected work </a>
           <a href="#expertise"> Expertise </a>
           <a href="#about"> About </a>
@@ -123,41 +123,15 @@
     <main class="wrap">
       <div class="hero">
         <div>
-          <div class="status">
-            <span class="dot"></span> Exploring opportunities in AI, software
-            &amp; data
-          </div>
-          <div class="eyebrow hero-name">
-            LEFA MALATJI / SOFTWARE . AI . DATA
-          </div>
-          <h1>
-            Lefa Malatji.<br />Software developer.<br /><em>NLP researcher.</em>
-          </h1>
-          <p class="intro">
-            I'm Lefa Malatji, a software developer, NLP researcher and lecturer
-            building at the intersection of intelligent systems, applications
-            and data.
-          </p>
+          <p class="hero-greeting">Hello.</p>
+          <p class="hero-name">I'm Lefa Malatji</p>
+          <h1>Software Developer</h1>
+          <p class="intro">I build websites and applications, research Sepedi-English language technology, and teach the next generation of developers.</p>
           <div class="actions">
-            <a class="btn primary" href="#work"> Explore my work </a>
-            <a class="btn" download="" href="./Lefa-Malatji-CV.pdf?v=10">
-              Download CV
-            </a>
-            <a
-              class="btn"
-              href="https://wa.me/27697294309?text=Hi%20Lefa%2C%20I%20viewed%20your%20portfolio%20and%20would%20like%20to%20discuss%20an%20opportunity."
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              WhatsApp me
-            </a>
-            <a
-              class="btn"
-              href="mailto:lazylefa@gmail.com?subject=Career%20opportunity%20%E2%80%94%20Portfolio%20enquiry"
-            >
-              Email me
-            </a>
+            <a class="btn primary" href="./services/#enquiry">Got a project?</a>
+            <a class="btn" download href="./Lefa-Malatji-CV.pdf?v=10">Download my CV</a>
           </div>
+          <p class="hero-detail">NLP researcher. Lecturer. MSc Computer Science candidate.</p>
         </div>
         <figure class="portrait-card">
           <img
@@ -179,17 +153,16 @@
       <div class="credibility">
         <span><strong>1 year</strong> Software development internship</span>
         <span
-          ><strong>MSc candidate</strong> Computer Science . University of
+          ><strong>MSc candidate</strong> Computer Science. University of
           Limpopo</span
         >
         <span><strong>Published research</strong> Sepedi-English NLP</span>
       </div>
-      <div class="strip">
-        <span> AI &amp; NLP RESEARCH </span>
-        <span> SOFTWARE DEVELOPMENT </span>
-        <span> DATABASE SYSTEMS </span>
-        <span> DATA ANALYSIS </span>
-      </div>
+      <div class="strip" aria-label="Core technologies"><span>C#</span><span>ASP.NET Core</span><span>JavaScript</span><span>Python</span><span>PostgreSQL</span><span>GitHub</span></div>
+      <section class="overview" aria-labelledby="overview-title">
+        <div class="service-summary"><a href="./services/#services"><span>01</span>Website development</a><a href="./services/#services"><span>02</span>Application development</a><a href="./services/#services"><span>03</span>Website maintenance</a></div>
+        <div><p class="eyebrow">A little about me</p><h2 id="overview-title">Purpose behind the code.</h2><p class="small">I'm a developer, researcher and lecturer with a background in Computer Science and Statistics. From school learning resources to business applications, I enjoy turning a practical problem into something people can use.</p><a class="text-btn" href="#about">More about my background</a></div>
+      </section>
       <!-- Selected projects -->
       <section id="work">
         <div class="section-head">
@@ -262,7 +235,7 @@
             </div>
             <div class="project-copy">
               <div class="eyebrow green">
-                Featured project . AI &amp; software
+                Featured project. AI &amp; software
               </div>
               <h3>Store Hub</h3>
               <p class="small">
@@ -297,7 +270,7 @@
               <figcaption>RESEARCH &amp; PROFESSIONAL ENGAGEMENT</figcaption>
             </figure>
             <div class="project-copy">
-              <div class="eyebrow green">AI research . MSc research</div>
+              <div class="eyebrow green">AI research. MSc research</div>
               <h3>Sepedi-English text generation</h3>
               <p class="small">
                 Investigating how data scarcity affects code-switched text
@@ -416,7 +389,7 @@
           </article>
           <article class="project" data-category="software">
             <div class="project-copy">
-              <div class="eyebrow green">Team project . Four contributors</div>
+              <div class="eyebrow green">Team project. Four contributors</div>
               <h3>Burzarsnet</h3>
               <p class="small">
                 A South African bursary and internship website with admin
@@ -458,8 +431,7 @@
               research.
             </p>
             <div class="skill-list">
-              Python . TensorFlow / Keras<br />Text preprocessing .
-              Tokenisation<br />BLEU . ROUGE . Model evaluation
+              Python. TensorFlow / Keras<br />Text preprocessing. Tokenisation<br />BLEU. ROUGE. Model evaluation
             </div>
           </div>
           <div>
@@ -470,8 +442,7 @@
               access.
             </p>
             <div class="skill-list">
-              C# . ASP.NET Core . MVC<br />REST APIs . Swagger<br />PHP .
-              JavaScript · HTML5 . CSS3<br />Bootstrap 5 . Git / GitHub . Docker
+              C#. ASP.NET Core. MVC<br />REST APIs. Swagger<br />PHP. JavaScript. HTML5. CSS3<br />Bootstrap 5. Git / GitHub. Docker
             </div>
           </div>
           <div>
@@ -482,8 +453,7 @@
               focus on administration.
             </p>
             <div class="skill-list">
-              SQL Server . PostgreSQL . MySQL<br />Schema design .
-              Normalisation<br />Entity Framework . Migrations
+              SQL Server. PostgreSQL. MySQL<br />Schema design. Normalisation<br />Entity Framework. Migrations
             </div>
           </div>
           <div>
@@ -494,7 +464,7 @@
               comparisons.
             </p>
             <div class="skill-list">
-              Descriptive statistics<br />Data preparation . SQL aggregation<br />Experimental
+              Descriptive statistics<br />Data preparation. SQL aggregation<br />Experimental
               results interpretation
             </div>
           </div>
@@ -541,12 +511,12 @@
             <div>
               <strong> BSc in Mathematical Sciences </strong>
               <span
-                >University of Limpopo · 2021-2024<br />Majors in Computer
+                >University of Limpopo. 2021-2024<br />Majors in Computer
                 Science and Statistics</span
               >
             </div>
             <div>
-              <strong> Lecturer · Rosebank College </strong>
+              <strong> Lecturer. Rosebank College </strong>
               <span
                 >Programming, software development and database concepts</span
               >
@@ -595,14 +565,14 @@
               </a>
               <a
                 class="btn"
-                href="mailto:lazylefa@gmail.com?subject=Career%20opportunity%20%E2%80%94%20Portfolio%20enquiry"
+                href="mailto:lazylefa@gmail.com?subject=Career%20opportunity%20-%20Portfolio%20enquiry"
               >
                 Email me
               </a>
             </div>
             <a
               class="contact-email"
-              href="mailto:lazylefa@gmail.com?subject=Career%20opportunity%20%E2%80%94%20Portfolio%20enquiry"
+              href="mailto:lazylefa@gmail.com?subject=Career%20opportunity%20-%20Portfolio%20enquiry"
             >
               lazylefa@gmail.com
             </a>
@@ -639,7 +609,7 @@
       </section>
       <footer>
         <span> © 2026 Lefa Malatji </span>
-        <span> AI | Software · Data </span>
+        <span> AI | Software. Data </span>
         <a href="#"> Back to top </a>
       </footer>
     </main>
@@ -647,7 +617,7 @@
       <button aria-label="Close project details" class="close">×</button>
       <div id="case-content"></div>
     </dialog>
-    <script defer="True" src="./script.js?v=case-studies-1"></script>
+    <script defer="True" src="./script.js?v=navy-coral-1"></script>
     <button
       id="assistant-launch"
       class="assistant-launch"
@@ -718,6 +688,7 @@
         </div>
       </div>
     </dialog>
-    <script src="./assistant.js?v=5" defer></script>
+    <script src="./assistant.js?v=navy-coral-1" defer></script>
   </body>
 </html>
+
