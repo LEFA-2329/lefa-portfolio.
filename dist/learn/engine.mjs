@@ -24,7 +24,7 @@ function normaliseLine(raw) {
   text = text.replace(/^((?:METHOD|MODULE|FUNCTION)\s+[A-Za-z_]\w*)$/i, '$1()');
   text = text.replace(/^CALL\s+([A-Za-z_][\w.]*)$/i, 'CALL $1()');
   if (/^[A-Za-z_][\w.]*\s*\(.*\)$/.test(text) && !/^(INPUT|OUTPUT|IF|WHILE|UNTIL|RETURN|CALL)\b/i.test(text)) text = 'CALL ' + text;
-  text = text.replace(/^(INTEGER|REAL|STRING|BOOLEAN)\s+([A-Za-z_]\w*(?:\[[^\]]*\])*)$/i, 'DECLARE $2 AS $1');
+  text = text.replace(/^(INTEGER|REAL|NUM|STRING|BOOLEAN)\s+([A-Za-z_]\w*(?:\[[^\]]*\])*)$/i, 'DECLARE $2 AS $1');
   if (/^[A-Za-z_][\w.]*(?:\[[^\]]+\])*\s*(?:=(?!=)|<-|←)/.test(text)) text = 'SET ' + text;
   return text.replace(/^(SET\s+[^=←]+?)\s*(?:<-|←)\s*/i, '$1 = ');
 }
@@ -188,4 +188,5 @@ export function hierarchy(ast){
  const levels=[];for(const n of unique)(levels[depth.get(n)]??=[]).push(n);const cols=Math.max(...levels.map(l=>l?.length||0),1),w=Math.max(600,cols*270+60),pos=new Map();let shapes='';levels.forEach((level,d)=>level?.forEach((name,i)=>{const x=w/2+(i-(level.length-1)/2)*270,y=45+d*160;pos.set(name,{x,y});shapes+=`<rect x="${x-115}" y="${y}" width="230" height="80" rx="8" fill="${name==='Main'?'#e0f2f1':'#e2f2ec'}" stroke="#a5adc0"/>${svgText(name,x,y+40)}`;}));let edges='';for(const[a,b]of relations){const p=pos.get(a),q=pos.get(b);edges+=`<path d="M${p.x} ${p.y+80} L${q.x} ${q.y}" fill="none" stroke="#66758c" stroke-width="1.5" marker-end="url(#arrow)"/>`;}return {svg:shell(edges+shapes,w,levels.length*160+70,'Module call hierarchy'),missing:[...missing]};
 }
 export function classDiagram(){return shell(`<g fill="#fff" stroke="#a5adc0"><rect x="50" y="40" width="260" height="200" rx="8"/><rect x="400" y="40" width="260" height="200" rx="8"/><path d="M50 100H310M50 165H310M400 100H660M400 165H660"/></g>${svgText('Learner',180,72)}${svgText('- name: STRING',180,130)}${svgText('+ displayDetails()',180,200)}${svgText('Course',530,72)}${svgText('- title: STRING',530,130)}${svgText('+ enrol(learner)',530,200)}<path d="M310 140H400" stroke="#66758c" stroke-width="2"/><text x="326" y="125" fill="#52617b" font-size="12">enrols in</text>`,710,290,'Class diagram: Learner associated with Course');}
+
 

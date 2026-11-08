@@ -22,3 +22,10 @@ Regression checks cover size limits, bounds, unassigned reads, wrong types, inpu
 Use `DECLARE grid[2][3] AS INTEGER` and `grid[row][column]`. Each dimension is a positive whole-number expression, fixed at declaration. Rows and columns are independently checked against their zero-based bounds. The existing 100-element allocation limit counts rows multiplied by columns. Both indexes are required; comma-separated indexes are not part of this dialect. Grid values are shown separately from the scalar variable table with row and column headers, full cell coordinates, input/change labels and horizontal scrolling for larger grids. Snapshots copy dimensions and values.
 
 Three examples cover nested-loop input and total, row totals and a first-match search. Run `node tests/logiclab-grid-tracing.test.mjs` for these examples, bounds, input recovery, missing indexes, type checks, shared limits and independent runs. Browser checks cover a full 2 by 2 input/total run, input correction and previous-step replay.
+
+
+## NUM numeric data type
+
+`DECLARE num AS NUM` accepts whole and decimal numeric values. NUM is retained as the displayed declared type and works for initial values, constants, INPUT, arithmetic, one-dimensional arrays and grids. It uses the same finite browser number representation as REAL and rejects text, Boolean values, NaN and infinity. INTEGER retains its whole-number validation. `NUM num` is also supported as a declaration in the parser and diagram lab; num remains a permitted variable name for compatibility.
+
+NUM FOR counters are supported, with whole-number start/end/counter values and nonzero integer STEP. Array sizes and indexes must also be whole numbers regardless of the declared numeric type. Fractional values are rejected in those contexts. Run `node tests/logiclab-num.test.mjs` for NUM declarations, numeric inputs, arrays, grids, constants, loops, invalid values and diagram syntax.

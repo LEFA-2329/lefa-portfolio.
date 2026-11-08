@@ -170,7 +170,7 @@ export const lessons = [
       },
       {
         "heading": "Common data types",
-        "text": "INTEGER stores whole numbers; REAL represents fractional numeric values; STRING stores text; BOOLEAN represents TRUE or FALSE. A phone number is often text because leading zeroes and symbols matter and arithmetic is not required."
+        "text": "NUM stores numeric values, including whole numbers and decimals, for example 7 and 7.5. INTEGER restricts values to whole numbers; REAL also accepts whole numbers and decimals; STRING stores text; BOOLEAN represents TRUE or FALSE. A phone number is often text because leading zeroes and symbols matter and arithmetic is not required."
       },
       {
         "heading": "Initialisation and assignment",
@@ -1196,4 +1196,5 @@ export const lessons = [
     "diagram": "class"
   }
 ];
+
 
