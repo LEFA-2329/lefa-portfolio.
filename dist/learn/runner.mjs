@@ -1,4 +1,4 @@
-import {parse} from './engine.mjs?v=7';
+import {parse} from './engine.mjs?v=8';
 const numberPattern=/^(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?/;
 const identifier=/^[A-Za-z_]\w*$/;
 const MAX_STRING=2000;
@@ -11,8 +11,8 @@ function tokens(source){
   if(c==='"'||c==="'"){const quote=c;let value='',closed=false;at++;while(at<source.length){let ch=source[at++];if(ch===quote){closed=true;break;}if(ch==='\\'){if(at>=source.length)break;const esc=source[at++];if(!['n','t','r','\\','"',"'"].includes(esc))throw Error('Unsupported string escape.');ch=({n:'\n',t:'\t',r:'\r'})[esc]??esc;}value+=ch;}if(!closed)throw Error('Close the quoted string.');if(value.length>MAX_STRING)throw Error('Text values may contain at most 2,000 characters.');out.push({kind:'literal',value});continue;}
   const num=source.slice(at).match(numberPattern);if(num){const value=Number(num[0]);if(!Number.isFinite(value))throw Error('Use a finite number.');out.push({kind:'literal',value});at+=num[0].length;continue;}
   const word=source.slice(at).match(/^[A-Za-z_]\w*/);if(word){const upper=word[0].toUpperCase();out.push(upper==='TRUE'||upper==='FALSE'?{kind:'literal',value:upper==='TRUE'}:['AND','OR','NOT','DIV','MOD'].includes(upper)?{kind:'op',value:upper}:{kind:'name',value:word[0]});at+=word[0].length;continue;}
-  const op=source.slice(at).match(/^(>=|<=|<>|!=|==|[+\-*/=<>(),])/);if(op){out.push({kind:'op',value:op[0]});at+=op[0].length;continue;}
-  throw Error(`Unsupported expression symbol ${JSON.stringify(c)}. Arrays, properties and method calls are not executable in this first tracer.`);
+  const op=source.slice(at).match(/^(>=|<=|<>|!=|==|[+\-*/=<>(),\[\]])/);if(op){out.push({kind:'op',value:op[0]});at+=op[0].length;continue;}
+  throw Error(`Unsupported expression symbol ${JSON.stringify(c)}. Properties and method calls are not executable in this tracer.`);
  }
  if(out.length>500)throw Error('Keep each expression below 500 tokens.');return out;
 }
@@ -20,23 +20,25 @@ const precedence={OR:1,AND:2,'=':3,'==':3,'<>':3,'!=':3,'<':3,'<=':3,'>':3,'>=':
 function expressionList(source){const ts=tokens(source);let at=0,depth=0;
  function expression(min=0){if(++depth>40)throw Error('Expression nesting exceeds 40 levels.');let token=ts[at++],left;if(!token)throw Error('Expected a value or expression.');
   if(token.kind==='literal')left={type:'literal',value:token.value};
-  else if(token.kind==='name')left={type:'name',name:token.value};
+  else if(token.kind==='name'){left={type:'name',name:token.value};if(ts[at]?.value==='['){at++;const index=expression();if(ts[at++]?.value!==']')throw Error('Array access needs a closing bracket.');left={type:'element',name:token.value,index};}}
   else if(token.value==='('){left={type:'group',value:expression()};if(ts[at++]?.value!==')')throw Error('Expression needs a closing parenthesis.');}
   else if(['-','+','NOT'].includes(token.value))left={type:'unary',op:token.value,value:expression(token.value==='NOT'?3:6)};
   else throw Error('Expected a number, quoted string, Boolean or declared variable.');
   while(at<ts.length){const op=ts[at].value,p=precedence[op];if(p===undefined||p<min)break;at++;if(p===3&&left.type==='binary'&&precedence[left.op]===3)throw Error('Combine separate comparisons with AND or OR.');left={type:'binary',op,left,right:expression(p+1)};}
   depth--;return left;
  }
- const result=[];if(!ts.length)throw Error('An expression is required.');do{result.push(expression());if(at===ts.length)break;if(ts[at++]?.value!==',')throw Error('Unexpected expression content. Method calls and array indexing are not supported by this tracer.');if(at===ts.length)throw Error('A value is required after the comma.');}while(at<ts.length);return result;
+ const result=[];if(!ts.length)throw Error('An expression is required.');do{result.push(expression());if(at===ts.length)break;if(ts[at++]?.value!==',')throw Error('Unexpected expression content. Use a supported expression, with one index per array access. Method calls are not supported.');if(at===ts.length)throw Error('A value is required after the comma.');}while(at<ts.length);return result;
 }
 function one(source){const list=expressionList(source);if(list.length!==1)throw Error('Use a single expression here.');return list[0];}
 function numeric(value){if(typeof value!=='number'||!Number.isFinite(value))throw Error('This operation requires a finite numeric value.');return value;}
 function logical(value){if(typeof value!=='boolean')throw Error('A condition must be BOOLEAN, using TRUE/FALSE or a comparison.');return value;}
 function bounded(value){if(typeof value==='number'&&!Number.isFinite(value))throw Error('The numeric result is not finite.');if(typeof value==='string'&&value.length>MAX_STRING)throw Error('Text values may contain at most 2,000 characters.');return value;}
+function arrayIndex(v,index){if(!v.array)throw Error(`${v.name} is not an array.`);if(!Number.isSafeInteger(index)||index<0||index>=v.value.length)throw Error(`${v.name} index must be a whole number from 0 to ${v.value.length-1}; received ${displayValue(index)}.`);return index;}
 function evaluate(node,env){
  if(node.type==='literal')return node.value;
  if(node.type==='group')return evaluate(node.value,env);
- if(node.type==='name'){const v=env.get(node.name.toLowerCase());if(!v)throw Error(`${node.name} must be declared before use.`);if(v.value===undefined)throw Error(`${v.name} has not been assigned an input or initial value.`);return v.value;}
+ if(node.type==='element'){const v=env.get(node.name.toLowerCase());if(!v)throw Error(`${node.name} must be declared before use.`);const index=arrayIndex(v,evaluate(node.index,env));if(v.value[index]===undefined)throw Error(`${v.name}[${index}] has not been assigned an input or initial value.`);return v.value[index];}
+ if(node.type==='name'){const v=env.get(node.name.toLowerCase());if(!v)throw Error(`${node.name} must be declared before use.`);if(v.array)throw Error(`Use an index such as ${v.name}[0] to read an array element.`);if(v.value===undefined)throw Error(`${v.name} has not been assigned an input or initial value.`);return v.value;}
  if(node.type==='unary'){const v=evaluate(node.value,env);return node.op==='NOT'?!logical(v):bounded(node.op==='-'?-numeric(v):numeric(v));}
  const a=evaluate(node.left,env);if(node.op==='AND')return logical(a)?logical(evaluate(node.right,env)):false;if(node.op==='OR')return logical(a)?true:logical(evaluate(node.right,env));const b=evaluate(node.right,env);let v;
  switch(node.op){case '+':if(typeof a==='string'&&typeof b==='string')v=a+b;else v=numeric(a)+numeric(b);break;case '-':v=numeric(a)-numeric(b);break;case '*':v=numeric(a)*numeric(b);break;case '/':case 'DIV':case 'MOD':numeric(a);numeric(b);if(b===0)throw Error('Division by zero is not allowed.');v=node.op==='/'?a/b:node.op==='DIV'?Math.trunc(a/b):a-Math.trunc(a/b)*b;break;
@@ -47,17 +49,19 @@ function evaluate(node,env){
 function typed(value,type){if(type==='INTEGER'){numeric(value);if(!Number.isSafeInteger(value))throw Error('INTEGER requires a whole number within the safe integer range.');}else if(type==='REAL')numeric(value);else if(type==='STRING'){if(typeof value!=='string')throw Error('STRING requires a text value in quotation marks in code.');}else if(type==='BOOLEAN')logical(value);else throw Error('Use INTEGER, REAL, STRING or BOOLEAN.');return bounded(value);}
 function inputValue(raw,type){if(type==='STRING'){try{return bounded(String(raw));}catch(err){throw new InputError(err.message);}}const text=String(raw).trim();if(type==='BOOLEAN'){if(!/^(true|false)$/i.test(text))throw new InputError('Enter TRUE or FALSE without quotation marks.');return /^true$/i.test(text);}if(!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/.test(text))throw new InputError('Enter a number using a decimal point, without text or quotation marks.');try{return typed(Number(text),type);}catch(err){throw new InputError(err.message);}}
 export function displayValue(value){return value===undefined?'Not assigned':typeof value==='boolean'?(value?'TRUE':'FALSE'):String(value);}
+function target(source){const expr=one(source);if(!['name','element'].includes(expr.type)||!validName(expr.name))throw Error('Use a declared variable or one array element as the target.');return expr;}
 function compile(source){
  if(source.length>20000||source.split(/\r?\n/).filter(x=>x.trim()).length>300)throw Error('Keep a trace below 20,000 characters and 300 non-empty lines.');
- if(/^\s*(?:CLASS|(?:PUBLIC|PRIVATE|PROTECTED)\b)/im.test(source))throw Error('This first tracer runs scalar main programs. Classes, objects and access modifiers remain written exercises.');
- const ast=parse(source);if(ast.modules.length)throw Error('Methods and modules are not executable in this first tracer. Use a main program with declared scalar variables.');
+ if(/^\s*(?:CLASS|(?:PUBLIC|PRIVATE|PROTECTED)\b)/im.test(source))throw Error('This tracer runs main programs. Classes, objects and access modifiers remain written exercises.');
+ const ast=parse(source);if(ast.modules.length)throw Error('Methods and modules are not executable in this first tracer. Use a main program with declared variables and one-dimensional arrays.');
  const program=[];let loopId=0;const repeatEnds=new Map(),repeats=[];source.split(/\r?\n/).forEach((line,i)=>{if(/^\s*REPEAT(?:\s*\/\/.*)?\s*$/i.test(line))repeats.push(i+1);if(/^\s*UNTIL\s+/i.test(line))repeatEnds.set(repeats.pop(),i+1);});
  const add=x=>(program.push(x),program.length-1);
  function block(nodes){for(const n of nodes){try{
-  if(n.type==='process'){let m;if(m=n.label.match(/^DECLARE\s+(.+?)\s+AS\s+(INTEGER|REAL|STRING|BOOLEAN)(?:\s*=\s*(.+))?$/i)){const names=m[1].split(',').map(x=>x.trim());if(!names.every(validName))throw Error('Declare scalar names that are not keywords. Arrays are not executable in this first tracer.');add({op:'declare',names,type:m[2].toUpperCase(),initial:m[3]?one(m[3]):null,line:n.line});}
+  if(n.type==='process'){let m;if(m=n.label.match(/^DECLARE\s+([A-Za-z_]\w*)\[([^\]]+)\]\s+AS\s+(INTEGER|REAL|STRING|BOOLEAN)$/i)){if(!validName(m[1]))throw Error('An array name cannot be a keyword.');add({op:'array',name:m[1],size:one(m[2]),type:m[3].toUpperCase(),line:n.line});}
+   else if(m=n.label.match(/^DECLARE\s+(.+?)\s+AS\s+(INTEGER|REAL|STRING|BOOLEAN)(?:\s*=\s*(.+))?$/i)){const names=m[1].split(',').map(x=>x.trim());if(!names.every(validName))throw Error('Declare names that are not keywords. Use DECLARE values[5] AS INTEGER for a one-dimensional array; initialise its elements individually.');add({op:'declare',names,type:m[2].toUpperCase(),initial:m[3]?one(m[3]):null,line:n.line});}
    else if(m=n.label.match(/^(?:CONSTANT|CONST)\s+(\w+)(?:\s+AS\s+(INTEGER|REAL|STRING|BOOLEAN))?\s*=\s*(.+)$/i)){if(!validName(m[1]))throw Error('A constant name cannot be a keyword.');add({op:'constant',name:m[1],type:m[2]?.toUpperCase(),expr:one(m[3]),line:n.line});}
-   else if(m=n.label.match(/^SET\s+([A-Za-z_]\w*)\s*=\s*(.+)$/i))add({op:'set',name:m[1],expr:one(m[2]),line:n.line});else throw Error('Use DECLARE name AS type, CONSTANT name = value, or SET name = expression. Array and object assignments are not executable here.');
-  }else if(n.type==='io'){const m=n.label.match(/^(INPUT|OUTPUT)\s+(.+)$/i);if(m[1].toUpperCase()==='INPUT'){if(!identifier.test(m[2].trim()))throw Error('Use one declared scalar variable per INPUT statement.');add({op:'input',name:m[2].trim(),line:n.line});}else add({op:'output',expressions:expressionList(m[2]),line:n.line});}
+   else if(m=n.label.match(/^SET\s+([A-Za-z_]\w*(?:\[[^\]]+\])?)\s*=\s*(.+)$/i))add({op:'set',target:target(m[1]),expr:one(m[2]),line:n.line});else throw Error('Use DECLARE name AS type, CONSTANT name = value, or SET name = expression. Assign one array element at a time; whole-array and object assignments are not supported.');
+  }else if(n.type==='io'){const m=n.label.match(/^(INPUT|OUTPUT)\s+(.+)$/i);if(m[1].toUpperCase()==='INPUT'){add({op:'input',target:target(m[2].trim()),line:n.line});}else add({op:'output',expressions:expressionList(m[2]),line:n.line});}
   else if(n.type==='if'){const at=add({op:'branch',expr:one(n.condition),yes:program.length+1,no:0,line:n.line,condition:n.condition});block(n.yes);const skip=add({op:'jump',to:0});program[at].no=program.length;block(n.no);program[skip].to=program.length;}
   else if(n.type==='while'){const at=add({op:'branch',mode:'while',expr:one(n.condition),yes:program.length+1,no:0,line:n.line,condition:n.condition});block(n.body);add({op:'jump',to:at});program[at].no=program.length;}
   else if(n.type==='for'){const id=loopId++;add({op:'forinit',id,name:n.variable,from:one(n.from),to:one(n.to),step:n.step,line:n.line});const at=add({op:'fortest',id,name:n.variable,yes:program.length+1,no:0,line:n.line});block(n.body);add({op:'forinc',id,name:n.variable,line:n.line});add({op:'jump',to:at});program[at].no=program.length;}
@@ -68,9 +72,11 @@ function compile(source){
 }
 export function createRunner(source,{maxSteps=2000}={}){
  const program=compile(String(source));const env=new Map(),loops=new Map(),output=[];let pc=0,steps=0,finished=false,failed=false;
- const snapshot=(extra={})=>({kind:'step',steps,variables:[...env.values()].map(v=>({...v})),output:[...output],...extra});
+ const snapshot=(extra={})=>({kind:'step',steps,variables:[...env.values()].map(v=>({...v,value:v.array?[...v.value]:v.value})),output:[...output],...extra});
  const variable=name=>{const v=env.get(name.toLowerCase());if(!v)throw Error(`${name} must be declared before use.`);return v;};
- const assign=(name,value)=>{const v=variable(name);if(v.constant)throw Error(`${v.name} is a constant and cannot be reassigned.`);v.value=typed(value,v.type);};
+ const resolve=t=>{const v=variable(t.name);if(t.type==='element'){const index=arrayIndex(v,evaluate(t.index,env));return {v,index,name:`${v.name}[${index}]`};}if(v.array)throw Error(`Use one element such as ${v.name}[0] as the target.`);return {v,index:null,name:v.name};};
+ const write=(ref,value)=>{if(ref.v.constant)throw Error(`${ref.v.name} is a constant and cannot be reassigned.`);const result=typed(value,ref.v.type);if(ref.index===null)ref.v.value=result;else ref.v.value[ref.index]=result;};
+ const assign=(name,value)=>{const v=variable(name);write(resolve({type:'name',name}),value);};
  return {initial:()=>snapshot({kind:'ready',line:null,note:'Ready. Next step executes the first statement.'}),step(rawInput){
   if(failed)throw Error('This run has stopped. Prepare the code again after correcting it.');if(finished)return snapshot({kind:'done',line:null,note:'Program completed.'});let ins;
   try{
@@ -79,13 +85,14 @@ export function createRunner(source,{maxSteps=2000}={}){
    ins=program[pc];if(steps>=maxSteps)throw Error(`Stopped after ${maxSteps} steps. Check for a loop whose condition never changes.`);
    let note='',changed=[],condition=null;
    switch(ins.op){
+    case 'array':{if(env.has(ins.name.toLowerCase()))throw Error(`${ins.name} is already declared.`);if(env.size>=50)throw Error('Use at most 50 variables.');const size=evaluate(ins.size,env),allocated=[...env.values()].reduce((sum,v)=>sum+(v.array?v.value.length:0),0);if(!Number.isSafeInteger(size)||size<1||size>100||allocated+size>100)throw Error('Declare positive whole-number array sizes with at most 100 elements across all arrays.');env.set(ins.name.toLowerCase(),{name:ins.name,type:ins.type,array:true,value:Array(size).fill(undefined),constant:false});changed=[ins.name];note=`Declare ${ins.name} with ${size} ${ins.type} elements. Valid indexes are 0 to ${size-1}; each element starts unassigned.`;pc++;break;}
     case 'declare':{if(env.size+ins.names.length>50)throw Error('Use at most 50 scalar variables.');const keys=ins.names.map(n=>n.toLowerCase());if(new Set(keys).size!==keys.length||keys.some(k=>env.has(k)))throw Error('A variable is already declared. Keep declarations outside repeated loops.');const value=ins.initial?typed(evaluate(ins.initial,env),ins.type):undefined;for(const name of ins.names)env.set(name.toLowerCase(),{name,type:ins.type,value,constant:false});changed=ins.names;note=`Declare ${ins.names.join(', ')} as ${ins.type}${ins.initial?' and assign the initial value.':'. The value is not assigned yet.'}`;pc++;break;}
     case 'constant':{if(env.has(ins.name.toLowerCase()))throw Error(`${ins.name} is already declared.`);if(env.size>=50)throw Error('Use at most 50 scalar variables.');const value=evaluate(ins.expr,env),type=ins.type||(typeof value==='string'?'STRING':typeof value==='boolean'?'BOOLEAN':Number.isSafeInteger(value)?'INTEGER':'REAL');env.set(ins.name.toLowerCase(),{name:ins.name,type,value:typed(value,type),constant:true});changed=[ins.name];note=`Define constant ${ins.name} = ${displayValue(value)}.`;pc++;break;}
-    case 'set':{const value=evaluate(ins.expr,env);assign(ins.name,value);changed=[ins.name];note=`Assign ${displayValue(value)} to ${variable(ins.name).name}.`;pc++;break;}
-    case 'input':{const v=variable(ins.name);if(v.constant)throw Error('A constant cannot receive INPUT.');if(rawInput===undefined)return snapshot({kind:'input',line:ins.line,name:v.name,type:v.type,note:`Waiting for ${v.name} (${v.type}).`});const value=inputValue(rawInput,v.type);assign(ins.name,value);changed=[ins.name];note=`INPUT stores ${displayValue(value)} in ${v.name}.`;pc++;break;}
+    case 'set':{const ref=resolve(ins.target),value=evaluate(ins.expr,env);write(ref,value);changed=[ref.name];note=`Assign ${displayValue(value)} to ${ref.name}.`;pc++;break;}
+    case 'input':{const ref=resolve(ins.target),v=ref.v;if(v.constant)throw Error('A constant cannot receive INPUT.');if(rawInput===undefined)return snapshot({kind:'input',line:ins.line,name:ref.name,type:v.type,note:`Waiting for ${ref.name} (${v.type}).`});const value=inputValue(rawInput,v.type);write(ref,value);changed=[ref.name];note=`INPUT stores ${displayValue(value)} in ${ref.name}.`;pc++;break;}
     case 'output':{const text=ins.expressions.map(x=>displayValue(evaluate(x,env))).join(', ');if(output.length>=200||output.reduce((sum,x)=>sum+x.length,0)+text.length>10000)throw Error('Output limit reached: 200 output records or 10,000 characters.');output.push(text);note=`Display ${text===''?'an empty line':text}.`;pc++;break;}
     case 'branch':{condition=logical(evaluate(ins.expr,env));pc=condition?ins.yes:ins.no;note=`${ins.condition} is ${condition?'TRUE':'FALSE'}. ${ins.until?(condition?'Leave the REPEAT loop.':'Repeat the body.'):(ins.mode==='while'?(condition?'Enter the WHILE body.':'Leave the WHILE loop.'):(condition?'Follow the true branch.':'Follow the false branch.'))}`;break;}
-    case 'forinit':{const v=variable(ins.name);if(v.type!=='INTEGER')throw Error('A FOR counter must be declared INTEGER.');const start=typed(evaluate(ins.from,env),'INTEGER'),end=typed(evaluate(ins.to,env),'INTEGER');assign(ins.name,start);loops.set(ins.id,{end,step:ins.step});changed=[ins.name];note=`Initialise ${v.name} = ${start}. The upper bound ${end} and STEP ${ins.step} are fixed for this loop entry.`;pc++;break;}
+    case 'forinit':{const v=variable(ins.name);if(v.array||v.type!=='INTEGER')throw Error('A FOR counter must be declared INTEGER.');const start=typed(evaluate(ins.from,env),'INTEGER'),end=typed(evaluate(ins.to,env),'INTEGER');assign(ins.name,start);loops.set(ins.id,{end,step:ins.step});changed=[ins.name];note=`Initialise ${v.name} = ${start}. The upper bound ${end} and STEP ${ins.step} are fixed for this loop entry.`;pc++;break;}
     case 'fortest':{const loop=loops.get(ins.id),v=variable(ins.name);condition=loop.step>0?v.value<=loop.end:v.value>=loop.end;pc=condition?ins.yes:ins.no;note=`Test ${v.name} ${loop.step>0?'<=':'>='} ${loop.end}: ${displayValue(condition)}. ${condition?'Enter the loop body.':'Leave the FOR loop.'}`;break;}
     case 'forinc':{const loop=loops.get(ins.id),v=variable(ins.name);assign(ins.name,v.value+loop.step);changed=[ins.name];note=`Advance ${v.name} by ${loop.step} to ${v.value}, then check the loop bound again.`;pc++;break;}
     case 'repeat':note='Enter the REPEAT body before testing UNTIL.';pc++;break;
