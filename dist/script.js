@@ -25,6 +25,7 @@ const cases = {
   "airport": "<div class=\"eyebrow green\">Application development project</div>\n<h2 id=\"case-title\">Airport Sky Base System</h2>\n<h3>The problem</h3><p>Airport information needs a usable interface that supports access to records and operational workflows.</p>\n<h3>My contribution</h3><p>I developed and tested an airport management application focused on accessing and managing airport information.</p>\n<h3>Technologies and approach</h3><p>Application interface design, information management and functional testing. Implementation details are available in the repository.</p>\n<h3>What it delivers</h3><p>The project provides a user interface for working with airport information and demonstrates application development and testing.</p>\n<h3>Current status</h3><p>This is a repository-based project; it is not presented as a live airport operations system.</p>\n<div class=\"project-actions\"><a class=\"text-btn\" href=\"https://github.com/LEFA-2329/Airport-Sky-Base-System\" rel=\"noopener noreferrer\" target=\"_blank\">View repository</a></div>",
   "burzarsnet": "<div class=\"eyebrow green\">Team project | Four contributors</div>\n<h2 id=\"case-title\">Burzarsnet</h2>\n<h3>The problem</h3><p>South African applicants need a way to find bursary and internship opportunities, while administrators need to manage the information published.</p>\n<h3>My contribution</h3><p>I collaborated with three other contributors to develop the bursary and internship website. This was a shared team delivery.</p>\n<h3>Technologies and approach</h3><p>Web application development, administrative content management and team collaboration.</p>\n<h3>What it delivers</h3><p>The team developed a platform for bursary and internship listings with administration capabilities.</p>\n<h3>Current status</h3><p>My contribution is presented as part of a four-person team, without attributing the entire implementation to me.</p>\n<div class=\"project-actions\"><a class=\"text-btn\" href=\"http://burzarsnet.com\" rel=\"noopener noreferrer\" target=\"_blank\">Visit website</a></div>"
 };
+cases.logiclab = `<div class="eyebrow green">Live learning application . In development</div><h2 id="case-title">LogicLab</h2><h3>The problem</h3><p>Students need a way to connect Programming Logic and Design theory with the behaviour of an algorithm, and practise before looking at an answer.</p><h3>My contribution</h3><p>I designed and built the learning application, including lesson content, question checking, progressive hints, diagram generation, a step-by-step pseudocode interpreter and local draft saving.</p><h3>What it delivers</h3><p>Five learning units, 22 lessons, 110 quiz questions, 22 debugging challenges, 97 written practice tasks and 20 interactive exercises. Students can use supported pseudocode to generate flowcharts, inspect variables and output, and download study resources.</p><h3>Technologies and approach</h3><p>HTML, CSS and JavaScript modules. Parsing and execution run in the browser. Drafts and progress use browser storage; GitHub Actions publishes the static application.</p><h3>Current status and limitations</h3><p>Live supplementary learning material under active development and review. The tracer supports scalar variables and one- and two-dimensional arrays; methods and classes are taught but are not executable in the tracer. Saved work is shared within the same browser profile and does not sync across devices.</p><div class="project-actions"><a class="text-btn" href="./learn/">Try the live application</a><a class="text-btn" href="https://github.com/LEFA-2329/lefa-portfolio./tree/main/dist/learn" target="_blank" rel="noopener noreferrer">View source code</a></div>`;
 const dialog = document.querySelector('#case-dialog');
 document.querySelectorAll('[data-case]').forEach((b) =>
   b.addEventListener('click', () => {
@@ -45,3 +46,17 @@ dialog.addEventListener('click', (e) => {
       dialog.close();
   }
 });
+
+
+// Native dialog keeps enlarged photos keyboard accessible and returns focus on close.
+const photoDialog = document.querySelector('#photo-dialog');
+const photoFull = document.querySelector('#photo-full');
+document.querySelectorAll('.photo-gallery-grid figure').forEach((figure,index)=>{
+  const image=figure.querySelector('img');
+  const button=document.createElement('button');
+  button.type='button';button.className='photo-open';button.setAttribute('aria-label','Enlarge photo '+(index+1)+': '+image.alt);
+  image.before(button);button.append(image);
+  button.addEventListener('click',()=>{photoFull.src=image.src;photoFull.alt=image.alt;document.querySelector('#photo-caption').textContent=figure.querySelector('figcaption')?.textContent||'';photoDialog.showModal();});
+});
+document.querySelector('#photo-close').addEventListener('click',()=>photoDialog.close());
+photoDialog.addEventListener('click',e=>{if(e.target===photoDialog){const b=photoDialog.getBoundingClientRect();if(e.clientX<b.left||e.clientX>b.right||e.clientY<b.top||e.clientY>b.bottom)photoDialog.close();}});
