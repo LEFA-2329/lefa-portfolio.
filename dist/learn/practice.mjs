@@ -1,15 +1,15 @@
 export const practice = {
   "lesson-1": {
     "teaching": [
-      "Identify weight and rate as inputs.",
-      "Multiply the current inputs to obtain charge.",
-      "Display the result and test zero as a boundary."
+      "weight = 3 and rate = 12.",
+      "charge = 3 * 12 = 36. The displayed answer is 36.",
+      "For weight = 0, charge = 0."
     ],
     "worked": {
       "title": "A delivery quotation",
-      "prompt": "Read a parcel weight and a rate per kilogram. Calculate and display the delivery charge. Assume valid non-negative input.",
-      "code": "BEGIN\nINPUT weight\nINPUT rate\nSET charge = weight * rate\nOUTPUT charge\nEND",
-      "expected": "For weight 3 and rate 12, charge is 36. For weight 0 and rate 12, charge is 0."
+      "prompt": "A delivery charge is weight * rate. Write a complete program. Assume valid non-negative inputs. Test weight = 3 and rate = 12.",
+      "code": "BEGIN\n  DECLARE weight AS REAL\n  DECLARE rate AS REAL\n  DECLARE charge AS REAL\n  INPUT weight\n  INPUT rate\n  SET charge = weight * rate\n  OUTPUT charge\nEND",
+      "expected": "weight = 3 and rate = 12. charge = 3 * 12 = 36. The displayed answer is 36. For weight = 0, charge = 0."
     },
     "quizzes": [
       {
@@ -82,15 +82,15 @@ export const practice = {
   },
   "lesson-2": {
     "teaching": [
-      "Use a parallelogram for input.",
-      "Use a diamond for temperature < 15 and label both branches.",
-      "Join the paths after their output symbols."
+      "14 < 15 is TRUE, so display Cold.",
+      "15 < 15 is FALSE, so display Mild or warm.",
+      "Flowchart: input parallelogram, decision diamond, two output branches and a shared end."
     ],
     "worked": {
       "title": "A temperature decision",
-      "prompt": "Read a temperature. Display \"Cold\" below 15 and \"Mild or warm\" otherwise. Draw the corresponding flowchart.",
-      "code": "BEGIN\nREAD temperature\nIF temperature < 15 THEN\nDISPLAY \"Cold\"\nELSE\nDISPLAY \"Mild or warm\"\nEND IF\nEND",
-      "expected": "14 gives Cold; 15 gives Mild or warm."
+      "prompt": "Read a temperature. Display Cold below 15, otherwise Mild or warm. Give outputs for 14 and 15. Sketch a flowchart with labelled branches.",
+      "code": "BEGIN\n  DECLARE temperature AS REAL\n  INPUT temperature\n  IF temperature < 15 THEN\n    OUTPUT \"Cold\"\n  ELSE\n    OUTPUT \"Mild or warm\"\n  ENDIF\nEND",
+      "expected": "14 < 15 is TRUE, so display Cold. 15 < 15 is FALSE, so display Mild or warm. Flowchart: input parallelogram, decision diamond, two output branches and a shared end."
     },
     "quizzes": [
       {
@@ -163,15 +163,15 @@ export const practice = {
   },
   "lesson-3": {
     "teaching": [
-      "Use REAL because inputs may have fractional parts.",
-      "Initialise multiplication to 1, not 0.",
-      "Multiply each value into product once."
+      "Before the loop, product = 1.",
+      "After inputs 2, 3 and 4, product becomes 2, then 6, then 24.",
+      "Output: 24. Initialising to 0 would incorrectly keep every product at 0."
     ],
     "worked": {
-      "title": "Initialising a product",
-      "prompt": "Calculate the product of three input numbers using an accumulator.",
-      "code": "BEGIN\nDECLARE product AS REAL\nproduct = 1\nFOR i = 1 TO 3\nINPUT value\nproduct = product * value\nNEXT i\nOUTPUT product\nEND",
-      "expected": "Inputs 2, 3, 4 give 24. Inputs 2, 0, 4 give 0."
+      "title": "A running product",
+      "prompt": "Read three REAL numbers using a FOR loop. Return their product as program output. Test inputs 2, 3 and 4. Choose types and initialise correctly.",
+      "code": "BEGIN\n  DECLARE value AS REAL\n  DECLARE product AS REAL\n  DECLARE i AS INTEGER\n  SET product = 1\n  FOR i = 1 TO 3\n    INPUT value\n    SET product = product * value\n  ENDFOR\n  OUTPUT product\nEND",
+      "expected": "Before the loop, product = 1. After inputs 2, 3 and 4, product becomes 2, then 6, then 24. Output: 24. Initialising to 0 would incorrectly keep every product at 0."
     },
     "quizzes": [
       {
@@ -244,15 +244,15 @@ export const practice = {
   },
   "lesson-4": {
     "teaching": [
-      "Calculate subtotal before applying the discount.",
-      "A 10% discount leaves 90% of subtotal.",
-      "Test no items and a simple positive quantity."
+      "subtotal = 20 * 3 = 60.",
+      "Discount factor = 1 - 0.10 = 0.90.",
+      "due = 60 * 0.90 = 54. Output: 54."
     ],
     "worked": {
-      "title": "A discounted basket",
-      "prompt": "Read price and quantity, then apply a 10% discount to the subtotal.",
-      "code": "BEGIN\nINPUT price\nINPUT quantity\nSET subtotal = price * quantity\nSET total = subtotal * (1 - 0.10)\nOUTPUT total\nEND",
-      "expected": "Price 20, quantity 3: subtotal 60 and total 54."
+      "title": "A discounted purchase",
+      "prompt": "Read price and quantity, compute a subtotal and apply a 10% discount. Display the amount due. Test price = 20 and quantity = 3.",
+      "code": "BEGIN\n  DECLARE price AS REAL\n  DECLARE quantity AS INTEGER\n  DECLARE subtotal AS REAL\n  DECLARE due AS REAL\n  INPUT price\n  INPUT quantity\n  SET subtotal = price * quantity\n  SET due = subtotal * (1 - 0.10)\n  OUTPUT due\nEND",
+      "expected": "subtotal = 20 * 3 = 60. Discount factor = 1 - 0.10 = 0.90. due = 60 * 0.90 = 54. Output: 54."
     },
     "quizzes": [
       {
@@ -325,15 +325,15 @@ export const practice = {
   },
   "lesson-5": {
     "teaching": [
-      "Assignment changes only the variable on its left.",
-      "Use the latest values on the right-hand side.",
-      "Distinguish the current state from displayed output."
+      "State after each assignment: (a,b) = (4,unset), (4,7), (5,7), (5,10).",
+      "The last expression uses the updated a = 5.",
+      "Final output: 5, 10."
     ],
     "worked": {
-      "title": "Trace changing state",
-      "prompt": "Dry-run the assignments and record the values after each statement.",
-      "code": "BEGIN\nSET a = 4\nSET b = a + 3\nSET a = b - 2\nSET b = a * 2\nOUTPUT a, b\nEND",
-      "expected": "After assignments: (a=4,b=unset), (4,7), (5,7), (5,10). Output: 5, 10."
+      "title": "Tracing two variables",
+      "prompt": "Trace two variables. Set a to 4, b to a + 3, a to b - 2 and b to a * 2. Write a complete program and give both final values.",
+      "code": "BEGIN\n  DECLARE a AS INTEGER\n  DECLARE b AS INTEGER\n  SET a = 4\n  SET b = a + 3\n  SET a = b - 2\n  SET b = a * 2\n  OUTPUT a, b\nEND",
+      "expected": "State after each assignment: (a,b) = (4,unset), (4,7), (5,7), (5,10). The last expression uses the updated a = 5. Final output: 5, 10."
     },
     "quizzes": [
       {
@@ -406,15 +406,15 @@ export const practice = {
   },
   "lesson-6": {
     "teaching": [
-      "Both the lower and upper bounds must hold.",
-      "Use AND for the intersection of the two conditions.",
-      "Check values at and just outside each endpoint."
+      "Member with total 500: TRUE AND TRUE, so due = 500 * 0.9 = 450.",
+      "Non-member with total 500: FALSE AND TRUE, so due = 500.",
+      "Set due in both branches before displaying it."
     ],
     "worked": {
-      "title": "Checking a valid range",
-      "prompt": "Read a mark and display whether it is between 0 and 100 inclusive.",
-      "code": "BEGIN\nINPUT mark\nIF mark >= 0 AND mark <= 100 THEN\nOUTPUT \"Valid\"\nELSE\nOUTPUT \"Invalid\"\nENDIF\nEND",
-      "expected": "-1 invalid, 0 valid, 100 valid, 101 invalid."
+      "title": "A membership discount",
+      "prompt": "Read a non-negative total and a Boolean membership flag. Members spending at least 500 receive 10% off. Display due for a member spending 500 and a non-member spending 500.",
+      "code": "BEGIN\n  DECLARE total AS REAL\n  DECLARE due AS REAL\n  DECLARE isMember AS BOOLEAN\n  INPUT total\n  INPUT isMember\n  IF isMember AND total >= 500 THEN\n    SET due = total * 0.9\n  ELSE\n    SET due = total\n  ENDIF\n  OUTPUT due\nEND",
+      "expected": "Member with total 500: TRUE AND TRUE, so due = 500 * 0.9 = 450. Non-member with total 500: FALSE AND TRUE, so due = 500. Set due in both branches before displaying it."
     },
     "quizzes": [
       {
@@ -487,15 +487,15 @@ export const practice = {
   },
   "lesson-7": {
     "teaching": [
-      "Test the highest band first.",
-      "ELSEIF is considered only after the preceding condition is false.",
-      "Check each exact threshold and the value immediately below."
+      "Age 15 gives Too young. The inner decision is skipped.",
+      "Age 16 with FALSE gives Approval required.",
+      "Age 16 with TRUE gives Eligible. Each IF has its own ENDIF."
     ],
     "worked": {
-      "title": "Three result bands",
-      "prompt": "Display Distinction for marks of at least 75, Pass for marks of at least 50, otherwise Revise.",
-      "code": "BEGIN\nINPUT mark\nIF mark >= 75 THEN\nOUTPUT \"Distinction\"\nELSEIF mark >= 50 THEN\nOUTPUT \"Pass\"\nELSE\nOUTPUT \"Revise\"\nEND IF\nEND",
-      "expected": "75 -> Distinction, 74 -> Pass, 50 -> Pass, 49 -> Revise."
+      "title": "Nested eligibility checks",
+      "prompt": "Use nested IF statements. A fictional activity requires age at least 16 and approval. Display Too young, Approval required or Eligible. Assume valid age and a Boolean approval flag.",
+      "code": "BEGIN\n  DECLARE age AS INTEGER\n  DECLARE approved AS BOOLEAN\n  INPUT age\n  INPUT approved\n  IF age >= 16 THEN\n    IF approved THEN\n      OUTPUT \"Eligible\"\n    ELSE\n      OUTPUT \"Approval required\"\n    ENDIF\n  ELSE\n    OUTPUT \"Too young\"\n  ENDIF\nEND",
+      "expected": "Age 15 gives Too young. The inner decision is skipped. Age 16 with FALSE gives Approval required. Age 16 with TRUE gives Eligible. Each IF has its own ENDIF."
     },
     "quizzes": [
       {
@@ -568,15 +568,15 @@ export const practice = {
   },
   "lesson-8": {
     "teaching": [
-      "Initialise the counter once before the loop.",
-      "Increment by one only when the condition is true.",
-      "Display passes after all four inputs."
+      "Start passed = 0. Mark 50 increments it to 1.",
+      "Mark 49 leaves it at 1. Mark 100 increments it to 2.",
+      "Output: 2. Do not reset passed inside the loop."
     ],
     "worked": {
-      "title": "Count qualifying marks",
-      "prompt": "Read four marks and count how many are at least 50.",
-      "code": "BEGIN\nSET passes = 0\nFOR i = 1 TO 4\nINPUT mark\nIF mark >= 50 THEN\nSET passes = passes + 1\nENDIF\nENDFOR\nOUTPUT passes\nEND",
-      "expected": "Inputs 40, 50, 70, 20 give 2 passes."
+      "title": "Counting passing marks",
+      "prompt": "Read n positive-count student marks and count marks at least 50. Use FOR. Assume n > 0 and valid marks. Test n = 3 with marks 50, 49, 100.",
+      "code": "BEGIN\n  DECLARE n AS INTEGER\n  DECLARE i AS INTEGER\n  DECLARE mark AS REAL\n  DECLARE passed AS INTEGER\n  INPUT n\n  SET passed = 0\n  FOR i = 1 TO n\n    INPUT mark\n    IF mark >= 50 THEN\n      SET passed = passed + 1\n    ENDIF\n  ENDFOR\n  OUTPUT passed\nEND",
+      "expected": "Start passed = 0. Mark 50 increments it to 1. Mark 49 leaves it at 1. Mark 100 increments it to 2. Output: 2. Do not reset passed inside the loop."
     },
     "quizzes": [
       {
@@ -649,15 +649,15 @@ export const practice = {
   },
   "lesson-9": {
     "teaching": [
-      "Read the priming value before checking the condition.",
-      "Exclude the sentinel from total and count.",
-      "Guard division so count cannot be zero."
+      "101 is above 100, so the loop requests another value.",
+      "-5 is below 0, so the loop requests another value.",
+      "70 is valid, so the loop ends. Full output: two validation messages followed by 70. The input changes on every retry."
     ],
     "worked": {
-      "title": "Sentinel average with no-data handling",
-      "prompt": "Read values until -1. Display their average, or No data when the first input is -1.",
-      "code": "BEGIN\nSET total = 0\nSET count = 0\nINPUT value\nWHILE value <> -1 DO\nSET total = total + value\nSET count = count + 1\nINPUT value\nENDWHILE\nIF count > 0 THEN\nOUTPUT total / count\nELSE\nOUTPUT \"No data\"\nENDIF\nEND",
-      "expected": "10, 20, -1 gives 15. The input -1 alone gives No data."
+      "title": "Validating a mark",
+      "prompt": "Read a mark repeatedly until it is between 0 and 100 inclusive. Display the accepted mark. Test input sequence 101, -5, 70.",
+      "code": "BEGIN\n  DECLARE mark AS REAL\n  INPUT mark\n  WHILE mark < 0 OR mark > 100 DO\n    OUTPUT \"Enter a mark from 0 to 100\"\n    INPUT mark\n  ENDWHILE\n  OUTPUT mark\nEND",
+      "expected": "101 is above 100, so the loop requests another value. -5 is below 0, so the loop requests another value. 70 is valid, so the loop ends. Full output: two validation messages followed by 70. The input changes on every retry."
     },
     "quizzes": [
       {
@@ -730,15 +730,15 @@ export const practice = {
   },
   "lesson-10": {
     "teaching": [
-      "Keep row and column counters separate.",
-      "For each row, complete both column iterations.",
-      "Multiply the number of iterations to check the six outputs."
+      "At row 0, reset rowTotal to 0, then add 2 and 4. Output: 6.",
+      "At row 1, reset it again, then add 6 and 8. Output: 14.",
+      "Resetting outside the outer loop would wrongly produce a cumulative second total of 20."
     ],
     "worked": {
-      "title": "A multiplication grid",
-      "prompt": "Output the products for rows 1 to 3 and columns 1 to 2.",
-      "code": "BEGIN\nFOR row = 1 TO 3\nFOR column = 1 TO 2\nSET product = row * column\nOUTPUT product\nENDFOR\nENDFOR\nEND",
-      "expected": "Outputs in order: 1, 2, 2, 4, 3, 6."
+      "title": "Two dimensional row totals",
+      "prompt": "Input a 2 by 2 matrix using nested loops. Display the total of each row. Test rows [2,4] and [6,8].",
+      "code": "BEGIN\n  DECLARE matrix[2][2] AS INTEGER\n  DECLARE row AS INTEGER\n  DECLARE col AS INTEGER\n  DECLARE rowTotal AS INTEGER\n  FOR row = 0 TO 1\n    SET rowTotal = 0\n    FOR col = 0 TO 1\n      INPUT matrix[row][col]\n      SET rowTotal = rowTotal + matrix[row][col]\n    ENDFOR\n    OUTPUT rowTotal\n  ENDFOR\nEND",
+      "expected": "At row 0, reset rowTotal to 0, then add 2 and 4. Output: 6. At row 1, reset it again, then add 6 and 8. Output: 14. Resetting outside the outer loop would wrongly produce a cumulative second total of 20."
     },
     "quizzes": [
       {
@@ -811,15 +811,15 @@ export const practice = {
   },
   "lesson-11": {
     "teaching": [
-      "The meaningful indices run from 0 to length - 1.",
-      "Initialise total before visiting any element.",
-      "Use each index exactly once."
+      "Initial maximum = -8. Comparing -3 replaces it with -3.",
+      "Neither -12 nor -5 is greater than -3.",
+      "Output: -3. Initialising maximum to 0 would give a wrong answer."
     ],
     "worked": {
-      "title": "A five-value total",
-      "prompt": "Total an existing zero-based array containing five values.",
-      "code": "BEGIN\nSET total = 0\nFOR i = 0 TO 4\nSET total = total + values[i]\nENDFOR\nOUTPUT total\nEND",
-      "expected": "For [2,4,6,8,10], output 30. The last accessed index is 4."
+      "title": "Finding a maximum",
+      "prompt": "Find the maximum in [-8,-3,-12,-5]. Use one array and a loop. The solution must handle all-negative values.",
+      "code": "BEGIN\n  DECLARE values[4] AS INTEGER\n  DECLARE maximum AS INTEGER\n  DECLARE i AS INTEGER\n  SET values[0] = -8\n  SET values[1] = -3\n  SET values[2] = -12\n  SET values[3] = -5\n  SET maximum = values[0]\n  FOR i = 1 TO 3\n    IF values[i] > maximum THEN\n      SET maximum = values[i]\n    ENDIF\n  ENDFOR\n  OUTPUT maximum\nEND",
+      "expected": "Initial maximum = -8. Comparing -3 replaces it with -3. Neither -12 nor -5 is greater than -3. Output: -3. Initialising maximum to 0 would give a wrong answer."
     },
     "quizzes": [
       {
@@ -892,15 +892,15 @@ export const practice = {
   },
   "lesson-12": {
     "teaching": [
-      "Use -1 for not found because 0 is a valid index.",
-      "Check the bound before accessing values[i].",
-      "Stop when foundAt changes from -1."
+      "Comparisons at indices 0, 1, 2 and 3 all fail. foundAt remains -1.",
+      "i becomes 4, so i < 4 is FALSE. No out-of-bounds element is read.",
+      "Output: Not found. The program checks foundAt before using it as an index."
     ],
     "worked": {
-      "title": "Find the first match",
-      "prompt": "Find the first position of target in a four-value array, stopping after a match.",
-      "code": "BEGIN\nSET foundAt = -1\nSET i = 0\nWHILE i < 4 AND foundAt = -1 DO\nIF values[i] = target THEN\nSET foundAt = i\nENDIF\nSET i = i + 1\nENDWHILE\nOUTPUT foundAt\nEND",
-      "expected": "Array [7,3,7,2], target 7 -> 0. Target 9 -> -1."
+      "title": "An unsuccessful search",
+      "prompt": "Use the same four values to search for target 9. Write the full program and show the result when no match exists.",
+      "code": "BEGIN\n  DECLARE values[4] AS INTEGER\n  DECLARE target AS INTEGER\n  DECLARE foundAt AS INTEGER\n  DECLARE i AS INTEGER\n  SET values[0] = 7\n  SET values[1] = 3\n  SET values[2] = 7\n  SET values[3] = 2\n  SET target = 9\n  SET foundAt = -1\n  SET i = 0\n  WHILE i < 4 AND foundAt = -1 DO\n    IF values[i] = target THEN\n      SET foundAt = i\n    ENDIF\n    SET i = i + 1\n  ENDWHILE\n  IF foundAt <> -1 THEN\n    OUTPUT foundAt\n  ELSE\n    OUTPUT \"Not found\"\n  ENDIF\nEND",
+      "expected": "Comparisons at indices 0, 1, 2 and 3 all fail. foundAt remains -1. i becomes 4, so i < 4 is FALSE. No out-of-bounds element is read. Output: Not found. The program checks foundAt before using it as an index."
     },
     "quizzes": [
       {
@@ -973,15 +973,15 @@ export const practice = {
   },
   "lesson-13": {
     "teaching": [
-      "Use the name array to locate an index.",
-      "Guard against the not-found result.",
-      "Use the same index in scores."
+      "Initial best = 0 with mark 64. At index 1, 81 > 64 sets best = 1.",
+      "At index 2, 72 > 81 is FALSE, so best stays 1.",
+      "Output: Naledi, 81. Strict > preserves the first occurrence on a tie."
     ],
     "worked": {
-      "title": "Look up a parallel attribute",
-      "prompt": "Search three learner names and output the matching mark.",
-      "code": "BEGIN\nSET foundAt = -1\nFOR i = 0 TO 2\nIF names[i] = targetName THEN\nSET foundAt = i\nENDIF\nENDFOR\nIF foundAt <> -1 THEN\nOUTPUT scores[foundAt]\nELSE\nOUTPUT \"Not found\"\nENDIF\nEND",
-      "expected": "names=[Lebo,Mpho,Ana], scores=[65,80,72], targetName=Mpho -> 80."
+      "title": "The highest scoring learner",
+      "prompt": "Using those parallel arrays, find and display the student with the highest mark. Keep the first student on a tie.",
+      "code": "BEGIN\n  DECLARE names[3] AS STRING\n  DECLARE marks[3] AS REAL\n  DECLARE best AS INTEGER\n  DECLARE i AS INTEGER\n  SET names[0] = \"Lebo\"\n  SET names[1] = \"Naledi\"\n  SET names[2] = \"Thabo\"\n  SET marks[0] = 64\n  SET marks[1] = 81\n  SET marks[2] = 72\n  SET best = 0\n  FOR i = 1 TO 2\n    IF marks[i] > marks[best] THEN\n      SET best = i\n    ENDIF\n  ENDFOR\n  OUTPUT names[best], marks[best]\nEND",
+      "expected": "Initial best = 0 with mark 64. At index 1, 81 > 64 sets best = 1. At index 2, 72 > 81 is FALSE, so best stays 1. Output: Naledi, 81. Strict > preserves the first occurrence on a tie."
     },
     "quizzes": [
       {
@@ -1054,15 +1054,15 @@ export const practice = {
   },
   "lesson-14": {
     "teaching": [
-      "Compare adjacent values in order.",
-      "Swap only when the left value exceeds the right.",
-      "The largest value reaches the last position after this full pass."
+      "Compare 4 and 1: [1,4,3,2]. Then compare 4 and 3: [1,3,4,2].",
+      "Compare 4 and 2: [1,3,2,4]. Output: [1,3,2,4].",
+      "4 is in its final position, but 3 and 2 remain out of order."
     ],
     "worked": {
-      "title": "Bubble-sort one pass",
-      "prompt": "Perform one left-to-right ascending pass through four existing values.",
-      "code": "BEGIN\nFOR j = 0 TO 2\nIF values[j] > values[j + 1] THEN\nSET temp = values[j]\nSET values[j] = values[j + 1]\nSET values[j + 1] = temp\nENDIF\nENDFOR\nOUTPUT values\nEND",
-      "expected": "[4,1,3,2] becomes [1,3,2,4] after one pass. It is not fully sorted yet."
+      "title": "One bubble sort pass",
+      "prompt": "Perform exactly one left-to-right bubble-sort pass through [4,1,3,2]. Display the resulting array and explain why it may still need more passes.",
+      "code": "BEGIN\n  DECLARE values[4] AS INTEGER\n  DECLARE j AS INTEGER\n  DECLARE temp AS INTEGER\n  SET values[0] = 4\n  SET values[1] = 1\n  SET values[2] = 3\n  SET values[3] = 2\n  FOR j = 0 TO 2\n    IF values[j] > values[j + 1] THEN\n      SET temp = values[j]\n      SET values[j] = values[j + 1]\n      SET values[j + 1] = temp\n    ENDIF\n  ENDFOR\n  OUTPUT values[0], values[1], values[2], values[3]\nEND",
+      "expected": "Compare 4 and 1: [1,4,3,2]. Then compare 4 and 3: [1,3,4,2]. Compare 4 and 2: [1,3,2,4]. Output: [1,3,2,4]. 4 is in its final position, but 3 and 2 remain out of order."
     },
     "quizzes": [
       {
@@ -1135,15 +1135,15 @@ export const practice = {
   },
   "lesson-15": {
     "teaching": [
-      "Identify two separate responsibilities.",
-      "Define the modules with clear names.",
-      "Draw the main module above the two called modules."
+      "Area receives length 6 and width 4. It returns 24.",
+      "Main stores 24 in result and passes it to ShowArea.",
+      "Output: Area, 24. Each method has one clear responsibility."
     ],
     "worked": {
-      "title": "Decompose a greeting",
-      "prompt": "Create separate modules for greeting and displaying a learning reminder.",
-      "code": "MODULE greet()\nOUTPUT \"Welcome\"\nENDMODULE\nMODULE remind()\nOUTPUT \"Try an exercise\"\nENDMODULE\nBEGIN\nCALL greet()\nCALL remind()\nEND",
-      "expected": "The main module calls greet and remind. Output: Welcome, then Try an exercise."
+      "title": "Two focused methods",
+      "prompt": "Write Area(length,width) returning rectangle area and ShowArea(area) displaying it. The main program must call both. Test dimensions 6 and 4.",
+      "code": "METHOD Area(length AS REAL, width AS REAL) RETURNS REAL\n  RETURN length * width\nENDMETHOD\nMETHOD ShowArea(area AS REAL)\n  OUTPUT \"Area\", area\nENDMETHOD\nBEGIN\n  DECLARE result AS REAL\n  SET result = Area(6, 4)\n  CALL ShowArea(result)\nEND",
+      "expected": "Area receives length 6 and width 4. It returns 24. Main stores 24 in result and passes it to ShowArea. Output: Area, 24. Each method has one clear responsibility."
     },
     "quizzes": [
       {
@@ -1216,15 +1216,15 @@ export const practice = {
   },
   "lesson-16": {
     "teaching": [
-      "Declare placeholders in the method header.",
-      "Match the two actual arguments to their positions.",
-      "Do not confuse the local parameter names with caller variables."
+      "Bump receives a copy of counter. Its number becomes 6, so the first output is 6.",
+      "Changing the local copy does not change the caller variable under this convention.",
+      "Back in Main, counter is still 5. Final outputs in order: 6, 5."
     ],
     "worked": {
-      "title": "Pass two arguments",
-      "prompt": "Write a method that displays a supplied learner name and mark.",
-      "code": "METHOD displayResult(name, mark)\nOUTPUT name, mark\nENDMETHOD\nBEGIN\nCALL displayResult(\"Lebo\", 68)\nEND",
-      "expected": "Parameters: name and mark. Arguments: \"Lebo\" and 68. Output: Lebo, 68."
+      "title": "A local parameter copy",
+      "prompt": "Assume scalar parameters are passed by value. Write Bump(number) that adds 1 and displays its local parameter. Main passes counter = 5, then displays counter. Explain both outputs.",
+      "code": "METHOD Bump(number AS INTEGER)\n  SET number = number + 1\n  OUTPUT number\nENDMETHOD\nBEGIN\n  DECLARE counter AS INTEGER\n  SET counter = 5\n  CALL Bump(counter)\n  OUTPUT counter\nEND",
+      "expected": "Bump receives a copy of counter. Its number becomes 6, so the first output is 6. Changing the local copy does not change the caller variable under this convention. Back in Main, counter is still 5. Final outputs in order: 6, 5."
     },
     "quizzes": [
       {
@@ -1297,15 +1297,15 @@ export const practice = {
   },
   "lesson-17": {
     "teaching": [
-      "State the return type and parameters.",
-      "Make every possible branch return a value.",
-      "The caller stores the returned value before displaying it."
+      "48 >= 50 evaluates to FALSE and is returned to the caller.",
+      "The IF uses that returned Boolean and selects ELSE. Output: Revise.",
+      "At mark 50, HasPassed returns TRUE and output becomes Pass."
     ],
     "worked": {
-      "title": "Return the larger value",
-      "prompt": "Write a method returning the larger of two values. Include an early return in each branch.",
-      "code": "METHOD larger(a, b) RETURNS REAL\nIF a >= b THEN\nRETURN a\nELSE\nRETURN b\nENDIF\nENDMETHOD\nBEGIN\nSET result = larger(8, 5)\nOUTPUT result\nEND",
-      "expected": "larger(8,5) -> 8; larger(3,9) -> 9; larger(4,4) -> 4."
+      "title": "A Boolean return value",
+      "prompt": "Write HasPassed(mark) returning a BOOLEAN. Use the returned value in an IF to display Pass or Revise. Test a valid mark of 48.",
+      "code": "METHOD HasPassed(mark AS REAL) RETURNS BOOLEAN\n  RETURN mark >= 50\nENDMETHOD\nBEGIN\n  IF HasPassed(48) THEN\n    OUTPUT \"Pass\"\n  ELSE\n    OUTPUT \"Revise\"\n  ENDIF\nEND",
+      "expected": "48 >= 50 evaluates to FALSE and is returned to the caller. The IF uses that returned Boolean and selects ELSE. Output: Revise. At mark 50, HasPassed returns TRUE and output becomes Pass."
     },
     "quizzes": [
       {
@@ -1378,15 +1378,15 @@ export const practice = {
   },
   "lesson-18": {
     "teaching": [
-      "Use count rather than assuming capacity equals meaningful data.",
-      "Visit 0 through count - 1.",
-      "Return the accumulated total to the caller."
+      "count is 4, so the loop visits indices 0 to 3.",
+      "Outputs in order: 2, 4, 6, 8. The spare element at index 4 is excluded.",
+      "Use the supplied count instead of assuming that every capacity slot contains meaningful data."
     ],
     "worked": {
-      "title": "Array total as a method",
-      "prompt": "Pass an array and meaningful count to a method that returns their total.",
-      "code": "METHOD totalValues(values, count) RETURNS REAL\nSET total = 0\nFOR i = 0 TO count - 1\nSET total = total + values[i]\nENDFOR\nRETURN total\nENDMETHOD\nBEGIN\nSET result = totalValues(marks, 3)\nOUTPUT result\nEND",
-      "expected": "For marks=[10,20,30,999], count=3, output 60. The spare capacity is ignored."
+      "title": "Passing a meaningful count",
+      "prompt": "Write DisplayValues(values,count) to display only the first four elements of [2,4,6,8,999]. Pass both the array and count from Main.",
+      "code": "METHOD DisplayValues(values AS INTEGER[], count AS INTEGER)\n  DECLARE i AS INTEGER\n  FOR i = 0 TO count - 1\n    OUTPUT values[i]\n  ENDFOR\nENDMETHOD\nBEGIN\n  DECLARE numbers[5] AS INTEGER\n  SET numbers = [2, 4, 6, 8, 999]\n  CALL DisplayValues(numbers, 4)\nEND",
+      "expected": "count is 4, so the loop visits indices 0 to 3. Outputs in order: 2, 4, 6, 8. The spare element at index 4 is excluded. Use the supplied count instead of assuming that every capacity slot contains meaningful data."
     },
     "quizzes": [
       {
@@ -1459,15 +1459,15 @@ export const practice = {
   },
   "lesson-19": {
     "teaching": [
-      "Compare parameter types, not parameter names.",
-      "Match each actual argument to the compatible signature.",
-      "Return type alone cannot distinguish an overload."
+      "One argument selects the square overload: 5.0 * 5.0 = 25.0.",
+      "Two arguments select the rectangle overload: 6.0 * 4.0 = 24.0.",
+      "Outputs: 25.0 and 24.0. The parameter counts make these signatures distinct."
     ],
     "worked": {
-      "title": "Choose an overload",
-      "prompt": "Compare two signatures and identify the selected overload for two calls.",
-      "code": "// METHOD display(INTEGER value)\n// METHOD display(STRING value)\n// CALL display(42) uses INTEGER.\n// CALL display(\"42\") uses STRING.",
-      "expected": "42 is numeric; \"42\" is text. The parameter type distinguishes the signatures."
+      "title": "Overloaded area methods",
+      "prompt": "Write overloaded CalculateArea methods for a square (one REAL parameter) and a rectangle (two REAL parameters). Show calls for 5.0 and (6.0,4.0).",
+      "code": "METHOD CalculateArea(side AS REAL) RETURNS REAL\n  RETURN side * side\nENDMETHOD\nMETHOD CalculateArea(length AS REAL, width AS REAL) RETURNS REAL\n  RETURN length * width\nENDMETHOD\nBEGIN\n  OUTPUT CalculateArea(5.0)\n  OUTPUT CalculateArea(6.0, 4.0)\nEND",
+      "expected": "One argument selects the square overload: 5.0 * 5.0 = 25.0. Two arguments select the rectangle overload: 6.0 * 4.0 = 24.0. Outputs: 25.0 and 24.0. The parameter counts make these signatures distinct."
     },
     "quizzes": [
       {
@@ -1540,15 +1540,15 @@ export const practice = {
   },
   "lesson-20": {
     "teaching": [
-      "Separate the type definition from its instances.",
-      "Give each instance its own state.",
-      "Use methods to express actions that belong to a book."
+      "NEW creates a NumberPrinter object. The call invokes its public method.",
+      "The inclusive FOR loop visits i = 1, 2, 3, 4, 5.",
+      "Output: 1, 2, 3, 4, 5. The explicitly declared no-argument constructor creates an object with no fields to initialise."
     ],
     "worked": {
-      "title": "Two independent objects",
-      "prompt": "Model two Book objects created from the same class. Describe their independent state.",
-      "code": "// CLASS Book\n// - title : STRING\n// - borrowed : BOOLEAN\n// + borrow()\n// + returnBook()\n// bookA: title=\"Algorithms\", borrowed=TRUE\n// bookB: title=\"Databases\", borrowed=FALSE",
-      "expected": "Both objects share the Book definition but hold different attribute values."
+      "title": "A number printing object",
+      "prompt": "Write NumberPrinter with a public DisplayNumbers() method that displays 1 to 5 using FOR. Create an object and call the method.",
+      "code": "CLASS NumberPrinter\n  CONSTRUCTOR NumberPrinter()\n    // No fields need initial values\n  ENDCONSTRUCTOR\n  PUBLIC METHOD DisplayNumbers()\n    DECLARE i AS INTEGER\n    FOR i = 1 TO 5\n      OUTPUT i\n    ENDFOR\n  ENDMETHOD\nENDCLASS\nBEGIN\n  DECLARE printer AS NumberPrinter\n  SET printer = NEW NumberPrinter()\n  CALL printer.DisplayNumbers()\nEND",
+      "expected": "NEW creates a NumberPrinter object. The call invokes its public method. The inclusive FOR loop visits i = 1, 2, 3, 4, 5. Output: 1, 2, 3, 4, 5. The explicitly declared no-argument constructor creates an object with no fields to initialise."
     },
     "quizzes": [
       {
@@ -1621,15 +1621,15 @@ export const practice = {
   },
   "lesson-21": {
     "teaching": [
-      "Ask whether the specialised type fulfils the general contract.",
-      "Use has-a for a class containing or referring to other objects.",
-      "Keep private state protected by appropriate operations."
+      "Constructor stores balance = 100. Deposit receives 50, which passes the amount > 0 test.",
+      "The controlled update sets balance = 100 + 50 = 150. Output: 150.",
+      "Private balance prevents direct caller assignment. Depositing 0 or a negative amount leaves it unchanged."
     ],
     "worked": {
-      "title": "An is-a versus has-a design",
-      "prompt": "Compare inheritance and containment in a school model.",
-      "code": "// Person is a general type.\n// Learner is a Person.\n// Course has Learners.\n// A Course is not a Learner.",
-      "expected": "Use inheritance for the justified Learner-Person is-a relationship and association for Course-Learner."
+      "title": "Controlled deposits",
+      "prompt": "Design Account with a private balance. Its constructor takes a non-negative opening balance. Deposit accepts only positive amounts. Display the balance after opening with 100 and depositing 50.",
+      "code": "CLASS Account\n  PRIVATE balance AS REAL\n  CONSTRUCTOR Account(opening AS REAL)\n    SET balance = opening\n  ENDCONSTRUCTOR\n  PUBLIC METHOD Deposit(amount AS REAL)\n    IF amount > 0 THEN\n      SET balance = balance + amount\n    ENDIF\n  ENDMETHOD\n  PUBLIC METHOD GetBalance() RETURNS REAL\n    RETURN balance\n  ENDMETHOD\nENDCLASS\nBEGIN\n  DECLARE account AS Account\n  SET account = NEW Account(100)\n  CALL account.Deposit(50)\n  OUTPUT account.GetBalance()\nEND",
+      "expected": "Constructor stores balance = 100. Deposit receives 50, which passes the amount > 0 test. The controlled update sets balance = 100 + 50 = 150. Output: 150. Private balance prevents direct caller assignment. Depositing 0 or a negative amount leaves it unchanged."
     },
     "quizzes": [
       {
@@ -1702,15 +1702,15 @@ export const practice = {
   },
   "lesson-22": {
     "teaching": [
-      "Read the class name, attributes and operations separately.",
-      "Interpret visibility and return types.",
-      "Explain the association and its multiplicity without claiming an execution order."
+      "After construction, borrowed = FALSE. The first call selects ELSE, stores TRUE and returns TRUE.",
+      "The second call sees borrowed = TRUE and returns FALSE without changing it.",
+      "Outputs in order: TRUE, FALSE. In the class diagram, Borrow is public and returns BOOLEAN."
     ],
     "worked": {
-      "title": "Read a class diagram",
-      "prompt": "Describe a Library associated with zero or more Books and its public borrow operation.",
-      "code": "// Library\n// - name : STRING\n// + borrow(book : Book) : BOOLEAN\n// Book\n// - title : STRING\n// Association: Library 1 -- 0..* Book",
-      "expected": "The library has a private name; borrow is public and returns a Boolean. Multiplicity 0..* permits no books or many."
+      "title": "A stateful book object",
+      "prompt": "Design LibraryBook with a private borrowed flag initially FALSE. Borrow returns TRUE and changes the flag on the first call. Later calls return FALSE. Show two calls on the same object.",
+      "code": "CLASS LibraryBook\n  PRIVATE borrowed AS BOOLEAN\n  CONSTRUCTOR LibraryBook()\n    SET borrowed = FALSE\n  ENDCONSTRUCTOR\n  PUBLIC METHOD Borrow() RETURNS BOOLEAN\n    IF borrowed THEN\n      RETURN FALSE\n    ELSE\n      SET borrowed = TRUE\n      RETURN TRUE\n    ENDIF\n  ENDMETHOD\nENDCLASS\nBEGIN\n  DECLARE book AS LibraryBook\n  SET book = NEW LibraryBook()\n  OUTPUT book.Borrow()\n  OUTPUT book.Borrow()\nEND",
+      "expected": "After construction, borrowed = FALSE. The first call selects ELSE, stores TRUE and returns TRUE. The second call sees borrowed = TRUE and returns FALSE without changing it. Outputs in order: TRUE, FALSE. In the class diagram, Borrow is public and returns BOOLEAN."
     },
     "quizzes": [
       {

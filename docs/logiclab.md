@@ -18,7 +18,7 @@ Run `node tests/logiclab.test.mjs` from the repository root. The tests cover eve
 
 ## Teaching conventions
 
-Arrays are zero-based; FOR bounds are inclusive; comments use whole-line `//`. The diagram lab has a visible syntax guide. It validates recognised structure, not expression semantics or algorithm correctness. Flowcharts containing RETURN, ELSEIF, BREAK, CONTINUE, class definitions and overloaded method resolution are outside the first-release converter scope. RETURN is parsed for hierarchy view.
+Arrays are zero-based; FOR bounds are inclusive; comments use whole-line `//`. The diagram lab has a visible syntax guide. It validates recognised structure, not expression semantics or algorithm correctness. Flowcharts support ELSEIF and terminal RETURN exits. BREAK, CONTINUE, class definitions and overloaded method resolution are outside the converter scope. Methods can be diagrammed but are not executed by the tracer.
 
 ## Practice and privacy
 

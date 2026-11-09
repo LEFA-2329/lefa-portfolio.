@@ -13,7 +13,7 @@ entries=[]
 for l in C['lessons']:
  for n,q in enumerate([l['quiz']]+C['practice'][l['id']]['quizzes'],1):
   entries.append(dict(id=l['id']+'-quiz-'+str(n),section='Unit '+str(l['unit'])+' '+l['title'],title='Knowledge check '+str(n),question=q['question']+'\n'+'\n'.join(chr(65+i)+'. '+o for i,o in enumerate(q['options'])),answer=chr(65+q['correct'])+'. '+q['options'][q['correct']]+'\n'+q['explanation']))
- b=l['bug'];entries.append(dict(id=l['id']+'-debug',section='Unit '+str(l['unit'])+' '+l['title'],title='Find and fix the error',question='Identify the faulty line, error category and correction.\n'+ '\n'.join(str(i+1)+'. '+x for i,x in enumerate(b['code'].splitlines())),answer='Line '+str(b['line'])+' - '+b['category']+'\n'+b['options'][b['correct']]+'\n'+b['explanation']))
+ b=l['bug'];entries.append(dict(id=l['id']+'-debug',section='Unit '+str(l['unit'])+' '+l['title'],title='Find and fix the error',question='Requirement: '+b['prompt']+'\nFocused snippet: assume omitted declarations and input setup are supplied unless the task says otherwise.\nIdentify the faulty line, error category and correction.\n'+ '\n'.join(str(i+1)+'. '+x for i,x in enumerate(b['code'].splitlines())),answer='Line '+str(b['line'])+' - '+' or '.join(b.get('acceptedCategories',[b['category']]))+'\n'+b['options'][b['correct']]+'\n'+b['explanation']))
  for t in C['practice'][l['id']]['tasks']:entries.append(dict(id=t['id'],section='Unit '+str(l['unit'])+' '+l['title'],title=t['title'],question=t['prompt'],answer=t['solution']+'\n\nReview:\n'+'\n'.join(t['checklist'])))
 for t in C['taskBank']:entries.append(dict(id=t['id'],section='Task library '+t['topic'],title=t['title'],question=t['prompt'],answer=t['solution']+'\n\nReview:\n'+'\n'.join(t['checklist'])))
 Path('build/pack-entries.json').write_text(json.dumps(entries));print(len(entries),'pack entries')
@@ -36,7 +36,7 @@ for mode,label in [('questions','Questions only'),('answers','Answers only'),('q
  last=None
  for number,item in enumerate(entries,1):
   if item['section']!=last:
-   doc.add_page_break();story.append(PageBreak());doc.add_heading(plain(item['section']),1);story.append(Paragraph(escape(plain(item['section'])),styles['PackSection']));last=item['section']
+   section_heading=doc.add_heading(plain(item['section']),1);section_heading.paragraph_format.page_break_before=True;story.append(PageBreak());story.append(Paragraph(escape(plain(item['section'])),styles['PackSection']));last=item['section']
   h=f'Exercise {number} {plain(item["title"])}';doc.add_heading(h,2);story.append(Paragraph(escape(h),styles['PackQuestion']))
   for part in (['question'] if mode=='questions' else ['answer'] if mode=='answers' else ['question','answer']):
    if mode=='questions-and-answers':doc.add_paragraph('Question' if part=='question' else 'Model solution',style='Heading 3');story.append(Paragraph('Question' if part=='question' else 'Model solution',styles['PackQuestion']))
@@ -45,5 +45,8 @@ for mode,label in [('questions','Questions only'),('answers','Answers only'),('q
    for line in val.splitlines():
     pa=doc.add_paragraph();pa.paragraph_format.space_after=Pt(2);run=pa.add_run(line);run.font.name='DejaVu Sans Mono';run.font.size=Pt(9)
    story.extend(pdfparts(val));story.append(Spacer(1,8))
+ for st in doc.styles:
+  if st.name in ['Title','Subtitle','Heading 1','Heading 2']:st.font.color.rgb=RGBColor(0,0,0)
+  for border in st.element.xpath('.//w:pBdr'):border.getparent().remove(border)
  doc.save(out/f'logiclab-{mode}.docx');SimpleDocTemplate(str(out/f'logiclab-{mode}.pdf'),pagesize=A4,rightMargin=42,leftMargin=42,topMargin=42,bottomMargin=42,title=title+' '+label,author='Lefa Malatji').build(story,onFirstPage=footer,onLaterPages=footer)
  print(mode,'written')

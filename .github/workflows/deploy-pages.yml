@@ -6,6 +6,10 @@ on:
     branches: [main]
     paths:
       - 'dist/**'
+      - 'tests/logiclab*.test.mjs'
+      - 'scripts/slide-*.json'
+      - 'scripts/revision-content.json'
+      - 'scripts/slide-audit.mjs'
       - '.github/workflows/deploy-pages.yml'
   workflow_dispatch:
 
@@ -27,6 +31,8 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v6
+      - name: Verify LogicLab before publishing
+        run: node --test tests/logiclab*.test.mjs
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Prepare portable static files
