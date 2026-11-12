@@ -21,3 +21,10 @@ Date: 12 November 2026
 
 ## Limits
 This audit verifies the listed scenarios, not every possible program or device. Methods, Modules and object-oriented programs are not executed by the tracer. Written exam answers require self-assessment. Work is stored per browser profile, without accounts or cross-device sync. Hidden answers are a learning aid, not secure examination protection. Mobile checks used a browser viewport, not a physical phone.
+
+## Navigation and appearance update
+- Simplified primary navigation to Home, Practice, Code tools and Downloads.
+- Added searchable topic groups, direct lesson links and Previous/Next lesson navigation.
+- Removed completion counters, badges, completion actions and progress reset UI. Existing stored marks remain untouched for future use. Drafts and question answers continue to save.
+- Added persistent light, dark, grey and device-following themes, with a custom accent picker and contrasting button text.
+- All 17 current LogicLab test files passed. Browser checks covered topic search, quiz feedback, theme and colour persistence, nine route destinations, generated diagrams and a 390px mobile menu with no page overflow.
