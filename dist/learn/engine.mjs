@@ -5,7 +5,8 @@ function normaliseLine(raw) {
     const c = raw[i];
     if (!quote && c === '/' && raw[i + 1] === '/') break;
     text += c;
-    if ((c === '"' || c === "'") && raw[i - 1] !== '\\') quote = quote === c ? null : quote || c;
+    if (quote && c === '\\' && i + 1 < raw.length) { text += raw[++i]; continue; }
+    if (c === '"' || c === "'") quote = quote === c ? null : quote || c;
   }
   text = text.trim().replace(/;$/, '').trim();
   if (/^```/.test(text)) return '';
@@ -181,8 +182,26 @@ export function flowchart(ast, module = 'main') {
   if (totalW > 30000 || height > 100000) throw Error('The diagram is too large for one view. Split it into methods.');
   return shell(`<g transform="translate(${shift} 0)">${edges.join('')}${nodes.join('')}</g>`, totalW, height, 'Flowchart for ' + module);
 }
+function outsideStrings(source) {
+ let result = '', quote = null;
+ for (let i = 0; i < source.length; i++) {
+  const c = source[i];
+  if (quote) {
+   if (c === '\\') { i++; continue; }
+   if (c === quote) quote = null;
+   result += ' ';
+  } else if (c === '"' || c === "'") { quote = c; result += ' '; }
+  else result += c;
+ }
+ return result;
+}
 export function hierarchy(ast){
- const modules=new Map(ast.modules.map(m=>[m.name.toLowerCase(),m]));const relations=[],missing=new Set();const calls=(body)=>body.flatMap(n=>[...(n.type==='call'?[n.name]:[...String(n.label||'').matchAll(/\b([A-Za-z_]\w*)\s*\(/g)].map(m=>m[1]).filter(name=>modules.has(name.toLowerCase()))),...calls(n.yes||[]),...calls(n.no||[]),...calls(n.body||[])]);
+ const modules=new Map(ast.modules.map(m=>[m.name.toLowerCase(),m]));const relations=[],missing=new Set();
+ const calls=body=>body.flatMap(n=>{
+  const source=outsideStrings([n.label,n.condition,n.from,n.to].filter(Boolean).join(' '));
+  const expressions=[...source.matchAll(/\b([A-Za-z_][\w.]*)\s*\(/g)].map(m=>m[1]).filter(name=>modules.has(name.toLowerCase()));
+  return [...(n.type==='call'?[n.name]:[]),...expressions,...calls(n.yes||[]),...calls(n.no||[]),...calls(n.body||[])];
+ });
  for(const [name,body]of [['Main',ast.main],...ast.modules.map(m=>[m.name,m.body])])for(const c of new Set(calls(body))){const resolved=modules.get(c.toLowerCase())?.name||c;relations.push([name,resolved]);if(!modules.has(c.toLowerCase()))missing.add(c);}
  const names=['Main',...ast.modules.map(m=>m.name),...missing];const unique=[...new Set(names)];const depth=new Map([['Main',0]]);for(let i=0;i<unique.length;i++)for(const[a,b]of relations)if(depth.has(a)&&!depth.has(b))depth.set(b,Math.min(5,depth.get(a)+1));for(const n of unique)if(!depth.has(n))depth.set(n,1);
  const levels=[];for(const n of unique)(levels[depth.get(n)]??=[]).push(n);const cols=Math.max(...levels.map(l=>l?.length||0),1),w=Math.max(600,cols*270+60),pos=new Map();let shapes='';levels.forEach((level,d)=>level?.forEach((name,i)=>{const x=w/2+(i-(level.length-1)/2)*270,y=45+d*160;pos.set(name,{x,y});shapes+=`<rect x="${x-115}" y="${y}" width="230" height="80" rx="8" fill="${name==='Main'?'#e0f2f1':'#e2f2ec'}" stroke="#a5adc0"/>${svgText(name,x,y+40)}`;}));let edges='';for(const[a,b]of relations){const p=pos.get(a),q=pos.get(b);edges+=`<path d="M${p.x} ${p.y+80} L${q.x} ${q.y}" fill="none" stroke="#66758c" stroke-width="1.5" marker-end="url(#arrow)"/>`;}return {svg:shell(edges+shapes,w,levels.length*160+70,'Module call hierarchy'),missing:[...missing]};

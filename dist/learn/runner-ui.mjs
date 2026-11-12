@@ -1,8 +1,8 @@
 import {workStore} from './work-store.mjs?v=15';
 import {cleanDraft} from './work-state.mjs?v=15';
 import {gridExamples} from './grid-examples.mjs?v=15';
-import {createRunner,displayValue} from './runner.mjs?v=15';
-import {escapeHTML as e} from './engine.mjs?v=15';
+import {createRunner,displayValue} from './runner.mjs?v=17';
+import {escapeHTML as e} from './engine.mjs?v=17';
 const examples={
  'Add two numbers':{hint:'NUM accepts whole numbers and decimals. Enter 4 and 6.5 when prompted; the output should be 10.5.',code:'BEGIN\n  DECLARE first AS NUM\n  DECLARE second AS NUM\n  DECLARE total AS NUM\n  INPUT first\n  INPUT second\n  SET total = first + second\n  OUTPUT total\nEND'},
  'IF ELSE decision':{hint:'Try 49, then restart and try 50 to compare the decision paths.',code:'BEGIN\n  DECLARE mark AS REAL\n  INPUT mark\n  IF mark >= 50 THEN\n    OUTPUT "Pass"\n  ELSE\n    OUTPUT "Revise"\n  ENDIF\nEND'},

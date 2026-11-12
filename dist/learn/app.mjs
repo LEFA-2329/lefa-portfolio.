@@ -1,13 +1,13 @@
-import {examPage} from './exam-ui.mjs?v=16';
+import {examPage} from './exam-ui.mjs?v=17';
 import {workStore} from './work-store.mjs?v=15';
 import {cleanLesson,cleanTask,cleanDraft} from './work-state.mjs?v=15';
 import {activities} from './activities.mjs?v=15';
-import {activitiesPage,activityPage} from './activity-ui.mjs?v=15';
-import {interactiveTracePage} from './runner-ui.mjs?v=15';
+import {activitiesPage,activityPage} from './activity-ui.mjs?v=17';
+import {interactiveTracePage} from './runner-ui.mjs?v=17';
 import {taskBank} from './tasks.mjs?v=15';
 import {units,lessons} from './data.mjs?v=15';
 import {practice} from './practice.mjs?v=15';
-import {parse,flowchart,hierarchy,classDiagram,escapeHTML as e} from './engine.mjs?v=15';
+import {parse,flowchart,hierarchy,classDiagram,escapeHTML as e} from './engine.mjs?v=17';
 const $=s=>document.querySelector(s),view=$('#view');
 let stored={},storageWorks=true;try{stored=JSON.parse(localStorage.getItem('logiclab-progress-v1')||'{}');if(!stored||typeof stored!=='object')stored={};}catch{storageWorks=false;}
 let completed=new Set(Array.isArray(stored.completed)?stored.completed.filter(id=>lessons.some(l=>l.id===id)):[]);
