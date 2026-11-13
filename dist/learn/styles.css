@@ -72,3 +72,5 @@ body{font-size:16px;line-height:1.7}.topbar{background:var(--surface);height:80p
 @media print{.nf-table-diagram{break-inside:avoid}.nf-scroll{overflow:visible}.nf-scroll svg{min-width:0!important}.nf-fit{display:none}.nf-legend{color:#111}}
 
 .nf-is-fit .nf-scroll svg{min-width:0}.nf-fit{margin-top:12px;font-size:13px}
+
+.progress-summary{margin:24px 0;color:var(--muted)}.progress-lessons article{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:16px 0;border-bottom:1px solid var(--line)}.progress-lessons h3{font-size:17px;margin:0}.progress-lessons p{font-size:14px}.progress-state{font-size:14px;white-space:nowrap}.lesson-completion{margin-top:26px}.lesson-completion h2{font-size:22px}@media(max-width:760px){.progress-lessons article{align-items:flex-start;flex-direction:column;gap:4px}.progress-state{white-space:normal}}

@@ -234,7 +234,7 @@ const unitPractice=[
     ],
     [
       "Filtering groups",
-      "Write SQL listing CourseID and average Mark for courses with at least five non-NULL marks, averaging only marks >=50.",
+      "Write SQL listing CourseID and average Mark for courses with at least five marks of 50 or above. Include only those passing marks in both the average and the count.",
       "SELECT CourseID,AVG(CAST(Mark AS DECIMAL(10,2))) AS AverageMark FROM Enrolments WHERE Mark>=50 GROUP BY CourseID HAVING COUNT(Mark)>=5; WHERE removes failing and NULL rows before groups are counted."
     ],
     [
