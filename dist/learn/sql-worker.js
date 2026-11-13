@@ -1,4 +1,4 @@
 importScripts('./vendor/sqljs/sql-wasm.js');
-const ready=Promise.all([initSqlJs({locateFile:file=>new URL('./vendor/sqljs/'+file,self.location.href).href}),import('./sql-core.mjs?v=19'),import('./sql-data.mjs?v=19')]);
+const ready=Promise.all([initSqlJs({locateFile:file=>new URL('./vendor/sqljs/'+file,self.location.href).href}),import('./sql-core.mjs?v=20'),import('./sql-data.mjs?v=20')]);
 let db;
 self.onmessage=async event=>{const {id,action,dataset,code,mode}=event.data;try{const [SQL,core,data]=await ready;if(action==='init'){if(!data.datasets[dataset])throw Error('Unknown demo dataset.');db?.close();db=new SQL.Database();db.run('PRAGMA foreign_keys=ON; PRAGMA max_page_count=8192;');db.run(data.datasets[dataset].sql);}if(!db)throw Error('Load a dataset first.');const results=action==='run'?core.executeBatch(db,code,mode):[];const schema=db.exec("SELECT name, type, sql FROM sqlite_master WHERE type IN ('table','view','index') AND name NOT LIKE 'sqlite_%' ORDER BY type, name;");self.postMessage({id,ok:true,results,schema:schema[0]?.values||[]});}catch(error){self.postMessage({id,ok:false,error:error.message});}};

@@ -1,0 +1,7 @@
+-- StudyLab DATA6222: Keys, tables and design quality
+-- Environment: design
+-- Use a disposable practice database. Load college-setup.sql for college tables.
+-- CREATE examples normally run once; inspect existing objects before repeating.
+
+Customers(CustomerID PK, CustomerName, Address)
+Orders(OrderID PK, CustomerID FK, OrderDate)

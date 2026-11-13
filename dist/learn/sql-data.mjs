@@ -1,3 +1,4 @@
+import {extraExamples} from './sql-extra.mjs?v=20';
 export const dialects={sqlserver:'Microsoft SQL Server',postgresql:'PostgreSQL',mysql:'MySQL'};
 const q=value=>"'"+String(value).replaceAll("'","''")+"'";
 export const students=['Lebo','Thabo','Naledi','Peter','Maria','Amina','Sipho','Lerato','John','Sarah','Kabelo','Precious','David','Zanele','Mpho','Tshepo','Grace','Bongani','Ruth','Karabo'].map((name,i)=>[i+1,name,['Polokwane','Johannesburg','Pretoria','Cape Town'][i%4],18+i%9]);
@@ -34,3 +35,5 @@ export const sqlExamples=[
  {id:'index',title:'Create and drop an index',dataset:'college',code:mode=>'CREATE INDEX IX_Students_City ON Students (City);\nSELECT StudentName FROM Students WHERE City = \'Polokwane\';\n'+(mode==='mysql'?'DROP INDEX IX_Students_City ON Students;':'DROP INDEX IX_Students_City'+(mode==='sqlserver'?' ON Students':'')+';'),explain:'An index can improve some lookups but costs storage and write work. Tiny demo data cannot demonstrate realistic performance gains.'},
  {id:'revenue',title:'Bookshop sales revenue',dataset:'shop',code:'SELECT b.Title, SUM(s.Quantity) AS CopiesSold,\n       SUM(s.Quantity * b.Price) AS Revenue\nFROM Books AS b\nJOIN Sales AS s ON s.BookID = b.BookID\nGROUP BY b.BookID, b.Title\nORDER BY Revenue DESC;',explain:'Multiply quantity by price at row level, then sum per book. This demo assumes the current book price was also the sale price.'}
 ];
+
+sqlExamples.push(...extraExamples);

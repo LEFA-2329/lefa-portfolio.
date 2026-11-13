@@ -1,0 +1,15 @@
+-- StudyLab DATA6222: Normalisation with dependency reasoning
+-- Environment: design
+-- Use a disposable practice database. Load college-setup.sql for college tables.
+-- CREATE examples normally run once; inspect existing objects before repeating.
+
+Original: OrderLine(OrderID,ProductID,OrderDate,CustomerID,CustomerName,ProductName,Quantity)
+Key: (OrderID,ProductID)
+OrderID -> OrderDate,CustomerID
+CustomerID -> CustomerName
+ProductID -> ProductName
+(OrderID,ProductID) -> Quantity
+3NF: Customers(CustomerID PK,CustomerName)
+Orders(OrderID PK,OrderDate,CustomerID FK)
+Products(ProductID PK,ProductName)
+OrderLines(OrderID PK/FK,ProductID PK/FK,Quantity)

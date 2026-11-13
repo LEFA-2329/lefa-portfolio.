@@ -6,7 +6,7 @@ on:
     branches: [main]
     paths:
       - 'dist/**'
-      - 'tests/logiclab*.test.mjs'
+      - 'tests/*.test.mjs'
       - 'scripts/slide-*.json'
       - 'scripts/revision-content.json'
       - 'scripts/slide-audit.mjs'
@@ -32,7 +32,7 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v6
       - name: Verify LogicLab before publishing
-        run: node --test tests/logiclab*.test.mjs
+        run: node --test tests/*.test.mjs
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Prepare portable static files

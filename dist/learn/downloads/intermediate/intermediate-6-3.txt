@@ -1,0 +1,8 @@
+-- StudyLab DATA6222: ERDs, object properties and denormalisation
+-- Environment: design
+-- Use a disposable practice database. Load college-setup.sql for college tables.
+-- CREATE examples normally run once; inspect existing objects before repeating.
+
+Students 1 -- 0..* Enrolments 0..* -- 1 Courses
+Enrolments: StudentID PK/FK, CourseID PK/FK, Mark DECIMAL(5,2) NULL
+CHECK (Mark BETWEEN 0 AND 100)

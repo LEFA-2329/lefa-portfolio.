@@ -1,0 +1,8 @@
+-- StudyLab DATA6222: Database components and models
+-- Environment: design
+-- Use a disposable practice database. Load college-setup.sql for college tables.
+-- CREATE examples normally run once; inspect existing objects before repeating.
+
+Students(StudentID PK, StudentName)
+Courses(CourseID PK, CourseName)
+Enrolments(StudentID PK/FK, CourseID PK/FK, Mark)

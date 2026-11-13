@@ -59,3 +59,7 @@ body{font-size:16px;line-height:1.7}.topbar{background:var(--surface);height:80p
 @media(max-width:760px){.course-picker select{font-size:14px}.sql-toolbar{grid-template-columns:1fr;gap:14px}.sql-toolbar>button{width:100%}.sql-example-picker{grid-template-columns:1fr;gap:10px}.sql-example-picker>button{justify-self:start}.sql-main{padding:17px}.sql-main #sql-editor{font-size:16px}.sql-main .button-row .button{flex:1 1 40%}.sql-schema #sql-schema{display:block}.sql-engine-note{font-size:13px}.sql-limits{padding:18px}.sql-limits .db-table{font-size:12px}.db-diagram{padding:10px;margin:20px 0}.db-diagram svg{min-width:650px}.db-diagram figcaption{font-size:13px}.unit-overview-panel ol,.unit-overview-panel ul{padding-left:22px}}
 @media print{.course-picker,.sql-toolbar,.sql-example-picker,#sql-editor,#sql-run,#sql-stop,.sql-shortcut,.sql-schema,.sql-challenges,.lesson-paging{display:none!important}.sql-layout{display:block}.db-diagram svg{min-width:0}.db-diagram{overflow:visible}.db-table th{position:static}.sql-result .scroll-table{max-height:none;overflow:visible}}
 .sql-engine-note .text-link{display:inline;font:inherit;border:0;background:transparent;color:var(--purple);padding:0;cursor:pointer;min-height:0}.sql-limits{scroll-margin-top:95px}.sql-schema .sql-ready{font-size:13px}
+
+/* Database model answers preserve SQL lines and wrap explanatory text. */
+#db-worked pre{white-space:pre-wrap;overflow-wrap:anywhere;}
+#db-panel .field-label select{max-width:100%;}

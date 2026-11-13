@@ -139,3 +139,109 @@ L('sql-aggregate',6,'Joins, aggregates, GROUP BY and HAVING',[
  T('Marks are 60, NULL and 90. Give COUNT(*), COUNT(Mark), SUM(Mark), AVG(Mark), MIN(Mark) and MAX(Mark).', 'NULL is ignored by the column aggregate functions.', 'COUNT(*) = 3; COUNT(Mark) = 2; SUM = 150; AVG = 75; MIN = 60; MAX = 90. Do not convert the unknown mark to zero unless that is an explicit reporting rule.'),
  [Q('HAVING is used to filter:',['Groups after aggregation','Column names before parsing','Only indexes'],0,'HAVING applies group-level conditions.'),Q('AVG of 60, NULL and 90 is:',['50','75','150'],1,'Only the two supplied marks are averaged.')], 'college','group')
 ];
+
+const unitPractice=[
+  [
+    [
+      "Compare database users",
+      "A college has a lecturer entering marks, a developer building the portal and a DBA restoring a backup. Explain each responsibility.",
+      "The lecturer is an end user responsible for accurate authorised entry. The developer implements the interface and queries. The DBA maintains recoverability and performs a tested restore. Permissions should reflect each role."
+    ],
+    [
+      "Plan a database",
+      "A shop keeps conflicting customer phone numbers in three spreadsheets. Propose a database plan and two migration checks.",
+      "Create Customers with a stable key, plus Orders with a customer foreign key. Define which phone number is authoritative and resolve duplicates before import. Check customer counts and that each order references an existing customer after migration."
+    ],
+    [
+      "Evaluate costs",
+      "Give two costs of replacing shared spreadsheets with a managed database, and explain why a backup alone is not a recovery plan.",
+      "Costs include schema and migration work, training, hosting or licences, and administration. A backup must be restorable within the required time; test restores, document procedures and protect backup access."
+    ]
+  ],
+  [
+    [
+      "Read cardinality",
+      "State the cardinalities when each ticket has one requester and each requester may create many tickets.",
+      "Requester 1 to Ticket 0..many. Ticket.RequesterID is a required foreign key. A requester can exist before creating a ticket, while every ticket must have exactly one existing requester."
+    ],
+    [
+      "Model optional participation",
+      "A ticket may be unassigned or assigned to one technician; each technician may have many tickets. Name the FK and nullability.",
+      "Tickets.AssignedToID is a nullable foreign key to Technicians.TechnicianID. A NULL denotes unassigned. Each ticket has zero or one technician and each technician zero or many tickets."
+    ],
+    [
+      "Choose attribute types",
+      "Classify a person name, date of birth, age and multiple phone numbers. Explain a suitable relational design.",
+      "A name can be composite in a conceptual model; date of birth is stored; age is derived for a reference date. Phone numbers are multivalued and belong in PersonPhones with a foreign key, rather than a comma-separated field."
+    ]
+  ],
+  [
+    [
+      "Choose candidate keys",
+      "A student has StudentID, an institutionally unique StudentNumber, Name and City. Identify candidate, primary and secondary/search keys.",
+      "StudentID and StudentNumber are candidate keys if each is unique and minimal. Choose StudentID as primary and enforce StudentNumber as UNIQUE NOT NULL. Name or City can be search keys but are not reliable row identifiers."
+    ],
+    [
+      "Locate a foreign key",
+      "An order belongs to one customer. Explain why the customer key belongs in Orders rather than storing a list of order IDs in Customers.",
+      "Orders.CustomerID is the foreign key on the many side. It permits many order rows per customer without repeating groups. A customer may have zero orders; each required customer reference must match an existing customer."
+    ],
+    [
+      "Revise an ERD",
+      "An employee previously belonged to one project. The new rule allows many projects per employee and many employees per project. Show the revision.",
+      "Introduce EmployeeProjects(EmployeeID PK/FK,ProjectID PK/FK) and remove the single ProjectID from Employees after migration. Add allocation details to the bridge if they depend on that employee-project pair."
+    ]
+  ],
+  [
+    [
+      "Unary relationships",
+      "Model an employee supervised by at most one other employee, and prevent self-supervision conceptually.",
+      "Employees has nullable SupervisorID referencing Employees.EmployeeID. One supervisor can supervise many employees. CHECK(SupervisorID<>EmployeeID) prevents direct self-supervision; longer management cycles need additional validation."
+    ],
+    [
+      "Ternary relationships",
+      "A supplier supplies a product to a project with an agreed quantity. Explain why three separate pairwise relationships may lose meaning.",
+      "The fact depends on all three identities together. Use Supply(SupplierID,ProductID,ProjectID,Quantity) with foreign keys and a suitable composite key. Separate pairs cannot prove which supplier delivered which product to a particular project."
+    ],
+    [
+      "Review business rules",
+      "A library book title can have many physical copies. Each copy can have many historical loans but at most one current loan. Propose entities and an enforcement note.",
+      "Use Titles, Copies, Members and Loans; Copies references Titles and Loans references Copies and Members. A current-loan uniqueness rule needs a filtered unique index or controlled transaction logic, not simply a one-to-many ERD line."
+    ]
+  ],
+  [
+    [
+      "Partial dependencies",
+      "Normalise Line(OrderID,ProductID,OrderDate,ProductName,Quantity) assuming one line per product per order.",
+      "Key is (OrderID,ProductID). OrderID determines OrderDate; ProductID determines ProductName; the whole key determines Quantity. 2NF: Orders(OrderID PK,OrderDate), Products(ProductID PK,ProductName), Lines(OrderID PK/FK,ProductID PK/FK,Quantity)."
+    ],
+    [
+      "Transitive dependencies",
+      "Normalise Employee(EmployeeID,EmployeeName,DepartmentID,DepartmentName) when each department has one name.",
+      "EmployeeID determines EmployeeName and DepartmentID; DepartmentID determines DepartmentName. Create Departments(DepartmentID PK,DepartmentName) and Employees(EmployeeID PK,EmployeeName,DepartmentID FK). This removes the non-key transitive dependency."
+    ],
+    [
+      "State assumptions",
+      "Does a table with a single-column primary key automatically satisfy 3NF? Explain with an example.",
+      "No. It may avoid partial dependency on that selected key, but can still have transitive dependencies, such as EmployeeID -> DepartmentID -> DepartmentName. Other candidate keys must also be considered when determining normal forms."
+    ]
+  ],
+  [
+    [
+      "NULL aggregates",
+      "For marks 40, NULL and 80 calculate COUNT(*), COUNT(Mark), AVG(Mark) and SUM(Mark). Explain the integer-average issue in SQL Server.",
+      "COUNT(*)=3, COUNT(Mark)=2, SUM=120 and the mathematical average is 60. SQL Server AVG of integer input returns an integer type; use AVG(CAST(Mark AS DECIMAL(10,2))) when a fractional average is needed."
+    ],
+    [
+      "Filtering groups",
+      "Write SQL listing CourseID and average Mark for courses with at least five non-NULL marks, averaging only marks >=50.",
+      "SELECT CourseID,AVG(CAST(Mark AS DECIMAL(10,2))) AS AverageMark FROM Enrolments WHERE Mark>=50 GROUP BY CourseID HAVING COUNT(Mark)>=5; WHERE removes failing and NULL rows before groups are counted."
+    ],
+    [
+      "Safe changes",
+      "You need to delete one test student. Give a safe sequence and explain the role of foreign keys.",
+      "Preview SELECT with the exact StudentID, check enrolments and other dependants, use a controlled practice transaction and DELETE with that predicate, verify affected rows, then commit or roll back. A foreign key may reject deleting a referenced student; do not disable integrity just to force the delete."
+    ]
+  ]
+];
+for (const lesson of dbLessons) { lesson.tasks=[lesson.task,...unitPractice[lesson.unit-1].map(([title,prompt,solution])=>({title,prompt,hint:"Identify the business rule, key and relevant SQL or design concept before writing your answer.",solution}))]; }
