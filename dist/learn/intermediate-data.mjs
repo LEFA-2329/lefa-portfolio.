@@ -297,16 +297,18 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for database components and models line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "The bridge table records a many-to-many relationship without placing a list of course IDs in one student row. A database system includes data, hardware, DBMS software, applications, procedures and people. The DBMS provides querying, transactions, concurrency, integrity, security and recovery. Relational systems use tables and keys; hierarchical systems use trees; network models allow multiple parent links; document systems store structured documents. Choose a model for access patterns and rules, not fashion. File systems remain useful for simple file storage but independent files leave sharing, validation and concurrency to application code.",
-        "title": "Trace and explain the example"
+        "title": "Repair a file-based design",
+        "prompt": "Two registration spreadsheets contain different addresses for the same StudentNumber. Explain how to repair the data and prevent recurrence.",
+        "hint": "Choose an authoritative source before adding a uniqueness rule.",
+        "solution": "Identify duplicate students by the institutionally unique StudentNumber, confirm the current address and merge records without losing enrolments. Store one student row, enforce UNIQUE NOT NULL on StudentNumber and refer to it through stable keys. Document who may update contact details.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about database components and models: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. The bridge table records a many-to-many relationship without placing a list of course IDs in one student row. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. Use Students, Courses and Enrolments with a composite enrolment key. Foreign keys prevent orphan enrolments; concurrency control coordinates simultaneous edits. A backup and tested recovery plan protects against data loss.",
-        "title": "Review and test the design"
+        "title": "Choose a data model",
+        "prompt": "A shop needs customers, orders and order lines, concurrent checkout and exact financial totals. Choose a DBMS model and list four required services.",
+        "hint": "Match business rules to relationships and transactional changes.",
+        "solution": "A relational DBMS suits the related entities and integrity rules. Require transactions, concurrency control, referential integrity and controlled permissions; also plan backup and recovery. Use exact decimal totals rather than approximate floating point.",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [
@@ -373,16 +375,18 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for keys, tables and design quality line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "One customer address is stored once; Orders connects to it by CustomerID. Historical delivery addresses may deliberately be stored separately. A table represents one subject, a row one occurrence, and columns its attributes. A candidate key is minimal and unique; choose one as the primary key. A foreign key references a primary or unique candidate key and may repeat. Repeating a customer address on every sale causes update anomalies. Write business rules, identify keys, model relationships, normalise and test edge cases before implementation.",
-        "title": "Trace and explain the example"
+        "title": "Find a key error",
+        "prompt": "A designer makes StudentName the primary key and records two learners named Lefa Malatji. Explain the failure and redesign the key without deleting a learner.",
+        "hint": "A key identifies a person; a name describes one.",
+        "solution": "Names are not reliably unique. Assign distinct stable StudentID values, retain both names and enforce a separate unique StudentNumber if the institution guarantees it. Update enrolment foreign keys using a verified mapping before changing the old key.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about keys, tables and design quality: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. One customer address is stored once; Orders connects to it by CustomerID. Historical delivery addresses may deliberately be stored separately. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. Names can repeat and change. Use a stable StudentID and enforce any separate business identifiers with UNIQUE. A course cannot be recorded before a student enrols in a mixed table; repeated course names can be updated inconsistently.",
-        "title": "Review and test the design"
+        "title": "Model a new rule",
+        "prompt": "Each order can contain many products and a product can occur in many orders. Each product occurs at most once per order. Show all keys and where Quantity belongs.",
+        "hint": "Quantity depends on the pair.",
+        "solution": "Orders(OrderID PK,...), Products(ProductID PK,...) and OrderLines(OrderID PK/FK, ProductID PK/FK, Quantity). The composite key enforces at most one line per order-product pair. Quantity depends on that whole pair.",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [
@@ -449,16 +453,18 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for sql server system databases line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "On a normal SQL Server instance this returns the four named databases. Requires native SQL Server; metadata visibility depends on permissions. master holds instance-level configuration and metadata. model is the template for new databases. msdb supports SQL Server Agent jobs, alerts and operational history. tempdb holds temporary objects and internal work and is recreated when the instance starts. These four teaching databases have different responsibilities; Resource is another system database containing system objects. Do not put application tables in system databases.",
-        "title": "Trace and explain the example"
+        "title": "Correct a system-database mix-up",
+        "prompt": "A colleague says master stores all temporary tables and tempdb stores scheduled jobs permanently. Correct both statements and explain what a restart means for tempdb.",
+        "hint": "Separate instance metadata, temporary work and agent history.",
+        "solution": "Temporary tables and internal temporary work use tempdb; SQL Server Agent jobs and related metadata use msdb. master holds instance-level metadata. tempdb is recreated on restart, so temporary objects are not permanent application storage.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about sql server system databases: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. On a normal SQL Server instance this returns the four named databases. Requires native SQL Server; metadata visibility depends on permissions. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. Job: msdb. Temporary table: tempdb. Template: model. Instance login metadata: master. Application data belongs in a user database.",
-        "title": "Review and test the design"
+        "title": "Plan a practice database",
+        "prompt": "You are asked to create student tables inside model so everyone can use them. Explain a safer deployment plan and how to verify your current database.",
+        "hint": "Changing the template can affect newly created databases.",
+        "solution": "Create a dedicated user database, select it explicitly with USE and check SELECT DB_NAME(). Create and populate student tables there. model is the new-database template, so changes there can propagate unexpectedly to later databases. Do not use a system database as the shared student application database.",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [
@@ -533,16 +539,19 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for tools, select and filtering line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "Only students in either named city aged 21 or more are returned, ordered by city then name. Runs in the browser college dataset. SSMS manages instances, edits queries and shows execution plans. Object Explorer displays server objects. SQL Server Configuration Manager manages relevant local services and protocols; it is not the query editor. SELECT chooses columns, FROM the source, WHERE rows and ORDER BY ordering. AND binds more tightly than OR, so add parentheses to make intent explicit. Use IS NULL for missing values; equality to NULL is not true.",
-        "title": "Trace and explain the example"
+        "title": "Fix AND/OR precedence",
+        "prompt": "This query should return only Polokwane or Pretoria students aged at least 21: SELECT StudentName FROM Students WHERE City='Polokwane' OR City='Pretoria' AND Age>=21;. Correct it and explain the unwanted rows.",
+        "hint": "Group the two city alternatives.",
+        "solution": "SELECT StudentName FROM Students WHERE (City='Polokwane' OR City='Pretoria') AND Age>=21; AND binds before OR, so the original includes all Polokwane students regardless of age.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about tools, select and filtering: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. Only students in either named city aged 21 or more are returned, ordered by city then name. Runs in the browser college dataset. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. SELECT StudentID, StudentName, Age FROM Students WHERE Age BETWEEN 20 AND 24 AND StudentName LIKE 'L%' ORDER BY Age DESC, StudentID;",
-        "title": "Review and test the design"
+        "title": "Filter and sort a range",
+        "prompt": "List StudentID, StudentName and Age for students aged 20 through 24 inclusive, ordered by Age then StudentID.",
+        "hint": "BETWEEN includes both endpoints.",
+        "solution": "SELECT StudentID,StudentName,Age FROM Students WHERE Age BETWEEN 20 AND 24 ORDER BY Age,StudentID;",
+        "sqlChallenge": "expanded-between",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [
@@ -609,16 +618,19 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for aggregates, distinct and grouping line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "One result per course with at least five marked enrolments. The count here excludes unmarked rows because WHERE removed them. COUNT(*) counts rows; COUNT(column) ignores NULL. SUM, AVG, MIN and MAX ignore NULL values. SQL Server AVG of integers has an integer return type: cast marks to decimal if fractions are required. WHERE filters individual rows before GROUP BY; HAVING filters groups. SELECT ALL is the default and retains duplicate result rows; DISTINCT removes duplicate selected tuples.",
-        "title": "Trace and explain the example"
+        "title": "Move the aggregate filter",
+        "prompt": "Repair SELECT CourseID,AVG(Mark) FROM Enrolments WHERE COUNT(*)>=5 GROUP BY CourseID; so it returns courses with at least five enrolments and a fractional average.",
+        "hint": "A group does not exist while WHERE is filtering rows.",
+        "solution": "SELECT CourseID,AVG(CAST(Mark AS DECIMAL(10,2))) AS AverageMark FROM Enrolments GROUP BY CourseID HAVING COUNT(*)>=5; COUNT(*) includes unmarked enrolments; AVG ignores NULL.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about aggregates, distinct and grouping: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. One result per course with at least five marked enrolments. The count here excludes unmarked rows because WHERE removed them. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. SELECT City, COUNT(*) AS N FROM Students WHERE Age >= 20 GROUP BY City HAVING COUNT(*) >= 5; Age is a row condition; the minimum group size is a group condition.",
-        "title": "Review and test the design"
+        "title": "Count categories in one query",
+        "prompt": "Return CourseID, PassCount for marks >=50, and PendingCount for NULL marks, sorted by CourseID.",
+        "hint": "Use SUM with CASE for each independent category.",
+        "solution": "SELECT CourseID,SUM(CASE WHEN Mark>=50 THEN 1 ELSE 0 END) AS PassCount,SUM(CASE WHEN Mark IS NULL THEN 1 ELSE 0 END) AS PendingCount FROM Enrolments GROUP BY CourseID ORDER BY CourseID;",
+        "sqlChallenge": "expanded-conditional",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [
@@ -693,16 +705,18 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for safe data changes and system functions line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "The transaction makes a temporary practice change and rolls it back. The captured row count is 1 on the original dataset. Run in SSMS. INSERT adds rows, UPDATE changes existing rows and DELETE removes rows. Always preview the intended WHERE selection, check dependent tables and verify affected row counts. Use a transaction and rollback during native practice; backups are essential for recovery. @@ROWCOUNT describes the preceding statement and must be captured immediately. DB_NAME() returns the current database; these system functions require native SQL Server.",
-        "title": "Trace and explain the example"
+        "title": "Prevent an unscoped change",
+        "prompt": "An intended correction is UPDATE Students SET City='Polokwane'; for student 7 only. Explain the mistake, write the corrected query and outline a recovery step if it already committed.",
+        "hint": "WHERE controls which rows are updated.",
+        "solution": "UPDATE Students SET City='Polokwane' WHERE StudentID=7; Preview the same WHERE with SELECT. If the unscoped update committed, use a verified audit source or a tested backup/recovery procedure; ROLLBACK cannot undo an already committed transaction.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about safe data changes and system functions: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. The transaction makes a temporary practice change and rolls it back. The captured row count is 1 on the original dataset. Run in SSMS. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. INSERT INTO Students (StudentID,StudentName,City,Age) VALUES (99,'Practice','Polokwane',21); UPDATE Students SET Age=22 WHERE StudentID=99; DELETE FROM Students WHERE StudentID=99; Without WHERE the statement targets every row, subject to constraints and permissions.",
-        "title": "Review and test the design"
+        "title": "Capture a write count in SSMS",
+        "prompt": "Write a practice transaction changing only student 7 to age 22. Capture @@ROWCOUNT immediately, show the count and roll back.",
+        "hint": "Do not put another SELECT before capturing the row count.",
+        "solution": "BEGIN TRANSACTION;\nUPDATE Students SET Age=22 WHERE StudentID=7;\nDECLARE @Changed INT=@@ROWCOUNT;\nSELECT @Changed AS Changed;\nROLLBACK TRANSACTION;",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [
@@ -773,16 +787,19 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for inner join and relationship cardinality line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "40 rows on the college demo because each of 20 students has two enrolments. INNER JOIN returns matching combinations. Qualify columns shared by both tables and write the ON condition using keys. A one-to-many join can repeat the parent values once per matching child; repetition is not automatically a mistake. Missing join predicates can multiply rows. The older comma-join syntax can express an inner join but explicit ANSI JOIN keeps relationships separate from filters.",
-        "title": "Trace and explain the example"
+        "title": "Repair a missing join predicate",
+        "prompt": "A query uses Students s CROSS JOIN Enrolments e but is intended to show each student with their own marks. Replace it with the correct join and explain the row multiplication.",
+        "hint": "The foreign key is Enrolments.StudentID.",
+        "solution": "SELECT s.StudentName,e.CourseID,e.Mark FROM Students s INNER JOIN Enrolments e ON e.StudentID=s.StudentID ORDER BY s.StudentID,e.CourseID; The original multiplies 20 students by 40 enrolments into 800 rows, while the intended join has 40 original-demo rows.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about inner join and relationship cardinality: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. 40 rows on the college demo because each of 20 students has two enrolments. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. SELECT s.StudentName,c.CourseName,e.Mark FROM Students s JOIN Enrolments e ON e.StudentID=s.StudentID JOIN Courses c ON c.CourseID=e.CourseID WHERE e.Mark>=75 ORDER BY s.StudentID,c.CourseID;",
-        "title": "Review and test the design"
+        "title": "Join learners to their marks",
+        "prompt": "Return StudentName, CourseID and Mark for every enrolment, sorted by StudentID then CourseID.",
+        "hint": "Qualify StudentID using the student alias.",
+        "solution": "SELECT s.StudentName,e.CourseID,e.Mark FROM Students s JOIN Enrolments e ON e.StudentID=s.StudentID ORDER BY s.StudentID,e.CourseID;",
+        "sqlChallenge": "join",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [
@@ -849,16 +866,19 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for outer joins, cross join and self joins line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "Every student appears at least once, with NULL on the enrolment side if there is no qualifying mark. LEFT JOIN preserves every left row; RIGHT JOIN preserves right rows; FULL OUTER JOIN preserves both sides. Unmatched columns become NULL. A right-side WHERE condition can accidentally remove unmatched rows from a left join: place a match condition in ON when preserving the left side is intended. CROSS JOIN deliberately makes every combination. A self join uses two aliases for the same table.",
-        "title": "Trace and explain the example"
+        "title": "Keep unmatched students",
+        "prompt": "Why does SELECT s.StudentID,e.Mark FROM Students s LEFT JOIN Enrolments e ON e.StudentID=s.StudentID WHERE e.Mark>=80; lose students without high marks? Correct it while keeping every student.",
+        "hint": "A WHERE predicate on the child removes the NULL-extended rows.",
+        "solution": "SELECT s.StudentID,e.Mark FROM Students s LEFT JOIN Enrolments e ON e.StudentID=s.StudentID AND e.Mark>=80 ORDER BY s.StudentID,e.EnrolmentID; The qualification belongs in ON when unmatched students must remain.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about outer joins, cross join and self joins: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. Every student appears at least once, with NULL on the enrolment side if there is no qualifying mark. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. The cross join creates 80 rows. SELECT a.StudentName,b.StudentName FROM Students a JOIN Students b ON a.City=b.City AND a.StudentID<b.StudentID ORDER BY a.StudentID,b.StudentID; The inequality prevents self-pairs and mirrored duplicates.",
-        "title": "Review and test the design"
+        "title": "Find same-city pairs once",
+        "prompt": "Return FirstID, SecondID and City for student pairs in the same city, with the smaller student ID first. Sort by FirstID then SecondID.",
+        "hint": "Use two aliases and an inequality.",
+        "solution": "SELECT a.StudentID AS FirstID,b.StudentID AS SecondID,a.City FROM Students a JOIN Students b ON a.City=b.City AND a.StudentID<b.StudentID ORDER BY a.StudentID,b.StudentID;",
+        "sqlChallenge": "expanded-self",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [
@@ -933,16 +953,19 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for union and union all line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "The four demo cities appear once each. Replacing UNION with UNION ALL returns 20 rows. UNION combines compatible result sets and removes duplicate whole rows. UNION ALL retains duplicates and usually avoids duplicate elimination work. Both branches need the same number of columns with compatible types; result column names come from the first query. An ORDER BY for the combined result goes at the end. A join combines columns using relationships; a union stacks rows.",
-        "title": "Trace and explain the example"
+        "title": "Fix UNION column compatibility",
+        "prompt": "Repair SELECT StudentID,StudentName FROM Students UNION SELECT CourseID FROM Courses;. Explain whether the repaired result has meaningful semantics.",
+        "hint": "Both branches need the same number of compatible columns.",
+        "solution": "A syntactic repair is SELECT StudentID AS ID,StudentName AS Label FROM Students UNION SELECT CourseID,CourseName FROM Courses;. Student and course IDs refer to different entities, so add a source label or keep separate result sets when consumers need to distinguish them.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about union and union all: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. The four demo cities appear once each. Replacing UNION with UNION ALL returns 20 rows. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. SELECT StudentID FROM Enrolments WHERE CourseID=1 UNION ALL SELECT StudentID FROM Enrolments WHERE CourseID=2; Change UNION ALL to UNION to return each matching student once. A student in both courses appears twice with ALL.",
-        "title": "Review and test the design"
+        "title": "Keep duplicate city occurrences",
+        "prompt": "Combine cities from students younger than 22 and students aged at least 22, retaining duplicate occurrences and sorting by City.",
+        "hint": "Use UNION ALL rather than UNION.",
+        "solution": "SELECT City FROM Students WHERE Age<22 UNION ALL SELECT City FROM Students WHERE Age>=22 ORDER BY City;",
+        "sqlChallenge": "expanded-union-all",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [
@@ -1009,16 +1032,18 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for schemas, databases and data types line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "Creates a dedicated practice database, schema and table in native SQL Server. Run once with appropriate permissions; use a new empty practice database. A schema is a namespace and securable container inside a database. CREATE DATABASE makes a database, not a table or schema. Use INT for suitable whole-number IDs, NVARCHAR for Unicode names, DECIMAL for exact currency and DATE for dates without time. Choose precision, length and nullability from business rules. FLOAT is approximate and is generally unsuitable for exact monetary totals.",
-        "title": "Trace and explain the example"
+        "title": "Choose types that preserve meaning",
+        "prompt": "A proposed table uses Phone INT, Price FLOAT and LearnerName VARCHAR(5). Identify three risks and propose suitable SQL Server types.",
+        "hint": "Phone numbers are identifiers and currency needs exact arithmetic.",
+        "solution": "Use VARCHAR(25) for formatted phone identifiers, DECIMAL(10,2) for exact prices, and appropriately sized NVARCHAR such as NVARCHAR(100) for Unicode names. Confirm lengths and price ranges from actual business requirements.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about schemas, databases and data types: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. Creates a dedicated practice database, schema and table in native SQL Server. Run once with appropriate permissions; use a new empty practice database. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. Use NVARCHAR(100), DATE, DECIMAL(10,2) and VARCHAR(25), adjusting lengths to requirements. A phone number is an identifier with possible leading zeros, + signs and formatting; arithmetic is not meaningful.",
-        "title": "Review and test the design"
+        "title": "Create an assessment structure in SSMS",
+        "prompt": "Create teaching.PracticeTests with TestID primary key, Unicode Title up to 100 characters, optional DueDate and required Weight between 0 and 100. Assume teaching already exists.",
+        "hint": "Combine a data type, nullability and CHECK; each has a different job.",
+        "solution": "CREATE TABLE teaching.PracticeTests(TestID INT PRIMARY KEY,Title NVARCHAR(100) NOT NULL,DueDate DATE NULL,Weight DECIMAL(5,2) NOT NULL CHECK(Weight BETWEEN 0 AND 100));",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [
@@ -1085,16 +1110,19 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for alter, drop and change planning line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "Native SQL Server creates a disposable table, adds a column, widens a name column and removes the table. ALTER changes a definition; DROP removes an object. DELETE removes rows and leaves the table. Before a type or nullability change, inspect existing values and dependent views, constraints and applications. A narrowing conversion may lose data or fail. Script and review changes, test a restore path and deploy migrations deliberately. Browser SQLite supports a smaller ALTER subset than SQL Server.",
-        "title": "Trace and explain the example"
+        "title": "Distinguish DELETE and DROP",
+        "prompt": "A learner uses DROP TABLE Students WHERE StudentID=99; to delete one test row. Correct it and explain why dependencies still matter.",
+        "hint": "DROP changes schema; DELETE changes rows.",
+        "solution": "DELETE FROM Students WHERE StudentID=99; DROP TABLE does not accept this row filter and would remove the whole table definition. Preview the row, inspect dependent enrolments and let referential rules prevent orphan data.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about alter, drop and change planning: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. Native SQL Server creates a disposable table, adds a column, widens a name column and removes the table. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. Find NULL emails, resolve them using a documented business rule, check length and duplicates if uniqueness is also required, test dependent code and back up. Then run ALTER TABLE with the existing type and NOT NULL in a controlled migration.",
-        "title": "Review and test the design"
+        "title": "Add a column and inspect NULL",
+        "prompt": "Create PracticeRooms with RoomID integer primary key. Add nullable Capacity, insert RoomID 1 only and display the table.",
+        "hint": "Use simple ALTER TABLE ADD.",
+        "solution": "CREATE TABLE PracticeRooms(RoomID INTEGER PRIMARY KEY); ALTER TABLE PracticeRooms ADD Capacity INTEGER; INSERT INTO PracticeRooms(RoomID) VALUES(1); SELECT * FROM PracticeRooms;",
+        "sqlChallenge": "expanded-alter-demo",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [
@@ -1169,16 +1197,18 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for ssms design view and generated scripts line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "Shows the saved column definitions. In Object Explorer, Script Table as > CREATE To > New Query Editor Window generates reviewable SQL. In SSMS, connect to the intended instance, expand Databases and use New Database for a practice database. Under its Tables node choose New Table, enter columns, types and nullability, set the primary key and save with a clear name. Menus vary by SSMS version. A graphical designer is another interface to schema changes; it does not remove the need for keys, permissions, review or backups.",
-        "title": "Trace and explain the example"
+        "title": "Review a generated script",
+        "prompt": "A designer generated a CREATE script in the wrong database and left StudentNumber nullable and nonunique. Identify the missing review checks before running it elsewhere.",
+        "hint": "The designer does not infer the business rules.",
+        "solution": "Verify target database/schema, StudentNumber type and length, NOT NULL, UNIQUE and the primary key. Review all foreign keys and CHECK/default rules. Test the corrected script in an empty practice database and compare metadata with the approved design.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about ssms design view and generated scripts: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. Shows the saved column definitions. In Object Explorer, Script Table as > CREATE To > New Query Editor Window generates reviewable SQL. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. Check the target database and schema, every column name and type, required/optional nullability, primary/unique keys, and all CHECK/default/foreign-key definitions. Save the reviewed script and test it in an empty practice database.",
-        "title": "Review and test the design"
+        "title": "Compare designer and metadata",
+        "prompt": "After creating Students in SSMS, write a native query listing its column names, data types and nullability in ordinal order.",
+        "hint": "Use INFORMATION_SCHEMA.COLUMNS and constrain the schema.",
+        "solution": "SELECT COLUMN_NAME,DATA_TYPE,IS_NULLABLE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='dbo' AND TABLE_NAME='Students' ORDER BY ORDINAL_POSITION; Compare this with the design view and generated script.",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [
@@ -1245,16 +1275,19 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for entity integrity and named constraints line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "One valid row with default status Pending. Reusing the key or email fails; a mark of 101 fails. Reset before rerunning CREATE. PRIMARY KEY makes a row identifiable and is unique and non-NULL. UNIQUE enforces a candidate identifier. NOT NULL requires a value. CHECK tests a predicate; in SQL Server a CHECK accepts UNKNOWN, so combine it with NOT NULL when a value is required. DEFAULT supplies an omitted value rather than validating every supplied value. Use descriptive constraint names such as CK_PracticeScores_Mark.",
-        "title": "Trace and explain the example"
+        "title": "Reject missing marks deliberately",
+        "prompt": "A required mark is defined as Mark INT CHECK(Mark BETWEEN 0 AND 100). Explain why NULL is accepted and correct the definition.",
+        "hint": "A CHECK accepts UNKNOWN, while NOT NULL has a separate purpose.",
+        "solution": "Mark INT NOT NULL CONSTRAINT CK_PracticeScores_Mark CHECK(Mark BETWEEN 0 AND 100). CHECK alone accepts the unknown result produced by NULL in SQL Server; NOT NULL enforces presence.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about entity integrity and named constraints: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. One valid row with default status Pending. Reusing the key or email fails; a mark of 101 fails. Reset before rerunning CREATE. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. NULL produces UNKNOWN in the CHECK predicate and is accepted unless NOT NULL is added. DEFAULT is used when the column is omitted or DEFAULT is specified; an explicit supplied status is accepted unless another constraint rejects it.",
-        "title": "Review and test the design"
+        "title": "Demonstrate a default",
+        "prompt": "Create PracticeFlags with integer FlagID primary key, required Label VARCHAR(30), and required Status VARCHAR(10) defaulting to Open. Insert flag 1 labelled Review SQL without supplying Status, then display it.",
+        "hint": "Omit Status from the insert column list.",
+        "solution": "CREATE TABLE PracticeFlags(FlagID INTEGER PRIMARY KEY,Label VARCHAR(30) NOT NULL,Status VARCHAR(10) NOT NULL DEFAULT 'Open'); INSERT INTO PracticeFlags(FlagID,Label) VALUES(1,'Review SQL'); SELECT * FROM PracticeFlags;",
+        "sqlChallenge": "expanded-default-demo",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [
@@ -1321,16 +1354,19 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for foreign keys and referential actions line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "Child 10 remains with ParentID NULL. The child is preserved while its optional link is removed. A foreign key enforces that each non-NULL child reference matches an existing parent key. NO ACTION rejects a violating parent change; CASCADE propagates a change or deletion. SET NULL needs nullable child columns. SET DEFAULT needs a default that still satisfies the foreign key, unless it is NULL and NULL is allowed. Select the action from business rules rather than convenience; deleting history through a cascade may be inappropriate.",
-        "title": "Trace and explain the example"
+        "title": "Find an invalid referential action",
+        "prompt": "A child FK is NOT NULL but specifies ON DELETE SET NULL. Explain why the design conflicts and propose two valid policies.",
+        "hint": "An automatic action must satisfy the child constraints.",
+        "solution": "Make the child reference nullable if an unassigned child is meaningful, or use NO ACTION to prevent deleting a referenced parent. Choose from the business rule; do not remove integrity checks merely to make a delete succeed.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about foreign keys and referential actions: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. Child 10 remains with ParentID NULL. The child is preserved while its optional link is removed. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. Keep invoices using NO ACTION or a deliberate archival policy; do not casually cascade-delete financial history. Optional assignment can use SET NULL when a staff record is removed, provided the foreign key column is nullable and business history is retained separately.",
-        "title": "Review and test the design"
+        "title": "Preserve an optional child",
+        "prompt": "Create PracticeParents(ParentID primary key) and PracticeChildren(ChildID primary key, nullable ParentID FK). Use ON DELETE SET NULL, insert parent 1 and child 10, delete the parent and show the child.",
+        "hint": "Enable referential integrity; the child must remain with a NULL link.",
+        "solution": "CREATE TABLE PracticeParents(ParentID INTEGER PRIMARY KEY); CREATE TABLE PracticeChildren(ChildID INTEGER PRIMARY KEY,ParentID INTEGER REFERENCES PracticeParents(ParentID) ON DELETE SET NULL); INSERT INTO PracticeParents VALUES(1); INSERT INTO PracticeChildren VALUES(10,1); DELETE FROM PracticeParents WHERE ParentID=1; SELECT * FROM PracticeChildren;",
+        "sqlChallenge": "expanded-foreign-demo",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [
@@ -1397,16 +1433,18 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for add, remove and review constraints line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "Native SQL Server adds and validates the age rule, inspects it, then removes it. The original college data satisfies Age>=18. Existing data must satisfy a new validated constraint. In SQL Server use ALTER TABLE ... WITH CHECK ADD CONSTRAINT to validate current rows. DROP CONSTRAINT uses the constraint name. Review dependencies before removing a key. Standalone CREATE RULE and bound defaults are legacy features; use CHECK and DEFAULT constraints for new designs. SQL Server UNIQUE nullable-column behaviour differs from SQLite: a single-column unique constraint allows at most one NULL.",
-        "title": "Trace and explain the example"
+        "title": "Repair data before a new CHECK",
+        "prompt": "A table contains Age 15, 20 and NULL. The new policy requires Age>=18 and a value. Give a migration plan without inventing replacement ages.",
+        "hint": "A valid repair needs a documented source, not guessed values.",
+        "solution": "Identify underage and missing records, confirm policy and authoritative values, correct or quarantine them through an agreed process, then add NOT NULL and a validated CHECK(Age>=18). Test application writes and keep a rollback/recovery plan.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about add, remove and review constraints: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. Native SQL Server adds and validates the age rule, inspects it, then removes it. The original college data satisfies Age>=18. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. First identify invalid rows and agree a correction or rejection policy. Repair the data, validate the correction, then add the CHECK with validation. Avoid hiding bad data by adding an untrusted constraint just to make deployment pass.",
-        "title": "Review and test the design"
+        "title": "Inspect trusted constraints in SSMS",
+        "prompt": "Write a query returning each CHECK constraint name, disabled state and trust state for dbo.Students. Explain the trust flag.",
+        "hint": "Use sys.check_constraints and OBJECT_ID.",
+        "solution": "SELECT name,is_disabled,is_not_trusted FROM sys.check_constraints WHERE parent_object_id=OBJECT_ID('dbo.Students'); A trusted, enabled constraint has been validated for existing data; review and validate an untrusted constraint before relying on it.",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [
@@ -1485,16 +1523,19 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for subqueries, exists and output line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "Each qualifying student appears once even when several of their marks are 80 or higher. A scalar subquery must return at most one row; IN compares against a set; EXISTS tests whether any matching row exists. Correlated subqueries refer to an outer row. Joins and subqueries express different result intentions and may receive similar optimiser plans: neither is always faster. Compare actual plans, logical reads and representative data. SQL Server OUTPUT returns affected row values using inserted and deleted; it is not SQLite RETURNING syntax.",
-        "title": "Trace and explain the example"
+        "title": "Fix NOT IN with NULL",
+        "prompt": "Explain why StudentID NOT IN (SELECT StudentID FROM OptionalLinks) can return no students when OptionalLinks contains NULL. Rewrite it using a correlation.",
+        "hint": "NULL introduces UNKNOWN into the comparison.",
+        "solution": "SELECT s.StudentID FROM Students s WHERE NOT EXISTS(SELECT 1 FROM OptionalLinks l WHERE l.StudentID=s.StudentID); NOT EXISTS tests for a matching row and does not let an unrelated NULL poison the set comparison. OptionalLinks is an illustrative table, not part of the demo.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about subqueries, exists and output: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. Each qualifying student appears once even when several of their marks are 80 or higher. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. UPDATE Students SET Age=Age+1 OUTPUT inserted.StudentID,deleted.Age AS OldAge,inserted.Age AS NewAge WHERE StudentID=1; Run inside a practice transaction and roll back when finished. Do not treat OUTPUT rows as proof a transaction later committed.",
-        "title": "Review and test the design"
+        "title": "Return each high-scoring student once",
+        "prompt": "Return StudentID and StudentName for students with at least one mark >=80, sorted by StudentID.",
+        "hint": "EXISTS avoids duplicating a student with several high marks.",
+        "solution": "SELECT s.StudentID,s.StudentName FROM Students s WHERE EXISTS(SELECT 1 FROM Enrolments e WHERE e.StudentID=s.StudentID AND e.Mark>=80) ORDER BY s.StudentID;",
+        "sqlChallenge": "expanded-exists",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [
@@ -1569,16 +1610,18 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for normalisation with dependency reasoning line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "Moving order and product attributes removes partial dependencies; moving customer name removes the transitive dependency. The composite line key remains. State candidate keys and functional dependencies before splitting tables. 1NF removes repeating groups and uses single values within each field domain. 2NF removes dependencies of nonprime attributes on a proper subset of any candidate key. 3NF requires each nontrivial dependency X -> A to have a superkey determinant or a prime right-hand attribute. In simple teaching designs, remove non-key-to-non-key transitive dependencies. Normalisation is driven by rules, not coincidental sample values.",
-        "title": "Trace and explain the example"
+        "title": "Identify a missing 3NF split",
+        "prompt": "A proposed 2NF design has Orders(OrderID,CustomerID,CustomerName), Products and OrderLines. State the remaining dependency and complete 3NF.",
+        "hint": "CustomerName describes the customer, not an independent fact about an order.",
+        "solution": "OrderID -> CustomerID -> CustomerName is transitive under the stated rules. Create Customers(CustomerID PK,CustomerName) and keep Orders(OrderID PK,CustomerID FK,...). Products and OrderLines remain as previously decomposed.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about normalisation with dependency reasoning: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. Moving order and product attributes removes partial dependencies; moving customer name removes the transitive dependency. The composite line key remains. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. Key is (StudentID,CourseID). StudentID determines StudentName; CourseID determines CourseName,LecturerID; LecturerID determines LecturerName; the whole key determines Mark. Use Students, Lecturers, Courses(CourseID,CourseName,LecturerID FK), Enrolments(StudentID PK/FK,CourseID PK/FK,Mark).",
-        "title": "Review and test the design"
+        "title": "Normalise a booking relation",
+        "prompt": "Normalise Booking(MemberID,SessionID,MemberName,SessionTitle,RoomID,RoomName) where the key is (MemberID,SessionID), a session uses one room and each room has one name.",
+        "hint": "Identify partial dependencies before removing the room-name transitive dependency.",
+        "solution": "Members(MemberID PK,MemberName); Rooms(RoomID PK,RoomName); Sessions(SessionID PK,SessionTitle,RoomID FK); Bookings(MemberID PK/FK,SessionID PK/FK). MemberName and session facts are partial dependencies; SessionID -> RoomID -> RoomName is transitive.",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [
@@ -1645,16 +1688,18 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for erds, object properties and denormalisation line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "Each enrolment has one student and course. An unmarked assessment may be NULL, while values outside 0..100 are rejected. Resolve a many-to-many relationship through an associative table with two foreign keys and a uniqueness rule on the pair when repeat membership is forbidden. Set cardinality and optionality from business rules. In SSMS inspect table Properties, Columns, Keys and Constraints; Database Diagrams availability and permissions vary. Denormalisation deliberately duplicates or precomputes facts for a measured workload and requires a consistency strategy.",
-        "title": "Trace and explain the example"
+        "title": "Repair an ERD assumption",
+        "prompt": "A model places CourseID directly in Students although students can take several courses. Explain the data loss risk and revise the relationship.",
+        "hint": "A single field cannot represent arbitrary many-to-many membership.",
+        "solution": "A single CourseID either restricts each student to one course or forces repeating fields/lists. Introduce Enrolments with StudentID and CourseID foreign keys, a composite key or equivalent uniqueness rule, and Mark if it depends on that pair.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about erds, object properties and denormalisation: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. Each enrolment has one student and course. An unmarked assessment may be NULL, while values outside 0..100 are rejected. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. Measure the query and execution plan first; improve appropriate indexes or query shape. If precomputed summary data is justified, define refresh timing, source of truth and reconciliation. Copying names everywhere introduces update anomalies without proving a speed benefit.",
-        "title": "Review and test the design"
+        "title": "Evaluate denormalisation",
+        "prompt": "A report repeats current course names and monthly enrolment totals in a summary table. Define when that is justified and a consistency policy.",
+        "hint": "Measure a workload and decide which source remains authoritative.",
+        "solution": "Measure the report and try suitable indexes/query changes first. If summary data is justified, retain authoritative normalised course and enrolment tables, specify refresh intervals, detect failed refreshes and reconcile summary totals. Historical names require a separate explicit history policy.",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [
@@ -1721,16 +1766,18 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for storage hierarchy, scans and seeks line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "A tiny table may be scanned even when an index exists. Physical index order does not guarantee SELECT result order; use ORDER BY. SQL Server databases use data and log files. Data pages are 8 KB and extents group eight pages; tables and indexes use allocation structures. A heap lacks a clustered index. A clustered rowstore index organises table rows at its leaf level; a nonclustered index has its own key structure and row locators. A B+ tree supports navigation through root, intermediate and leaf levels. A seek locates a range; a scan reads a broader structure. A scan can be the right plan for a large fraction of a table.",
-        "title": "Trace and explain the example"
+        "title": "Correct an index-order claim",
+        "prompt": "A developer removes ORDER BY because Students has a clustered primary-key index. Explain why this is unsafe.",
+        "hint": "An access path is not a result-order contract.",
+        "solution": "SQL result order is not guaranteed without ORDER BY. The optimiser may choose another index, a parallel plan or a different access path. Keep an explicit ORDER BY with a deterministic tie-breaker when output order matters.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about storage hierarchy, scans and seeks: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. A tiny table may be scanned even when an index exists. Physical index order does not guarantee SELECT result order; use ORDER BY. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. A heap stores rows without a clustered tree; the clustered index leaf contains table rows; a nonclustered index stores keys and row locators with optional included columns. A broad query may read most rows, making one scan cheaper than many lookups.",
-        "title": "Review and test the design"
+        "title": "Choose between scan and seek",
+        "prompt": "A query returns 95% of a large table but a proposed nonclustered index requires a lookup for every matching row. Explain a plan you would compare and what to measure.",
+        "hint": "Many random lookups can cost more than reading a broader structure once.",
+        "solution": "Compare the lookup plan with a table or clustered-index scan and, if justified, a covering index. Measure actual logical reads, elapsed time, CPU and write/storage costs on representative data rather than assuming a seek is always best.",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [
@@ -1797,16 +1844,18 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for index creation, order and maintenance line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "Native SQL Server creates a covering candidate index, runs the query and drops it. The optimiser still chooses whether to use it. Choose index keys for real predicates, joins and ordering. Composite key order matters: an index on (City,Age) naturally supports a City prefix. ASC/DESC can support mixed-order queries; the engine can also scan indexes backwards. INCLUDE stores extra columns at nonclustered leaf level. Each added index costs storage and write maintenance. A unique index enforces uniqueness as well as supporting access.",
-        "title": "Trace and explain the example"
+        "title": "Repair a mismatched DROP INDEX",
+        "prompt": "An index IX_Students_City belongs to Students, but the script uses DROP INDEX IX_Students_City ON Courses;. Correct native SQL Server syntax and explain what to verify first.",
+        "hint": "The ON table is part of the index identity in SQL Server.",
+        "solution": "DROP INDEX IX_Students_City ON dbo.Students; Inspect metadata and dependencies first and confirm that removing the index does not remove required uniqueness enforcement or damage important query access paths.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about index creation, order and maintenance: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. Native SQL Server creates a covering candidate index, runs the query and drops it. The optimiser still chooses whether to use it. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. CREATE INDEX IX_Enrolments_Course_Mark ON Enrolments(CourseID ASC,Mark DESC) INCLUDE(StudentID); It may reduce reads for that pattern but adds storage and work to inserts, deletes and mark changes. Verify against actual plans and workload.",
-        "title": "Review and test the design"
+        "title": "Design a covering index in SSMS",
+        "prompt": "Queries filter enrolments by CourseID, order by Mark DESC and return StudentID. Write a nonclustered index and describe one cost.",
+        "hint": "Put the filter first and include the returned non-key attribute.",
+        "solution": "CREATE INDEX IX_Enrolments_Course_Mark ON dbo.Enrolments(CourseID ASC,Mark DESC) INCLUDE(StudentID); It can reduce lookups for this pattern but costs storage and maintenance on writes. Verify actual plans before retaining it.",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [
@@ -1873,16 +1922,18 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for views and update restrictions line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "Native SQL Server creates, queries, alters and drops a view. CREATE/ALTER VIEW begins its own batch. A normal view stores a query definition, not a frozen copy of its result. Views can simplify queries and expose selected columns, but access security also depends on permissions and ownership rules. A simple single-table view can often be updated; grouped, aggregate, DISTINCT and UNION results generally cannot be directly updated in the same way. WITH CHECK OPTION prevents changes through a view that make rows disappear from its filter.",
-        "title": "Trace and explain the example"
+        "title": "Reject an ambiguous view update",
+        "prompt": "A view groups Students by City and returns COUNT(*). A learner tries to INSERT a city and count into the view. Explain why no unique student insertion follows from that request.",
+        "hint": "A summary row does not contain a full base row.",
+        "solution": "The grouped row does not identify the new students, IDs or required attributes. Insert complete valid rows into Students; the aggregate view changes when queried. A simple updatable view is different from a grouped summary.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about views and update restrictions: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. Native SQL Server creates, queries, alters and drops a view. CREATE/ALTER VIEW begins its own batch. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. A count row does not identify the required base student attributes or one unambiguous base row to change. Insert the complete student into Students; the view result changes when queried. Use a simple filtered view when appropriate and control permissions.",
-        "title": "Review and test the design"
+        "title": "Write a filtered view in SSMS",
+        "prompt": "Create dbo.PracticeAdultStudents exposing StudentID,StudentName,City,Age for Age>=18. Prevent updates through the view from making a row fall outside its filter.",
+        "hint": "WITH CHECK OPTION applies the view predicate to changes through the view.",
+        "solution": "CREATE VIEW dbo.PracticeAdultStudents AS\nSELECT StudentID,StudentName,City,Age FROM dbo.Students WHERE Age>=18\nWITH CHECK OPTION;\nGO\nSELECT * FROM dbo.PracticeAdultStudents ORDER BY StudentID;",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [
@@ -1957,16 +2008,18 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for scripts, batches and variable scope line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "Native SQL Server returns students aged 21 or more if the college setup has been loaded into StudyLabPractice. @MinimumAge is unavailable in the following batch. A script is a saved sequence of SQL and client commands. USE chooses the database context. GO is a batch separator recognised by clients such as SSMS, not a T-SQL statement sent directly by an API. Variables are local to the batch or procedure, so a GO ends their scope. DECLARE creates a variable and SET assigns it. BEGIN/END groups statements without starting a transaction.",
-        "title": "Trace and explain the example"
+        "title": "Repair variable scope",
+        "prompt": "The script declares @MinimumAge, ends the batch with GO, then uses the variable. Rewrite it as one valid batch.",
+        "hint": "Keep the declaration and its use in the same batch.",
+        "solution": "DECLARE @MinimumAge INT=21;\nSELECT StudentID,StudentName FROM dbo.Students WHERE Age>=@MinimumAge ORDER BY StudentID;\nGO\nGO is an SSMS client separator, not a T-SQL command sent to the server by an application.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about scripts, batches and variable scope: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. Native SQL Server returns students aged 21 or more if the college setup has been loaded into StudyLabPractice. @MinimumAge is unavailable in the following batch. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. Remove GO between declaration and use, or redeclare the variable after it. GO belongs on its own line in SSMS. Applications must split batches themselves or omit GO before sending SQL commands to the server.",
-        "title": "Review and test the design"
+        "title": "Assign and query a variable in SSMS",
+        "prompt": "Declare @City VARCHAR(60), assign Polokwane with SET and select that city's StudentID and StudentName sorted by StudentID.",
+        "hint": "Do not place GO between DECLARE and SELECT.",
+        "solution": "DECLARE @City VARCHAR(60);\nSET @City='Polokwane';\nSELECT StudentID,StudentName FROM dbo.Students WHERE City=@City ORDER BY StudentID;",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [
@@ -2033,16 +2086,19 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for if, while and case line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "Three labelled result sets precede the enrolment classification. NULL marks are Pending, not Fail. Requires native SQL Server for the control flow. IF/ELSE chooses which statements run; BEGIN/END groups a branch. WHILE repeats statements while its condition is true: ensure the loop changes a value toward termination. CASE is an expression returning a value in SELECT, not a control-of-flow block. Use set-based queries instead of row loops where possible. EXEC invokes a procedure or dynamic batch; parameterise dynamic values rather than concatenating input.",
-        "title": "Trace and explain the example"
+        "title": "Fix a nonterminating loop",
+        "prompt": "A WHILE @n<=3 loop prints @n but never changes it. Write a terminating native T-SQL version and predict its values.",
+        "hint": "Every iteration must advance the condition toward false.",
+        "solution": "DECLARE @n INT=1;\nWHILE @n<=3\nBEGIN\n SELECT @n AS Counter;\n SET @n=@n+1;\nEND;\nIt produces 1, 2 and 3, then stops.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about if, while and case: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. Three labelled result sets precede the enrolment classification. NULL marks are Pending, not Fail. Requires native SQL Server for the control flow. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. CASE WHEN Mark IS NULL THEN 'Pending' WHEN Mark>=75 THEN 'Distinction' WHEN Mark>=50 THEN 'Pass' ELSE 'Fail' END. CASE takes the first true branch, so placing >=50 first would hide distinctions.",
-        "title": "Review and test the design"
+        "title": "Classify pending and passing marks",
+        "prompt": "Return EnrolmentID, Mark and Result, classifying NULL as Pending, >=75 as Distinction, >=50 as Pass and the rest as Fail. Sort by EnrolmentID.",
+        "hint": "CASE uses the first true branch.",
+        "solution": "SELECT EnrolmentID,Mark,CASE WHEN Mark IS NULL THEN 'Pending' WHEN Mark>=75 THEN 'Distinction' WHEN Mark>=50 THEN 'Pass' ELSE 'Fail' END AS Result FROM Enrolments ORDER BY EnrolmentID;",
+        "sqlChallenge": "expanded-case",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [
@@ -2109,16 +2165,18 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for system functions and try catch line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "The CATCH returns divide-by-zero information in native SQL Server. FirstDay reflects the current session setting. @@DATEFIRST reports the session first-day-of-week setting (1 Monday through 7 Sunday). @@ROWCOUNT and @@ERROR refer to the preceding statement; capture them immediately. @@IDENTITY can return an identity generated by a trigger in another scope; SCOPE_IDENTITY() is usually safer for the current scope, while OUTPUT inserted.ID supports multirow inserts. TRY/CATCH handles many runtime errors, but same-level compilation errors and some connection-ending errors are not caught.",
-        "title": "Trace and explain the example"
+        "title": "Find a lost error code",
+        "prompt": "Legacy code runs an UPDATE, then an unrelated SELECT, then reads @@ERROR. Explain the defect and give a better error-handling approach.",
+        "hint": "Every statement can overwrite the status being inspected.",
+        "solution": "Capture @@ERROR immediately after the statement being measured, before unrelated SQL. Prefer a TRY/CATCH block for grouped error handling, use ERROR_MESSAGE()/ERROR_NUMBER() in CATCH and THROW when the caller should receive the failure.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about system functions and try catch: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. The CATCH returns divide-by-zero information in native SQL Server. FirstDay reflects the current session setting. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. @@ERROR must be read immediately and describes one statement; TRY/CATCH groups error handling and exposes details through ERROR_* functions. A trigger may insert into another identity table and change @@IDENTITY; use SCOPE_IDENTITY() for the current scope or OUTPUT for all inserted IDs.",
-        "title": "Review and test the design"
+        "title": "Catch a runtime arithmetic error in SSMS",
+        "prompt": "Write TRY/CATCH around division by a variable containing zero. Return the error number and message rather than pretending the result is zero.",
+        "hint": "Use a runtime variable and the ERROR_* functions inside CATCH.",
+        "solution": "BEGIN TRY\n DECLARE @Denominator INT=0;\n SELECT 10/@Denominator AS Answer;\nEND TRY\nBEGIN CATCH\n SELECT ERROR_NUMBER() AS ErrorNumber,ERROR_MESSAGE() AS ErrorMessage;\nEND CATCH;",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [
@@ -2193,16 +2251,18 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for create, execute, alter and drop procedures line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "Native SQL Server creates a procedure and returns the five Polokwane students after loading the college setup. A stored procedure is a named executable module stored in the database. It can accept parameters, return result sets and encapsulate related operations. Procedures can centralise logic, reduce repeated client text and support permission boundaries, but are not automatically faster or immune to injection. CREATE PROCEDURE starts a batch. ALTER changes the definition without recreating the object. Use schema-qualified names.",
-        "title": "Trace and explain the example"
+        "title": "Fix unsafe dynamic SQL",
+        "prompt": "A procedure builds a WHERE clause by concatenating an untrusted city string into SQL. Explain the risk and replace it with a static parameterised query.",
+        "hint": "Values should remain values, not part of SQL syntax.",
+        "solution": "Accept @City VARCHAR(60) and use SELECT StudentID,StudentName FROM dbo.Students WHERE City=@City;. Untrusted string concatenation can allow SQL injection; a static parameterised predicate avoids turning the city value into executable SQL. Procedures are not automatically safe if they concatenate SQL.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about create, execute, alter and drop procedures: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. Native SQL Server creates a procedure and returns the five Polokwane students after loading the college setup. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. Use ALTER PROCEDURE dbo.usp_StudyLabStudentsByCity with the full new definition in its own batch; use DROP PROCEDURE dbo.usp_StudyLabStudentsByCity to remove it. Benefits include reusable logic and controlled execution permissions. Costs include versioning, deployment coordination and database-specific code.",
-        "title": "Review and test the design"
+        "title": "Create a parameterised procedure in SSMS",
+        "prompt": "Create dbo.usp_StudyLabMinimumAge taking @Age INT and returning StudentID, StudentName and Age for students at least that age, ordered by StudentID. Include an EXEC example in another batch.",
+        "hint": "CREATE PROCEDURE starts its own batch.",
+        "solution": "CREATE PROCEDURE dbo.usp_StudyLabMinimumAge @Age INT\nAS\nBEGIN\n SET NOCOUNT ON;\n SELECT StudentID,StudentName,Age FROM dbo.Students WHERE Age>=@Age ORDER BY StudentID;\nEND;\nGO\nEXEC dbo.usp_StudyLabMinimumAge @Age=21;",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [
@@ -2277,16 +2337,18 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for input, output, defaults and return line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "Total is 5 and Status is 0 on the original college demo. City is omitted so the default is used. An input parameter supplies a value. A default permits omission. An OUTPUT parameter carries a value back only when the caller also specifies OUTPUT and supplies a variable. RETURN exits the procedure and can provide an integer status; it is not the same as returning a rowset or an output parameter. Use types matching the compared columns and validate values before changing data.",
-        "title": "Trace and explain the example"
+        "title": "Fix a missing OUTPUT keyword",
+        "prompt": "A procedure declares @Total INT OUTPUT but the caller runs EXEC dbo.usp_StudyLabCountStudents @Total=@n;. Explain why @n is not updated and correct the call.",
+        "hint": "OUTPUT must appear in both the declaration and invocation.",
+        "solution": "DECLARE @n INT;\nEXEC dbo.usp_StudyLabCountStudents @Total=@n OUTPUT;\nSELECT @n AS Total;\nThe call without OUTPUT does not copy the changed parameter value back into the caller variable.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about input, output, defaults and return: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. Total is 5 and Status is 0 on the original college demo. City is omitted so the default is used. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. DECLARE @n INT,@rc INT; EXEC @rc=dbo.usp_StudyLabCountStudents @City='Pretoria',@Total=@n OUTPUT; SELECT @n AS Total,@rc AS Status; Without caller OUTPUT the assigned value is not copied back to @n.",
-        "title": "Review and test the design"
+        "title": "Separate three return mechanisms",
+        "prompt": "Design a procedure contract that returns matching student rows, their count and an integer status. State which mechanism should carry each.",
+        "hint": "Result sets, OUTPUT parameters and RETURN values are different interfaces.",
+        "solution": "Use a SELECT result set for student rows, an @Total INT OUTPUT parameter for the count and RETURN 0 for success if the contract uses integer statuses. For failures requiring caller handling, propagate errors with THROW rather than disguising failure as an empty success result.",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [
@@ -2353,16 +2415,18 @@ export const intermediateLessons=[
         "title": "Apply the concept"
       },
       {
-        "prompt": "Explain the worked example for procedure validation and transaction errors line by line. Predict its output or schema before checking the answer.",
-        "hint": "Identify the source, rule, transformation and expected result. For SQL, distinguish native syntax from browser syntax.",
-        "solution": "Native SQL Server creates a validated write procedure. It rejects invalid age, unknown student IDs and callers with an existing transaction. Test only on practice data. Validate parameters and rely on database constraints for concurrent correctness. @@ERROR is reset by each statement, so legacy code must capture it immediately. Prefer TRY/CATCH and THROW for new error propagation. SET XACT_ABORT ON and a deliberate transaction boundary simplify many write operations. In CATCH use XACT_STATE() to determine whether a transaction remains and roll it back when appropriate. A procedure that starts its own transaction should document how it behaves when called inside an existing one.",
-        "title": "Trace and explain the example"
+        "title": "Protect a caller transaction",
+        "prompt": "A procedure always rolls back any transaction in CATCH, even when the caller started it. Explain the consequence and propose a documented ownership policy.",
+        "hint": "Transaction ownership affects the caller, not just the procedure.",
+        "solution": "An unconditional ROLLBACK can undo the caller's other work. Either reject calls inside an existing transaction as the lesson example does, or implement and document savepoint/transaction ownership semantics, including uncommittable XACT_STATE()=-1. Do not silently assume every active transaction belongs to this procedure.",
+        "revision": "practical-2"
       },
       {
-        "prompt": "Review this claim about procedure validation and transaction errors: \u201cIf the script runs, the design and result must be correct.\u201d Explain why this is unsafe and give a verification plan for the worked example.",
-        "hint": "Consider expected values, edge cases, NULL, duplicate rows, constraints and the intended DBMS.",
-        "solution": "Successful execution alone does not establish correctness. Native SQL Server creates a validated write procedure. It rejects invalid age, unknown student IDs and callers with an existing transaction. Test only on practice data. Check the stated assumptions, compare output against the requested business rule, test missing and duplicate data, and run native SQL Server examples in a disposable practice database. Test a valid student and age, an age below 18 and an unknown student. Confirm invalid cases leave data unchanged. Other sessions may change data after a precheck; database constraints enforce integrity at the actual write, so validation complements rather than replaces them.",
-        "title": "Review and test the design"
+        "title": "Write a failure test plan",
+        "prompt": "For usp_StudyLabChangeAge, define four tests: valid update, NULL age, below-minimum age and missing student. Include before/after assertions and transaction state.",
+        "hint": "Test both returned errors and persistent state.",
+        "solution": "Record the original age and transaction count. A valid existing student and age>=18 changes exactly one row. NULL and age<18 must throw without changing data. A missing student must throw and leave all rows unchanged. Verify no transaction opened by the procedure remains; restore valid-test data using a controlled practice cleanup.",
+        "revision": "practical-2"
       }
     ],
     "quizzes": [

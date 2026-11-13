@@ -63,3 +63,5 @@ body{font-size:16px;line-height:1.7}.topbar{background:var(--surface);height:80p
 /* Database model answers preserve SQL lines and wrap explanatory text. */
 #db-worked pre{white-space:pre-wrap;overflow-wrap:anywhere;}
 #db-panel .field-label select{max-width:100%;}
+
+.sql-grade-correct{border-left:4px solid #16803c;padding:12px;background:color-mix(in srgb,#16803c 10%,transparent);}
