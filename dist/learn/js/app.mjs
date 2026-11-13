@@ -5,7 +5,7 @@ import {
   progressPage,
   progressSummary,
   refreshLessonCompletion,
-} from './shared/progress.mjs?v=28';
+} from './shared/progress.mjs?v=29';
 import { exercises as sqlChallenges } from './database/sql/sql-challenges.mjs?v=28';
 import {
   databaseHome,
@@ -15,7 +15,7 @@ import {
   databaseResources,
   dbUnits,
   dbLessons,
-} from './database/database-ui.mjs?v=28';
+} from './database/database-ui.mjs?v=29';
 import { sqlPage } from './database/sql/sql-ui.mjs?v=28';
 import './shared/appearance.mjs?v=28';
 import { examPage } from './prld/exam-ui.mjs?v=28';

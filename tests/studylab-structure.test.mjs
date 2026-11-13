@@ -53,7 +53,7 @@ assert.deepEqual(styles, [
 for (const file of styles) assert(existsSync(path.join(root, file)));
 assert(existsSync(path.join(root, 'vendor/sqljs/sql-wasm.wasm')));
 assert(
-  readFileSync(path.join(root, 'index.html'), 'utf8').includes('./app.mjs?v=studylab-28'),
+  readFileSync(path.join(root, 'index.html'), 'utf8').includes('./app.mjs?v=studylab-29'),
 );
 console.log(
   `Passed: ${modules.length} application modules, ${imports} local module/worker imports, stable entry point, vendor assets and nine ordered CSS imports.`,

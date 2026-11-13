@@ -237,7 +237,7 @@ export function progressPage({ view, sidebar, course = 'prld' }) {
       })
       .join(
         '',
-      )}<section class="panel"><h2>Reset completion marks</h2><p>This resets completion marks for all three modules, including older saved marks. Quiz answers, drafts and exam attempts remain available.</p><button class="button secondary" id="reset-completion">Reset completion marks</button><p id="progress-reset-status" role="status"></p></section><dialog id="progress-reset-dialog"><h2>Reset all completion marks?</h2><p>Your saved answers and drafts will stay available.</p><div class="button-row"><button class="button secondary" id="keep-completion">Keep marks</button><button class="button danger" id="confirm-reset-completion">Reset marks</button></div></dialog>`;
+      )}<section class="panel"><h2>Reset completion marks</h2><p>This resets completion marks for all learning modules, including older saved marks. Quiz answers, drafts and exam attempts remain available.</p><button class="button secondary" id="reset-completion">Reset completion marks</button><p id="progress-reset-status" role="status"></p></section><dialog id="progress-reset-dialog"><h2>Reset all completion marks?</h2><p>Your saved answers and drafts will stay available.</p><div class="button-row"><button class="button secondary" id="keep-completion">Keep marks</button><button class="button danger" id="confirm-reset-completion">Reset marks</button></div></dialog>`;
     const dialog = view.querySelector('#progress-reset-dialog');
     view.querySelector('#reset-completion').onclick = () => dialog.showModal();
     view.querySelector('#keep-completion').onclick = () => dialog.close();
