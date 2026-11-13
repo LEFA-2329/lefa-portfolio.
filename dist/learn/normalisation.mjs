@@ -1,5 +1,5 @@
 import {escapeHTML as e} from './engine.mjs?v=17';
-import {additionalExamples} from './normalisation-extra.mjs?v=24';
+import {additionalExamples} from './normalisation-extra.mjs?v=25';
 const D=(from,to,kind='full')=>({from,to,kind});
 const T=(name,key,attributes,dependencies,foreign={})=>({name,key,attributes,dependencies,foreign});
 export const normalisationExamples={

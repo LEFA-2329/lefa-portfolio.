@@ -1,5 +1,5 @@
-import {dbUnits,dbLessons} from './database-data.mjs?v=24';
-import {intermediateUnits,intermediateLessons} from './intermediate-data.mjs?v=24';
+import {dbUnits,dbLessons} from './database-data.mjs?v=25';
+import {intermediateUnits,intermediateLessons} from './intermediate-data.mjs?v=25';
 const writtenBanks={
  database:[
  {id:'design',unit:5,title:'Normalise an enrolment relation',prompt:'Enrolment(StudentID,CourseID,StudentName,CourseName,Mark) has candidate key (StudentID,CourseID). Each ID determines its corresponding name. Show 1NF, identify the partial dependencies and produce 2NF/3NF tables with all keys. Explain where Mark belongs.',solution:'1NF: one student-course pair per row, key (StudentID,CourseID).\nStudentID determines StudentName. CourseID determines CourseName.\nThe full pair determines Mark.\nStudents(StudentID PK,StudentName)\nCourses(CourseID PK,CourseName)\nEnrolments(StudentID PK/FK,CourseID PK/FK,Mark)\nNo remaining non-key transitive dependency exists under these rules.',explanation:'Student and course names move to their own tables. Mark stays on the association, and the two foreign keys preserve the join. The result is also 3NF for the supplied dependencies.',criteria:['State the composite key and one-pair-per-row 1NF interpretation.','Identify StudentID determines StudentName as a partial dependency.','Identify CourseID determines CourseName as a partial dependency.','Create Students and Courses with the correct primary keys.','Keep Mark in Enrolments with both PK/FK attributes and explain 3NF.']},
