@@ -14,6 +14,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: read
   contents: read
   pages: write
   id-token: write
@@ -54,6 +55,32 @@ jobs:
         uses: actions/upload-pages-artifact@v4
         with:
           path: _site
+          name: github-pages-${{ github.run_attempt }}
+      - name: Wait for the uploaded website artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_NAME: github-pages-${{ github.run_attempt }}
+        run: |
+          python3 - <<'PYCODE'
+          import json, os, time, urllib.request
+          url = 'https://api.github.com/repos/' + os.environ['GITHUB_REPOSITORY'] + '/actions/runs/' + os.environ['GITHUB_RUN_ID'] + '/artifacts?per_page=100'
+          for attempt in range(12):
+              request = urllib.request.Request(url, headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'], 'Accept': 'application/vnd.github+json'})
+              with urllib.request.urlopen(request, timeout=20) as response:
+                  artifacts = json.load(response)['artifacts']
+              matches = [a for a in artifacts if a['name'] == os.environ['ARTIFACT_NAME'] and not a['expired']]
+              if len(matches) == 1:
+                  print('Website artifact is ready for deployment.')
+                  break
+              if len(matches) > 1:
+                  raise SystemExit('Expected a unique website artifact for this attempt.')
+              print('Waiting for artifact metadata to become visible.')
+              time.sleep(5)
+          else:
+              raise SystemExit('Website artifact metadata did not become visible within one minute.')
+          PYCODE
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages-${{ github.run_attempt }}
