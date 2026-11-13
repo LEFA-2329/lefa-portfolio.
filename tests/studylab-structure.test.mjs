@@ -34,7 +34,7 @@ for (const file of modules) {
     }
 }
 assert(imports > 80);
-assert.equal(modules.length, 38);
+assert.equal(modules.length, 39);
 const master = readFileSync(path.join(root, 'styles.css'), 'utf8');
 const styles = [...master.matchAll(/@import url\(['"](.+?)['"]\)/g)].map(
   (m) => m[1].split('?')[0],
@@ -53,7 +53,7 @@ assert.deepEqual(styles, [
 for (const file of styles) assert(existsSync(path.join(root, file)));
 assert(existsSync(path.join(root, 'vendor/sqljs/sql-wasm.wasm')));
 assert(
-  readFileSync(path.join(root, 'index.html'), 'utf8').includes('./app.mjs?v=studylab-29'),
+  readFileSync(path.join(root, 'index.html'), 'utf8').includes('./app.mjs?v=studylab-30'),
 );
 console.log(
   `Passed: ${modules.length} application modules, ${imports} local module/worker imports, stable entry point, vendor assets and nine ordered CSS imports.`,

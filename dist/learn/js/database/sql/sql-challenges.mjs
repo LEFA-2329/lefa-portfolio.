@@ -1,4 +1,5 @@
-import { extraExercises } from './sql-extra.mjs?v=28';
+import { additionalExercises } from './sql-demo-datasets.mjs?v=30';
+import { extraExercises } from './sql-extra.mjs?v=30';
 export const exercises = [
   {
     id: 'city',
@@ -91,3 +92,5 @@ export const exercises = [
 ];
 
 exercises.push(...extraExercises);
+
+exercises.push(...additionalExercises);

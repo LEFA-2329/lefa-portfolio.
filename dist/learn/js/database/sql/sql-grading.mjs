@@ -1,7 +1,9 @@
-import { executeBatch } from './sql-core.mjs?v=28';
-import { datasets } from './sql-data.mjs?v=28';
-import { exercises } from './sql-challenges.mjs?v=28';
+import { additionalFixtures } from './sql-demo-datasets.mjs?v=30';
+import { executeBatch } from './sql-core.mjs?v=30';
+import { datasets } from './sql-data.mjs?v=30';
+import { exercises } from './sql-challenges.mjs?v=30';
 const fixtures = {
+  ...additionalFixtures,
   college: `INSERT INTO Students VALUES(99,'Lerato Test','Polokwane',24),(100,'Lindi Test','New City',20);
 INSERT INTO Courses VALUES(99,'Practice Course',2000),(100,'Empty Course',100);
 INSERT INTO Enrolments VALUES(99,100,99,NULL),(100,100,1,80);`,

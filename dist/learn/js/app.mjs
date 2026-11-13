@@ -1,12 +1,12 @@
-import { builderPage } from './database/normalisation/normalisation-builder.mjs?v=28';
-import { normalisationPracticePage } from './database/normalisation/normalisation-practice.mjs?v=28';
-import { databaseExamPage } from './database/db-exam-ui.mjs?v=28';
+import { builderPage } from './database/normalisation/normalisation-builder.mjs?v=30';
+import { normalisationPracticePage } from './database/normalisation/normalisation-practice.mjs?v=30';
+import { databaseExamPage } from './database/db-exam-ui.mjs?v=30';
 import {
   progressPage,
   progressSummary,
   refreshLessonCompletion,
-} from './shared/progress.mjs?v=29';
-import { exercises as sqlChallenges } from './database/sql/sql-challenges.mjs?v=28';
+} from './shared/progress.mjs?v=30';
+import { exercises as sqlChallenges } from './database/sql/sql-challenges.mjs?v=30';
 import {
   databaseHome,
   databaseUnit,
@@ -15,25 +15,25 @@ import {
   databaseResources,
   dbUnits,
   dbLessons,
-} from './database/database-ui.mjs?v=29';
-import { sqlPage } from './database/sql/sql-ui.mjs?v=28';
-import './shared/appearance.mjs?v=28';
-import { examPage } from './prld/exam-ui.mjs?v=28';
-import { workStore } from './shared/work-store.mjs?v=28';
-import { cleanLesson, cleanTask, cleanDraft } from './shared/work-state.mjs?v=28';
-import { activities } from './prld/content/activities.mjs?v=28';
-import { activitiesPage, activityPage } from './prld/activity-ui.mjs?v=28';
-import { interactiveTracePage } from './prld/runner-ui.mjs?v=28';
-import { taskBank } from './prld/content/tasks.mjs?v=28';
-import { units, lessons } from './prld/content/data.mjs?v=28';
-import { practice } from './prld/content/practice.mjs?v=28';
+} from './database/database-ui.mjs?v=30';
+import { sqlPage } from './database/sql/sql-ui.mjs?v=30';
+import './shared/appearance.mjs?v=30';
+import { examPage } from './prld/exam-ui.mjs?v=30';
+import { workStore } from './shared/work-store.mjs?v=30';
+import { cleanLesson, cleanTask, cleanDraft } from './shared/work-state.mjs?v=30';
+import { activities } from './prld/content/activities.mjs?v=30';
+import { activitiesPage, activityPage } from './prld/activity-ui.mjs?v=30';
+import { interactiveTracePage } from './prld/runner-ui.mjs?v=30';
+import { taskBank } from './prld/content/tasks.mjs?v=30';
+import { units, lessons } from './prld/content/data.mjs?v=30';
+import { practice } from './prld/content/practice.mjs?v=30';
 import {
   parse,
   flowchart,
   hierarchy,
   classDiagram,
   escapeHTML as e,
-} from './prld/engine.mjs?v=28';
+} from './prld/engine.mjs?v=30';
 const $ = (s) => document.querySelector(s),
   view = $('#view');
 let activeModule = 'prld';

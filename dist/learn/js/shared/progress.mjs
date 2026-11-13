@@ -1,21 +1,21 @@
 import {
   advancedUnits,
   advancedLessons,
-} from '../database/content/advanced-data.mjs?v=28';
-import { cleanDatabaseLesson } from '../database/database-state.mjs?v=28';
-import { workStore } from './work-store.mjs?v=28';
+} from '../database/content/advanced-data.mjs?v=30';
+import { cleanDatabaseLesson } from '../database/database-state.mjs?v=30';
+import { workStore } from './work-store.mjs?v=30';
 import {
   lessons as prldLessons,
   units as prldUnits,
-} from '../prld/content/data.mjs?v=28';
-import { practice } from '../prld/content/practice.mjs?v=28';
-import { cleanLesson } from './work-state.mjs?v=28';
-import { dbLessons, dbUnits } from '../database/content/database-data.mjs?v=28';
+} from '../prld/content/data.mjs?v=30';
+import { practice } from '../prld/content/practice.mjs?v=30';
+import { cleanLesson } from './work-state.mjs?v=30';
+import { dbLessons, dbUnits } from '../database/content/database-data.mjs?v=30';
 import {
   intermediateLessons,
   intermediateUnits,
-} from '../database/content/intermediate-data.mjs?v=28';
-import { escapeHTML as e } from '../prld/engine.mjs?v=28';
+} from '../database/content/intermediate-data.mjs?v=30';
+import { escapeHTML as e } from '../prld/engine.mjs?v=30';
 export const progressCourses = {
   advanced: {
     title: 'Advanced Database',

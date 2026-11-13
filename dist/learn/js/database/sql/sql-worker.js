@@ -4,9 +4,9 @@ const ready = Promise.all([
     locateFile: (file) =>
       new URL('../../../vendor/sqljs/' + file, self.location.href).href,
   }),
-  import('./sql-core.mjs?v=27'),
-  import('./sql-data.mjs?v=27'),
-  import('./sql-grading.mjs?v=27'),
+  import('./sql-core.mjs?v=30'),
+  import('./sql-data.mjs?v=30'),
+  import('./sql-grading.mjs?v=30'),
 ]);
 let db;
 self.onmessage = async (event) => {

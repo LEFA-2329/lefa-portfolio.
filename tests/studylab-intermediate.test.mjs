@@ -32,8 +32,8 @@ for (const l of lessons) {
   );
 }
 for (const l of dbLessons) assert.equal(l.tasks.length, 4);
-assert.equal(sqlExamples.length, 37);
-assert.equal(exercises.length, 32);
+assert.equal(sqlExamples.length, 52);
+assert.equal(exercises.length, 47);
 const init = createRequire(import.meta.url)('../dist/learn/vendor/sqljs/sql-wasm.js');
 const SQL = await init({
   locateFile: () =>
@@ -93,5 +93,5 @@ const workflow = readFileSync(
 );
 assert(workflow.includes('node --test tests/*.test.mjs'));
 console.log(
-  `Passed: 9 units/106 outcomes, 27 intermediate lessons, task banks, 37 SQL examples/32 challenges, ${runs} portable lesson example runs, download files, qualified DROP INDEX, table validation and native T-SQL guidance.`,
+  `Passed: 9 units/106 outcomes, 27 intermediate lessons, task banks, 52 SQL examples/47 challenges, ${runs} portable lesson example runs, download files, qualified DROP INDEX, table validation and native T-SQL guidance.`,
 );

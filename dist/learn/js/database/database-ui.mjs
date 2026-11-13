@@ -1,23 +1,23 @@
-import { advancedUnits, advancedLessons } from './content/advanced-data.mjs?v=28';
-import { quizContext } from '../shared/quiz-context.mjs?v=28';
-import { cleanDatabaseLesson } from './database-state.mjs?v=28';
-import { progressSummary, refreshLessonCompletion } from '../shared/progress.mjs?v=29';
+import { advancedUnits, advancedLessons } from './content/advanced-data.mjs?v=30';
+import { quizContext } from '../shared/quiz-context.mjs?v=30';
+import { cleanDatabaseLesson } from './database-state.mjs?v=30';
+import { progressSummary, refreshLessonCompletion } from '../shared/progress.mjs?v=30';
 import {
   normalisationWalkthrough,
   bindNormalisation,
-} from './normalisation/normalisation.mjs?v=28';
+} from './normalisation/normalisation.mjs?v=30';
 import {
   dbUnits as introUnits,
   dbLessons as introLessons,
-} from './content/database-data.mjs?v=28';
+} from './content/database-data.mjs?v=30';
 import {
   intermediateUnits,
   intermediateLessons,
-} from './content/intermediate-data.mjs?v=28';
+} from './content/intermediate-data.mjs?v=30';
 const dbUnits = [...introUnits, ...intermediateUnits, ...advancedUnits],
   dbLessons = [...introLessons, ...intermediateLessons, ...advancedLessons];
-import { workStore } from '../shared/work-store.mjs?v=28';
-import { escapeHTML as e } from '../prld/engine.mjs?v=28';
+import { workStore } from '../shared/work-store.mjs?v=30';
+import { escapeHTML as e } from '../prld/engine.mjs?v=30';
 export { dbUnits, dbLessons };
 const code = (text) => `<pre><code>${e(text)}</code></pre>`;
 const link = (l) => `<a href="#db-lesson/${l.id}">${e(l.title)}</a>`;
@@ -238,7 +238,7 @@ export function databaseLesson({ view, id, task, sidebar }) {
   );
 }
 export function databasePractice({ view, sidebar }) {
-  view.innerHTML = `<p class="eyebrow">DATABASES . PRACTICE</p><h1>Choose what to practise.</h1><p class="lede">Use lesson quizzes for quick checks, written tasks for design reasoning, and the SQL workspace for executable queries.</p><div class="hub-grid"><article class="panel hub-card"><h2>Database practice exams</h2><p>Mixed-unit quiz questions, two written tasks, optional timers and worked solutions after submission.</p><div class="button-row"><a class="button" href="#db-exams/database">DATA6211 exam</a><a class="button secondary" href="#db-exams/intermediate">DATA6222 exam</a></div></article><article class="panel hub-card"><h2>Write and run SQL</h2><p>Two fictional datasets, three dialect choices, query examples and practical challenges.</p><a class="button" href="#sql">Open SQL workspace</a></article><article class="panel hub-card"><h2>Normalisation diagrams</h2><p>Nine attribute-row diagram cases, 54 questions, 1NF to 3NF rules and worked decompositions.</p><a class="button" href="#nf-builder/projects/standard">Build and check diagrams</a><a class="button secondary" href="#normalisation/projects">Rules and diagram questions</a></article></div><h2>Quizzes and written tasks by unit</h2><div class="course-lesson-links">${dbUnits.map((u) => `<a href="#db-unit/${u.id}">${u.id > 200 ? 'Advanced' : u.id > 100 ? 'Intermediate' : 'Introduction'} Unit ${u.number || u.id}: ${e(u.title)}</a>`).join('')}</div><p class="note">Each database lesson has a Quiz and a Try it yourself tab. Written model answers unlock after you submit an attempt.</p>`;
+  view.innerHTML = `<p class="eyebrow">DATABASES . PRACTICE</p><h1>Choose what to practise.</h1><p class="lede">Use lesson quizzes for quick checks, written tasks for design reasoning, and the SQL workspace for executable queries.</p><div class="hub-grid"><article class="panel hub-card"><h2>Database practice exams</h2><p>Mixed-unit quiz questions, two written tasks, optional timers and worked solutions after submission.</p><div class="button-row"><a class="button" href="#db-exams/database">DATA6211 exam</a><a class="button secondary" href="#db-exams/intermediate">DATA6222 exam</a></div></article><article class="panel hub-card"><h2>Write and run SQL</h2><p>Seven fictional datasets, three dialect choices, query examples and practical challenges.</p><a class="button" href="#sql">Open SQL workspace</a></article><article class="panel hub-card"><h2>Normalisation diagrams</h2><p>Nine attribute-row diagram cases, 54 questions, 1NF to 3NF rules and worked decompositions.</p><a class="button" href="#nf-builder/projects/standard">Build and check diagrams</a><a class="button secondary" href="#normalisation/projects">Rules and diagram questions</a></article></div><h2>Quizzes and written tasks by unit</h2><div class="course-lesson-links">${dbUnits.map((u) => `<a href="#db-unit/${u.id}">${u.id > 200 ? 'Advanced' : u.id > 100 ? 'Intermediate' : 'Introduction'} Unit ${u.number || u.id}: ${e(u.title)}</a>`).join('')}</div><p class="note">Each database lesson has a Quiz and a Try it yourself tab. Written model answers unlock after you submit an attempt.</p>`;
   sidebar();
 }
 export function databaseResources({ view, sidebar }) {

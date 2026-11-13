@@ -1,4 +1,5 @@
-import { extraExamples } from './sql-extra.mjs?v=28';
+import { additionalDatasets, additionalExamples } from './sql-demo-datasets.mjs?v=30';
+import { extraExamples } from './sql-extra.mjs?v=30';
 export const dialects = {
   sqlserver: 'Microsoft SQL Server',
   postgresql: 'PostgreSQL',
@@ -92,10 +93,11 @@ INSERT INTO Books VALUES ${tuples(Array.from({ length: 12 }, (_, i) => [i + 1, [
 INSERT INTO Sales VALUES ${tuples(Array.from({ length: 16 }, (_, i) => [i + 1, (i % 12) + 1, (i % 4) + 1, `2026-10-${String(i + 1).padStart(2, '0')}`]))};`,
   },
 };
+Object.assign(datasets, additionalDatasets);
 export function setupScript(dataset = 'college', dialect = 'postgresql') {
   if (!datasets[dataset] || !dialects[dialect])
     throw Error('Choose a valid dataset and dialect.');
-  return `-- StudyLab fictional ${datasets[dataset].title} demo for ${dialects[dialect]}\n-- Run in an empty database/schema. IDs are supplied explicitly.\n-- No real student records.\n\n${datasets[dataset].sql}\n`;
+  return `-- StudyLab fictional ${datasets[dataset].title} demo for ${dialects[dialect]}\n-- Run in an empty database/schema. IDs are supplied explicitly.\n-- All records are fictional; no real personal data.\n\n${datasets[dataset].sql}\n`;
 }
 export const sqlExamples = [
   {
@@ -214,3 +216,5 @@ export const sqlExamples = [
 ];
 
 sqlExamples.push(...extraExamples);
+
+sqlExamples.push(...additionalExamples);

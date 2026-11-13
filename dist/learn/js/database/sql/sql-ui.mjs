@@ -1,11 +1,11 @@
-import { exercises } from './sql-challenges.mjs?v=28';
+import { exercises } from './sql-challenges.mjs?v=30';
 export { exercises };
 const cleanDraft = (raw) => ({
   code: typeof raw?.code === 'string' ? raw.code.slice(0, 30000) : '',
 });
-import { datasets, dialects, sqlExamples, setupScript } from './sql-data.mjs?v=28';
-import { workStore } from '../../shared/work-store.mjs?v=28';
-import { escapeHTML as e } from '../../prld/engine.mjs?v=28';
+import { datasets, dialects, sqlExamples, setupScript } from './sql-data.mjs?v=30';
+import { workStore } from '../../shared/work-store.mjs?v=30';
+import { escapeHTML as e } from '../../prld/engine.mjs?v=30';
 function download(name, text) {
   const url = URL.createObjectURL(new Blob([text], { type: 'text/plain;charset=utf-8' }));
   const a = document.createElement('a');
@@ -25,8 +25,8 @@ export function sqlPage({ view, id, modeOverride, sidebar }) {
   );
   let dataset = pref.dataset,
     mode = dialects[modeOverride] ? modeOverride : pref.mode;
-  const restored = /^draft-(college|shop)-(sqlserver|postgresql|mysql)$/.exec(id || '');
-  if (restored) {
+  const restored = /^draft-([a-z]+)-(sqlserver|postgresql|mysql)$/.exec(id || '');
+  if (restored && datasets[restored[1]]) {
     dataset = restored[1];
     mode = restored[2];
   }
@@ -191,7 +191,7 @@ export function sqlPage({ view, id, modeOverride, sidebar }) {
     restartNotice = notice;
     worker?.terminate();
     clearTimeout(timer);
-    worker = new Worker(new URL('./sql-worker.js?v=28', import.meta.url));
+    worker = new Worker(new URL('./sql-worker.js?v=30', import.meta.url));
     const current = worker;
     worker.onmessage = (event) => {
       if (disposed || current !== worker || event.data.id !== pending?.id) return;

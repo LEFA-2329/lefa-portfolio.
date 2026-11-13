@@ -95,5 +95,5 @@ for (const lesson of intermediateLessons) {
   }
 }
 console.log(
-  `Passed: ${runs} model-answer checks on two datasets; hardcoded/NULL/duplicate/order/alias/schema regressions; native errors; 54 distinct Intermediate tasks and linked executable answers.`,
+  `Passed: ${runs} model-answer checks on seven datasets; hardcoded/NULL/duplicate/order/alias/schema regressions; native errors; 54 distinct Intermediate tasks and linked executable answers.`,
 );
