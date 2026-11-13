@@ -1,4 +1,4 @@
-import {extraExercises} from './sql-extra.mjs?v=23';
+import {extraExercises} from './sql-extra.mjs?v=24';
 export const exercises=[
  {id:'city',dataset:'college',title:'1. Filter students',prompt:'Display StudentName and Age for students from Polokwane, sorted by StudentName.',hint:'Filter City with a single-quoted string, then sort the selected rows.',answer:"SELECT StudentName, Age FROM Students\nWHERE City = 'Polokwane' ORDER BY StudentName;",expected:'Five rows: David (21), Grace (25), John (26), Lebo (18) and Maria (22).'},
  {id:'marks',dataset:'college',title:'2. Count missing marks',prompt:'Count enrolments with no mark yet. Use alias Unmarked.',hint:'Use IS NULL, not = NULL.',answer:'SELECT COUNT(*) AS Unmarked FROM Enrolments WHERE Mark IS NULL;',expected:'Unmarked = 3.'},

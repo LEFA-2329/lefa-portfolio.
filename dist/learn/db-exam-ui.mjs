@@ -1,6 +1,6 @@
 import {workStore} from './work-store.mjs?v=15';
 import {escapeHTML as e} from './engine.mjs?v=17';
-import {databaseExamEngine} from './db-exam.mjs?v=23';
+import {databaseExamEngine} from './db-exam.mjs?v=24';
 export function databaseExamPage({view,crumb,sidebar,course='database'}){
  const {units,writtenQuestions,quizCount,totalQuestions,createExam,cleanExam,examQuestions,remainingSeconds,submitExam,examResult}=databaseExamEngine(course),title=course==='intermediate'?'DATA6222 Intermediate':'DATA6211 Introduction';
  let s=workStore.read('db-exam:'+course,null,cleanExam),timer=null,disposed=false;
