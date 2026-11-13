@@ -1,12 +1,12 @@
-import { builderPage } from './database/normalisation/normalisation-builder.mjs?v=27';
-import { normalisationPracticePage } from './database/normalisation/normalisation-practice.mjs?v=27';
-import { databaseExamPage } from './database/db-exam-ui.mjs?v=27';
+import { builderPage } from './database/normalisation/normalisation-builder.mjs?v=28';
+import { normalisationPracticePage } from './database/normalisation/normalisation-practice.mjs?v=28';
+import { databaseExamPage } from './database/db-exam-ui.mjs?v=28';
 import {
   progressPage,
   progressSummary,
   refreshLessonCompletion,
-} from './shared/progress.mjs?v=27';
-import { exercises as sqlChallenges } from './database/sql/sql-challenges.mjs?v=27';
+} from './shared/progress.mjs?v=28';
+import { exercises as sqlChallenges } from './database/sql/sql-challenges.mjs?v=28';
 import {
   databaseHome,
   databaseUnit,
@@ -15,30 +15,30 @@ import {
   databaseResources,
   dbUnits,
   dbLessons,
-} from './database/database-ui.mjs?v=27';
-import { sqlPage } from './database/sql/sql-ui.mjs?v=27';
-import './shared/appearance.mjs?v=27';
-import { examPage } from './prld/exam-ui.mjs?v=27';
-import { workStore } from './shared/work-store.mjs?v=27';
-import { cleanLesson, cleanTask, cleanDraft } from './shared/work-state.mjs?v=27';
-import { activities } from './prld/content/activities.mjs?v=27';
-import { activitiesPage, activityPage } from './prld/activity-ui.mjs?v=27';
-import { interactiveTracePage } from './prld/runner-ui.mjs?v=27';
-import { taskBank } from './prld/content/tasks.mjs?v=27';
-import { units, lessons } from './prld/content/data.mjs?v=27';
-import { practice } from './prld/content/practice.mjs?v=27';
+} from './database/database-ui.mjs?v=28';
+import { sqlPage } from './database/sql/sql-ui.mjs?v=28';
+import './shared/appearance.mjs?v=28';
+import { examPage } from './prld/exam-ui.mjs?v=28';
+import { workStore } from './shared/work-store.mjs?v=28';
+import { cleanLesson, cleanTask, cleanDraft } from './shared/work-state.mjs?v=28';
+import { activities } from './prld/content/activities.mjs?v=28';
+import { activitiesPage, activityPage } from './prld/activity-ui.mjs?v=28';
+import { interactiveTracePage } from './prld/runner-ui.mjs?v=28';
+import { taskBank } from './prld/content/tasks.mjs?v=28';
+import { units, lessons } from './prld/content/data.mjs?v=28';
+import { practice } from './prld/content/practice.mjs?v=28';
 import {
   parse,
   flowchart,
   hierarchy,
   classDiagram,
   escapeHTML as e,
-} from './prld/engine.mjs?v=27';
+} from './prld/engine.mjs?v=28';
 const $ = (s) => document.querySelector(s),
   view = $('#view');
 let activeModule = 'prld';
 try {
-  activeModule = ['database', 'intermediate'].includes(
+  activeModule = ['database', 'intermediate', 'advanced'].includes(
     localStorage.getItem('studylab-module'),
   )
     ? localStorage.getItem('studylab-module')
@@ -77,31 +77,53 @@ function sidebar(unit) {
     shared = ['saved-work', 'about', 'progress', 'normalisation', 'nf-builder'].includes(
       page,
     ),
-    intermediate =
-      page === 'db-intermediate' ||
-      (page === 'db-exams' && location.hash.split('/')[1] === 'intermediate') ||
-      (page === 'db-unit' && Number(location.hash.split('/')[1]) > 100) ||
-      (page === 'db-lesson' && location.hash.includes('/intermediate-')) ||
+    advanced =
+      page === 'db-advanced' ||
+      (page === 'db-unit' && Number(location.hash.split('/')[1]) > 200) ||
+      (page === 'db-lesson' && location.hash.includes('/advanced-')) ||
       ((shared || ['sql', 'db-practice', 'db-resources'].includes(page)) &&
-        activeModule === 'intermediate'),
+        activeModule === 'advanced'),
+    intermediate =
+      !advanced &&
+      (page === 'db-intermediate' ||
+        (page === 'db-exams' && location.hash.split('/')[1] === 'intermediate') ||
+        (page === 'db-unit' && Number(location.hash.split('/')[1]) > 100) ||
+        (page === 'db-lesson' && location.hash.includes('/intermediate-')) ||
+        ((shared || ['sql', 'db-practice', 'db-resources'].includes(page)) &&
+          activeModule === 'intermediate')),
     database =
+      advanced ||
       intermediate ||
       (shared ? activeModule === 'database' : page.startsWith('db') || page === 'sql');
-  activeModule = intermediate ? 'intermediate' : database ? 'database' : 'prld';
+  activeModule = advanced
+    ? 'advanced'
+    : intermediate
+      ? 'intermediate'
+      : database
+        ? 'database'
+        : 'prld';
   try {
     localStorage.setItem('studylab-module', activeModule);
   } catch {}
   $('#course-select').value = activeModule;
   $('#progress-link').href = '#progress/' + activeModule;
-  $('#course-caption').textContent = intermediate
-    ? 'DATA6222 INTERMEDIATE'
-    : database
-      ? 'DATA6211 TUTORIAL'
-      : 'PRLD TUTORIAL';
-  $('.brand').href = intermediate ? '#db-intermediate' : database ? '#db' : '#home';
+  $('#course-caption').textContent = advanced
+    ? 'ADVANCED DATABASE'
+    : intermediate
+      ? 'DATA6222 INTERMEDIATE'
+      : database
+        ? 'DATA6211 TUTORIAL'
+        : 'PRLD TUTORIAL';
+  $('.brand').href = advanced
+    ? '#db-advanced'
+    : intermediate
+      ? '#db-intermediate'
+      : database
+        ? '#db'
+        : '#home';
   const destinations = database
     ? {
-        home: intermediate ? 'db-intermediate' : 'db',
+        home: advanced ? 'db-advanced' : intermediate ? 'db-intermediate' : 'db',
         practice: 'db-practice',
         tools: 'sql',
         resources: 'db-resources',
@@ -121,7 +143,7 @@ function sidebar(unit) {
     ? 'practice'
     : ['lab', 'trace', 'trace-guided', 'sql'].includes(page)
       ? 'tools'
-      : ['db', 'db-intermediate'].includes(page)
+      : ['db', 'db-intermediate', 'db-advanced'].includes(page)
         ? 'home'
         : page === 'db-resources'
           ? 'resources'
@@ -133,7 +155,9 @@ function sidebar(unit) {
     else a.removeAttribute('aria-current');
   });
   const us = database
-      ? dbUnits.filter((u) => (intermediate ? u.id > 100 : u.id < 100))
+      ? dbUnits.filter((u) =>
+          advanced ? u.id > 200 : intermediate ? u.id > 100 && u.id < 200 : u.id < 100,
+        )
       : units,
     ls = database ? dbLessons : lessons;
   $('#unit-nav').innerHTML = us
@@ -1134,7 +1158,10 @@ function route() {
   $('#menu-toggle').setAttribute('aria-expanded', 'false');
   document.body.classList.remove('print-diagram');
   const [page, id, task] = location.hash.slice(1).split('/');
-  if (page === 'progress' && ['prld', 'database', 'intermediate'].includes(id))
+  if (
+    page === 'progress' &&
+    ['prld', 'database', 'intermediate', 'advanced'].includes(id)
+  )
     activeModule = id;
   if (page === 'nf-builder') {
     if (activeModule === 'prld') activeModule = 'database';
@@ -1150,7 +1177,8 @@ function route() {
       sidebar,
       course: id === 'intermediate' ? 'intermediate' : 'database',
     });
-  else if (page === 'db' || page === 'db-intermediate') databaseHome({ view, sidebar });
+  else if (page === 'db' || page === 'db-intermediate' || page === 'db-advanced')
+    databaseHome({ view, sidebar });
   else if (page === 'db-unit') databaseUnit({ view, id, sidebar });
   else if (page === 'db-lesson') databaseLesson({ view, id, task, sidebar });
   else if (page === 'db-practice') databasePractice({ view, sidebar });
@@ -1183,47 +1211,49 @@ function route() {
           ? 'My progress'
           : page === 'db-exams'
             ? 'Database practice exams'
-            : page === 'db-intermediate'
-              ? 'Database Intermediate . DATA6222'
-              : page === 'db'
-                ? 'Database Introduction'
-                : page === 'db-unit'
-                  ? 'Database unit overview'
-                  : page === 'db-lesson'
-                    ? dbLessons.find((l) => l.id === id)?.title || 'Databases'
-                    : page === 'db-practice'
-                      ? 'Database practice'
-                      : page === 'db-resources'
-                        ? 'Database resources'
-                        : page === 'sql'
-                          ? 'SQL workspace'
-                          : page === 'practice'
-                            ? 'Practice'
-                            : page === 'tools'
-                              ? 'Code tools'
-                              : page === 'lesson'
-                                ? activeLesson?.title
-                                : page === 'lab'
-                                  ? 'Diagram lab'
-                                  : page === 'trace'
-                                    ? 'Interactive tracing'
-                                    : page === 'trace-guided'
-                                      ? 'Guided traces'
-                                      : page === 'saved-work'
-                                        ? 'Saved work'
-                                        : page === 'exams'
-                                          ? 'Practice exams'
-                                          : page === 'resources'
-                                            ? 'Study resources'
-                                            : page === 'activities'
-                                              ? 'Interactive exercises'
-                                              : page === 'activity'
-                                                ? 'Interactive exercise'
-                                                : page === 'tasks'
-                                                  ? 'Practice tasks'
-                                                  : page === 'task'
-                                                    ? 'Practice task'
-                                                    : 'Programming Logic and Design') +
+            : page === 'db-advanced'
+              ? 'Advanced Database'
+              : page === 'db-intermediate'
+                ? 'Database Intermediate . DATA6222'
+                : page === 'db'
+                  ? 'Database Introduction'
+                  : page === 'db-unit'
+                    ? 'Database unit overview'
+                    : page === 'db-lesson'
+                      ? dbLessons.find((l) => l.id === id)?.title || 'Databases'
+                      : page === 'db-practice'
+                        ? 'Database practice'
+                        : page === 'db-resources'
+                          ? 'Database resources'
+                          : page === 'sql'
+                            ? 'SQL workspace'
+                            : page === 'practice'
+                              ? 'Practice'
+                              : page === 'tools'
+                                ? 'Code tools'
+                                : page === 'lesson'
+                                  ? activeLesson?.title
+                                  : page === 'lab'
+                                    ? 'Diagram lab'
+                                    : page === 'trace'
+                                      ? 'Interactive tracing'
+                                      : page === 'trace-guided'
+                                        ? 'Guided traces'
+                                        : page === 'saved-work'
+                                          ? 'Saved work'
+                                          : page === 'exams'
+                                            ? 'Practice exams'
+                                            : page === 'resources'
+                                              ? 'Study resources'
+                                              : page === 'activities'
+                                                ? 'Interactive exercises'
+                                                : page === 'activity'
+                                                  ? 'Interactive exercise'
+                                                  : page === 'tasks'
+                                                    ? 'Practice tasks'
+                                                    : page === 'task'
+                                                      ? 'Practice task'
+                                                      : 'Programming Logic and Design') +
     ' | StudyLab';
   const report = $('#report-content');
   if (report) {
@@ -1255,10 +1285,12 @@ route();
 $('#course-select').onchange = (event) => {
   $('#lesson-search').value = '';
   location.hash =
-    event.target.value === 'intermediate'
-      ? 'db-intermediate'
-      : event.target.value === 'database'
-        ? 'db'
-        : 'home';
+    event.target.value === 'advanced'
+      ? 'db-advanced'
+      : event.target.value === 'intermediate'
+        ? 'db-intermediate'
+        : event.target.value === 'database'
+          ? 'db'
+          : 'home';
 };
 $('#lesson-search').addEventListener('input', filterTopics);

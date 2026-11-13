@@ -1,8 +1,8 @@
-import { workStore } from '../shared/work-store.mjs?v=27';
-import { cleanDraft } from '../shared/work-state.mjs?v=27';
-import { gridExamples } from './content/grid-examples.mjs?v=27';
-import { createRunner, displayValue } from './runner.mjs?v=27';
-import { escapeHTML as e } from './engine.mjs?v=27';
+import { workStore } from '../shared/work-store.mjs?v=28';
+import { cleanDraft } from '../shared/work-state.mjs?v=28';
+import { gridExamples } from './content/grid-examples.mjs?v=28';
+import { createRunner, displayValue } from './runner.mjs?v=28';
+import { escapeHTML as e } from './engine.mjs?v=28';
 const examples = {
   'Add two numbers': {
     hint: 'NUM accepts whole numbers and decimals. Enter 4 and 6.5 when prompted; the output should be 10.5.',

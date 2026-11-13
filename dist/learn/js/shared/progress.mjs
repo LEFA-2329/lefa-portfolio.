@@ -1,18 +1,27 @@
-import { cleanDatabaseLesson } from '../database/database-state.mjs?v=27';
-import { workStore } from './work-store.mjs?v=27';
+import {
+  advancedUnits,
+  advancedLessons,
+} from '../database/content/advanced-data.mjs?v=28';
+import { cleanDatabaseLesson } from '../database/database-state.mjs?v=28';
+import { workStore } from './work-store.mjs?v=28';
 import {
   lessons as prldLessons,
   units as prldUnits,
-} from '../prld/content/data.mjs?v=27';
-import { practice } from '../prld/content/practice.mjs?v=27';
-import { cleanLesson } from './work-state.mjs?v=27';
-import { dbLessons, dbUnits } from '../database/content/database-data.mjs?v=27';
+} from '../prld/content/data.mjs?v=28';
+import { practice } from '../prld/content/practice.mjs?v=28';
+import { cleanLesson } from './work-state.mjs?v=28';
+import { dbLessons, dbUnits } from '../database/content/database-data.mjs?v=28';
 import {
   intermediateLessons,
   intermediateUnits,
-} from '../database/content/intermediate-data.mjs?v=27';
-import { escapeHTML as e } from '../prld/engine.mjs?v=27';
+} from '../database/content/intermediate-data.mjs?v=28';
+import { escapeHTML as e } from '../prld/engine.mjs?v=28';
 export const progressCourses = {
+  advanced: {
+    title: 'Advanced Database',
+    lessons: advancedLessons,
+    units: advancedUnits,
+  },
   prld: { title: 'Programming Logic and Design', lessons: prldLessons, units: prldUnits },
   database: { title: 'DATA6211 Introduction', lessons: dbLessons, units: dbUnits },
   intermediate: {

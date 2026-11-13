@@ -1,4 +1,4 @@
-import { parse } from './engine.mjs?v=27';
+import { parse } from './engine.mjs?v=28';
 const numberPattern = /^(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?/;
 const identifier = /^[A-Za-z_]\w*$/;
 const MAX_STRING = 2000;

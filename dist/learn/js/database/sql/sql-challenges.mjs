@@ -1,4 +1,4 @@
-import { extraExercises } from './sql-extra.mjs?v=27';
+import { extraExercises } from './sql-extra.mjs?v=28';
 export const exercises = [
   {
     id: 'city',

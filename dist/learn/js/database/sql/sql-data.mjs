@@ -1,4 +1,4 @@
-import { extraExamples } from './sql-extra.mjs?v=27';
+import { extraExamples } from './sql-extra.mjs?v=28';
 export const dialects = {
   sqlserver: 'Microsoft SQL Server',
   postgresql: 'PostgreSQL',

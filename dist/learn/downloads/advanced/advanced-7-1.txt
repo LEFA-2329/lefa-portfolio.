@@ -1,0 +1,5 @@
+-- Planning exercise, not an executable restore script.
+Target RPO: 5 minutes; target RTO: 30 minutes.
+Restore sequence: full baseline, compatible differential, continuous required logs.
+Use NORECOVERY until the final restore; use STOPAT for a chosen recoverable point.
+Validate chain, encryption keys, target paths and application checks in an isolated drill.

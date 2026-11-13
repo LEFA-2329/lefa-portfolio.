@@ -1,0 +1,7 @@
+R(Student, Course, Tutor)
+FD1: (Student, Course) determines Tutor
+FD2: Tutor determines Course
+Candidate keys: (Student, Course); (Student, Tutor)
+BCNF: TutorCourse(Tutor PK, Course)
+      StudentTutor(Student PK-part, Tutor PK-part/FK)
+Check dependency preservation separately from lossless reconstruction.

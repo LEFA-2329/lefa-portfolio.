@@ -1,0 +1,6 @@
+-- SQL Server / SSMS; conceptual permission template.
+-- Requires an existing approved view and database user; replace placeholders.
+-- CREATE ROLE ReportingReader;
+-- GRANT SELECT ON OBJECT::dbo.ApprovedReport TO ReportingReader;
+-- ALTER ROLE ReportingReader ADD MEMBER ReportServiceUser;
+-- Test with the actual service identity; do not grant db_owner for convenience.

@@ -1,6 +1,6 @@
-import { executeBatch } from './sql-core.mjs?v=27';
-import { datasets } from './sql-data.mjs?v=27';
-import { exercises } from './sql-challenges.mjs?v=27';
+import { executeBatch } from './sql-core.mjs?v=28';
+import { datasets } from './sql-data.mjs?v=28';
+import { exercises } from './sql-challenges.mjs?v=28';
 const fixtures = {
   college: `INSERT INTO Students VALUES(99,'Lerato Test','Polokwane',24),(100,'Lindi Test','New City',20);
 INSERT INTO Courses VALUES(99,'Practice Course',2000),(100,'Empty Course',100);

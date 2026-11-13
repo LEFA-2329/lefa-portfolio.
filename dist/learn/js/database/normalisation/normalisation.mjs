@@ -1,5 +1,5 @@
-import { escapeHTML as e } from '../../prld/engine.mjs?v=27';
-import { additionalExamples } from './normalisation-extra.mjs?v=27';
+import { escapeHTML as e } from '../../prld/engine.mjs?v=28';
+import { additionalExamples } from './normalisation-extra.mjs?v=28';
 const D = (from, to, kind = 'full') => ({ from, to, kind });
 const T = (name, key, attributes, dependencies, foreign = {}) => ({
   name,

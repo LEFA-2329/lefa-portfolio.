@@ -3,14 +3,14 @@ import {
   dependencyDiagram,
   bindDiagramFit,
   normalisationRules,
-} from './normalisation.mjs?v=27';
+} from './normalisation.mjs?v=28';
 import {
   analyseTable,
   gradeKeyAndDependencies,
   gradeDecomposition,
-} from './normalisation-grading.mjs?v=27';
-import { escapeHTML as e } from '../../prld/engine.mjs?v=27';
-import { workStore } from '../../shared/work-store.mjs?v=27';
+} from './normalisation-grading.mjs?v=28';
+import { escapeHTML as e } from '../../prld/engine.mjs?v=28';
+import { workStore } from '../../shared/work-store.mjs?v=28';
 const levels = ['guided', 'standard', 'challenge'];
 const newTable = (original, id = 't1') => ({
   id,

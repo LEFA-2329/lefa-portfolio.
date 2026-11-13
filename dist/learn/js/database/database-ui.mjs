@@ -1,29 +1,35 @@
-import { quizContext } from '../shared/quiz-context.mjs?v=27';
-import { cleanDatabaseLesson } from './database-state.mjs?v=27';
-import { progressSummary, refreshLessonCompletion } from '../shared/progress.mjs?v=27';
+import { advancedUnits, advancedLessons } from './content/advanced-data.mjs?v=28';
+import { quizContext } from '../shared/quiz-context.mjs?v=28';
+import { cleanDatabaseLesson } from './database-state.mjs?v=28';
+import { progressSummary, refreshLessonCompletion } from '../shared/progress.mjs?v=28';
 import {
   normalisationWalkthrough,
   bindNormalisation,
-} from './normalisation/normalisation.mjs?v=27';
+} from './normalisation/normalisation.mjs?v=28';
 import {
   dbUnits as introUnits,
   dbLessons as introLessons,
-} from './content/database-data.mjs?v=27';
+} from './content/database-data.mjs?v=28';
 import {
   intermediateUnits,
   intermediateLessons,
-} from './content/intermediate-data.mjs?v=27';
-const dbUnits = [...introUnits, ...intermediateUnits],
-  dbLessons = [...introLessons, ...intermediateLessons];
-import { workStore } from '../shared/work-store.mjs?v=27';
-import { escapeHTML as e } from '../prld/engine.mjs?v=27';
+} from './content/intermediate-data.mjs?v=28';
+const dbUnits = [...introUnits, ...intermediateUnits, ...advancedUnits],
+  dbLessons = [...introLessons, ...intermediateLessons, ...advancedLessons];
+import { workStore } from '../shared/work-store.mjs?v=28';
+import { escapeHTML as e } from '../prld/engine.mjs?v=28';
 export { dbUnits, dbLessons };
 const code = (text) => `<pre><code>${e(text)}</code></pre>`;
 const link = (l) => `<a href="#db-lesson/${l.id}">${e(l.title)}</a>`;
 export function databaseHome({ view, sidebar }) {
-  const intermediate = location.hash.startsWith('#db-intermediate'),
-    courseUnits = intermediate ? intermediateUnits : introUnits;
-  view.innerHTML = `<section class="welcome"><p class="eyebrow">${intermediate ? 'DATABASE INTERMEDIATE . DATA6222' : 'DATABASE INTRODUCTION . DATA6211 / DATA6211w'}</p><h1>Understand data. Build better databases.</h1><p class="lede">Start with the ideas, design the relationships, then put SQL into practice. Choose a learning unit below.</p><div class="button-row"><a class="button" href="#db-unit/${intermediate ? 101 : 1}">Start with Unit 1</a><a class="button secondary" href="#sql">Open SQL workspace</a></div></section>${progressSummary(intermediate ? 'intermediate' : 'database')}<div class="section-heading"><h2>Explore the database course</h2><p>${intermediate ? 'Nine units, 106 outcomes, 27 lessons, 81 practical quiz questions and native SQL Server examples.' : 'Six units with expanded tasks, worked examples and SQL practice.'}</p></div>${courseUnits
+  const advanced = location.hash.startsWith('#db-advanced'),
+    intermediate = location.hash.startsWith('#db-intermediate'),
+    courseUnits = advanced
+      ? advancedUnits
+      : intermediate
+        ? intermediateUnits
+        : introUnits;
+  view.innerHTML = `<section class="welcome"><p class="eyebrow">${advanced ? 'DATABASE ADVANCED . EXTENSION' : intermediate ? 'DATABASE INTERMEDIATE . DATA6222' : 'DATABASE INTRODUCTION . DATA6211 / DATA6211w'}</p><h1>Understand data. Build better databases.</h1><p class="lede">Start with the ideas, design the relationships, then put SQL into practice. Choose a learning unit below.</p><div class="button-row"><a class="button" href="#db-unit/${advanced ? 201 : intermediate ? 101 : 1}">Start with Unit 1</a><a class="button secondary" href="#sql">Open SQL workspace</a></div></section>${progressSummary(advanced ? 'advanced' : intermediate ? 'intermediate' : 'database')}<div class="section-heading"><h2>Explore the database course</h2><p>${advanced ? 'Eight units, eight lessons, 24 quiz questions, 16 practical tasks and downloadable examples. Prerequisite: Introduction and Intermediate. This is an independent extension, not an institution-specific module outline.' : intermediate ? 'Nine units, 106 outcomes, 27 lessons, 81 practical quiz questions and native SQL Server examples.' : 'Six units with expanded tasks, worked examples and SQL practice.'}</p></div>${courseUnits
     .map(
       (u) =>
         `<article class="course-unit"><div class="course-unit-title"><span class="unit-badge">${String(u.number || u.id).padStart(2, '0')}</span><div><h2><a href="#db-unit/${u.id}">${e(u.title)}</a></h2><p>${e(u.subtitle)}</p><a class="text-link" href="#db-unit/${u.id}">Read unit overview</a></div></div><div class="course-lesson-links">${dbLessons
@@ -33,7 +39,7 @@ export function databaseHome({ view, sidebar }) {
     )
     .join(
       '',
-    )}<div class="button-row"><a class="button secondary" href="#db">Introduction . DATA6211</a><a class="button secondary" href="#db-intermediate">Intermediate . DATA6222</a></div><p class="note">Original supplementary material aligned to the supplied course outlines. Textbook chapter numbers follow that outline; these lessons do not reproduce the prescribed textbook.</p>`;
+    )}<div class="button-row"><a class="button secondary" href="#db">Introduction . DATA6211</a><a class="button secondary" href="#db-intermediate">Intermediate . DATA6222</a><a class="button secondary" href="#db-advanced">Advanced Database</a></div><p class="note">Original supplementary material aligned to the supplied course outlines. Textbook chapter numbers follow that outline; these lessons do not reproduce the prescribed textbook.</p>`;
   sidebar();
 }
 export function databaseUnit({ view, id, sidebar }) {
@@ -44,8 +50,8 @@ export function databaseUnit({ view, id, sidebar }) {
   }
   const ls = dbLessons.filter((l) => l.unit === u.id),
     number = u.number || u.id,
-    home = u.id > 100 ? 'db-intermediate' : 'db';
-  view.innerHTML = `<p class="breadcrumb"><a href="#${home}">Databases</a><span>/</span><strong>Unit ${number} overview</strong></p><p class="eyebrow">${u.id > 100 ? 'DATA6222' : 'DATA6211 / DATA6211w'} . LEARNING UNIT ${number}</p><h1>${e(u.title)}</h1><p class="lede">${e(u.overview)}</p><section class="panel unit-overview-panel"><h2>What you will learn</h2><ol>${u.outcomes.map((o) => `<li>${e(o)}</li>`).join('')}</ol><h3>Themes in this unit</h3><ul>${u.themes.map((t) => `<li>${e(t)}</li>`).join('')}</ul><p><strong>Outline reference:</strong> prescribed textbook chapter ${e(u.chapter)}. ${e(u.sessions)}</p><h3>How to study this unit</h3><p>Read each lesson and work through its example. Attempt the quiz and written task before revealing the explanation. ${u.id === 6 ? 'Run the SQL examples using the demo data and inspect the result tables.' : 'Explain your design decisions in your own words and check them against the business rules.'}</p><div class="note"><strong>Before moving on:</strong> ${e(u.check)}</div><div class="button-row"><a class="button" href="#db-lesson/${ls[0].id}">Start this unit</a>${u.id === 6 ? '<a class="button secondary" href="#sql">Practise SQL</a>' : ''}<button class="button secondary" id="print-db-unit">Print / save overview as PDF</button></div></section><div class="section-heading"><h2>Lessons in this unit</h2></div><div class="lesson-list">${ls.map((l, i) => `<article class="lesson-row"><span class="sequence">${i + 1}</span><div><h3>${e(l.title)}</h3><p>Explanation, worked example, quiz and practice.</p></div><a class="button secondary" href="#db-lesson/${l.id}">Open lesson</a></article>`).join('')}</div>`;
+    home = u.id > 200 ? 'db-advanced' : u.id > 100 ? 'db-intermediate' : 'db';
+  view.innerHTML = `<p class="breadcrumb"><a href="#${home}">Databases</a><span>/</span><strong>Unit ${number} overview</strong></p><p class="eyebrow">${u.id > 200 ? 'ADVANCED EXTENSION' : u.id > 100 ? 'DATA6222' : 'DATA6211 / DATA6211w'} . LEARNING UNIT ${number}</p><h1>${e(u.title)}</h1><p class="lede">${e(u.overview)}</p><section class="panel unit-overview-panel"><h2>What you will learn</h2><ol>${u.outcomes.map((o) => `<li>${e(o)}</li>`).join('')}</ol><h3>Themes in this unit</h3><ul>${u.themes.map((t) => `<li>${e(t)}</li>`).join('')}</ul><p><strong>Outline reference:</strong> prescribed textbook chapter ${e(u.chapter || 'Not assigned; independent extension')}. ${e(u.sessions)}</p><h3>How to study this unit</h3><p>Read each lesson and work through its example. Attempt the quiz and written task before revealing the explanation. ${u.id === 6 ? 'Run the SQL examples using the demo data and inspect the result tables.' : 'Explain your design decisions in your own words and check them against the business rules.'}</p><div class="note"><strong>Before moving on:</strong> ${e(u.check)}</div><div class="button-row"><a class="button" href="#db-lesson/${ls[0].id}">Start this unit</a>${u.id === 6 ? '<a class="button secondary" href="#sql">Practise SQL</a>' : ''}<button class="button secondary" id="print-db-unit">Print / save overview as PDF</button></div></section><div class="section-heading"><h2>Lessons in this unit</h2></div><div class="lesson-list">${ls.map((l, i) => `<article class="lesson-row"><span class="sequence">${i + 1}</span><div><h3>${e(l.title)}</h3><p>Explanation, worked example, quiz and practice.</p></div><a class="button secondary" href="#db-lesson/${l.id}">Open lesson</a></article>`).join('')}</div>`;
   view.querySelector('#print-db-unit').onclick = () => window.print();
   sidebar(u.id);
 }
@@ -84,13 +90,19 @@ export function databaseLesson({ view, id, task, sidebar }) {
   }
   const save = () => {
     workStore.write('database:' + id, state);
-    refreshLessonCompletion(view, id, l.unit > 100 ? 'intermediate' : 'database');
+    refreshLessonCompletion(
+      view,
+      id,
+      l.unit > 200 ? 'advanced' : l.unit > 100 ? 'intermediate' : 'database',
+    );
   };
-  const courseLessons = dbLessons.filter((x) => x.unit > 100 === l.unit > 100),
+  const courseLessons = dbLessons.filter(
+      (x) => Math.floor(x.unit / 100) === Math.floor(l.unit / 100),
+    ),
     idx = courseLessons.indexOf(l),
-    number = l.unit > 100 ? l.unit - 100 : l.unit,
-    home = l.unit > 100 ? 'db-intermediate' : 'db';
-  view.innerHTML = `<p class="breadcrumb"><a href="#${home}">Databases</a><span>/</span><a href="#db-unit/${l.unit}">Unit ${number} overview</a></p><p class="eyebrow">${l.unit > 100 ? 'DATA6222' : 'DATA6211'} . UNIT ${number}</p><h1>${e(l.title)}</h1><div class="lesson-tabs" role="tablist" aria-label="Database lesson sections">${[
+    number = l.unit % 100,
+    home = l.unit > 200 ? 'db-advanced' : l.unit > 100 ? 'db-intermediate' : 'db';
+  view.innerHTML = `<p class="breadcrumb"><a href="#${home}">Databases</a><span>/</span><a href="#db-unit/${l.unit}">Unit ${number} overview</a></p><p class="eyebrow">${l.unit > 200 ? 'ADVANCED EXTENSION' : l.unit > 100 ? 'DATA6222' : 'DATA6211'} . UNIT ${number}</p><h1>${e(l.title)}</h1><div class="lesson-tabs" role="tablist" aria-label="Database lesson sections">${[
     ['learn', 'Learn'],
     ['quiz', 'Quiz'],
     ['practice', 'Try it yourself'],
@@ -112,7 +124,7 @@ export function databaseLesson({ view, id, task, sidebar }) {
     const panel = view.querySelector('#db-panel');
     panel.setAttribute('aria-labelledby', 'db-tab-' + state.tab);
     if (state.tab === 'learn') {
-      panel.innerHTML = `<div class="theory">${l.sections.map((s) => `<h2>${e(s.heading)}</h2><p>${e(s.text)}</p>`).join('')}<h2>Worked example: ${e(l.example.title)}</h2><p>${e(l.example.problem)}</p><div class="worked-explanation"><h3>Solution and reasoning</h3><p>${e(l.example.solution)}</p></div>${l.sampleCode ? `<h3>${l.environment === 'native' ? 'SQL Server / SSMS example' : l.environment === 'design' ? 'Design and dependency example' : 'Portable SQL example'}</h3>${code(l.sampleCode)}<div class="button-row"><button class="button secondary" id="db-copy-code">Copy example</button><a class="button secondary" href="./downloads/intermediate/${e(l.download)}" download>Download example</a></div><p id="db-copy-status" role="status"></p>` : ''}${(l.moreExamples || []).map((x) => `<h3>Additional example: ${e(x.title)}</h3><p class="note">${x.environment === 'native' ? 'Run in SQL Server / SSMS.' : 'Portable SQL: use the college workspace.'}</p>${code(x.code)}<p>${e(x.reason)}</p>`).join('')}${l.diagram === 'college' ? collegeDiagram() : l.diagram ? normalisationWalkthrough() : ''}${l.sql ? `<a class="button" href="#sql/${l.sql}">Run a related SQL example</a>` : ''}</div>`;
+      panel.innerHTML = `<div class="theory">${l.sections.map((s) => `<h2>${e(s.heading)}</h2><p>${e(s.text)}</p>`).join('')}<h2>Worked example: ${e(l.example.title)}</h2><p>${e(l.example.problem)}</p><div class="worked-explanation"><h3>Solution and reasoning</h3><p>${e(l.example.solution)}</p></div>${l.sampleCode ? `<h3>${l.environment === 'native' ? 'SQL Server / SSMS example' : l.environment === 'design' ? 'Design and dependency example' : 'Portable SQL example'}</h3>${code(l.sampleCode)}<div class="button-row"><button class="button secondary" id="db-copy-code">Copy example</button><a class="button secondary" href="./downloads/${e(l.downloadFolder || 'intermediate')}/${e(l.download)}" download>Download example</a></div><p id="db-copy-status" role="status"></p>` : ''}${(l.moreExamples || []).map((x) => `<h3>Additional example: ${e(x.title)}</h3><p class="note">${x.environment === 'native' ? 'Run in SQL Server / SSMS.' : 'Portable SQL: use the college workspace.'}</p>${code(x.code)}<p>${e(x.reason)}</p>`).join('')}${l.diagram === 'college' ? collegeDiagram() : l.diagram ? normalisationWalkthrough() : ''}${l.sql ? `<a class="button" href="#sql/${l.sql}">Run a related SQL example</a>` : ''}</div>`;
       if (l.sampleCode) {
         panel.querySelector('#db-copy-code').onclick = async () => {
           try {
@@ -218,10 +230,15 @@ export function databaseLesson({ view, id, task, sidebar }) {
   view.querySelector('#db-print').onclick = () => window.print();
   render();
   sidebar(l.unit);
-  refreshLessonCompletion(view, id, l.unit > 100 ? 'intermediate' : 'database', true);
+  refreshLessonCompletion(
+    view,
+    id,
+    l.unit > 200 ? 'advanced' : l.unit > 100 ? 'intermediate' : 'database',
+    true,
+  );
 }
 export function databasePractice({ view, sidebar }) {
-  view.innerHTML = `<p class="eyebrow">DATABASES . PRACTICE</p><h1>Choose what to practise.</h1><p class="lede">Use lesson quizzes for quick checks, written tasks for design reasoning, and the SQL workspace for executable queries.</p><div class="hub-grid"><article class="panel hub-card"><h2>Database practice exams</h2><p>Mixed-unit quiz questions, two written tasks, optional timers and worked solutions after submission.</p><div class="button-row"><a class="button" href="#db-exams/database">DATA6211 exam</a><a class="button secondary" href="#db-exams/intermediate">DATA6222 exam</a></div></article><article class="panel hub-card"><h2>Write and run SQL</h2><p>Two fictional datasets, three dialect choices, query examples and practical challenges.</p><a class="button" href="#sql">Open SQL workspace</a></article><article class="panel hub-card"><h2>Normalisation diagrams</h2><p>Nine attribute-row diagram cases, 54 questions, 1NF to 3NF rules and worked decompositions.</p><a class="button" href="#nf-builder/projects/standard">Build and check diagrams</a><a class="button secondary" href="#normalisation/projects">Rules and diagram questions</a></article></div><h2>Quizzes and written tasks by unit</h2><div class="course-lesson-links">${dbUnits.map((u) => `<a href="#db-unit/${u.id}">${u.id > 100 ? 'Intermediate' : 'Introduction'} Unit ${u.number || u.id}: ${e(u.title)}</a>`).join('')}</div><p class="note">Each database lesson has a Quiz and a Try it yourself tab. Written model answers unlock after you submit an attempt.</p>`;
+  view.innerHTML = `<p class="eyebrow">DATABASES . PRACTICE</p><h1>Choose what to practise.</h1><p class="lede">Use lesson quizzes for quick checks, written tasks for design reasoning, and the SQL workspace for executable queries.</p><div class="hub-grid"><article class="panel hub-card"><h2>Database practice exams</h2><p>Mixed-unit quiz questions, two written tasks, optional timers and worked solutions after submission.</p><div class="button-row"><a class="button" href="#db-exams/database">DATA6211 exam</a><a class="button secondary" href="#db-exams/intermediate">DATA6222 exam</a></div></article><article class="panel hub-card"><h2>Write and run SQL</h2><p>Two fictional datasets, three dialect choices, query examples and practical challenges.</p><a class="button" href="#sql">Open SQL workspace</a></article><article class="panel hub-card"><h2>Normalisation diagrams</h2><p>Nine attribute-row diagram cases, 54 questions, 1NF to 3NF rules and worked decompositions.</p><a class="button" href="#nf-builder/projects/standard">Build and check diagrams</a><a class="button secondary" href="#normalisation/projects">Rules and diagram questions</a></article></div><h2>Quizzes and written tasks by unit</h2><div class="course-lesson-links">${dbUnits.map((u) => `<a href="#db-unit/${u.id}">${u.id > 200 ? 'Advanced' : u.id > 100 ? 'Intermediate' : 'Introduction'} Unit ${u.number || u.id}: ${e(u.title)}</a>`).join('')}</div><p class="note">Each database lesson has a Quiz and a Try it yourself tab. Written model answers unlock after you submit an attempt.</p>`;
   sidebar();
 }
 export function databaseResources({ view, sidebar }) {
@@ -242,7 +259,7 @@ export function databaseResources({ view, sidebar }) {
           .filter((l) => l.unit === u.id)
           .map(
             (l) =>
-              `<li><a href="./downloads/intermediate/${e(l.download)}" download>${e(l.title)} (${l.environment === 'design' ? 'design text' : 'SQL'})</a> · <a href="#db-lesson/${l.id}">Read lesson</a></li>`,
+              `<li><a href="./downloads/${e(l.downloadFolder || 'intermediate')}/${e(l.download)}" download>${e(l.title)} (${l.environment === 'design' ? 'design text' : 'SQL'})</a> · <a href="#db-lesson/${l.id}">Read lesson</a></li>`,
           )
           .join('')}</ul>`,
     )

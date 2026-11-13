@@ -101,3 +101,7 @@ Use the existing version suffix convention when publishing changes to cached fil
 Push to `main` to run tests and deploy through `.github/workflows/deploy-pages.yml`. That workflow publishes `dist/`; no bundler or build output needs to be generated first. Confirm the deployment job succeeds before describing a change as live.
 
 Content edits do not automatically regenerate Word, PDF or PowerPoint downloads. The optional scripts have their own runtime dependencies and review requirements. Regenerate and review those deliverables separately when their content changes. Do not manually reformat vendor code or binary downloads.
+
+## Advanced Database extension
+
+Edit `dist/learn/js/database/content/advanced-data.mjs` for the eight Advanced units, lessons, quizzes and tasks. Unit IDs start at 201; lesson IDs start with `advanced-`. Matching example downloads live in `dist/learn/downloads/advanced/`. Update both the lesson example and download together. This extension has no institution-specific module code. Native SQL Server execution remains pending.

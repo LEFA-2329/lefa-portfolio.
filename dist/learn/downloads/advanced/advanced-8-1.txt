@@ -1,0 +1,5 @@
+Design case: orders distributed by CustomerID
+Route customer orders to the owning shard.
+Keep order and line writes together where possible.
+Plan global reporting, customer moves, hot shards and backup/restore per shard.
+For an order event: use a stable EventID, idempotent consumers and a transactional outbox pattern where appropriate.

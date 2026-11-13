@@ -1,5 +1,5 @@
-import { workStore } from '../shared/work-store.mjs?v=27';
-import { escapeHTML as e } from './engine.mjs?v=27';
+import { workStore } from '../shared/work-store.mjs?v=28';
+import { escapeHTML as e } from './engine.mjs?v=28';
 import {
   createExam,
   cleanExam,
@@ -8,7 +8,7 @@ import {
   remainingSeconds,
   submitExam,
   examResult,
-} from './exam.mjs?v=27';
+} from './exam.mjs?v=28';
 export function examPage({ view, crumb, sidebar }) {
   let s = workStore.read('exam', null, cleanExam),
     timer = null,
