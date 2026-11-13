@@ -4,9 +4,9 @@ import {
   stageHTML,
   normalisationRules,
   bindDiagramFit,
-} from './normalisation.mjs?v=30';
-import { escapeHTML as e } from '../../prld/engine.mjs?v=30';
-import { workStore } from '../../shared/work-store.mjs?v=30';
+} from './normalisation.mjs?v=31';
+import { escapeHTML as e } from '../../prld/engine.mjs?v=31';
+import { workStore } from '../../shared/work-store.mjs?v=31';
 export const normalisationQuestions = [
   {
     marks: 2,

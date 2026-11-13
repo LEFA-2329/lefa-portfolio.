@@ -1,3 +1,4 @@
+import { hadoopUnit, hadoopLessons } from './hadoop-data.mjs?v=31';
 // Original extension material; no formal module code or prescribed outline is claimed.
 export const advancedUnits = [
   {
@@ -906,3 +907,6 @@ export const advancedLessons = [
     ],
   },
 ];
+
+advancedUnits.push(hadoopUnit);
+advancedLessons.push(...hadoopLessons);

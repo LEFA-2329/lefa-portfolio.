@@ -1,7 +1,7 @@
-import { quizContext } from '../shared/quiz-context.mjs?v=30';
-import { workStore } from '../shared/work-store.mjs?v=30';
-import { escapeHTML as e } from '../prld/engine.mjs?v=30';
-import { databaseExamEngine } from './db-exam.mjs?v=30';
+import { quizContext } from '../shared/quiz-context.mjs?v=31';
+import { workStore } from '../shared/work-store.mjs?v=31';
+import { escapeHTML as e } from '../prld/engine.mjs?v=31';
+import { databaseExamEngine } from './db-exam.mjs?v=31';
 export function databaseExamPage({ view, crumb, sidebar, course = 'database' }) {
   const {
       units,

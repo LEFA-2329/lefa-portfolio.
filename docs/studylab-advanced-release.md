@@ -23,3 +23,9 @@ Fixed integration issues found during review: Advanced examples are now listed o
 A browser download-event wait timed out, so no successful browser download-event capture is claimed. Link targets and deployed file contents were verified separately. No native SQL Server instance or client is available in this environment; SQL Server execution remains pending.
 
 To validate locally: connect to the intended instance in SSMS, create a fresh disposable database named StudyLabNativeValidation, select it, then review and execute `dist/learn/downloads/databases/sqlserver-validation.sql`. Save its PASS output and any errors. This existing harness covers representative native behaviours, not every Advanced lesson or concurrency/recovery scenario. Never treat browser SQLite execution as SQL Server certification.
+
+## Hadoop extension, 14 November 2026
+
+Added Unit 9, Hadoop and Big Data, with three lessons: Hadoop architecture and HDFS; YARN and MapReduce processing; Hive, Spark and analytical design. The module now has nine units, eleven lessons, 33 quiz questions and 22 written tasks. Three labelled text downloads contain Hadoop shell commands, MapReduce teaching pseudocode and HiveQL respectively. Each lesson links to official Apache references and explains the separate runtime requirements.
+
+All 34 automated tests and formatting checks pass. Browser verification confirmed the unit overview, all three lessons, reference and download links, all nine quiz checks, and quiz restoration after refresh. Hadoop/Hive native cluster execution is pending and is not simulated by the browser SQL engine. Existing lesson IDs and saved-work keys are unchanged.

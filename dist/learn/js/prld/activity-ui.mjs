@@ -1,7 +1,7 @@
-import { workStore } from '../shared/work-store.mjs?v=30';
-import { cleanActivity } from '../shared/work-state.mjs?v=30';
-import { activities, checkActivity } from './content/activities.mjs?v=30';
-import { escapeHTML as e } from './engine.mjs?v=30';
+import { workStore } from '../shared/work-store.mjs?v=31';
+import { cleanActivity } from '../shared/work-state.mjs?v=31';
+import { activities, checkActivity } from './content/activities.mjs?v=31';
+import { escapeHTML as e } from './engine.mjs?v=31';
 const work = new Map();
 let filters = { unit: 'All', kind: 'All' };
 const types = ['Missing line', 'Predict the output', 'Reorder statements', 'Debugging'];

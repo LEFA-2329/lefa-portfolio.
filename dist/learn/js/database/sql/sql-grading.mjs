@@ -1,7 +1,7 @@
-import { additionalFixtures } from './sql-demo-datasets.mjs?v=30';
-import { executeBatch } from './sql-core.mjs?v=30';
-import { datasets } from './sql-data.mjs?v=30';
-import { exercises } from './sql-challenges.mjs?v=30';
+import { additionalFixtures } from './sql-demo-datasets.mjs?v=31';
+import { executeBatch } from './sql-core.mjs?v=31';
+import { datasets } from './sql-data.mjs?v=31';
+import { exercises } from './sql-challenges.mjs?v=31';
 const fixtures = {
   ...additionalFixtures,
   college: `INSERT INTO Students VALUES(99,'Lerato Test','Polokwane',24),(100,'Lindi Test','New City',20);

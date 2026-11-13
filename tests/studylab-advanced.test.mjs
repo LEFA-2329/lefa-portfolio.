@@ -5,9 +5,9 @@ import {
   advancedLessons,
 } from '../dist/learn/js/database/content/advanced-data.mjs';
 import { progressCourses } from '../dist/learn/js/shared/progress.mjs';
-assert.equal(advancedUnits.length, 8);
-assert.equal(advancedLessons.length, 8);
-assert.equal(new Set(advancedLessons.map((l) => l.id)).size, 8);
+assert.equal(advancedUnits.length, 9);
+assert.equal(advancedLessons.length, 11);
+assert.equal(new Set(advancedLessons.map((l) => l.id)).size, 11);
 for (const lesson of advancedLessons) {
   assert(advancedUnits.some((u) => u.id === lesson.unit));
   assert.equal(lesson.quizzes.length, 3);
@@ -26,5 +26,5 @@ for (const lesson of advancedLessons) {
 }
 assert.deepEqual(progressCourses.advanced.lessons, advancedLessons);
 console.log(
-  'Passed: Advanced module content, 24 quiz answers, 16 tasks, eight downloads and progress registration.',
+  'Passed: Advanced module content, 33 quiz answers, 22 tasks, eleven downloads and progress registration.',
 );

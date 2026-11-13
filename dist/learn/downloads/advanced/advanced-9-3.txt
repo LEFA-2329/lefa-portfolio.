@@ -1,0 +1,17 @@
+-- HiveQL, not SQL Server or the browser workspace.
+-- Prerequisite: configured Hive, HDFS access and an unused lab path.
+-- Upload these headerless fictional rows to the lab directory first:
+-- North,120.00
+-- North,80.00
+-- South,50.00
+CREATE EXTERNAL TABLE IF NOT EXISTS studylab_hadoop_orders (
+  region STRING, amount DECIMAL(10,2)
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION '/user/studylab/hadoop-lab/orders';
+SELECT region, SUM(amount) AS revenue
+FROM studylab_hadoop_orders
+GROUP BY region
+ORDER BY region;
+-- Existing table metadata is not replaced by IF NOT EXISTS; inspect it first.

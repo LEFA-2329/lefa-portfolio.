@@ -1,23 +1,23 @@
-import { advancedUnits, advancedLessons } from './content/advanced-data.mjs?v=30';
-import { quizContext } from '../shared/quiz-context.mjs?v=30';
-import { cleanDatabaseLesson } from './database-state.mjs?v=30';
-import { progressSummary, refreshLessonCompletion } from '../shared/progress.mjs?v=30';
+import { advancedUnits, advancedLessons } from './content/advanced-data.mjs?v=31';
+import { quizContext } from '../shared/quiz-context.mjs?v=31';
+import { cleanDatabaseLesson } from './database-state.mjs?v=31';
+import { progressSummary, refreshLessonCompletion } from '../shared/progress.mjs?v=31';
 import {
   normalisationWalkthrough,
   bindNormalisation,
-} from './normalisation/normalisation.mjs?v=30';
+} from './normalisation/normalisation.mjs?v=31';
 import {
   dbUnits as introUnits,
   dbLessons as introLessons,
-} from './content/database-data.mjs?v=30';
+} from './content/database-data.mjs?v=31';
 import {
   intermediateUnits,
   intermediateLessons,
-} from './content/intermediate-data.mjs?v=30';
+} from './content/intermediate-data.mjs?v=31';
 const dbUnits = [...introUnits, ...intermediateUnits, ...advancedUnits],
   dbLessons = [...introLessons, ...intermediateLessons, ...advancedLessons];
-import { workStore } from '../shared/work-store.mjs?v=30';
-import { escapeHTML as e } from '../prld/engine.mjs?v=30';
+import { workStore } from '../shared/work-store.mjs?v=31';
+import { escapeHTML as e } from '../prld/engine.mjs?v=31';
 export { dbUnits, dbLessons };
 const code = (text) => `<pre><code>${e(text)}</code></pre>`;
 const link = (l) => `<a href="#db-lesson/${l.id}">${e(l.title)}</a>`;
@@ -29,7 +29,7 @@ export function databaseHome({ view, sidebar }) {
       : intermediate
         ? intermediateUnits
         : introUnits;
-  view.innerHTML = `<section class="welcome"><p class="eyebrow">${advanced ? 'DATABASE ADVANCED . EXTENSION' : intermediate ? 'DATABASE INTERMEDIATE . DATA6222' : 'DATABASE INTRODUCTION . DATA6211 / DATA6211w'}</p><h1>Understand data. Build better databases.</h1><p class="lede">Start with the ideas, design the relationships, then put SQL into practice. Choose a learning unit below.</p><div class="button-row"><a class="button" href="#db-unit/${advanced ? 201 : intermediate ? 101 : 1}">Start with Unit 1</a><a class="button secondary" href="#sql">Open SQL workspace</a></div></section>${progressSummary(advanced ? 'advanced' : intermediate ? 'intermediate' : 'database')}<div class="section-heading"><h2>Explore the database course</h2><p>${advanced ? 'Eight units, eight lessons, 24 quiz questions, 16 practical tasks and downloadable examples. Prerequisite: Introduction and Intermediate. This is an independent extension, not an institution-specific module outline.' : intermediate ? 'Nine units, 106 outcomes, 27 lessons, 81 practical quiz questions and native SQL Server examples.' : 'Six units with expanded tasks, worked examples and SQL practice.'}</p></div>${courseUnits
+  view.innerHTML = `<section class="welcome"><p class="eyebrow">${advanced ? 'DATABASE ADVANCED . EXTENSION' : intermediate ? 'DATABASE INTERMEDIATE . DATA6222' : 'DATABASE INTRODUCTION . DATA6211 / DATA6211w'}</p><h1>Understand data. Build better databases.</h1><p class="lede">Start with the ideas, design the relationships, then put SQL into practice. Choose a learning unit below.</p><div class="button-row"><a class="button" href="#db-unit/${advanced ? 201 : intermediate ? 101 : 1}">Start with Unit 1</a><a class="button secondary" href="#sql">Open SQL workspace</a></div></section>${progressSummary(advanced ? 'advanced' : intermediate ? 'intermediate' : 'database')}<div class="section-heading"><h2>Explore the database course</h2><p>${advanced ? 'Nine units, 11 lessons, 33 quiz questions, 22 practical tasks and downloadable examples. Prerequisite: Introduction and Intermediate. This is an independent extension, not an institution-specific module outline.' : intermediate ? 'Nine units, 106 outcomes, 27 lessons, 81 practical quiz questions and native SQL Server examples.' : 'Six units with expanded tasks, worked examples and SQL practice.'}</p></div>${courseUnits
     .map(
       (u) =>
         `<article class="course-unit"><div class="course-unit-title"><span class="unit-badge">${String(u.number || u.id).padStart(2, '0')}</span><div><h2><a href="#db-unit/${u.id}">${e(u.title)}</a></h2><p>${e(u.subtitle)}</p><a class="text-link" href="#db-unit/${u.id}">Read unit overview</a></div></div><div class="course-lesson-links">${dbLessons
@@ -124,7 +124,7 @@ export function databaseLesson({ view, id, task, sidebar }) {
     const panel = view.querySelector('#db-panel');
     panel.setAttribute('aria-labelledby', 'db-tab-' + state.tab);
     if (state.tab === 'learn') {
-      panel.innerHTML = `<div class="theory">${l.sections.map((s) => `<h2>${e(s.heading)}</h2><p>${e(s.text)}</p>`).join('')}<h2>Worked example: ${e(l.example.title)}</h2><p>${e(l.example.problem)}</p><div class="worked-explanation"><h3>Solution and reasoning</h3><p>${e(l.example.solution)}</p></div>${l.sampleCode ? `<h3>${l.environment === 'native' ? 'SQL Server / SSMS example' : l.environment === 'design' ? 'Design and dependency example' : 'Portable SQL example'}</h3>${code(l.sampleCode)}<div class="button-row"><button class="button secondary" id="db-copy-code">Copy example</button><a class="button secondary" href="./downloads/${e(l.downloadFolder || 'intermediate')}/${e(l.download)}" download>Download example</a></div><p id="db-copy-status" role="status"></p>` : ''}${(l.moreExamples || []).map((x) => `<h3>Additional example: ${e(x.title)}</h3><p class="note">${x.environment === 'native' ? 'Run in SQL Server / SSMS.' : 'Portable SQL: use the college workspace.'}</p>${code(x.code)}<p>${e(x.reason)}</p>`).join('')}${l.diagram === 'college' ? collegeDiagram() : l.diagram ? normalisationWalkthrough() : ''}${l.sql ? `<a class="button" href="#sql/${l.sql}">Run a related SQL example</a>` : ''}</div>`;
+      panel.innerHTML = `<div class="theory">${l.sections.map((s) => `<h2>${e(s.heading)}</h2><p>${e(s.text)}</p>`).join('')}<h2>Worked example: ${e(l.example.title)}</h2><p>${e(l.example.problem)}</p><div class="worked-explanation"><h3>Solution and reasoning</h3><p>${e(l.example.solution)}</p></div>${l.sampleCode ? `<h3>${l.environmentLabel ? e(l.environmentLabel) : l.environment === 'native' ? 'SQL Server / SSMS example' : l.environment === 'design' ? 'Design and dependency example' : 'Portable SQL example'}</h3>${code(l.sampleCode)}<div class="button-row"><button class="button secondary" id="db-copy-code">Copy example</button><a class="button secondary" href="./downloads/${e(l.downloadFolder || 'intermediate')}/${e(l.download)}" download>Download example</a></div><p id="db-copy-status" role="status"></p>` : ''}${(l.moreExamples || []).map((x) => `<h3>Additional example: ${e(x.title)}</h3><p class="note">${x.environment === 'native' ? 'Run in SQL Server / SSMS.' : 'Portable SQL: use the college workspace.'}</p>${code(x.code)}<p>${e(x.reason)}</p>`).join('')}${l.references?.length ? `<h2>Official references</h2><ul>${l.references.map((r) => `<li><a class="text-link" href="${e(r.url)}" target="_blank" rel="noopener">${e(r.title)}</a></li>`).join('')}</ul>` : ''}${l.diagram === 'college' ? collegeDiagram() : l.diagram ? normalisationWalkthrough() : ''}${l.sql ? `<a class="button" href="#sql/${l.sql}">Run a related SQL example</a>` : ''}</div>`;
       if (l.sampleCode) {
         panel.querySelector('#db-copy-code').onclick = async () => {
           try {
@@ -259,12 +259,12 @@ export function databaseResources({ view, sidebar }) {
           .filter((l) => l.unit === u.id)
           .map(
             (l) =>
-              `<li><a href="./downloads/${e(l.downloadFolder || 'intermediate')}/${e(l.download)}" download>${e(l.title)} (${l.environment === 'design' ? 'design text' : 'SQL'})</a> · <a href="#db-lesson/${l.id}">Read lesson</a></li>`,
+              `<li><a href="./downloads/${e(l.downloadFolder || 'intermediate')}/${e(l.download)}" download>${e(l.title)} (${l.environment === 'hadoop' ? e(l.environmentLabel) : l.environment === 'design' ? 'design text' : 'SQL'})</a> · <a href="#db-lesson/${l.id}">Read lesson</a></li>`,
           )
           .join('')}</ul>`,
     )
     .join(
       '',
-    )}</section><section class="panel"><h2>Advanced Database examples</h2><p>Eight lesson examples covering optimisation, transactions, advanced SQL, database programming, normalisation, security, recovery and distributed design. SQL files are labelled for SQL Server / SSMS; design notes download as text. Native execution remains pending.</p><ul>${advancedLessons.map((l) => `<li><a href="./downloads/advanced/${e(l.download)}" download>${e(l.title)} (${l.environment === 'design' ? 'design text' : 'SQL'})</a> · <a href="#db-lesson/${l.id}">Read lesson</a></li>`).join('')}</ul><a class="button secondary" href="#db-advanced">Explore Advanced Database</a></section><section class="panel"><h2>Official reference documentation</h2><ul><li><a class="text-link" href="https://learn.microsoft.com/sql/t-sql/queries/select-transact-sql/" target="_blank" rel="noopener">Microsoft SQL Server SELECT reference</a></li><li><a class="text-link" href="https://www.postgresql.org/docs/current/sql-select.html" target="_blank" rel="noopener">PostgreSQL SELECT reference</a></li><li><a class="text-link" href="https://dev.mysql.com/doc/refman/8.4/en/select.html" target="_blank" rel="noopener">MySQL SELECT reference</a></li><li><a class="text-link" href="https://sql.js.org/" target="_blank" rel="noopener">sql.js: the local SQLite engine used in this workspace</a></li></ul><p class="muted">Database question sheets, model answers and revision PowerPoints are available above. PRLD downloads remain in the PRLD module.</p></section>`;
+    )}</section><section class="panel"><h2>Advanced Database examples</h2><p>Eleven lesson examples covering advanced databases plus Hadoop, HDFS, YARN, MapReduce and Hive. SQL Server examples are labelled for SSMS. Hadoop shell commands, MapReduce pseudocode, HiveQL and design notes download as text for their separate environments. Native execution remains pending.</p><ul>${advancedLessons.map((l) => `<li><a href="./downloads/advanced/${e(l.download)}" download>${e(l.title)} (${l.environment === 'hadoop' ? e(l.environmentLabel) : l.environment === 'design' ? 'design text' : 'SQL'})</a> · <a href="#db-lesson/${l.id}">Read lesson</a></li>`).join('')}</ul><a class="button secondary" href="#db-advanced">Explore Advanced Database</a></section><section class="panel"><h2>Official reference documentation</h2><ul><li><a class="text-link" href="https://learn.microsoft.com/sql/t-sql/queries/select-transact-sql/" target="_blank" rel="noopener">Microsoft SQL Server SELECT reference</a></li><li><a class="text-link" href="https://www.postgresql.org/docs/current/sql-select.html" target="_blank" rel="noopener">PostgreSQL SELECT reference</a></li><li><a class="text-link" href="https://dev.mysql.com/doc/refman/8.4/en/select.html" target="_blank" rel="noopener">MySQL SELECT reference</a></li><li><a class="text-link" href="https://sql.js.org/" target="_blank" rel="noopener">sql.js: the local SQLite engine used in this workspace</a></li></ul><p class="muted">Database question sheets, model answers and revision PowerPoints are available above. PRLD downloads remain in the PRLD module.</p></section>`;
   sidebar();
 }

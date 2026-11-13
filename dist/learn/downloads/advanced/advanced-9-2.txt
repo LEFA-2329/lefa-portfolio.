@@ -1,0 +1,15 @@
+MAP(record):
+  FOR EACH token IN split(record)
+    EMIT(token, 1)
+
+SHUFFLE_AND_GROUP:
+  data: [1, 1, 1]
+  lab: [1]
+
+REDUCE(token, values):
+  EMIT(token, SUM(values))
+
+EXPECTED OUTPUT (order not guaranteed):
+  data 3
+  lab 1
+# Teaching pseudocode, not a runnable Hadoop job.

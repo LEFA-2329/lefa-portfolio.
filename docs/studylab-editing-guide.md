@@ -104,6 +104,8 @@ Content edits do not automatically regenerate Word, PDF or PowerPoint downloads.
 
 ## Advanced Database extension
 
-Edit `dist/learn/js/database/content/advanced-data.mjs` for the eight Advanced units, lessons, quizzes and tasks. Unit IDs start at 201; lesson IDs start with `advanced-`. Matching example downloads live in `dist/learn/downloads/advanced/`. Update both the lesson example and download together. This extension has no institution-specific module code. Native SQL Server execution remains pending.
+Edit `dist/learn/js/database/content/advanced-data.mjs` for the Advanced units, lessons, quizzes and tasks. Unit IDs start at 201; lesson IDs start with `advanced-`. Matching example downloads live in `dist/learn/downloads/advanced/`. Update both the lesson example and download together. This extension has no institution-specific module code. Native SQL Server execution remains pending.
 
 The five additional SQL datasets live in `dist/learn/js/database/sql/sql-demo-datasets.mjs`. Each dataset keeps its schema, records, examples, challenges and additional grading fixture together. See `docs/studylab-five-datasets.md` for row counts and native testing steps.
+
+Hadoop Unit 9 is kept separately in `dist/learn/js/database/content/hadoop-data.mjs` and appended by `advanced-data.mjs`. Its three lessons use explicit environment labels; do not route Hadoop commands or HiveQL to the browser SQL engine. Matching text examples live under `dist/learn/downloads/advanced/advanced-9-*.txt`.
