@@ -1,0 +1,5 @@
+# Third-party engine files and generated teaching downloads.
+dist/learn/vendor/
+dist/learn/downloads/
+node_modules/
+.openai/

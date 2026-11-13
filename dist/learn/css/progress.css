@@ -1,0 +1,39 @@
+.progress-summary {
+  margin: 24px 0;
+  color: var(--muted);
+}
+.progress-lessons article {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+.progress-lessons h3 {
+  font-size: 17px;
+  margin: 0;
+}
+.progress-lessons p {
+  font-size: 14px;
+}
+.progress-state {
+  font-size: 14px;
+  white-space: nowrap;
+}
+.lesson-completion {
+  margin-top: 26px;
+}
+.lesson-completion h2 {
+  font-size: 22px;
+}
+@media (max-width: 760px) {
+  .progress-lessons article {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .progress-state {
+    white-space: normal;
+  }
+}

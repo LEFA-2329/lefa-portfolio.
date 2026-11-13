@@ -1,31 +1,99 @@
 import assert from 'node:assert/strict';
-import {createRequire} from 'node:module';
-import {fileURLToPath} from 'node:url';
-import {gradeChallenge,compareResults} from '../dist/learn/sql-grading.mjs';
-import {exercises} from '../dist/learn/sql-challenges.mjs';
-import {intermediateLessons} from '../dist/learn/intermediate-data.mjs';
-const init=createRequire(import.meta.url)('../dist/learn/vendor/sqljs/sql-wasm.js');
-const SQL=await init({locateFile:()=>fileURLToPath(new URL('../dist/learn/vendor/sqljs/sql-wasm.wasm',import.meta.url))});
-let runs=0;
-for(const mode of ['sqlserver','postgresql','mysql'])for(const task of exercises){const report=gradeChallenge(SQL,task.id,task.answer,mode);assert.equal(report.status,'correct',task.id+': '+report.message);runs++;}
-const grade=(id,sql)=>gradeChallenge(SQL,id,sql,'sqlserver');
-assert.equal(grade('marks','SELECT 3 AS Unmarked').status,'incorrect','Hardcoded demo count must fail edge-case data');
-assert.equal(grade('expanded-unsold','SELECT BookID,Title FROM Books WHERE 1=0').status,'incorrect','An always-empty answer must fail the unsold-book fixture');
-assert.equal(grade('sales','SELECT b.Title,COUNT(*) AS SaleCount FROM Books b LEFT JOIN Sales s ON s.BookID=b.BookID GROUP BY b.BookID,b.Title ORDER BY b.BookID').status,'incorrect','COUNT(*) must not pass for unmatched books');
-assert.equal(grade('create',"SELECT 1 AS NoteID,'SQL practice' AS NoteText").status,'incorrect','A rowset cannot substitute for the required constrained table');
-assert.equal(grade('city',"SELECT StudentName,Age FROM Students WHERE City='Polokwane' ORDER BY StudentName DESC").status,'incorrect');
-assert.equal(grade('fees','SELECT COUNT(*) AS A,SUM(Fee) AS B,AVG(Fee) AS C FROM Courses').status,'correct','Unspecified aliases may differ');
-assert.equal(grade('marks','SELECT COUNT(*) AS Missing FROM Enrolments WHERE Mark IS NULL').status,'incorrect','Explicitly required alias must be checked');
-assert.equal(grade('marks','SELECT unknown FROM Enrolments').status,'error');
-assert.equal(grade('marks','   ').status,'incorrect');
-const result=(values,columns=['Value'])=>({columns,values,truncated:false});
-assert.equal(compareResults(result([[2],[1]]),result([[1],[2]])).status,'correct','Unordered rowsets compare as multisets');
-assert.equal(compareResults(result([[1],[1]]),result([[1],[2]])).status,'incorrect','Duplicate multiplicities matter');
-assert.equal(compareResults(result([[null]]),result([[0]])).status,'incorrect');
-assert.equal(compareResults(result([['1']]),result([[1]])).status,'incorrect');
-assert.equal(compareResults(result([[0.1+0.2]]),result([[0.3]])).status,'correct');
-assert.equal(compareResults(result([[1.001]]),result([[1]])).status,'incorrect');
-assert.equal(compareResults({...result([[1]]),truncated:true},result([[1]])).status,'incorrect');
-assert.equal(compareResults(null,result([[1]])).status,'incorrect');
-for(const lesson of intermediateLessons){assert.equal(lesson.tasks.length,3);for(const task of lesson.tasks.slice(1)){assert(task.title&&!task.title.includes('Trace and explain'));assert(task.solution.length>80);if(task.sqlChallenge){const challenge=exercises.find(x=>x.id===task.sqlChallenge);assert(challenge,lesson.id);assert.equal(grade(task.sqlChallenge,task.solution).status,'correct',lesson.id);}}}
-console.log(`Passed: ${runs} model-answer checks on two datasets; hardcoded/NULL/duplicate/order/alias/schema regressions; native errors; 54 distinct Intermediate tasks and linked executable answers.`);
+import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
+import {
+  gradeChallenge,
+  compareResults,
+} from '../dist/learn/js/database/sql/sql-grading.mjs';
+import { exercises } from '../dist/learn/js/database/sql/sql-challenges.mjs';
+import { intermediateLessons } from '../dist/learn/js/database/content/intermediate-data.mjs';
+const init = createRequire(import.meta.url)('../dist/learn/vendor/sqljs/sql-wasm.js');
+const SQL = await init({
+  locateFile: () =>
+    fileURLToPath(new URL('../dist/learn/vendor/sqljs/sql-wasm.wasm', import.meta.url)),
+});
+let runs = 0;
+for (const mode of ['sqlserver', 'postgresql', 'mysql'])
+  for (const task of exercises) {
+    const report = gradeChallenge(SQL, task.id, task.answer, mode);
+    assert.equal(report.status, 'correct', task.id + ': ' + report.message);
+    runs++;
+  }
+const grade = (id, sql) => gradeChallenge(SQL, id, sql, 'sqlserver');
+assert.equal(
+  grade('marks', 'SELECT 3 AS Unmarked').status,
+  'incorrect',
+  'Hardcoded demo count must fail edge-case data',
+);
+assert.equal(
+  grade('expanded-unsold', 'SELECT BookID,Title FROM Books WHERE 1=0').status,
+  'incorrect',
+  'An always-empty answer must fail the unsold-book fixture',
+);
+assert.equal(
+  grade(
+    'sales',
+    'SELECT b.Title,COUNT(*) AS SaleCount FROM Books b LEFT JOIN Sales s ON s.BookID=b.BookID GROUP BY b.BookID,b.Title ORDER BY b.BookID',
+  ).status,
+  'incorrect',
+  'COUNT(*) must not pass for unmatched books',
+);
+assert.equal(
+  grade('create', "SELECT 1 AS NoteID,'SQL practice' AS NoteText").status,
+  'incorrect',
+  'A rowset cannot substitute for the required constrained table',
+);
+assert.equal(
+  grade(
+    'city',
+    "SELECT StudentName,Age FROM Students WHERE City='Polokwane' ORDER BY StudentName DESC",
+  ).status,
+  'incorrect',
+);
+assert.equal(
+  grade('fees', 'SELECT COUNT(*) AS A,SUM(Fee) AS B,AVG(Fee) AS C FROM Courses').status,
+  'correct',
+  'Unspecified aliases may differ',
+);
+assert.equal(
+  grade('marks', 'SELECT COUNT(*) AS Missing FROM Enrolments WHERE Mark IS NULL').status,
+  'incorrect',
+  'Explicitly required alias must be checked',
+);
+assert.equal(grade('marks', 'SELECT unknown FROM Enrolments').status, 'error');
+assert.equal(grade('marks', '   ').status, 'incorrect');
+const result = (values, columns = ['Value']) => ({ columns, values, truncated: false });
+assert.equal(
+  compareResults(result([[2], [1]]), result([[1], [2]])).status,
+  'correct',
+  'Unordered rowsets compare as multisets',
+);
+assert.equal(
+  compareResults(result([[1], [1]]), result([[1], [2]])).status,
+  'incorrect',
+  'Duplicate multiplicities matter',
+);
+assert.equal(compareResults(result([[null]]), result([[0]])).status, 'incorrect');
+assert.equal(compareResults(result([['1']]), result([[1]])).status, 'incorrect');
+assert.equal(compareResults(result([[0.1 + 0.2]]), result([[0.3]])).status, 'correct');
+assert.equal(compareResults(result([[1.001]]), result([[1]])).status, 'incorrect');
+assert.equal(
+  compareResults({ ...result([[1]]), truncated: true }, result([[1]])).status,
+  'incorrect',
+);
+assert.equal(compareResults(null, result([[1]])).status, 'incorrect');
+for (const lesson of intermediateLessons) {
+  assert.equal(lesson.tasks.length, 3);
+  for (const task of lesson.tasks.slice(1)) {
+    assert(task.title && !task.title.includes('Trace and explain'));
+    assert(task.solution.length > 80);
+    if (task.sqlChallenge) {
+      const challenge = exercises.find((x) => x.id === task.sqlChallenge);
+      assert(challenge, lesson.id);
+      assert.equal(grade(task.sqlChallenge, task.solution).status, 'correct', lesson.id);
+    }
+  }
+}
+console.log(
+  `Passed: ${runs} model-answer checks on two datasets; hardcoded/NULL/duplicate/order/alias/schema regressions; native errors; 54 distinct Intermediate tasks and linked executable answers.`,
+);

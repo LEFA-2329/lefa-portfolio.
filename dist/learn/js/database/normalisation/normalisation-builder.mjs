@@ -1,0 +1,314 @@
+import {
+  normalisationExamples,
+  dependencyDiagram,
+  bindDiagramFit,
+  normalisationRules,
+} from './normalisation.mjs?v=27';
+import {
+  analyseTable,
+  gradeKeyAndDependencies,
+  gradeDecomposition,
+} from './normalisation-grading.mjs?v=27';
+import { escapeHTML as e } from '../../prld/engine.mjs?v=27';
+import { workStore } from '../../shared/work-store.mjs?v=27';
+const levels = ['guided', 'standard', 'challenge'];
+const newTable = (original, id = 't1') => ({
+  id,
+  name: 'MyTable',
+  attributes: [...original.attributes],
+  key: [],
+  foreign: [],
+});
+export function cleanBuilder(raw, original) {
+  const attrs = (v) =>
+    Array.isArray(v)
+      ? [...new Set(v.filter((a) => original.attributes.includes(a)))]
+      : [];
+  const tables = (v) =>
+    Array.isArray(v)
+      ? v.slice(0, 12).map((t, i) => ({
+          id: 't' + (i + 1),
+          name: typeof t?.name === 'string' ? t.name.slice(0, 40) : 'Table' + (i + 1),
+          attributes: attrs(t?.attributes),
+          key: attrs(t?.key).filter((a) => attrs(t?.attributes).includes(a)),
+          foreign: Array.isArray(t?.foreign)
+            ? t.foreign.slice(0, 12).map((f) => ({
+                target: 't' + (v.findIndex((p) => p?.id === f?.target) + 1),
+                attributes: attrs(f?.attributes),
+              }))
+            : [],
+        }))
+      : [newTable(original)];
+  return {
+    stage: [1, 2, 3].includes(raw?.stage) ? raw.stage : 1,
+    key: attrs(raw?.key),
+    dependencies: Array.isArray(raw?.dependencies)
+      ? raw.dependencies
+          .slice(0, 30)
+          .filter((d) => ['full', 'partial', 'transitive'].includes(d?.kind))
+          .map((d) => ({ from: attrs(d.from), to: attrs(d.to), kind: d.kind }))
+      : [],
+    second: tables(raw?.second),
+    third: tables(raw?.third),
+  };
+}
+export function builderPage({ view, sidebar, id, level }) {
+  if (!normalisationExamples[id]) id = 'projects';
+  if (!levels.includes(level)) level = 'standard';
+  const example = normalisationExamples[id],
+    original = example.stages[1].tables[0],
+    record = 'nf-builder:' + id + ':' + level;
+  const initial = cleanBuilder({}, original);
+  if (level === 'guided') {
+    initial.key = [...original.key];
+    initial.dependencies = structuredClone(original.dependencies);
+    initial.second[0].key = [...original.key];
+    initial.third[0].key = [...original.key];
+  }
+  let s = workStore.read(record, initial, (r) => cleanBuilder(r, original)),
+    feedback = null;
+  const save = () => workStore.write(record, s),
+    current = () => (s.stage === 2 ? s.second : s.third);
+  const options = (selected = []) =>
+    original.attributes
+      .map((a) => `<option ${selected.includes(a) ? 'selected' : ''}>${e(a)}</option>`)
+      .join('');
+  const feedbackHTML = () =>
+    feedback
+      ? `<section class="panel nf-builder-feedback" role="status"><h2>${feedback.passed ? 'Checks passed' : 'Review your answer'}</h2>${feedback.checks.length ? `<ul>${feedback.checks.map((x) => `<li>${e(x)}</li>`).join('')}</ul>` : ''}${feedback.errors.length ? `<ul>${feedback.errors.map((x) => `<li>${e(x)}</li>`).join('')}</ul>` : ''}</section>`
+      : '';
+  function diagram(t, i) {
+    if (!t.key.length || !t.key.every((a) => t.attributes.includes(a)))
+      return '<p class="muted">Select attributes and a primary key to preview this diagram.</p>';
+    const a = analyseTable(t, original.dependencies),
+      dependencies = a.deps.map((d) => ({
+        ...d,
+        kind: a.partial.includes(d)
+          ? 'partial'
+          : a.transitive.includes(d)
+            ? 'transitive'
+            : 'full',
+      }));
+    return dependencyDiagram(
+      {
+        ...t,
+        dependencies,
+        foreign: Object.fromEntries(
+          (t.foreign || []).flatMap((f) =>
+            f.attributes.map((k) => [
+              k,
+              (current().find((x) => x.id === f.target)?.name || 'Missing table') +
+                '.' +
+                k,
+            ]),
+          ),
+        ),
+      },
+      'build-' + s.stage + '-' + i,
+    );
+  }
+  function draw() {
+    view.innerHTML = `<p class="eyebrow">DATABASE DESIGN / BUILD AND CHECK</p><h1>Build your dependency diagrams.</h1><p class="lede">Choose key attributes, add dependency arrows, then split the relation into 2NF and 3NF tables. Feedback checks the business rules, keys, dependencies and joins.</p><div class="nf-builder-controls panel"><label class="field-label">Case<select id="builder-case">${Object.entries(
+      normalisationExamples,
+    )
+      .map(
+        ([key, x]) =>
+          `<option value="${key}" ${key === id ? 'selected' : ''}>${e(x.title)}</option>`,
+      )
+      .join(
+        '',
+      )}</select></label><label class="field-label">Difficulty<select id="builder-level">${levels.map((x) => `<option value="${x}" ${x === level ? 'selected' : ''}>${x[0].toUpperCase() + x.slice(1)}</option>`).join('')}</select></label></div><p>${level === 'guided' ? 'Guided: the original key and arrows are supplied; practise splitting the tables.' : level === 'challenge' ? 'Challenge: work from the business rules. No starting diagram or hint panel is supplied.' : 'Standard: choose the key and dependencies yourself, then decompose the relation.'} Each case and difficulty has its own saved draft.</p><p><strong>Business rules:</strong> ${e(example.assumptions)}</p><p><strong>Original attributes:</strong> ${e(original.attributes.join(', '))}</p>${level !== 'challenge' ? `<details class="panel"><summary>Review normalisation rules</summary>${normalisationRules()}</details>` : ''}<div class="button-row" aria-label="Builder stages">${[1, 2, 3].map((n) => `<button class="button ${n === s.stage ? '' : 'secondary'}" data-builder-stage="${n}" aria-pressed="${n === s.stage}">${n}NF</button>`).join('')}</div><p class="note">Arrows in table previews are generated from the stated rules for your selected attributes and keys. A preview is not a correctness result. Check your answer below. Attribute names stay fixed; table names are your choice.</p><div id="builder-editor">${s.stage === 1 ? firstEditor() : tableEditor()}</div><div class="button-row"><button class="button" id="builder-check">Check my ${s.stage}NF answer</button>${s.stage > 1 ? `<button class="button secondary" id="builder-add-table" ${current().length >= 12 ? 'disabled' : ''}>Add a table</button>` : ''}${s.stage === 3 ? '<button class="button secondary" id="builder-copy">Copy my 2NF tables here</button>' : ''}<button class="button secondary" id="builder-print">Print my diagrams</button><a class="button secondary" href="#normalisation/${id}">Questions and worked solution</a></div><p class="muted">Checks apply to these nine supplied cases. They do not grade free-text explanations or every possible database model.</p><div id="builder-feedback">${feedbackHTML()}</div>`;
+    view.querySelector('#builder-case').onchange = (ev) =>
+      (location.hash = 'nf-builder/' + ev.target.value + '/' + level);
+    view.querySelector('#builder-level').onchange = (ev) =>
+      (location.hash = 'nf-builder/' + id + '/' + ev.target.value);
+    view.querySelectorAll('[data-builder-stage]').forEach(
+      (b) =>
+        (b.onclick = () => {
+          s.stage = Number(b.dataset.builderStage);
+          feedback = null;
+          save();
+          draw();
+        }),
+    );
+    view.querySelector('#builder-check').onclick = () => {
+      feedback =
+        s.stage === 1
+          ? gradeKeyAndDependencies(original, s.key, s.dependencies)
+          : gradeDecomposition(original, current(), s.stage);
+      save();
+      view.querySelector('#builder-feedback').innerHTML = feedbackHTML();
+      const h = view.querySelector('#builder-feedback h2');
+      h.tabIndex = -1;
+      h.focus({ preventScroll: true });
+      h.scrollIntoView({ block: 'center', behavior: 'instant' });
+    };
+    view.querySelector('#builder-print').onclick = () => window.print();
+    if (s.stage === 1) bindFirst();
+    else bindTables();
+    bindDiagramFit(view);
+    sidebar();
+  }
+  function firstEditor() {
+    const t = { ...original, key: s.key, dependencies: s.dependencies };
+    return `<section class="panel"><h2>1. Mark the original key</h2><fieldset class="nf-attribute-picks"><legend>Select all attributes in the candidate key</legend>${original.attributes.map((a) => `<label><input type="checkbox" data-original-key="${e(a)}" ${s.key.includes(a) ? 'checked' : ''}> ${e(a)}</label>`).join('')}</fieldset><h2>2. Add dependency arrows</h2><form id="builder-arrow"><div class="nf-builder-controls"><label class="field-label">Determinant attributes<select id="builder-from" multiple size="4">${options()}</select></label><label class="field-label">Dependent attributes<select id="builder-to" multiple size="4">${options()}</select></label><label class="field-label">Dependency type<select id="builder-kind"><option value="full">Full dependency</option><option value="partial">Partial dependency</option><option value="transitive">Transitive dependency</option></select></label></div><p>Use Ctrl/Command or Shift to select several attributes in a list.</p><button class="button secondary" type="submit">Add arrow</button><p id="builder-arrow-status" role="status"></p></form><ul>${s.dependencies.map((d, i) => `<li>${e(d.from.join(' + '))} determines ${e(d.to.join(', '))} (${e(d.kind)}) <button class="button ghost" data-remove-arrow="${i}" aria-label="Remove arrow ${i + 1}">Remove</button></li>`).join('')}</ul>${s.key.length ? dependencyDiagram({ ...t, foreign: {} }, 'build-original') : '<p>Choose the key to preview your original diagram.</p>'}</section>`;
+  }
+  function bindFirst() {
+    view.querySelectorAll('[data-original-key]').forEach(
+      (b) =>
+        (b.onchange = () => {
+          s.key = original.attributes.filter((a) =>
+            a === b.dataset.originalKey ? b.checked : s.key.includes(a),
+          );
+          feedback = null;
+          save();
+          draw();
+        }),
+    );
+    view.querySelector('#builder-arrow').onsubmit = (ev) => {
+      ev.preventDefault();
+      const from = [...view.querySelector('#builder-from').selectedOptions].map(
+          (o) => o.value,
+        ),
+        to = [...view.querySelector('#builder-to').selectedOptions].map((o) => o.value),
+        kind = view.querySelector('#builder-kind').value;
+      if (!from.length || !to.length || to.some((a) => from.includes(a))) {
+        view.querySelector('#builder-arrow-status').textContent =
+          'Choose determinant and dependent attributes without overlap.';
+        return;
+      }
+      if (s.dependencies.length >= 30) {
+        view.querySelector('#builder-arrow-status').textContent =
+          'Remove an arrow before adding more (maximum 30).';
+        return;
+      }
+      s.dependencies.push({ from, to, kind });
+      feedback = null;
+      save();
+      draw();
+    };
+    view.querySelectorAll('[data-remove-arrow]').forEach(
+      (b) =>
+        (b.onclick = () => {
+          s.dependencies.splice(Number(b.dataset.removeArrow), 1);
+          feedback = null;
+          save();
+          draw();
+        }),
+    );
+  }
+  function tableEditor() {
+    return `<h2>Build the ${s.stage}NF tables</h2><p>Keep all original attributes across your tables. Shared identifiers may appear in more than one table. Select a primary key in every table, then link the child to its parent.</p>${current()
+      .map(
+        (t, i) =>
+          `<section class="panel nf-builder-table" data-table="${i}"><label class="field-label">Table ${i + 1} name<input data-table-name="${i}" maxlength="40" value="${e(t.name)}"></label><div class="scroll-table"><table class="db-table"><thead><tr><th>Attribute</th><th>Include</th><th>Primary key</th></tr></thead><tbody>${original.attributes.map((a) => `<tr><th>${e(a)}</th><td><input type="checkbox" data-include="${i}" data-attribute="${e(a)}" aria-label="Table ${i + 1}: include ${e(a)}" ${t.attributes.includes(a) ? 'checked' : ''}></td><td><input type="checkbox" data-primary="${i}" data-attribute="${e(a)}" aria-label="Table ${i + 1}: primary key ${e(a)}" ${t.key.includes(a) ? 'checked' : ''} ${t.attributes.includes(a) ? '' : 'disabled'}></td></tr>`).join('')}</tbody></table></div><h3>Foreign-key links</h3><ul>${t.foreign.map((f, j) => `<li>${e(f.attributes.join(' + '))} references ${e(current().find((x) => x.id === f.target)?.name || 'a removed table')} <button class="button ghost" data-remove-fk="${i}:${j}" aria-label="Table ${i + 1}: remove foreign key ${j + 1}">Remove</button></li>`).join('')}</ul><label class="field-label">Table ${i + 1} parent<select data-parent="${i}"><option value="">Choose a parent table</option>${current()
+            .filter((p) => p.id !== t.id)
+            .map(
+              (p) =>
+                `<option value="${p.id}" ${!p.key.length || !p.key.every((a) => t.attributes.includes(a)) ? 'disabled' : ''}>${e(p.name)} (${e(p.key.join(' + ') || 'select its key first')})</option>`,
+            )
+            .join(
+              '',
+            )}</select></label><button class="button secondary" data-add-fk="${i}">Add foreign-key link</button><button class="button ghost" data-remove-table="${i}">Remove table ${i + 1}</button>${diagram(t, i)}</section>`,
+      )
+      .join('')}`;
+  }
+  function changed() {
+    feedback = null;
+    save();
+    draw();
+  }
+  function bindTables() {
+    view.querySelectorAll('[data-table-name]').forEach(
+      (input) =>
+        (input.oninput = () => {
+          current()[Number(input.dataset.tableName)].name = input.value;
+          feedback = null;
+          view.querySelector('#builder-feedback').innerHTML = '';
+          const t = current()[Number(input.dataset.tableName)];
+          view.querySelectorAll('[data-parent] option').forEach((o) => {
+            if (o.value === t.id)
+              o.textContent =
+                t.name + ' (' + (t.key.join(' + ') || 'select its key first') + ')';
+          });
+          const caption = input.closest('section').querySelector('figcaption strong');
+          if (caption) caption.textContent = t.name;
+          save();
+        }),
+    );
+    view.querySelectorAll('[data-include]').forEach(
+      (input) =>
+        (input.onchange = () => {
+          const t = current()[Number(input.dataset.include)],
+            a = input.dataset.attribute;
+          t.attributes = original.attributes.filter((x) =>
+            x === a ? input.checked : t.attributes.includes(x),
+          );
+          t.key = t.key.filter((x) => t.attributes.includes(x));
+          t.foreign = t.foreign.filter((f) =>
+            f.attributes.every((x) => t.attributes.includes(x)),
+          );
+          changed();
+        }),
+    );
+    view.querySelectorAll('[data-primary]').forEach(
+      (input) =>
+        (input.onchange = () => {
+          const t = current()[Number(input.dataset.primary)],
+            a = input.dataset.attribute;
+          t.key = original.attributes.filter((x) =>
+            x === a ? input.checked : t.key.includes(x),
+          );
+          changed();
+        }),
+    );
+    view.querySelectorAll('[data-remove-table]').forEach(
+      (b) =>
+        (b.onclick = () => {
+          const removed = current().splice(Number(b.dataset.removeTable), 1)[0];
+          current().forEach(
+            (t) => (t.foreign = t.foreign.filter((f) => f.target !== removed.id)),
+          );
+          changed();
+        }),
+    );
+    view.querySelectorAll('[data-add-fk]').forEach(
+      (b) =>
+        (b.onclick = () => {
+          const i = Number(b.dataset.addFk),
+            target = current().find(
+              (t) => t.id === view.querySelector(`[data-parent="${i}"]`).value,
+            );
+          if (!target) return;
+          const t = current()[i];
+          if (!t.foreign.some((f) => f.target === target.id))
+            t.foreign.push({ target: target.id, attributes: [...target.key] });
+          changed();
+        }),
+    );
+    view.querySelectorAll('[data-remove-fk]').forEach(
+      (b) =>
+        (b.onclick = () => {
+          const [i, j] = b.dataset.removeFk.split(':').map(Number);
+          current()[i].foreign.splice(j, 1);
+          changed();
+        }),
+    );
+    view.querySelector('#builder-add-table').onclick = () => {
+      if (current().length >= 12) return;
+      const next = Math.max(0, ...current().map((t) => Number(t.id.slice(1)))) + 1;
+      current().push({
+        ...newTable(original, 't' + next),
+        name: 'Table' + next,
+        attributes: [],
+      });
+      changed();
+    };
+    if (view.querySelector('#builder-copy'))
+      view.querySelector('#builder-copy').onclick = () => {
+        s.third = structuredClone(s.second);
+        changed();
+      };
+  }
+  draw();
+}

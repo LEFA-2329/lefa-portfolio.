@@ -1,0 +1,30 @@
+.db-quiz {
+  padding: 24px 0;
+  border-bottom: 1px solid var(--line);
+}
+.quiz-snippet {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  background: var(--surface-alt);
+  color: var(--ink);
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font: 14px/1.65 monospace;
+  margin: 14px 0;
+}
+.quiz-context {
+  white-space: pre-wrap;
+}
+.db-quiz fieldset {
+  min-width: 0;
+}
+.db-quiz legend {
+  white-space: normal;
+}
+@media print {
+  .quiz-snippet {
+    white-space: pre-wrap;
+    break-inside: avoid;
+  }
+}

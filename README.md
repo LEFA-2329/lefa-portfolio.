@@ -55,39 +55,41 @@ The workflow adjusts asset links in the deployment copy so the GitHub Pages proj
 
 **Custom domain:** https://lefamalatji.co.za is served by GitHub Pages. Successful deployments from `main` update the live portfolio.
 
+## StudyLab source structure
+
+The learning app now separates shared code, PRLD, database lessons, SQL and normalisation into feature folders. Its CSS is split into focused stylesheets. Start with the [StudyLab editing guide](docs/studylab-editing-guide.md) for a file-by-file map and safe editing steps.
+
+- `dist/learn/js/app.mjs`: application shell and routes
+- `dist/learn/js/shared/`: appearance, storage and progress
+- `dist/learn/js/prld/`: programming logic features and `content/`
+- `dist/learn/js/database/`: database features, `content/`, `sql/` and `normalisation/`
+- `dist/learn/css/`: styles grouped by responsibility
+- `tests/`: regression checks; `scripts/`: optional material generators
+
 ## Keep code readable
 
-Use two spaces for HTML, CSS and JavaScript, and four spaces for Python. Keep each statement on its own line. HTML, styles and behaviour are in separate files.
-
-With Node.js installed, format the frontend and tests from the repository root:
+Use two spaces for HTML, CSS and JavaScript, and four spaces for Python. Keep each statement on its own line. Prettier is pinned in the lockfile so editors and command-line formatting use the same version. Vendor files and generated teaching downloads are excluded.
 
 ```bash
-npx prettier@3.6.2 --write "dist/**/*.{html,css,js,mjs}" "tests/*.mjs"
+npm ci
+npm run format
+npm run format:check
+npm test
 ```
 
-Check formatting without changing files:
-
-```bash
-npx prettier@3.6.2 --check "dist/**/*.{html,css,js,mjs}" "tests/*.mjs"
-```
-
-Run the guide checks after changing answers or matching logic:
-
-```bash
-node --test tests/guide.test.mjs
-```
+The website remains buildless: npm is a development convenience for formatting and tests, not a production server requirement.
 
 ### Common edits
 
-| Change | File |
-| --- | --- |
-| Introduction, project cards or contact buttons | `dist/index.html` |
-| Main layout, colours or responsive styles | `dist/styles.css` |
-| Project filters and case-study dialogs | `dist/script.js` |
-| Guide answers, projects or matching rules | `dist/guide-core.mjs` |
-| Guide interactions and follow-up suggestions | `dist/assistant.js` |
-| Guide appearance | `dist/assistant.css` |
-| Downloadable CV | Replace `dist/Lefa-Malatji-CV.pdf` and update its version in `dist/index.html` |
+| Change                                         | File                                                                           |
+| ---------------------------------------------- | ------------------------------------------------------------------------------ |
+| Introduction, project cards or contact buttons | `dist/index.html`                                                              |
+| Main layout, colours or responsive styles      | `dist/styles.css`                                                              |
+| Project filters and case-study dialogs         | `dist/script.js`                                                               |
+| Guide answers, projects or matching rules      | `dist/guide-core.mjs`                                                          |
+| Guide interactions and follow-up suggestions   | `dist/assistant.js`                                                            |
+| Guide appearance                               | `dist/assistant.css`                                                           |
+| Downloadable CV                                | Replace `dist/Lefa-Malatji-CV.pdf` and update its version in `dist/index.html` |
 
 The guide runs locally in the visitor’s browser using prepared facts. No API key or AI billing is required.
 
@@ -105,4 +107,3 @@ The generator expects DejaVu Sans fonts under `/usr/share/fonts/truetype/dejavu/
 ## Content
 
 Personal photographs, CV content and project descriptions belong to Lefa Malatji. No reuse licence has been granted.
-

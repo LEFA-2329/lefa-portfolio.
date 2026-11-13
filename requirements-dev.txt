@@ -1,0 +1,2 @@
+# Optional formatter for the Python teaching-material generators.
+black==25.1.0
