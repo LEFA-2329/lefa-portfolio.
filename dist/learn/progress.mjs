@@ -1,9 +1,10 @@
+import {cleanDatabaseLesson} from './database-state.mjs?v=26';
 import {workStore} from './work-store.mjs?v=15';
 import {lessons as prldLessons,units as prldUnits} from './data.mjs?v=15';
 import {practice} from './practice.mjs?v=15';
 import {cleanLesson} from './work-state.mjs?v=15';
-import {dbLessons,dbUnits} from './database-data.mjs?v=25';
-import {intermediateLessons,intermediateUnits} from './intermediate-data.mjs?v=25';
+import {dbLessons,dbUnits} from './database-data.mjs?v=26';
+import {intermediateLessons,intermediateUnits} from './intermediate-data.mjs?v=26';
 import {escapeHTML as e} from './engine.mjs?v=17';
 export const progressCourses={prld:{title:'Programming Logic and Design',lessons:prldLessons,units:prldUnits},database:{title:'DATA6211 Introduction',lessons:dbLessons,units:dbUnits},intermediate:{title:'DATA6222 Intermediate',lessons:intermediateLessons,units:intermediateUnits}};
 const valid=new Set(Object.values(progressCourses).flatMap(c=>c.lessons.map(l=>l.id))),KEY='studylab-completion-v1',LEGACY='logiclab-progress-v1';
@@ -16,7 +17,7 @@ export const completionStore=createCompletionStore();
 export function lessonProgress(lesson,course,store=workStore,completion=completionStore){
  let correct=0,attempted=0,total=0,debugReady=true,debugAttempted=false;
  if(course==='prld'){const s=store.read('lesson:'+lesson.id,{},raw=>cleanLesson(lesson,practice[lesson.id],raw));const questions=[lesson.quiz,...practice[lesson.id].quizzes];total=questions.length;for(let i=0;i<total;i++){if(s.quizAttempts?.[i]){attempted++;if(s.quizChoices?.[i]===questions[i].correct)correct++;}}debugReady=!!s.bugPassed;debugAttempted=!!s.debugAttempts;}
- else{const s=store.read('database:'+lesson.id,{},raw=>raw&&typeof raw==='object'?raw:{});total=lesson.quizzes.length;for(let i=0;i<total;i++){if(s.checked?.[i]===true&&Number.isInteger(s.choices?.[i])&&s.choices[i]>=0&&s.choices[i]<lesson.quizzes[i].options.length){attempted++;if(s.choices[i]===lesson.quizzes[i].answer)correct++;}}}
+ else{const s=store.read('database:'+lesson.id,{},raw=>cleanDatabaseLesson(raw,lesson));total=lesson.quizzes.length;for(let i=0;i<total;i++){if(s.checked?.[i]===true&&Number.isInteger(s.choices?.[i])&&s.choices[i]>=0&&s.choices[i]<lesson.quizzes[i].options.length){attempted++;if(s.choices[i]===lesson.quizzes[i].answer)correct++;}}}
  const completed=completion.read().has(lesson.id),ready=correct===total&&debugReady,needsRevision=(attempted>correct)||(debugAttempted&&!debugReady);
  return {id:lesson.id,title:lesson.title,unit:lesson.unit,total,attempted,correct,completed,ready,needsRevision,debugReady,status:needsRevision?'Needs revision':completed?'Complete':ready?'Ready to complete':attempted||debugAttempted?'In progress':'Not started'};
 }

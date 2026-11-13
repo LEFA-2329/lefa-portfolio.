@@ -1,4 +1,4 @@
-import {extraExamples} from './sql-extra.mjs?v=25';
+import {extraExamples} from './sql-extra.mjs?v=26';
 export const dialects={sqlserver:'Microsoft SQL Server',postgresql:'PostgreSQL',mysql:'MySQL'};
 const q=value=>"'"+String(value).replaceAll("'","''")+"'";
 export const students=['Lebo','Thabo','Naledi','Peter','Maria','Amina','Sipho','Lerato','John','Sarah','Kabelo','Precious','David','Zanele','Mpho','Tshepo','Grace','Bongani','Ruth','Karabo'].map((name,i)=>[i+1,name,['Polokwane','Johannesburg','Pretoria','Cape Town'][i%4],18+i%9]);

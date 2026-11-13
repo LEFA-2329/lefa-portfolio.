@@ -1,5 +1,5 @@
-import {dbUnits,dbLessons} from './database-data.mjs?v=25';
-import {intermediateUnits,intermediateLessons} from './intermediate-data.mjs?v=25';
+import {dbUnits,dbLessons} from './database-data.mjs?v=26';
+import {intermediateUnits,intermediateLessons,intermediateLegacyQuizzes} from './intermediate-data.mjs?v=26';
 const writtenBanks={
  database:[
  {id:'design',unit:5,title:'Normalise an enrolment relation',prompt:'Enrolment(StudentID,CourseID,StudentName,CourseName,Mark) has candidate key (StudentID,CourseID). Each ID determines its corresponding name. Show 1NF, identify the partial dependencies and produce 2NF/3NF tables with all keys. Explain where Mark belongs.',solution:'1NF: one student-course pair per row, key (StudentID,CourseID).\nStudentID determines StudentName. CourseID determines CourseName.\nThe full pair determines Mark.\nStudents(StudentID PK,StudentName)\nCourses(CourseID PK,CourseName)\nEnrolments(StudentID PK/FK,CourseID PK/FK,Mark)\nNo remaining non-key transitive dependency exists under these rules.',explanation:'Student and course names move to their own tables. Mark stays on the association, and the two foreign keys preserve the join. The result is also 3NF for the supplied dependencies.',criteria:['State the composite key and one-pair-per-row 1NF interpretation.','Identify StudentID determines StudentName as a partial dependency.','Identify CourseID determines CourseName as a partial dependency.','Create Students and Courses with the correct primary keys.','Keep Mark in Enrolments with both PK/FK attributes and explain 3NF.']},
@@ -15,17 +15,17 @@ export function databaseExamEngine(course='database'){
  if(!['database','intermediate'].includes(course))throw Error('Unknown database course.');
  const units=course==='intermediate'?intermediateUnits:dbUnits,lessons=course==='intermediate'?intermediateLessons:dbLessons;
  const writtenQuestions=writtenBanks[course],quizCount=units.length*2,totalQuestions=quizCount+2;
- const examBank=lessons.flatMap(l=>l.quizzes.map((q,i)=>({...q,correct:q.answer,id:l.id+'-q'+i,unit:l.unit})));
+ const bank=revision=>lessons.flatMap(l=>(course==='intermediate'&&revision===1?intermediateLegacyQuizzes[l.id]:l.quizzes).map((q,i)=>({...q,correct:q.answer,id:l.id+'-q'+i,unit:l.unit})));
 function random(seed){let x=seed>>>0;return()=>{x^=x<<13;x^=x>>>17;x^=x<<5;return (x>>>0)/4294967296;};}
-function examQuestions(seed){const rng=random(seed);return units.flatMap(u=>{const bank=examBank.filter(q=>q.unit===u.id);for(let i=bank.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[bank[i],bank[j]]=[bank[j],bank[i]];}return bank.slice(0,2);});}
+function examQuestions(seed,revision=course==='intermediate'?2:1){const rng=random(seed),all=bank(revision);return units.flatMap(u=>{const bank=all.filter(q=>q.unit===u.id);for(let i=bank.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[bank[i],bank[j]]=[bank[j],bank[i]];}return bank.slice(0,2);});}
 function createExam(seed,minutes=0,now=Date.now()){
  if(!Number.isInteger(seed)||seed<1||seed>4294967295||![0,30,60].includes(minutes)||!Number.isSafeInteger(now)||now<=0)throw Error('Invalid exam settings.');
- return {version:1,course,seed,minutes,startedAt:now,deadline:minutes?now+minutes*60000:null,submittedAt:null,expired:false,index:0,answers:{},written:{},ratings:{}};
+ return {version:1,course,bankRevision:course==='intermediate'?2:1,seed,minutes,startedAt:now,deadline:minutes?now+minutes*60000:null,submittedAt:null,expired:false,index:0,answers:{},written:{},ratings:{}};
 }
 function cleanExam(raw){
- if(!raw||raw.version!==1||raw.course!==course)return null;
+ if(!raw||raw.version!==1||raw.course!==course||![1,2].includes(raw.bankRevision??1))return null;
  let s;try{s=createExam(raw.seed,raw.minutes,raw.startedAt);}catch{return null;}
- const qs=examQuestions(s.seed);s.index=Number.isInteger(raw.index)&&raw.index>=0&&raw.index<totalQuestions?raw.index:0;
+ s.bankRevision=raw.bankRevision??1;const qs=examQuestions(s.seed,s.bankRevision);s.index=Number.isInteger(raw.index)&&raw.index>=0&&raw.index<totalQuestions?raw.index:0;
  if(Number.isSafeInteger(raw.submittedAt)&&raw.submittedAt>=s.startedAt){s.submittedAt=raw.submittedAt;s.expired=!!s.deadline&&raw.submittedAt>=s.deadline;}
  for(const q of qs){const a=raw.answers?.[q.id];if(Number.isInteger(a)&&a>=0&&a<q.options.length)s.answers[q.id]=a;}
  for(const q of writtenQuestions){s.written[q.id]=typeof raw.written?.[q.id]==='string'?raw.written[q.id].slice(0,10000):'';s.ratings[q.id]=q.criteria.map((_,i)=>{const n=raw.ratings?.[q.id]?.[i];return s.submittedAt!==null&&Number.isInteger(n)&&n>=0&&n<=2?n:null;});}
@@ -35,7 +35,7 @@ const remainingSeconds=(s,now=Date.now())=>s.deadline===null?null:Math.max(0,Mat
 function submitExam(s,now=Date.now()){if(s.submittedAt!==null)return s;s.submittedAt=now;s.expired=s.deadline!==null&&now>=s.deadline;return s;}
 function examResult(s){
  if(s.submittedAt===null)throw Error('Submit your attempt before reviewing answers.');
- const qs=examQuestions(s.seed);const byUnit=units.map(u=>({id:u.id,title:u.title,total:2,correct:qs.filter(q=>q.unit===u.id&&s.answers[q.id]===q.correct).length}));
+ const qs=examQuestions(s.seed,s.bankRevision);const byUnit=units.map(u=>({id:u.id,title:u.title,total:2,correct:qs.filter(q=>q.unit===u.id&&s.answers[q.id]===q.correct).length}));
  const objective=byUnit.reduce((n,u)=>n+u.correct,0);let rated=0,self=0;
  for(const q of writtenQuestions)for(let i=0;i<q.criteria.length;i++){const v=s.ratings[q.id]?.[i];if(Number.isInteger(v)&&v>=0&&v<=2){rated++;self+=v;}}
  return {objective,objectiveTotal:quizCount,byUnit,self,selfTotal:20,rated,rubricItems:10,combined:rated===10?objective+self:null,total:quizCount+20};

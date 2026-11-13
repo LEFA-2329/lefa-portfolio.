@@ -1,3 +1,4 @@
+import {practicalIntermediateQuizzes} from './intermediate-quizzes.mjs?v=26';
 // Original supplementary material aligned to the supplied DATA6222 outline.
 export const intermediateUnits=[
   {
@@ -2458,3 +2459,7 @@ export const intermediateLessons=[
     "download": "intermediate-9-3.sql"
   }
 ];
+
+// Keep old question identities available solely for previously saved exams.
+export const intermediateLegacyQuizzes=Object.fromEntries(intermediateLessons.map(l=>[l.id,l.quizzes]));
+for(const lesson of intermediateLessons){lesson.quizzes=practicalIntermediateQuizzes[lesson.id];lesson.quizRevision='practical-v2';}

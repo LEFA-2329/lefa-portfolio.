@@ -1,5 +1,5 @@
-import {normalisationExamples,dependencyDiagram,bindDiagramFit,normalisationRules} from './normalisation.mjs?v=25';
-import {analyseTable,gradeKeyAndDependencies,gradeDecomposition} from './normalisation-grading.mjs?v=25';
+import {normalisationExamples,dependencyDiagram,bindDiagramFit,normalisationRules} from './normalisation.mjs?v=26';
+import {analyseTable,gradeKeyAndDependencies,gradeDecomposition} from './normalisation-grading.mjs?v=26';
 import {escapeHTML as e} from './engine.mjs?v=17';
 import {workStore} from './work-store.mjs?v=15';
 const levels=['guided','standard','challenge'];

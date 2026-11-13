@@ -1,10 +1,10 @@
-import {builderPage} from './normalisation-builder.mjs?v=25';
-import {normalisationPracticePage} from './normalisation-practice.mjs?v=25';
-import {databaseExamPage} from './db-exam-ui.mjs?v=25';
-import {progressPage,progressSummary,refreshLessonCompletion} from './progress.mjs?v=25';
-import {exercises as sqlChallenges} from './sql-challenges.mjs?v=25';
-import {databaseHome,databaseUnit,databaseLesson,databasePractice,databaseResources,dbUnits,dbLessons} from './database-ui.mjs?v=25';
-import {sqlPage} from './sql-ui.mjs?v=25';
+import {builderPage} from './normalisation-builder.mjs?v=26';
+import {normalisationPracticePage} from './normalisation-practice.mjs?v=26';
+import {databaseExamPage} from './db-exam-ui.mjs?v=26';
+import {progressPage,progressSummary,refreshLessonCompletion} from './progress.mjs?v=26';
+import {exercises as sqlChallenges} from './sql-challenges.mjs?v=26';
+import {databaseHome,databaseUnit,databaseLesson,databasePractice,databaseResources,dbUnits,dbLessons} from './database-ui.mjs?v=26';
+import {sqlPage} from './sql-ui.mjs?v=26';
 import './appearance.mjs?v=18';
 import {examPage} from './exam-ui.mjs?v=17';
 import {workStore} from './work-store.mjs?v=15';
