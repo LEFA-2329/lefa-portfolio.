@@ -3,7 +3,7 @@ import {
   newCoursePage,
   courseForLesson,
   courseName,
-} from './csharp/csharp-and-docker-pages.mjs?v=csharp-44';
+} from './csharp/csharp-and-docker-pages.mjs?v=code-examples-45';
 import {
   courseLessons as csharpLessons,
   courseUnits as csharpUnits,

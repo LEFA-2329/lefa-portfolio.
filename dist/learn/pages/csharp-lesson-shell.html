@@ -5,11 +5,17 @@
   Learn here, then test in Visual Studio. StudyLab displays C# and Docker examples; it
   does not execute C# or containers in this browser.
 </div>
+<div class="button-row">
+  <button type="button" class="button secondary" id="cs-jump-code">
+    View the coded example
+  </button>
+</div>
 {{dynamic_6}}
 <section class="panel">
-  <h2>Complete project files</h2>
+  <h2 id="cs-code-title" tabindex="-1">Coded example . Complete project</h2>
   <p>
-    Download the project ZIP, or expand a file and copy its complete code into that exact
+    The code below is the same code supplied in the downloadable project. Read it here,
+    copy one file at a time, or download the complete ZIP. Paste each file into that exact
     file in Visual Studio. Keep examples in separate folders. Replace existing file
     contents instead of pasting a second Program.cs underneath the first.
   </p>
@@ -17,6 +23,14 @@
     Download complete project ZIP
   </button>
   <p id="cs-download-status" role="status"></p>
+  <div class="button-row">
+    <button type="button" class="button secondary" id="cs-expand-code">
+      Show all code files</button
+    ><button type="button" class="button secondary" id="cs-collapse-code">
+      Collapse code files
+    </button>
+  </div>
+  <p id="cs-copy-status" role="status" aria-live="polite"></p>
   {{dynamic_7}}
 </section>
 <section class="panel" aria-labelledby="cs-quiz-heading">

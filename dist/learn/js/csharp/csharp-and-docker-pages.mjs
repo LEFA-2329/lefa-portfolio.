@@ -1,4 +1,4 @@
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=csharp-44';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=code-examples-45';
 import { escapeHTML as e } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=40';
 import { courseUnits, courseLessons } from './course-outline-and-lessons.mjs?v=csharp-44';
 import { exampleFiles } from './complete-example-files.mjs?v=csharp-44';
@@ -87,8 +87,8 @@ export function newCoursePage({ view, page, id, course }) {
       dynamic_6: renderHtmlPage('studylab/' + lesson.page, {}),
       dynamic_7: files
         .map(
-          (f) =>
-            `<details class="cs-source-file"><summary>${e(f.name)}</summary><p>${e(filePurpose(f.name))}</p><a href="./downloads/csharp/${e(lesson.project)}/${e(f.name)}" download>Download this file</a><pre><code>${e(f.content)}</code></pre></details>`,
+          (f, index) =>
+            `<details class="cs-source-file" ${f.name === 'Program.cs' || f.name === 'MainWindow.xaml' || f.name === 'StudentViewModel.cs' || f.name === 'compose.yaml' || f.name.endsWith('/Dockerfile') || f.name.startsWith('Controllers/') ? 'open' : ''}><summary>${e(f.name)}</summary><p>${e(filePurpose(f.name))}</p><div class="button-row"><button type="button" class="button secondary" data-copy-source="${index}" aria-label="Copy code from ${e(f.name)}">Copy code</button><a href="./downloads/csharp/${e(lesson.project)}/${e(f.name)}" download>Download this file</a></div><pre tabindex="0" aria-label="Code for ${e(f.name)}"><code>${e(f.content)}</code></pre></details>`,
         )
         .join(''),
       dynamic_8: lesson.quiz
@@ -131,6 +131,30 @@ export function newCoursePage({ view, page, id, course }) {
         `${score}/${lesson.quiz.length} correct. ` +
         save(id, { score, total: lesson.quiz.length });
     });
+    view.querySelector('#cs-jump-code').addEventListener('click', () => {
+      const heading = view.querySelector('#cs-code-title');
+      heading.scrollIntoView({ block: 'start' });
+      heading.focus({ preventScroll: true });
+    });
+    for (const button of view.querySelectorAll('[data-copy-source]')) {
+      button.addEventListener('click', async () => {
+        const file = files[Number(button.dataset.copySource)];
+        const status = view.querySelector('#cs-copy-status');
+        try {
+          await navigator.clipboard.writeText(file.content);
+          status.textContent = `Copied ${file.name}. Paste it into that exact file in Visual Studio.`;
+        } catch {
+          status.textContent = `Clipboard access is unavailable. Select the code in ${file.name}, then copy it manually, or download the file.`;
+        }
+      });
+    }
+    for (const [id, open] of [
+      ['cs-expand-code', true],
+      ['cs-collapse-code', false],
+    ])
+      view.querySelector('#' + id).addEventListener('click', () => {
+        for (const file of view.querySelectorAll('.cs-source-file')) file.open = open;
+      });
     view.querySelector('#cs-download-project').addEventListener('click', () => {
       try {
         const url = URL.createObjectURL(sourceZip(files));
