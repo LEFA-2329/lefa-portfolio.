@@ -1,5 +1,5 @@
-import { additionalExercises } from './five-extra-demo-databases.mjs?v=34';
-import { extraExercises } from './additional-sql-examples.mjs?v=34';
+import { additionalExercises } from './five-extra-demo-databases.mjs?v=36';
+import { extraExercises } from './additional-sql-examples.mjs?v=36';
 export const exercises = [
   {
     id: 'city',

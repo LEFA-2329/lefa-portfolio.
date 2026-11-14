@@ -1,4 +1,4 @@
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=34';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=36';
 import {
   themes,
   defaults,
@@ -6,8 +6,8 @@ import {
   createPreferenceStore,
   resolvedTheme,
   SETTINGS_KEY,
-} from './display-preferences.mjs?v=34';
-import { escapeHTML as escape } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=34';
+} from './display-preferences.mjs?v=36';
+import { escapeHTML as escape } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=36';
 
 const launch = document.querySelector('#settings-open');
 const device = matchMedia('(prefers-color-scheme: dark)');
@@ -55,10 +55,21 @@ function openSettings() {
       dynamic_1: themes
         .map(
           (theme) =>
-            `<label class="theme-choice"><input type="radio" name="settings-theme" value="${escape(theme.id)}" /><span class="theme-choice-body"><span class="theme-swatch" aria-hidden="true">${theme.colours.map((colour) => `<span style="background:${colour}"></span>`).join('')}</span><strong>${escape(theme.name)}</strong><span class="theme-description">${escape(theme.description)}</span></span></label>`,
+            `<label class="theme-choice" data-theme-id="${escape(theme.id)}" data-theme-collection="${escape(theme.collection || (['light', 'dark', 'grey', 'system'].includes(theme.id) ? 'classic' : 'vintage'))}"><input type="radio" name="settings-theme" value="${escape(theme.id)}" /><span class="theme-choice-body"><span class="theme-swatch" aria-hidden="true">${theme.colours.map((colour) => `<span style="background:${colour}"></span>`).join('')}</span><strong>${escape(theme.name)}</strong><span class="theme-description">${escape(theme.description)}</span></span></label>`,
         )
         .join(''),
     });
+    panel
+      .querySelector('#settings-theme-collection')
+      .addEventListener('change', (event) => {
+        const collection = event.target.value;
+        for (const card of panel.querySelectorAll('.theme-choice')) {
+          card.hidden =
+            collection !== 'all' &&
+            card.dataset.themeId !== 'light' &&
+            card.dataset.themeCollection !== collection;
+        }
+      });
     panel
       .querySelector('#settings-close')
       .addEventListener('click', () => closeSettings());

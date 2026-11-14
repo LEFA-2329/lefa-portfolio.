@@ -26,6 +26,8 @@ test('Light remains the default; all six vintage themes are available', () => {
     ['cream', 'terracotta', 'midnight', 'teal', 'sage', 'brick'],
   );
   assert.equal(new Set(themes.map((t) => t.id)).size, themes.length);
+  assert.equal(themes.length, 22);
+  assert.equal(themes.filter((t) => t.collection === 'colourful').length, 12);
   assert.equal(resolvedTheme({ theme: 'system' }, true), 'dark');
   assert.equal(resolvedTheme({ theme: 'system' }, false), 'light');
 });
@@ -115,7 +117,7 @@ test('pre-paint restoration agrees with full settings for every theme and fallba
   });
   assert.equal(dataset.theme, 'light');
 });
-test('vintage core text and primary buttons have at least 4.5:1 contrast', () => {
+test('all palette core text and primary buttons have at least 4.5:1 contrast', () => {
   const css = readFileSync(
     new URL('../dist/learn/css/student-settings.css', import.meta.url),
     'utf8',
@@ -130,7 +132,9 @@ test('vintage core text and primary buttons have at least 4.5:1 contrast', () =>
   };
   const contrast = (a, b) =>
     (Math.max(lum(a), lum(b)) + 0.05) / (Math.min(lum(a), lum(b)) + 0.05);
-  for (const theme of themes.slice(1, 7)) {
+  for (const theme of themes.filter(
+    (t) => !['light', 'dark', 'grey', 'system'].includes(t.id),
+  )) {
     const rule = css.match(
       new RegExp(":root\\[data-theme='" + theme.id + "'\\]\\s*\\{([^}]+)\\}"),
     )[1];

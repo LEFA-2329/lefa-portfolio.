@@ -1,2 +1,2 @@
 // Application entry point. Feature modules live in js/.
-import './js/navigation-and-pages.mjs?v=34';
+import './js/navigation-and-pages.mjs?v=36';

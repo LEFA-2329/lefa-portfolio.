@@ -27,7 +27,18 @@
 </div>
 <section class="settings-section" aria-labelledby="settings-themes-title">
   <h3 id="settings-themes-title">Choose your theme</h3>
-  <p>Keep it light, or try a vintage palette inspired by cream, clay, slate and sage.</p>
+  <p>Keep it light, revisit a vintage favourite, or explore twelve colourful palettes.</p>
+  <label class="settings-collection" for="settings-theme-collection"
+    >Theme collection<select id="settings-theme-collection">
+      <option value="all">All themes (22)</option>
+      <option value="colourful">Colourful (12 new)</option>
+      <option value="vintage">Vintage (6)</option>
+      <option value="classic">Classic</option>
+    </select></label
+  >
+  <p class="settings-collection-note">
+    Light is always available. Your selected theme stays active when browsing collections.
+  </p>
   <fieldset class="theme-choice-grid">
     <legend class="settings-sr-only">StudyLab theme</legend>
     {{dynamic_1}}

@@ -63,6 +63,98 @@ export const themes = [
     colours: ['#ffffff', '#101b2b', '#2563eb', '#93c5fd'],
   },
 ];
+// Additional colour collections. Existing theme IDs remain stable.
+themes.splice(
+  7,
+  0,
+  ...[
+    {
+      id: 'sunshine-cobalt',
+      name: 'Sunshine & Cobalt',
+      description: 'Golden yellow, coral and confident blue.',
+      colours: ['#f3c231', '#f2f2f2', '#033e74', '#f26052', '#f29471'],
+      collection: 'colourful',
+    },
+    {
+      id: 'citrus-ivory',
+      name: 'Citrus & Ivory',
+      description: 'Fresh olive, warm ivory and soft amber.',
+      colours: ['#000000', '#91ae30', '#ebe3cc', '#ffffff', '#fdb85c'],
+      collection: 'colourful',
+    },
+    {
+      id: 'honey-indigo',
+      name: 'Honey & Indigo',
+      description: 'Honey highlights with clear indigo details.',
+      colours: ['#b38f38', '#ffeea1', '#fed569', '#3052b3', '#d4defb'],
+      collection: 'colourful',
+    },
+    {
+      id: 'tropical',
+      name: 'Tropical Breeze',
+      description: 'Mint, turquoise and a lively coral touch.',
+      colours: ['#f13759', '#f4a503', '#e9f2df', '#55d9cd', '#3aa2b9'],
+      collection: 'colourful',
+    },
+    {
+      id: 'tangerine-night',
+      name: 'Tangerine Night',
+      description: 'Charcoal surfaces with warm orange light.',
+      colours: ['#1d1e26', '#fee0ac', '#f9a450', '#f27830', '#a55745'],
+      collection: 'colourful',
+    },
+    {
+      id: 'candy-forest',
+      name: 'Candy Garden',
+      description: 'Peach and pink balanced with bright green and blue.',
+      colours: ['#fbaca2', '#eb7399', '#efcc68', '#253dc9', '#39d18c'],
+      collection: 'colourful',
+    },
+    {
+      id: 'lime-slate',
+      name: 'Lime & Slate',
+      description: 'Deep blue with crisp lime and teal highlights.',
+      colours: ['#f2f2f2', '#c5e06f', '#92c46d', '#277d7d', '#1d354d'],
+      collection: 'colourful',
+    },
+    {
+      id: 'rose-ocean',
+      name: 'Rose & Ocean',
+      description: 'Ocean blue with rose and golden accents.',
+      colours: ['#f1bcc0', '#d92378', '#133d73', '#b8d7d3', '#fcc954'],
+      collection: 'colourful',
+    },
+    {
+      id: 'peach-lagoon',
+      name: 'Peach Lagoon',
+      description: 'Soft peach, sunshine and a pale sea-green background.',
+      colours: ['#fccddd', '#ff8f73', '#ffcc38', '#a5d6d0', '#8aabd0'],
+      collection: 'colourful',
+    },
+    {
+      id: 'blue-silver',
+      name: 'Blue & Silver',
+      description: 'A clean blue workspace with cool silver surfaces.',
+      colours: ['#4a9cf4', '#127fd5', '#e2e5e8', '#656769', '#afb3b5'],
+      collection: 'colourful',
+    },
+    {
+      id: 'neon-orchid',
+      name: 'Neon Orchid',
+      description: 'Violet evenings with electric cyan and pink.',
+      colours: ['#ffffff', '#f966a0', '#665ec7', '#2ec1de', '#fed600'],
+      collection: 'colourful',
+    },
+    {
+      id: 'amethyst-gold',
+      name: 'Amethyst & Gold',
+      description: 'Rich purple with warm gold and turquoise accents.',
+      colours: ['#36cfb0', '#28a49f', '#30225c', '#fdbb1d', '#de6408'],
+      collection: 'colourful',
+    },
+  ],
+);
+
 export const defaults = Object.freeze({
   theme: 'light',
   textSize: 'standard',

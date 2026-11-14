@@ -4,9 +4,9 @@ import {
   stageHTML,
   normalisationRules,
   bindDiagramFit,
-} from './normalisation-lessons-and-diagrams.mjs?v=34';
-import { escapeHTML as e } from '../../programming-logic/pseudocode-parser-and-diagrams.mjs?v=34';
-import { workStore } from '../../shared/saved-work-storage.mjs?v=34';
+} from './normalisation-lessons-and-diagrams.mjs?v=36';
+import { escapeHTML as e } from '../../programming-logic/pseudocode-parser-and-diagrams.mjs?v=36';
+import { workStore } from '../../shared/saved-work-storage.mjs?v=36';
 export const normalisationQuestions = [
   {
     marks: 2,

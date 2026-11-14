@@ -27,3 +27,11 @@ References: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
 ## Sidebar refinement
 
 The panel is an accessible labelled region, not a dialog. The gear exposes expanded state and the controlled panel ID. X, the gear and Escape close it; Escape respects any actual dialog already open above it. Explicit close returns focus to the gear. The panel starts closed on each visit while the saved display choices are restored. Browser checks confirmed navigation while open, no modal dialog, all close controls and saved Light preference after reload.
+
+## Expanded colourful collection
+
+Added twelve palettes inspired by the second reference: Sunshine & Cobalt, Citrus & Ivory, Honey & Indigo, Tropical Breeze, Tangerine Night, Candy Garden, Lime & Slate, Rose & Ocean, Peach Lagoon, Blue & Silver, Neon Orchid, and Amethyst & Gold. There are now 22 choices including the existing Light, six vintage palettes, Dark, Grey and Device appearance.
+
+The Theme collection selector filters All, Colourful, Vintage and Classic. Light remains visible in every collection. Browsing a collection never changes the active theme. Existing theme IDs and the storage key remain stable.
+
+All 43 tests pass with contrast checks expanded to all 18 added palettes, plus pre-paint restoration and persistence checks for every theme choice. Browser checks selected all twelve new palettes, verified the collection counts, confirmed filtering does not alter the active theme, and restored Amethyst & Gold after reload. Bright reference swatches are used with adjusted readable text/background tokens rather than copied blindly into text colours. The stock reference image is not embedded in the application.

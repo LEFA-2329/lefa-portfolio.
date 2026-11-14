@@ -1,5 +1,5 @@
-import { lessons, units } from './content/lessons-and-quizzes.mjs?v=34';
-import { practice } from './content/lesson-practice.mjs?v=34';
+import { lessons, units } from './content/lessons-and-quizzes.mjs?v=36';
+import { practice } from './content/lesson-practice.mjs?v=36';
 export const examBank = lessons.flatMap((l) =>
   [l.quiz, ...practice[l.id].quizzes].map((q, i) => ({
     ...q,
