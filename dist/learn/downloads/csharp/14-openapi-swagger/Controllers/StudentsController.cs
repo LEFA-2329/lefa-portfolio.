@@ -20,8 +20,11 @@ public class StudentsController(StudentStore db) : ControllerBase
     [HttpPost]
     public IActionResult Create(StudentInput input)
     {
+        // Run the next branch only when this condition is true.
         if (string.IsNullOrWhiteSpace(input.Name))
+            // Reject input that fails the rules.
             return BadRequest("Name cannot be blank.");
+        // Store row for the steps below.
         var row = new Student
         {
             Id = db.NextId(),
@@ -29,6 +32,7 @@ public class StudentsController(StudentStore db) : ControllerBase
             Age = input.Age
         };
         db.Rows[row.Id] = row;
+        // Return the new row and its location.
         return CreatedAtAction(nameof(Get), new { id = row.Id }, row);
     }
 
@@ -37,20 +41,26 @@ public class StudentsController(StudentStore db) : ControllerBase
     [HttpPut("{id:int}")]
     public IActionResult Update(int id, StudentInput input)
     {
+        // Run the next branch only when this condition is true.
         if (string.IsNullOrWhiteSpace(input.Name))
+            // Reject input that fails the rules.
             return BadRequest("Name cannot be blank.");
         while (db.Rows.TryGetValue(id, out var old))
         {
+            // Store row for the steps below.
             var row = new Student
             {
                 Id = id,
                 Name = input.Name.Trim(),
                 Age = input.Age
             };
+            // Run the next branch only when this condition is true.
             if (db.Rows.TryUpdate(id, row, old))
+                // Report success without a response body.
                 return NoContent();
         }
 
+        // Report that the requested row was not found.
         return NotFound();
     }
 

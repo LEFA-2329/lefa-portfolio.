@@ -1,7 +1,10 @@
 // Follow the numbered teaching parts in order. The full file combines every part.
 using System.Collections.ObjectModel;
+// Import names from this library.
 using System.ComponentModel;
+// Import names from this library.
 using System.Runtime.CompilerServices;
+// Import names from this library.
 using System.Windows.Input;
 
 namespace MvvmLab;
@@ -42,7 +45,9 @@ public class StudentViewModel : INotifyPropertyChanged, IDataErrorInfo
         }
     }
 
+    // Expose the Students value on this object.
     public ObservableCollection<string> Students { get; } = [];
+    // Expose the AddCommand value on this object.
     public RelayCommand AddCommand { get; }
 
     // STUDY PART: Initialise StudentViewModel

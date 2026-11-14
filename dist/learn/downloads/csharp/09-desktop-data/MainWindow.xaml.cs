@@ -1,10 +1,16 @@
 // Follow the numbered teaching parts in order. The full file combines every part.
 using System.Windows;
+// Import names from this library.
 using System.Windows.Controls;
+// Import names from this library.
 using System.IO;
+// Import names from this library.
 using System.Text.Json;
+// Import names from this library.
 using Microsoft.EntityFrameworkCore;
+// Import names from this library.
 using Microsoft.Data.SqlClient;
+// Import names from this library.
 using System.Data;
 
 namespace DesktopData;
@@ -19,6 +25,7 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         Directory.CreateDirectory(folder);
+        // Store db for the steps below.
         using var db = Db();
         db.Database.EnsureCreated();
     }
@@ -35,8 +42,10 @@ public partial class MainWindow : Window
     // Check the name and age before constructing a Student object.
     Student Input()
     {
+        // Run the next branch only when this condition is true.
         if (string.IsNullOrWhiteSpace(NameBox.Text) || NameBox.Text.Length > 80 || !int.TryParse(AgeBox.Text, out int age) || age < 16 || age > 100)
             throw new ArgumentException("Enter a name up to 80 characters and age 16-100.");
+        // Send this result back to the caller.
         return new()
         {
             Name = NameBox.Text.Trim(),
@@ -48,19 +57,27 @@ public partial class MainWindow : Window
     // Choose the configured storage provider and return the student rows.
     List<Student> Load()
     {
+        // Run the next branch only when this condition is true.
         if (!Ado)
         {
+            // Store db for the steps below.
             using var db = Db();
+            // Send this result back to the caller.
             return db.Students.AsNoTracking().OrderBy(s => s.Id).ToList();
         }
 
+        // Store c for the steps below.
         using var c = Connect();
         c.Open();
+        // Store cmd for the steps below.
         using var cmd = new SqlCommand("SELECT Id,Name,Age FROM dbo.Students ORDER BY Id", c);
+        // Store r for the steps below.
         using var r = cmd.ExecuteReader();
+        // Store rows for the steps below.
         var rows = new List<Student>();
         while (r.Read())
             rows.Add(new() { Id = r.GetInt32(0), Name = r.GetString(1), Age = r.GetInt32(2) });
+        // Send this result back to the caller.
         return rows;
     }
 
@@ -89,13 +106,17 @@ public partial class MainWindow : Window
     // Validate the input, create a new row, then report the result.
     void Create(object sender, RoutedEventArgs e) => Guard(() =>
     {
+        // Store s for the steps below.
         var s = Input();
+        // Run the next branch only when this condition is true.
         if (Ado)
             Execute("INSERT dbo.Students(Name,Age) VALUES(@name,@age)", s);
         else
         {
+            // Store db for the steps below.
             using var db = Db();
             db.Students.Add(s);
+            // Save pending database changes.
             db.SaveChanges();
         }
 
@@ -105,16 +126,21 @@ public partial class MainWindow : Window
     // Find an existing row, validate new values, then save changes.
     void Update(object sender, RoutedEventArgs e) => Guard(() =>
     {
+        // Run the next branch only when this condition is true.
         if (Rows.SelectedItem is not Student selected)
             throw new ArgumentException("Select a student.");
+        // Store s for the steps below.
         var s = Input();
         s.Id = selected.Id;
+        // Run the next branch only when this condition is true.
         if (Ado)
             Execute("UPDATE dbo.Students SET Name=@name,Age=@age WHERE Id=@id", s);
         else
         {
+            // Store db for the steps below.
             using var db = Db();
             db.Students.Update(s);
+            // Save pending database changes.
             db.SaveChanges();
         }
 
@@ -124,14 +150,18 @@ public partial class MainWindow : Window
     // Remove the selected or requested row and report whether it existed.
     void Delete(object sender, RoutedEventArgs e) => Guard(() =>
     {
+        // Run the next branch only when this condition is true.
         if (Rows.SelectedItem is not Student s)
             throw new ArgumentException("Select a student.");
+        // Run the next branch only when this condition is true.
         if (Ado)
             Execute("DELETE dbo.Students WHERE Id=@id", s);
         else
         {
+            // Store db for the steps below.
             using var db = Db();
             db.Students.Remove(s);
+            // Save pending database changes.
             db.SaveChanges();
         }
 
@@ -141,12 +171,18 @@ public partial class MainWindow : Window
     // Execute the action or database command using its supplied values.
     void Execute(string sql, Student s)
     {
+        // Store c for the steps below.
         using var c = Connect();
         c.Open();
+        // Store cmd for the steps below.
         using var cmd = new SqlCommand(sql, c);
+        // Send this value as a SQL parameter.
         cmd.Parameters.Add("@id", SqlDbType.Int).Value = s.Id;
+        // Send this value as a SQL parameter.
         cmd.Parameters.Add("@name", SqlDbType.NVarChar, 80).Value = s.Name;
+        // Send this value as a SQL parameter.
         cmd.Parameters.Add("@age", SqlDbType.Int).Value = s.Age;
+        // Run a command that changes rows.
         cmd.ExecuteNonQuery();
     }
 
@@ -154,6 +190,7 @@ public partial class MainWindow : Window
     // Copy the selected row into the editable form fields.
     void SelectRow(object sender, SelectionChangedEventArgs e)
     {
+        // Run the next branch only when this condition is true.
         if (Rows.SelectedItem is Student s)
         {
             NameBox.Text = s.Name;
@@ -165,6 +202,7 @@ public partial class MainWindow : Window
     // Serialize the current rows and write them to the application data folder.
     void Export(object sender, RoutedEventArgs e) => Guard(() =>
     {
+        // Store file for the steps below.
         var file = Path.Combine(folder, "students.json");
         File.WriteAllText(file, JsonSerializer.Serialize(Load(), new JsonSerializerOptions { WriteIndented = true }));
         Status.Text = "Saved: " + file;
@@ -182,8 +220,11 @@ public partial class MainWindow : Window
 // Keep this type in this file or its own named file. Its members describe data or behaviour.
 public class Student
 {
+    // Expose the Id value on this object.
     public int Id { get; set; }
+    // Expose the Name value on this object.
     public string Name { get; set; } = "";
+    // Expose the Age value on this object.
     public int Age { get; set; }
 }
 

@@ -1,5 +1,6 @@
 // Follow the numbered teaching parts in order. The full file combines every part.
 using Microsoft.AspNetCore.Mvc;
+// Import names from this library.
 using Microsoft.EntityFrameworkCore;
 
 // STUDY PART: Define StudentsController
@@ -17,7 +18,9 @@ public class StudentsController(SchoolDb db) : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<ActionResult<Student>> Get(int id, CancellationToken ct)
     {
+        // Look up a row by its primary key.
         var row = await db.Students.FindAsync([id], ct);
+        // Report that the requested row was not found.
         return row is null ? NotFound() : Ok(row);
     }
 
@@ -26,15 +29,20 @@ public class StudentsController(SchoolDb db) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(StudentInput input, CancellationToken ct)
     {
+        // Run the next branch only when this condition is true.
         if (string.IsNullOrWhiteSpace(input.Name))
+            // Reject input that fails the rules.
             return BadRequest("Name cannot be blank.");
+        // Store row for the steps below.
         var row = new Student
         {
             Name = input.Name.Trim(),
             Age = input.Age
         };
         db.Students.Add(row);
+        // Save pending database changes.
         await db.SaveChangesAsync(ct);
+        // Return the new row and its location.
         return CreatedAtAction(nameof(Get), new { id = row.Id }, row);
     }
 
@@ -43,14 +51,21 @@ public class StudentsController(SchoolDb db) : ControllerBase
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, StudentInput input, CancellationToken ct)
     {
+        // Run the next branch only when this condition is true.
         if (string.IsNullOrWhiteSpace(input.Name))
+            // Reject input that fails the rules.
             return BadRequest("Name cannot be blank.");
+        // Look up a row by its primary key.
         var row = await db.Students.FindAsync([id], ct);
+        // Run the next branch only when this condition is true.
         if (row is null)
+            // Report that the requested row was not found.
             return NotFound();
         row.Name = input.Name.Trim();
         row.Age = input.Age;
+        // Save pending database changes.
         await db.SaveChangesAsync(ct);
+        // Report success without a response body.
         return NoContent();
     }
 
@@ -59,11 +74,16 @@ public class StudentsController(SchoolDb db) : ControllerBase
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id, CancellationToken ct)
     {
+        // Look up a row by its primary key.
         var row = await db.Students.FindAsync([id], ct);
+        // Run the next branch only when this condition is true.
         if (row is null)
+            // Report that the requested row was not found.
             return NotFound();
         db.Students.Remove(row);
+        // Save pending database changes.
         await db.SaveChangesAsync(ct);
+        // Report success without a response body.
         return NoContent();
     }
 }

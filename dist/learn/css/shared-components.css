@@ -272,3 +272,39 @@
   padding: 14px;
   margin: 14px 0;
 }
+
+/* Fixed dark code surface keeps teaching colours readable in every page theme. */
+.cs-source-file pre {
+  background: #102033;
+  color: #e6edf5;
+  color-scheme: dark;
+  border: 1px solid #49617b;
+}
+.cs-source-file pre code {
+  color: #e6edf5;
+  background: transparent;
+}
+.cs-source-file .code-comment {
+  color: #98c995;
+  font-style: italic;
+}
+.cs-source-file .code-keyword {
+  color: #d9b4ff;
+}
+.cs-source-file .code-string {
+  color: #ffd19b;
+}
+.cs-source-file .code-number {
+  color: #8fe0cb;
+}
+.cs-source-file .code-type {
+  color: #83d9f4;
+}
+.cs-source-file .code-punctuation {
+  color: #c3cede;
+}
+@media (forced-colors: active) {
+  .cs-source-file pre span {
+    color: CanvasText;
+  }
+}

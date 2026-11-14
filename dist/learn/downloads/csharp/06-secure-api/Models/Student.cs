@@ -5,12 +5,17 @@ using System.ComponentModel.DataAnnotations;
 // Keep this type in this file or its own named file. Its members describe data or behaviour.
 public class Student
 {
+    // Expose the Id value on this object.
     public int Id { get; set; }
 
+    // Expose the Name value on this object.
     [MaxLength(80)]
     public string Name { get; set; } = "";
+    // Expose the Age value on this object.
     public int Age { get; set; }
+    // Expose the OwnerId value on this object.
     public string OwnerId { get; set; } = "";
+    // Expose the Version value on this object.
     public Guid Version { get; set; } = Guid.NewGuid();
 }
 

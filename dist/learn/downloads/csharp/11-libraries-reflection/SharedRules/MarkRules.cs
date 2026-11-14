@@ -5,6 +5,7 @@ namespace SharedRules;
 [AttributeUsage(AttributeTargets.Class)]
 public class StudyTopicAttribute(string title) : Attribute
 {
+    // Expose the Title value on this object.
     public string Title { get; } = title;
 }
 

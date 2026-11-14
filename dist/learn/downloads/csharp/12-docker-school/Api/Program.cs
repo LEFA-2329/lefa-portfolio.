@@ -14,6 +14,7 @@ var app = builder.Build();
 // Classroom startup migration. In production prefer a reviewed migration job.
 if (builder.Configuration.GetValue<bool>("StudyLabMigrate"))
 {
+    // Store scope for the steps below.
     using var scope = app.Services.CreateScope();
     scope.ServiceProvider.GetRequiredService<SchoolDb>().Database.Migrate();
 }

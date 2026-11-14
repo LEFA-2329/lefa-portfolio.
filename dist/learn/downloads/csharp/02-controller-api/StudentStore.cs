@@ -6,6 +6,7 @@ using System.Collections.Concurrent;
 public class StudentStore
 {
     private int id;
+    // Expose the Rows value on this object.
     public ConcurrentDictionary<int, Student> Rows { get; } = new();
 
     // STUDY PART: Allocate a new ID safely

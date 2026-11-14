@@ -1,6 +1,8 @@
 // Follow the numbered teaching parts in order. The full file combines every part.
 using Microsoft.AspNetCore.Identity;
+// Import names from this library.
 using Microsoft.EntityFrameworkCore;
+// Import names from this library.
 using System.Threading.RateLimiting;
 
 // STUDY PART: Create the application builder

@@ -1,8 +1,12 @@
-import { codeParts, orderedTeachingFiles } from './step-by-step-code.mjs?v=code-parts-46';
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=code-parts-46';
+import { colourCode } from './code-syntax-colours.mjs?v=code-colours-47';
+import {
+  codeParts,
+  orderedTeachingFiles,
+} from './step-by-step-code.mjs?v=code-colours-47';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=code-colours-47';
 import { escapeHTML as e } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=40';
 import { courseUnits, courseLessons } from './course-outline-and-lessons.mjs?v=csharp-44';
-import { exampleFiles } from './complete-example-files.mjs?v=code-parts-46';
+import { exampleFiles } from './complete-example-files.mjs?v=code-colours-47';
 import { sourceZip } from './project-zip-download.mjs?v=csharp-44';
 const key = 'studylab-csharp-learning-v1';
 export const courseForLesson = (lesson) =>
@@ -94,7 +98,7 @@ export function newCoursePage({ view, page, id, course }) {
             )
               .map(
                 (part, partNumber) =>
-                  `<details class="cs-source-file" ${partNumber === 0 ? 'open' : ''}><summary>Part ${partNumber + 1}: ${e(part.title)}</summary><p>Continue in the same file, directly after the previous part. Read the comments before the code.</p><button type="button" class="button secondary" data-copy-part="${index}:${partNumber}" aria-label="Copy part ${partNumber + 1} of ${e(file.name)}">Copy this part</button><pre tabindex="0"><code>${e(part.code)}</code></pre></details>`,
+                  `<details class="cs-source-file" ${partNumber === 0 ? 'open' : ''}><summary>Part ${partNumber + 1}: ${e(part.title)}</summary><p>Continue in the same file, directly after the previous part. Read the comments before the code.</p><button type="button" class="button secondary" data-copy-part="${index}:${partNumber}" aria-label="Copy part ${partNumber + 1} of ${e(file.name)}">Copy this part</button><pre tabindex="0"><code>${colourCode(part.code, file.name)}</code></pre></details>`,
               )
               .join('')}</section>`,
         )
@@ -102,7 +106,7 @@ export function newCoursePage({ view, page, id, course }) {
       dynamic_7: files
         .map(
           (f, index) =>
-            `<details class="cs-source-file" ${f.name === 'Program.cs' || f.name === 'MainWindow.xaml' || f.name === 'StudentViewModel.cs' || f.name === 'compose.yaml' || f.name.endsWith('/Dockerfile') || f.name.startsWith('Controllers/') ? 'open' : ''}><summary>${e(f.name)}</summary><p>${e(filePurpose(f.name))}</p><div class="button-row"><button type="button" class="button secondary" data-copy-source="${index}" aria-label="Copy code from ${e(f.name)}">Copy code</button><a href="./downloads/csharp/${e(lesson.project)}/${e(f.name)}" download>Download this file</a></div><pre tabindex="0" aria-label="Code for ${e(f.name)}"><code>${e(f.content)}</code></pre></details>`,
+            `<details class="cs-source-file" ${f.name === 'Program.cs' || f.name === 'MainWindow.xaml' || f.name === 'StudentViewModel.cs' || f.name === 'compose.yaml' || f.name.endsWith('/Dockerfile') || f.name.startsWith('Controllers/') ? 'open' : ''}><summary>${e(f.name)}</summary><p>${e(filePurpose(f.name))}</p><div class="button-row"><button type="button" class="button secondary" data-copy-source="${index}" aria-label="Copy code from ${e(f.name)}">Copy code</button><a href="./downloads/csharp/${e(lesson.project)}/${e(f.name)}" download>Download this file</a></div><pre tabindex="0" aria-label="Code for ${e(f.name)}"><code>${colourCode(f.content, f.name)}</code></pre></details>`,
         )
         .join(''),
       dynamic_8: lesson.quiz
