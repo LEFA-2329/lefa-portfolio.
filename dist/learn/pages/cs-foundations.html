@@ -1,0 +1,72 @@
+<div class="theory">
+  <section>
+    <h2>Start with a console student register</h2>
+    <p>
+      You are building a small program that remembers a student name and mark, decides
+      whether the mark is a pass and prints the result. It runs in a text window. Later
+      lessons turn the student idea into an API and a website. Those projects have their
+      own files; do not paste this console Program.cs into an API.
+    </p>
+  </section>
+  <section>
+    <h2>Set up and run</h2>
+    <ol>
+      <li>
+        Install Visual Studio with .NET 10 support. Download this lesson's project and
+        extract it.
+      </li>
+      <li>
+        Open StudyLab.csproj. Choose Build &gt; Build Solution, then Debug &gt; Start
+        Without Debugging.
+      </li>
+      <li>
+        For a terminal, open the folder containing StudyLab.csproj and run
+        <code>dotnet run</code>.
+      </li>
+    </ol>
+  </section>
+  <section>
+    <h2>Understand the pieces</h2>
+    <p>
+      A variable holds a value. A condition chooses which steps run. A loop repeats steps.
+      A method groups steps so you can use them again. A class describes data and
+      behaviour; an object is one instance of that class. A list holds several items.
+    </p>
+    <p>
+      Read <code>mark &gt;= 50</code> as "mark is at least 50". A single
+      <code>=</code> assigns a value; <code>==</code> compares values. Braces group steps.
+      A comment begins with <code>//</code> and explains the code to a person.
+    </p>
+  </section>
+  <section>
+    <h2>Expected output</h2>
+    <pre><code>Lefa: 65
+Pass
+Mark: 65
+Mark: 40
+Mark: 80
+Pass
+Student: Lefa, result: Pass</code></pre>
+    <p>
+      The first decision prints Pass. The loop prints all three list values. The reusable
+      method also returns Pass for 65.
+    </p>
+  </section>
+  <section>
+    <h2>Try it yourself</h2>
+    <details>
+      <summary>What changes if mark becomes 45?</summary>
+      <p>
+        The first line shows 45. The decision and method results become Try again. The
+        separate list still prints 65, 40 and 80.
+      </p>
+    </details>
+    <details>
+      <summary>How can the list contain a fourth mark?</summary>
+      <p>
+        Call <code>marks.Add(55);</code> before the foreach loop. The loop will print a
+        fourth line: Mark: 55.
+      </p>
+    </details>
+  </section>
+</div>

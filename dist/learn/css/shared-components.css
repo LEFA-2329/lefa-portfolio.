@@ -356,3 +356,27 @@
     gap: 20px;
   }
 }
+
+.cs-lesson-layout textarea {
+  width: 100%;
+  min-height: 140px;
+  box-sizing: border-box;
+  margin-top: 12px;
+  padding: 14px;
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.cs-lesson-layout .guided-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-block: 16px;
+  line-height: 1.6;
+}
+.cs-lesson-layout .guided-check input {
+  flex: 0 0 auto;
+  margin-top: 5px;
+}

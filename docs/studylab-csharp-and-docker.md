@@ -53,3 +53,9 @@ The editable csharp-beginner-guide.html appears on C# course and lesson pages. I
 ## Project introductions and spacing
 
 Edit projectBriefs and lessonFocus in course-outline-and-lessons.mjs to describe the finished project, data storage and first successful check. csharp-project-brief.html displays this before the beginner guide, theory and code. The cs-lesson-layout rules in shared-components.css create section spacing; adjacent panels elsewhere in StudyLab also have a visible gap.
+
+## Guided learning path
+
+C# foundations is an extra starting lesson inside Unit 1. Its runnable console source lives in downloads/csharp/15-csharp-foundations. The original five units and their outcomes are preserved. The overview explains how the separate student register projects form teaching stages; it does not imply that all project files can be merged.
+
+Edit learning-path-and-guides.mjs for prerequisites, prediction questions and answers, guided changes, independent tasks, readiness statements, troubleshooting and unit practicals. Each C# lesson has its own content. The renderer places prediction/guided prompts before code and independent work after the complete example. Notes and three self-reported readiness checks use the existing studylab-csharp-learning-v1 state, preserving earlier quiz and completion fields. Unit practicals have suggested 10-mark rubrics and review approaches, not automatic grades.

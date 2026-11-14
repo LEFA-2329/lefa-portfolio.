@@ -431,5 +431,19 @@ export const exampleFiles = {
       "name": "requests.http",
       "content": "# STUDY PART: Configure the API address and initial request\n# Start the matching API before sending these requests.\n@base = http://localhost:5100\nGET {{base}}/api/students\n### Create\n# STUDY PART: Create request\nPOST {{base}}/api/students\nContent-Type: application/json\n\n{\"name\":\"Lefa\",\"age\":22}\n### One\n# STUDY PART: One request\nGET {{base}}/api/students/1\n### Replace\n# STUDY PART: Replace request\nPUT {{base}}/api/students/1\nContent-Type: application/json\n\n{\"name\":\"Lefa Malatji\",\"age\":23}\n### Delete\n# STUDY PART: Delete request\nDELETE {{base}}/api/students/1\n### Missing\n# STUDY PART: Missing request\nGET {{base}}/api/students/999\n"
     }
+  ],
+  "15-csharp-foundations": [
+    {
+      "name": "Program.cs",
+      "content": "// STUDY PART: Store one student name and mark\n// Text uses string. A whole number uses int.\nstring name = \"Lefa\";\nint mark = 65;\nConsole.WriteLine($\"{name}: {mark}\");\n\n// STUDY PART: Make a decision\n// Choose the message using a condition.\nif (mark >= 50)\n{\n    Console.WriteLine(\"Pass\");\n}\nelse\n{\n    Console.WriteLine(\"Try again\");\n}\n\n// STUDY PART: Repeat work with a list\n// A list keeps several values of the same type.\nList<int> marks = [65, 40, 80];\n// Visit each mark once.\nforeach (int currentMark in marks)\n{\n    Console.WriteLine($\"Mark: {currentMark}\");\n}\n\n// STUDY PART: Call a method\n// Pass a mark in and receive a message back.\nConsole.WriteLine(ResultFor(mark));\n\n// STUDY PART: Create a student object\n// Create one student using the class defined below.\nStudent student = new() { Name = name, Mark = mark };\nConsole.WriteLine($\"Student: {student.Name}, result: {ResultFor(student.Mark)}\");\n\n// STUDY PART: Define a reusable method\n// int score is the input. string is the return type.\nstatic string ResultFor(int score)\n{\n    if (score >= 50)\n    {\n        return \"Pass\";\n    }\n    return \"Try again\";\n}\n\n// STUDY PART: Describe a student with a class\n// A class describes the values each Student object can hold.\npublic class Student\n{\n    // A property stores a value on an object.\n    public string Name { get; set; } = \"\";\n    public int Mark { get; set; }\n}\n"
+    },
+    {
+      "name": "README.md",
+      "content": "# Student register foundations\n\nOpen StudyLab.csproj in Visual Studio with .NET 10. Build, then Start Without Debugging. Alternatively run dotnet run in this folder.\n\nExpected output:\n\n```text\nLefa: 65\nPass\nMark: 65\nMark: 40\nMark: 80\nPass\nStudent: Lefa, result: Pass\n```\n\nChange mark to 45 and predict the changed lines. The marks list is separate, so its three values stay unchanged. This is a console project, not an API. Keep it in its own folder.\n"
+    },
+    {
+      "name": "StudyLab.csproj",
+      "content": "<Project Sdk=\"Microsoft.NET.Sdk\">\n  <PropertyGroup>\n    <OutputType>Exe</OutputType>\n    <TargetFramework>net10.0</TargetFramework>\n    <ImplicitUsings>enable</ImplicitUsings>\n    <Nullable>enable</Nullable>\n  </PropertyGroup>\n</Project>\n"
+    }
   ]
 };

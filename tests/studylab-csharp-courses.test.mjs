@@ -117,3 +117,29 @@ test('every lesson has a project description and focus before code', async () =>
     shell.indexOf('{{dynamic_12}}') < shell.indexOf('Build the code part by part'),
   );
 });
+test('guided C# path covers every lesson with valid prerequisite links and five unit practicals', async () => {
+  const { lessonGuides, lessonPrerequisites, unitPracticals, troubleshooting } =
+    await import('../dist/learn/js/csharp/learning-path-and-guides.mjs');
+  const csharp = courseLessons.filter((l) => l.unit.startsWith('csharp-'));
+  assert.equal(csharp[0].id, 'cs-foundations');
+  for (const lesson of csharp) {
+    assert.equal(lessonGuides[lesson.id].length, 6, lesson.id);
+    assert.ok(lessonGuides[lesson.id].every((text) => text.length > 20));
+    assert.ok(troubleshooting[lesson.unit].length >= 3);
+    const visited = new Set();
+    const visit = (id) => {
+      assert.ok(!visited.has(id), 'Prerequisite cycle at ' + id);
+      visited.add(id);
+      for (const prerequisite of lessonPrerequisites[id]) {
+        assert.ok(
+          csharp.some((l) => l.id === prerequisite),
+          prerequisite,
+        );
+        visit(prerequisite);
+      }
+      visited.delete(id);
+    };
+    visit(lesson.id);
+  }
+  assert.equal(Object.keys(unitPracticals).length, 5);
+});

@@ -110,6 +110,35 @@ export const courseUnits = [
 ];
 export const courseLessons = [
   {
+    id: 'cs-foundations',
+    unit: 'csharp-1',
+    title: 'Start here: C# foundations and your first student register',
+    outcomes: [],
+    project: '15-csharp-foundations',
+    page: 'cs-foundations',
+    quiz: [
+      {
+        question: 'Which statement stores a whole-number mark?',
+        options: ['int mark = 65;', 'string mark = 65;', 'mark int 65;'],
+        answer: 0,
+        explanation:
+          'int is the whole-number type. The variable name is mark and its value is 65.',
+      },
+      {
+        question: 'For mark = 45, is mark >= 50 true?',
+        options: ['Yes', 'No'],
+        answer: 1,
+        explanation: '45 is less than 50, so the else branch runs.',
+      },
+      {
+        question: 'What does foreach do here?',
+        options: ['Visits every item in marks', 'Deletes the list', 'Creates a database'],
+        answer: 0,
+        explanation: 'The loop runs once for each mark in the list.',
+      },
+    ],
+  },
+  {
     id: 'cs-lifetime',
     unit: 'csharp-1',
     title: 'Garbage collection and using disposable objects',
@@ -869,3 +898,12 @@ export const lessonFocus = {
   'docker-monitor-scale':
     'Inspect service logs and learn the limits of scaling services that publish fixed host ports.',
 };
+
+projectBriefs['15-csharp-foundations'] = [
+  'Your first console student register',
+  'Store a name and mark, choose a pass message and print a list of marks. This is the starting point for the student register learning journey.',
+  'All values are temporary and live in memory while the console app runs.',
+  'Run the program, compare the seven output lines, then change mark to 45 and predict the new messages.',
+];
+lessonFocus['cs-foundations'] =
+  'Practise variables, conditions, loops, methods, classes, objects and lists before using the advanced units.';

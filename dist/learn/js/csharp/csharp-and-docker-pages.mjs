@@ -1,17 +1,23 @@
-import { colourCode } from './code-syntax-colours.mjs?v=project-briefs-49';
+import {
+  lessonGuides,
+  lessonPrerequisites,
+  unitPracticals,
+  troubleshooting,
+} from './learning-path-and-guides.mjs?v=guided-csharp-50';
+import { colourCode } from './code-syntax-colours.mjs?v=guided-csharp-50';
 import {
   codeParts,
   orderedTeachingFiles,
-} from './step-by-step-code.mjs?v=project-briefs-49';
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=project-briefs-49';
+} from './step-by-step-code.mjs?v=guided-csharp-50';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=guided-csharp-50';
 import { escapeHTML as e } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=40';
 import {
   courseUnits,
   courseLessons,
   projectBriefs,
   lessonFocus,
-} from './course-outline-and-lessons.mjs?v=project-briefs-49';
-import { exampleFiles } from './complete-example-files.mjs?v=project-briefs-49';
+} from './course-outline-and-lessons.mjs?v=guided-csharp-50';
+import { exampleFiles } from './complete-example-files.mjs?v=guided-csharp-50';
 import { sourceZip } from './project-zip-download.mjs?v=csharp-44';
 const beginnerGoals = {
   'csharp-1':
@@ -32,6 +38,69 @@ function beginnerGuide(unit) {
         'Start with the small console example, then follow the web foundations and beginner CRUD lessons. Take one step at a time.',
     ),
   });
+}
+function learningPath() {
+  const stages = [
+    [
+      'cs-foundations',
+      '1. Foundations',
+      'Build the console student register. Practise values, decisions, loops, methods, objects and lists.',
+    ],
+    [
+      'cs-web-foundations',
+      '2. First web requests',
+      'Understand requests, then build GET, POST, validation, PUT and DELETE in that order.',
+    ],
+    [
+      'cs-ef-sqlite',
+      '3. Remember the data',
+      'Move from a temporary store to a database. Compare SQLite, SQL Server and ADO.NET.',
+    ],
+    [
+      'cs-api-auth',
+      '4. Protect and test',
+      'Add accounts and ownership. Check paging and conflicting edits, then run HTTP checks.',
+    ],
+    [
+      'cs-mvc-client',
+      '5. Add a screen',
+      'Build an MVC client. Explore the separate WPF, file and MVVM examples in Units 3 and 4.',
+    ],
+    [
+      'cs-class-libraries',
+      '6. Reuse and explore',
+      'Share rules through a library, then explore reflection and dynamic features. Return to Unit 1 for lifetime, LINQ, threads and async experiments.',
+    ],
+  ];
+  return `<section class="panel"><h2>Your step-by-step learning path</h2><p>Keep the Student Management System idea throughout. The downloads are separate teaching stages, not files to paste into one project. Keep each stage in its own folder. The official five units remain below; this path gives beginners a practical starting order.</p><ol>${stages.map(([id, title, why]) => `<li>${link('#cs-lesson/' + id, title, 'text-link')}<p>${e(why)}</p></li>`).join('')}</ol><p>Read, predict, build, run, change, then try independently. Check the prerequisites and readiness statements before moving on. They guide your revision and do not lock lessons.</p></section>`;
+}
+function guideBefore(lesson) {
+  const g = lessonGuides[lesson.id];
+  if (!g) return '';
+  const prereqs = lessonPrerequisites[lesson.id];
+  return `<section class="panel"><h2>Before you start</h2><p>${prereqs.length ? 'Revise these lessons if you need them:' : 'No previous C# lesson is required. Start with the setup and console example below.'}</p><ul>${prereqs
+    .map((id) => {
+      const prior = courseLessons.find((l) => l.id === id);
+      return `<li>${link('#cs-lesson/' + id, prior.title, 'text-link')}</li>`;
+    })
+    .join(
+      '',
+    )}</ul><h3>Predict before running</h3><p>${e(g[0])}</p><details><summary>Check the prediction</summary><p>${e(g[1])}</p></details><h3>Build one small change</h3><p>${e(g[2])}</p><details><summary>Hint and worked guidance</summary><p>${e(g[3])}</p></details><p>First run the supplied project unchanged and compare its expected result. Make the change above only after that baseline works. The numbered code and complete files follow.</p></section>`;
+}
+function guideAfter(lesson, record) {
+  const g = lessonGuides[lesson.id];
+  if (!g) return '';
+  const checks = [
+    'I ran the example and compared the expected result.',
+    'I made the guided change and explained its effect.',
+    g[5],
+  ];
+  return `<section class="panel"><h2>Try without the solution</h2><p>${e(g[4])}</p><label for="cs-independent-notes">Your plan, code notes and test results</label><textarea id="cs-independent-notes" rows="6" placeholder="Write your approach and the results you observed.">${e(record.independentNotes || '')}</textarea><p id="cs-guided-status" role="status" aria-live="polite">Notes and readiness checks save in this browser. These are self-checks, not automatically marked code.</p><h3>Ready to move on?</h3>${checks.map((text, i) => `<label class="guided-check"><input type="checkbox" data-readiness="${i}" ${record.readiness?.[i] === true ? 'checked' : ''}/> ${i === 2 ? 'I can: ' : ''}${e(text)}</label>`).join('')}<p>If you cannot explain a step, revisit its prerequisite or worked example before starting the next lesson.</p><h3>If something goes wrong</h3>${troubleshooting[lesson.unit].map(([error, fix]) => `<details><summary>${e(error)}</summary><p>${e(fix)}</p></details>`).join('')}</section>`;
+}
+function unitPractical(unit) {
+  const task = unitPracticals[unit];
+  if (!task) return '';
+  return `<section class="panel"><h2>Unit practical: ${e(task[0])}</h2><p>${e(task[1])}</p><p><strong>Suggested marks: 10.</strong> ${e(task[2])}</p><p>Try it independently first. Submit your source files, a short explanation and evidence of normal and invalid-input tests. The website does not award these marks automatically.</p><details><summary>Review the solution approach after your attempt</summary><p>${e(task[3])}</p></details></section>`;
 }
 const key = 'studylab-csharp-learning-v1';
 export const courseForLesson = (lesson) =>
@@ -115,6 +184,8 @@ export function newCoursePage({ view, page, id, course }) {
       dynamic_4: e(lesson.title),
       dynamic_5: e(lesson.outcomes.join(', ') + ' . ' + unit.sessions),
       dynamic_6: renderHtmlPage('studylab/' + lesson.page, {}),
+      dynamic_13: guideBefore(lesson),
+      dynamic_14: guideAfter(lesson, record),
       dynamic_12: renderHtmlPage('studylab/csharp-project-brief', {
         dynamic_1: e(projectBriefs[lesson.project][0]),
         dynamic_2: e(projectBriefs[lesson.project][1]),
@@ -157,6 +228,21 @@ export function newCoursePage({ view, page, id, course }) {
           ? link('#cs-lesson/' + lessons[index + 1].id, 'Next lesson')
           : link('#cs-progress/' + course, 'Review progress')),
     });
+    const notes = view.querySelector('#cs-independent-notes');
+    if (notes) {
+      notes.addEventListener('input', () => {
+        view.querySelector('#cs-guided-status').textContent = save(id, {
+          independentNotes: notes.value,
+        });
+      });
+      for (const check of view.querySelectorAll('[data-readiness]'))
+        check.addEventListener('change', () => {
+          const readiness = [...view.querySelectorAll('[data-readiness]')].map(
+            (input) => input.checked,
+          );
+          view.querySelector('#cs-guided-status').textContent = save(id, { readiness });
+        });
+    }
     const complete = view.querySelector('#cs-complete');
     complete.checked = record.complete === true;
     view.querySelector('#cs-progress-status').textContent =
@@ -252,7 +338,7 @@ export function newCoursePage({ view, page, id, course }) {
     content = lessons
       .map(
         (l) =>
-          `<article class="panel"><h2>${link('#cs-lesson/' + l.id, l.title, 'text-link')}</h2><p>${state[l.id]?.complete === true ? 'Complete' : 'Not marked complete'} . Quiz ${Number.isInteger(state[l.id]?.score) ? state[l.id].score : 0}/${l.quiz.length}</p></article>`,
+          `<article class="panel"><h2>${link('#cs-lesson/' + l.id, l.title, 'text-link')}</h2><p>${state[l.id]?.complete === true ? 'Complete' : 'Not marked complete'} . Readiness ${(state[l.id]?.readiness || []).filter(Boolean).length}/3 self-checked . Quiz ${Number.isInteger(state[l.id]?.score) ? state[l.id].score : 0}/${l.quiz.length}</p></article>`,
       )
       .join('');
   } else if (page === 'cs-downloads') {
@@ -270,12 +356,16 @@ export function newCoursePage({ view, page, id, course }) {
     title += ' practice';
     description =
       'Each lesson has distinct tasks, expandable worked answers and a checked quiz. Choose a topic and try the task before opening its answer.';
-    content = lessons
-      .map(
-        (l) =>
-          `<article class="panel"><h2>${e(l.title)}</h2>${link('#cs-lesson/' + l.id, 'Open tasks and quiz')}</article>`,
-      )
-      .join('');
+    content =
+      (course === 'csharp'
+        ? Object.keys(unitPracticals).map(unitPractical).join('')
+        : '') +
+      lessons
+        .map(
+          (l) =>
+            `<article class="panel"><h2>${e(l.title)}</h2>${link('#cs-lesson/' + l.id, 'Open tasks and quiz')}</article>`,
+        )
+        .join('');
   } else {
     const chosen = page === 'cs-unit' ? units.filter((u) => u.id === id) : units;
     if (page === 'cs-unit' && chosen[0]) {
@@ -283,7 +373,10 @@ export function newCoursePage({ view, page, id, course }) {
       description = chosen[0].sessions;
     }
     content =
-      (course === 'csharp' ? beginnerGuide(page === 'cs-unit' ? id : '') : '') +
+      (course === 'csharp'
+        ? (page === 'cs-unit' ? unitPractical(id) : learningPath()) +
+          beginnerGuide(page === 'cs-unit' ? id : '')
+        : '') +
       chosen
         .map(
           (u) =>
