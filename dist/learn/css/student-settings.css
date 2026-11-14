@@ -259,7 +259,7 @@ body.settings-open .hub-grid {
   box-shadow: 0 0 0 1px var(--purple);
 }
 .theme-choice input:checked + .theme-choice-body strong::after {
-  content: '. Selected';
+  content: ' . Selected';
   font-size: 11px;
   color: var(--purple);
 }

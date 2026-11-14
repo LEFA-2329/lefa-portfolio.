@@ -2,13 +2,13 @@ import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=40';
 import {
   advancedUnits,
   advancedLessons,
-} from './content/advanced-lessons.mjs?v=punctuation-42';
+} from './content/advanced-lessons.mjs?v=punctuation-43';
 import { quizContext } from '../shared/quiz-code-examples.mjs?v=40';
 import { cleanDatabaseLesson } from './saved-database-answers.mjs?v=40';
 import {
   progressSummary,
   refreshLessonCompletion,
-} from '../shared/learning-progress.mjs?v=punctuation-42';
+} from '../shared/learning-progress.mjs?v=punctuation-43';
 import {
   normalisationWalkthrough,
   bindNormalisation,
@@ -336,7 +336,7 @@ export function databaseResources({ view, sidebar }) {
             .filter((l) => l.unit === u.id)
             .map(
               (l) =>
-                `<li><a href="./downloads/${e(l.downloadFolder || 'intermediate')}/${e(l.download)}" download>${e(l.title)} (${l.environment === 'hadoop' ? e(l.environmentLabel) : l.environment === 'design' ? 'design text' : 'SQL'})</a>. <a href="#db-lesson/${l.id}">Read lesson</a></li>`,
+                `<li><a href="./downloads/${e(l.downloadFolder || 'intermediate')}/${e(l.download)}" download>${e(l.title)} (${l.environment === 'hadoop' ? e(l.environmentLabel) : l.environment === 'design' ? 'design text' : 'SQL'})</a> . <a href="#db-lesson/${l.id}">Read lesson</a></li>`,
             )
             .join('')}</ul>`,
       )
@@ -344,7 +344,7 @@ export function databaseResources({ view, sidebar }) {
     dynamic_3: advancedLessons
       .map(
         (l) =>
-          `<li><a href="./downloads/advanced/${e(l.download)}" download>${e(l.title)} (${l.environment === 'hadoop' ? e(l.environmentLabel) : l.environment === 'design' ? 'design text' : 'SQL'})</a>. <a href="#db-lesson/${l.id}">Read lesson</a></li>`,
+          `<li><a href="./downloads/advanced/${e(l.download)}" download>${e(l.title)} (${l.environment === 'hadoop' ? e(l.environmentLabel) : l.environment === 'design' ? 'design text' : 'SQL'})</a> . <a href="#db-lesson/${l.id}">Read lesson</a></li>`,
       )
       .join(''),
   });

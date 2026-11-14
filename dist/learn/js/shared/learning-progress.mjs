@@ -2,7 +2,7 @@ import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=40';
 import {
   advancedUnits,
   advancedLessons,
-} from '../database/content/advanced-lessons.mjs?v=punctuation-42';
+} from '../database/content/advanced-lessons.mjs?v=punctuation-43';
 import { cleanDatabaseLesson } from '../database/saved-database-answers.mjs?v=40';
 import { workStore } from './saved-work-storage.mjs?v=40';
 import {

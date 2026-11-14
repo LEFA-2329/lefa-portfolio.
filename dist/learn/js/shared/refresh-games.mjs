@@ -135,7 +135,7 @@ export function mountRefreshGame(host, game) {
     for (const size of [3, 4, 5]) {
       const option = document.createElement('option');
       option.value = String(size);
-      option.textContent = `${size} × ${size}. ${size * size - 1} tiles`;
+      option.textContent = `${size} × ${size} . ${size * size - 1} tiles`;
       sizeSelect.append(option);
     }
     sizeLabel.append(sizeSelect);
@@ -208,7 +208,7 @@ export function mountRefreshGame(host, game) {
           ? 'A draw! Try another round.'
           : result
             ? `${result} wins!`
-            : `${turn} to play${mode.value === 'computer' ? '. You are X' : ''}.`;
+            : `${turn} to play${mode.value === 'computer' ? ' . You are X' : ''}.`;
     }
     function reset() {
       squares = Array(9).fill('');
