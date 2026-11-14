@@ -1,18 +1,25 @@
+# STUDY PART: Choose the API address
+# Start the matching API before sending these requests.
 @base = http://localhost:5100
 GET {{base}}/api/students
 ### Create
+# STUDY PART: Create a record
 POST {{base}}/api/students
 Content-Type: application/json
 
 {"name":"Lefa","age":22}
 ### One
+# STUDY PART: Read a record
 GET {{base}}/api/students/1
 ### Replace
+# STUDY PART: Replace editable fields
 PUT {{base}}/api/students/1
 Content-Type: application/json
 
 {"name":"Lefa Malatji","age":23}
 ### Delete
+# STUDY PART: Delete a record
 DELETE {{base}}/api/students/1
 ### Missing
+# STUDY PART: Check the missing-record response
 GET {{base}}/api/students/999

@@ -1,3 +1,4 @@
+// Follow the numbered teaching parts in order. The full file combines every part.
 using System.Diagnostics;
 using System.Runtime.Loader;
 
@@ -8,6 +9,8 @@ using (var writer = new StreamWriter("lifetime.txt"))
 }
 
 Console.WriteLine(File.ReadAllText("lifetime.txt").Trim());
+// STUDY PART: Try the next language feature
+// Read this small experiment and compare its output with the lesson explanation.
 var total = new Money(10m) + new Money(5m);
 Console.WriteLine($"Money total: {total.Amount}");
 try
@@ -20,12 +23,16 @@ catch (EnrollmentException ex)
 }
 
 Console.WriteLine("lefa".Greeting());
+// STUDY PART: Try the next language feature
+// Read this small experiment and compare its output with the lesson explanation.
 var anonymous = new
 {
     Name = "Lefa",
     Mark = 80
 };
 Console.WriteLine($"{anonymous.Name}: {anonymous.Mark}");
+// STUDY PART: Try the next language feature
+// Read this small experiment and compare its output with the lesson explanation.
 var students = new[]
 {
     new Student("Lefa", 80),
@@ -39,14 +46,22 @@ using (var process = Process.GetCurrentProcess())
     Console.WriteLine($"Process name: {process.ProcessName}");
 Console.WriteLine($"Domain: {AppDomain.CurrentDomain.FriendlyName}");
 Console.WriteLine($"Load context: {AssemblyLoadContext.Default.Name}");
+// STUDY PART: Try the next language feature
+// Read this small experiment and compare its output with the lesson explanation.
 int count = 0;
 Parallel.For(0, 1000, _ => Interlocked.Increment(ref count));
 Console.WriteLine($"Safe count: {count}");
+// STUDY PART: Try the next language feature
+// Read this small experiment and compare its output with the lesson explanation.
 var thread = new Thread(() => Console.WriteLine("Worker thread finished"));
 thread.Start();
 thread.Join();
+// STUDY PART: Try the next language feature
+// Read this small experiment and compare its output with the lesson explanation.
 var results = await Task.WhenAll(LoadAsync("A"), LoadAsync("B"));
 Console.WriteLine(string.Join(",", results));
+// STUDY PART: Try the next language feature
+// Read this small experiment and compare its output with the lesson explanation.
 using var cts = new CancellationTokenSource();
 cts.Cancel();
 try
@@ -70,14 +85,24 @@ static async Task<string> LoadAsync(string name)
     return name;
 }
 
+// STUDY PART: Define Student
+// Keep this type in this file or its own named file. Its members describe data or behaviour.
 public record Student(string Name, int Mark);
+// STUDY PART: Define Money
+// Keep this type in this file or its own named file. Its members describe data or behaviour.
 public readonly record struct Money(decimal Amount)
 {
     public static Money operator +(Money a, Money b) => new(a.Amount + b.Amount);
 }
 
+// STUDY PART: Define EnrollmentException
+// Keep this type in this file or its own named file. Its members describe data or behaviour.
 public class EnrollmentException(string message) : Exception(message);
+// STUDY PART: Define StudentExtensions
+// Keep this type in this file or its own named file. Its members describe data or behaviour.
 public static class StudentExtensions
 {
+    // STUDY PART: Helper: Greeting
+    // This named method performs one reusable piece of work for the application.
     public static string Greeting(this string name) => $"Hello, {name}";
 }

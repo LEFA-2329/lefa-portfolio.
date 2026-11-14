@@ -1,3 +1,4 @@
+// Follow the numbered teaching parts in order. The full file combines every part.
 using System.Net;
 using System.Net.Http.Json;
 
@@ -39,4 +40,6 @@ static void Check(bool condition, string message)
     Console.WriteLine("PASS: " + message);
 }
 
+// STUDY PART: Define Student
+// Keep this type in this file or its own named file. Its members describe data or behaviour.
 public record Student(int Id, string Name, int Age);

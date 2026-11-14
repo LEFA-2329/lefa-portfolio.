@@ -1,8 +1,11 @@
+// Follow the numbered teaching parts in order. The full file combines every part.
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
+// STUDY PART: Define StudentsController
+// Keep this type in this file or its own named file. Its members describe data or behaviour.
 [Authorize, ApiController, Route("api/students")]
 public class StudentsController(AppDb db) : ControllerBase
 {
@@ -10,7 +13,11 @@ public class StudentsController(AppDb db) : ControllerBase
 
     IQueryable<Student> Mine => db.Students.Where(s => s.OwnerId == Owner);
 
+    // STUDY PART: Helper: ViewOf
+    // This named method performs one reusable piece of work for the application.
     static StudentView ViewOf(Student s) => new(s.Id, s.Name, s.Age, s.Version);
+    // STUDY PART: Read and filter students
+    // Load the list. Apply any filters and paging before returning the result.
     [HttpGet]
     public async Task<IActionResult> All(int page = 1, int pageSize = 10, string? search = null, CancellationToken ct = default)
     {
@@ -24,6 +31,8 @@ public class StudentsController(AppDb db) : ControllerBase
         return Ok(new { page, pageSize, total, items });
     }
 
+    // STUDY PART: Read one student
+    // Look up the requested ID. Return NotFound when it does not exist.
     [HttpGet("{id:int}")]
     public async Task<IActionResult> One(int id, CancellationToken ct)
     {
@@ -31,6 +40,8 @@ public class StudentsController(AppDb db) : ControllerBase
         return s is null ? NotFound() : Ok(ViewOf(s));
     }
 
+    // STUDY PART: Create a student
+    // Validate the input, create a new row, then report the result.
     [HttpPost]
     public async Task<IActionResult> Create(StudentInput input, CancellationToken ct)
     {
@@ -47,6 +58,8 @@ public class StudentsController(AppDb db) : ControllerBase
         return CreatedAtAction(nameof(One), new { id = s.Id }, ViewOf(s));
     }
 
+    // STUDY PART: Update a student
+    // Find an existing row, validate new values, then save changes.
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, StudentUpdate input, CancellationToken ct)
     {
@@ -72,6 +85,8 @@ public class StudentsController(AppDb db) : ControllerBase
         return Ok(ViewOf(s));
     }
 
+    // STUDY PART: Update selected fields
+    // Change only supplied values. Check the version to avoid overwriting newer edits.
     [HttpPatch("{id:int}")]
     public async Task<IActionResult> Patch(int id, StudentPatch input, CancellationToken ct)
     {
@@ -101,6 +116,8 @@ public class StudentsController(AppDb db) : ControllerBase
         return Ok(ViewOf(row));
     }
 
+    // STUDY PART: Delete a student
+    // Remove the selected or requested row and report whether it existed.
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id, CancellationToken ct)
     {

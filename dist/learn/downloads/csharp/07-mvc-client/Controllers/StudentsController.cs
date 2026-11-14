@@ -1,16 +1,23 @@
+// Follow the numbered teaching parts in order. The full file combines every part.
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Json;
 
+// STUDY PART: Define StudentsController
+// Keep this type in this file or its own named file. Its members describe data or behaviour.
 public class StudentsController(IHttpClientFactory factory) : Controller
 {
     HttpClient Api => factory.CreateClient("School");
 
+    // STUDY PART: Build the MVC page
+    // Ask the API for rows and pass them to the Razor view.
     public async Task<IActionResult> Index()
     {
         var rows = await Api.GetFromJsonAsync<List<Student>>("api/students") ?? [];
         return View(rows);
     }
 
+    // STUDY PART: Create a student
+    // Validate the input, create a new row, then report the result.
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(StudentInput input)
     {
@@ -25,6 +32,8 @@ public class StudentsController(IHttpClientFactory factory) : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    // STUDY PART: Update a student
+    // Find an existing row, validate new values, then save changes.
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Update(int id, StudentInput input)
     {
@@ -39,6 +48,8 @@ public class StudentsController(IHttpClientFactory factory) : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    // STUDY PART: Delete a student
+    // Remove the selected or requested row and report whether it existed.
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(int id)
     {

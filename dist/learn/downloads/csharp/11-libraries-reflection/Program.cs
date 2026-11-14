@@ -1,3 +1,4 @@
+// Follow the numbered teaching parts in order. The full file combines every part.
 using SharedRules;
 using System.Reflection;
 using System.Reflection.Emit;

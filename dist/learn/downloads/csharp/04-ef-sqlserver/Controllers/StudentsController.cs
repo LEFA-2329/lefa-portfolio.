@@ -1,12 +1,19 @@
+// Follow the numbered teaching parts in order. The full file combines every part.
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+// STUDY PART: Define StudentsController
+// Keep this type in this file or its own named file. Its members describe data or behaviour.
 [ApiController]
 [Route("api/students")]
 public class StudentsController(SchoolDb db) : ControllerBase
 {
+    // STUDY PART: Read all students
+    // Read the stored students and return them to the caller.
     [HttpGet]
     public async Task<ActionResult<List<Student>>> GetAll(CancellationToken ct) => await db.Students.AsNoTracking().OrderBy(s => s.Id).ToListAsync(ct);
+    // STUDY PART: Read one student
+    // Look up the requested ID. Return NotFound when it does not exist.
     [HttpGet("{id:int}")]
     public async Task<ActionResult<Student>> Get(int id, CancellationToken ct)
     {
@@ -14,6 +21,8 @@ public class StudentsController(SchoolDb db) : ControllerBase
         return row is null ? NotFound() : Ok(row);
     }
 
+    // STUDY PART: Create a student
+    // Validate the input, create a new row, then report the result.
     [HttpPost]
     public async Task<IActionResult> Create(StudentInput input, CancellationToken ct)
     {
@@ -29,6 +38,8 @@ public class StudentsController(SchoolDb db) : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = row.Id }, row);
     }
 
+    // STUDY PART: Update a student
+    // Find an existing row, validate new values, then save changes.
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, StudentInput input, CancellationToken ct)
     {
@@ -43,6 +54,8 @@ public class StudentsController(SchoolDb db) : ControllerBase
         return NoContent();
     }
 
+    // STUDY PART: Delete a student
+    // Remove the selected or requested row and report whether it existed.
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id, CancellationToken ct)
     {

@@ -1,13 +1,16 @@
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:MvvmLab" x:Class="MvvmLab.MainWindow" Title="MVVM student list" Width="500" Height="400">
+  <!-- STUDY PART: Connect the ViewModel -->
   <Window.DataContext>
     <local:StudentViewModel/>
   </Window.DataContext>
+  <!-- STUDY PART: Arrange the screen controls -->
   <StackPanel Margin="20">
     <TextBlock Text="Name"/>
     <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
     <TextBlock Text="Age"/>
     <TextBox Text="{Binding AgeText, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
     <Button Content="Add student" Command="{Binding AddCommand}" Margin="0,10"/>
+    <!-- STUDY PART: Display the student list -->
     <ListBox ItemsSource="{Binding Students}"/>
     <TextBlock Text="{Binding Status}" TextWrapping="Wrap"/>
   </StackPanel>

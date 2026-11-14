@@ -1,7 +1,8 @@
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=code-examples-45';
+import { codeParts, orderedTeachingFiles } from './step-by-step-code.mjs?v=code-parts-46';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=code-parts-46';
 import { escapeHTML as e } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=40';
 import { courseUnits, courseLessons } from './course-outline-and-lessons.mjs?v=csharp-44';
-import { exampleFiles } from './complete-example-files.mjs?v=csharp-44';
+import { exampleFiles } from './complete-example-files.mjs?v=code-parts-46';
 import { sourceZip } from './project-zip-download.mjs?v=csharp-44';
 const key = 'studylab-csharp-learning-v1';
 export const courseForLesson = (lesson) =>
@@ -85,6 +86,19 @@ export function newCoursePage({ view, page, id, course }) {
       dynamic_4: e(lesson.title),
       dynamic_5: e(lesson.outcomes.join(', ') + ' . ' + unit.sessions),
       dynamic_6: renderHtmlPage('studylab/' + lesson.page, {}),
+      dynamic_10: orderedTeachingFiles(files)
+        .map(
+          ({ file, index }, fileNumber) =>
+            `<section class="panel"><h3>File ${fileNumber + 1}: ${e(file.name)}</h3><p>${e(filePurpose(file.name))}</p><p>Use the numbered parts below in this order inside <strong>${e(file.name)}</strong>. A part can contain an unfinished class or block; it is a fragment, not a separate runnable program. The complete file is provided afterwards.</p>${codeParts(
+              file,
+            )
+              .map(
+                (part, partNumber) =>
+                  `<details class="cs-source-file" ${partNumber === 0 ? 'open' : ''}><summary>Part ${partNumber + 1}: ${e(part.title)}</summary><p>Continue in the same file, directly after the previous part. Read the comments before the code.</p><button type="button" class="button secondary" data-copy-part="${index}:${partNumber}" aria-label="Copy part ${partNumber + 1} of ${e(file.name)}">Copy this part</button><pre tabindex="0"><code>${e(part.code)}</code></pre></details>`,
+              )
+              .join('')}</section>`,
+        )
+        .join(''),
       dynamic_7: files
         .map(
           (f, index) =>
@@ -136,6 +150,21 @@ export function newCoursePage({ view, page, id, course }) {
       heading.scrollIntoView({ block: 'start' });
       heading.focus({ preventScroll: true });
     });
+    for (const button of view.querySelectorAll('[data-copy-part]')) {
+      button.addEventListener('click', async () => {
+        const [fileIndex, partIndex] = button.dataset.copyPart.split(':').map(Number);
+        const file = files[fileIndex],
+          part = codeParts(file)[partIndex];
+        try {
+          await navigator.clipboard.writeText(part.code);
+          view.querySelector('#cs-parts-status').textContent =
+            `Copied part ${partIndex + 1} of ${file.name}. Add it after the previous part in that file.`;
+        } catch {
+          view.querySelector('#cs-parts-status').textContent =
+            'Select and copy the part manually. The complete file is available below.';
+        }
+      });
+    }
     for (const button of view.querySelectorAll('[data-copy-source]')) {
       button.addEventListener('click', async () => {
         const file = files[Number(button.dataset.copySource)];
@@ -153,7 +182,8 @@ export function newCoursePage({ view, page, id, course }) {
       ['cs-collapse-code', false],
     ])
       view.querySelector('#' + id).addEventListener('click', () => {
-        for (const file of view.querySelectorAll('.cs-source-file')) file.open = open;
+        for (const file of view.querySelectorAll('#cs-complete-code .cs-source-file'))
+          file.open = open;
       });
     view.querySelector('#cs-download-project').addEventListener('click', () => {
       try {

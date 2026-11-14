@@ -61,3 +61,25 @@ test('project ZIP encodes exact source bytes with a matching directory', async (
   }
   assert.throws(() => sourceZip([{ name: '../escape.cs', content: 'bad' }]));
 });
+
+test('numbered parts reconstruct every complete source file exactly', async () => {
+  const { codeParts, orderedTeachingFiles } = await import(
+    '../dist/learn/js/csharp/step-by-step-code.mjs'
+  );
+  for (const files of Object.values(exampleFiles)) {
+    for (const file of files)
+      assert.equal(
+        codeParts(file)
+          .map((p) => p.code)
+          .join(''),
+        file.content,
+        file.name,
+      );
+    for (const { file, index } of orderedTeachingFiles(files))
+      assert.equal(files[index], file);
+  }
+  const minimal = exampleFiles['01-minimal-api'].find((f) => f.name === 'Program.cs');
+  assert(codeParts(minimal).length >= 6);
+  const config = exampleFiles['03-ef-sqlite'].find((f) => f.name === 'appsettings.json');
+  assert.doesNotThrow(() => JSON.parse(config.content));
+});

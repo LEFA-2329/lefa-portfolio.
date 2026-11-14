@@ -1,9 +1,12 @@
+// Follow the numbered teaching parts in order. The full file combines every part.
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace MvvmLab;
+// STUDY PART: Define StudentViewModel
+// Keep this type in this file or its own named file. Its members describe data or behaviour.
 public class StudentViewModel : INotifyPropertyChanged, IDataErrorInfo
 {
     string name = "", ageText = "", status = "Enter a valid name and age.";
@@ -42,6 +45,8 @@ public class StudentViewModel : INotifyPropertyChanged, IDataErrorInfo
     public ObservableCollection<string> Students { get; } = [];
     public RelayCommand AddCommand { get; }
 
+    // STUDY PART: Initialise StudentViewModel
+    // Set up the new object and its initial state.
     public StudentViewModel()
     {
         AddCommand = new(() =>
@@ -57,13 +62,23 @@ public class StudentViewModel : INotifyPropertyChanged, IDataErrorInfo
 
     public string this[string column] => column == nameof(Name) ? (string.IsNullOrWhiteSpace(Name) || Name.Length > 80 ? "Name is required, up to 80 characters." : "") : column == nameof(AgeText) ? (!int.TryParse(AgeText, out int age) || age < 16 || age > 100 ? "Age must be 16 to 100." : "") : "";
     public event PropertyChangedEventHandler? PropertyChanged;
+    // STUDY PART: Tell the View that a property changed
+    // Raise PropertyChanged so WPF refreshes the binding.
     void Changed([CallerMemberName] string? property = null) => PropertyChanged?.Invoke(this, new(property));
 }
 
+// STUDY PART: Define RelayCommand
+// Keep this type in this file or its own named file. Its members describe data or behaviour.
 public class RelayCommand(Action run, Func<bool> allowed) : ICommand
 {
+    // STUDY PART: Decide whether the command is enabled
+    // Return true only when the current state allows this action.
     public bool CanExecute(object? p) => allowed();
+    // STUDY PART: Run the requested action
+    // Execute the action or database command using its supplied values.
     public void Execute(object? p) => run();
     public event EventHandler? CanExecuteChanged;
+    // STUDY PART: Recheck command availability
+    // Tell WPF to ask CanExecute again after inputs change.
     public void Refresh() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 }

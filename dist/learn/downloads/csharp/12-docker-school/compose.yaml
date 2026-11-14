@@ -1,4 +1,6 @@
+# STUDY PART: Define the related services
 services:
+# STUDY PART: Database service and persistent files
   db:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
@@ -16,6 +18,7 @@ services:
       timeout: 5s
       retries: 20
       start_period: 30s
+# STUDY PART: API service and database connection
   api:
     build: ./Api
     environment:
@@ -26,6 +29,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
+# STUDY PART: MVC website calling the API
   website:
     build: ./Website
     environment:
@@ -35,5 +39,6 @@ services:
     depends_on:
       api:
         condition: service_started
+# STUDY PART: Named storage that survives container replacement
 volumes:
   school-data:

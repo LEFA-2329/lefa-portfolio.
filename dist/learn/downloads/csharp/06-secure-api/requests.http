@@ -1,3 +1,5 @@
+# STUDY PART: Configure the API address and initial request
+# Start the matching API before sending these requests.
 @base = http://localhost:5100
 POST {{base}}/auth/register
 Content-Type: application/json
@@ -8,11 +10,13 @@ POST {{base}}/auth/login?useCookies=false
 Content-Type: application/json
 
 {"email":"student@example.com","password":"ChooseYourOwn_Strong123!"}
-### Replace placeholder locally, never publish your token
+### Replace
+# STUDY PART: Replace request placeholder locally, never publish your token
 @token = PASTE_ACCESS_TOKEN_HERE
 GET {{base}}/api/students?page=1&pageSize=5&search=Lefa
 Authorization: Bearer {{token}}
 ### Create
+# STUDY PART: Create request
 POST {{base}}/api/students
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -25,6 +29,7 @@ Content-Type: application/json
 
 {"name":"Lefa Updated","age":23,"version":"PASTE_VERSION_FROM_GET"}
 ### Delete
+# STUDY PART: Delete request
 DELETE {{base}}/api/students/1
 Authorization: Bearer {{token}}
 
