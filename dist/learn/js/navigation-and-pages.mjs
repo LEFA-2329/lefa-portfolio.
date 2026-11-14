@@ -1,9 +1,10 @@
+import { progressBackupPage } from './shared/progress-backup-page.mjs?v=backup-54';
 import {
   newCourseSidebar,
   newCoursePage,
   courseForLesson,
   courseName,
-} from './csharp/csharp-and-docker-pages.mjs?v=study-packs-53';
+} from './csharp/csharp-and-docker-pages.mjs?v=backup-54';
 import {
   courseLessons as csharpLessons,
   courseUnits as csharpUnits,
@@ -12,7 +13,7 @@ import {
   studyBreakPage,
   helpfulResourcesPage,
 } from './shared/study-break-and-resources.mjs?v=csharp-44';
-import { renderHtmlPage } from '../../shared/render-html-page.mjs?v=study-packs-53';
+import { renderHtmlPage } from '../../shared/render-html-page.mjs?v=backup-54';
 import { builderPage } from './database/normalisation/normalisation-diagram-builder.mjs?v=40';
 import { normalisationPracticePage } from './database/normalisation/normalisation-question-page.mjs?v=40';
 import { databaseExamPage } from './database/database-exam-page.mjs?v=40';
@@ -20,7 +21,7 @@ import {
   progressPage,
   progressSummary,
   refreshLessonCompletion,
-} from './shared/learning-progress.mjs?v=csharp-44';
+} from './shared/learning-progress.mjs?v=backup-54';
 import { exercises as sqlChallenges } from './database/sql/sql-practice-challenges.mjs?v=40';
 import {
   databaseHome,
@@ -30,9 +31,9 @@ import {
   databaseResources,
   dbUnits,
   dbLessons,
-} from './database/database-pages.mjs?v=study-packs-53';
+} from './database/database-pages.mjs?v=backup-54';
 import { sqlPage } from './database/sql/sql-workspace-page.mjs?v=csharp-44';
-import './shared/theme-settings.mjs?v=csharp-44';
+import './shared/theme-settings.mjs?v=backup-54';
 import { examPage } from './programming-logic/practice-exam-page.mjs?v=csharp-44';
 import { workStore } from './shared/saved-work-storage.mjs?v=40';
 import {
@@ -107,7 +108,9 @@ function sidebar(unit) {
   const [newPage, newId] = location.hash.slice(1).split('/');
   const isNewCourse =
     newPage?.startsWith('cs') ||
-    (['study-break', 'helpful-resources', 'saved-work', 'about'].includes(newPage) &&
+    (['study-break', 'helpful-resources', 'saved-work', 'about', 'backup'].includes(
+      newPage,
+    ) &&
       ['csharp', 'docker'].includes(activeModule));
   if (isNewCourse) {
     if (newPage === 'cs-lesson')
@@ -125,6 +128,7 @@ function sidebar(unit) {
   const page = location.hash.slice(1).split('/')[0] || 'home',
     shared = [
       'saved-work',
+      'backup',
       'about',
       'progress',
       'normalisation',
@@ -1312,64 +1316,67 @@ function route() {
   else if (page === 'lab') labPage();
   else if (page === 'trace') tracePage();
   else if (page === 'trace-guided') guidedTracePage();
+  else if (page === 'backup') pageCleanup = progressBackupPage({ view, sidebar });
   else if (page === 'saved-work') savedWorkPage();
   else if (page === 'about') about();
   else dashboard();
   window.scrollTo({ top: 0, behavior: 'instant' });
   document.title =
-    (page?.startsWith('cs')
-      ? courseName(activeModule)
-      : page === 'nf-builder'
-        ? 'Dependency diagram builder'
-        : page === 'normalisation'
-          ? 'Dependency diagram practice'
-          : page === 'progress'
-            ? 'My progress'
-            : page === 'db-exams'
-              ? 'Database practice exams'
-              : page === 'db-advanced'
-                ? 'Advanced Database'
-                : page === 'db-intermediate'
-                  ? 'Database Intermediate . DATA6222'
-                  : page === 'db'
-                    ? 'Database Introduction'
-                    : page === 'db-unit'
-                      ? 'Database unit overview'
-                      : page === 'db-lesson'
-                        ? dbLessons.find((l) => l.id === id)?.title || 'Databases'
-                        : page === 'db-practice'
-                          ? 'Database practice'
-                          : page === 'db-resources'
-                            ? 'Database resources'
-                            : page === 'sql'
-                              ? 'SQL workspace'
-                              : page === 'practice'
-                                ? 'Practice'
-                                : page === 'tools'
-                                  ? 'Code tools'
-                                  : page === 'lesson'
-                                    ? activeLesson?.title
-                                    : page === 'lab'
-                                      ? 'Diagram lab'
-                                      : page === 'trace'
-                                        ? 'Interactive tracing'
-                                        : page === 'trace-guided'
-                                          ? 'Guided traces'
-                                          : page === 'saved-work'
-                                            ? 'Saved work'
-                                            : page === 'exams'
-                                              ? 'Practice exams'
-                                              : page === 'resources'
-                                                ? 'Study resources'
-                                                : page === 'activities'
-                                                  ? 'Interactive exercises'
-                                                  : page === 'activity'
-                                                    ? 'Interactive exercise'
-                                                    : page === 'tasks'
-                                                      ? 'Practice tasks'
-                                                      : page === 'task'
-                                                        ? 'Practice task'
-                                                        : 'Programming Logic and Design') +
+    (page === 'backup'
+      ? 'Progress backup and restore'
+      : page?.startsWith('cs')
+        ? courseName(activeModule)
+        : page === 'nf-builder'
+          ? 'Dependency diagram builder'
+          : page === 'normalisation'
+            ? 'Dependency diagram practice'
+            : page === 'progress'
+              ? 'My progress'
+              : page === 'db-exams'
+                ? 'Database practice exams'
+                : page === 'db-advanced'
+                  ? 'Advanced Database'
+                  : page === 'db-intermediate'
+                    ? 'Database Intermediate . DATA6222'
+                    : page === 'db'
+                      ? 'Database Introduction'
+                      : page === 'db-unit'
+                        ? 'Database unit overview'
+                        : page === 'db-lesson'
+                          ? dbLessons.find((l) => l.id === id)?.title || 'Databases'
+                          : page === 'db-practice'
+                            ? 'Database practice'
+                            : page === 'db-resources'
+                              ? 'Database resources'
+                              : page === 'sql'
+                                ? 'SQL workspace'
+                                : page === 'practice'
+                                  ? 'Practice'
+                                  : page === 'tools'
+                                    ? 'Code tools'
+                                    : page === 'lesson'
+                                      ? activeLesson?.title
+                                      : page === 'lab'
+                                        ? 'Diagram lab'
+                                        : page === 'trace'
+                                          ? 'Interactive tracing'
+                                          : page === 'trace-guided'
+                                            ? 'Guided traces'
+                                            : page === 'saved-work'
+                                              ? 'Saved work'
+                                              : page === 'exams'
+                                                ? 'Practice exams'
+                                                : page === 'resources'
+                                                  ? 'Study resources'
+                                                  : page === 'activities'
+                                                    ? 'Interactive exercises'
+                                                    : page === 'activity'
+                                                      ? 'Interactive exercise'
+                                                      : page === 'tasks'
+                                                        ? 'Practice tasks'
+                                                        : page === 'task'
+                                                          ? 'Practice task'
+                                                          : 'Programming Logic and Design') +
     ' | StudyLab';
   const report = $('#report-content');
   if (report) {

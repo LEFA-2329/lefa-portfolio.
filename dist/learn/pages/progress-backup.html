@@ -1,0 +1,86 @@
+<p class="eyebrow">YOUR PROGRESS . YOUR COPY</p>
+<h1>Back up or restore progress</h1>
+<p class="lede">
+  Save a copy of your StudyLab work, then restore it in another browser or on another
+  device. No account is needed.
+</p>
+<p class="note">
+  This is manual backup, not automatic syncing. Download a fresh file after doing more
+  work. Keep it private because it can contain your written answers and code. Live SQL
+  database contents, open timers and unsaved edits are not copied.
+</p>
+<p id="backup-status" role="status" aria-live="polite"></p>
+<section class="panel">
+  <h2>1. Download your progress</h2>
+  <p>
+    Includes saved activities and drafts, completed lesson entries, checked quiz records,
+    practice exam records and C#/Docker lesson notes. Only StudyLab learning data is
+    included.
+  </p>
+  <label
+    ><input id="backup-export-settings" type="checkbox" /> Include my theme and display
+    settings</label
+  >
+  <div class="button-row">
+    <button id="backup-export" class="button" type="button">
+      Download progress backup</button
+    ><a class="button secondary" href="#saved-work">Review saved work</a>
+  </div>
+  <p>
+    Transfer the downloaded .json file to the other device, for example through your own
+    drive or a cable. Open this page there and choose the file below.
+  </p>
+</section>
+<section class="panel">
+  <h2>2. Choose a backup to preview</h2>
+  <label for="backup-file">StudyLab progress backup (.json, up to 8 MB)</label>
+  <input id="backup-file" type="file" accept=".json,application/json" />
+  <p>
+    The file is read in this browser. Choosing it does not upload it to a server or change
+    progress.
+  </p>
+  <div id="backup-preview" hidden>
+    <h3>Backup preview</h3>
+    <button id="backup-refresh" class="button secondary" type="button">
+      Refresh preview
+    </button>
+    <p id="backup-date"></p>
+    <p id="backup-summary"></p>
+    <label for="backup-mode">Restore option</label
+    ><select id="backup-mode">
+      <option value="merge">Merge - keep existing progress and add backup data</option>
+      <option value="replace">
+        Replace - use the backup instead of current learning data
+      </option>
+    </select>
+    <p id="backup-mode-help"></p>
+    <label id="backup-settings-choice" hidden
+      ><input id="backup-restore-settings" type="checkbox" /> Also restore the display
+      settings from this file</label
+    >
+    <p id="backup-result-summary"></p>
+    <div id="backup-conflicts"></div>
+    <h3>3. Protect your current work, then restore</h3>
+    <p>
+      Download a safety copy of this browser's current progress before applying changes.
+      This safety copy includes display settings so you can recover them too.
+    </p>
+    <button id="backup-safety" class="button secondary" type="button">
+      Download current progress safety backup
+    </button>
+    <label class="backup-confirmation"
+      ><input id="backup-confirm" type="checkbox" disabled /><span
+        id="backup-confirm-label"
+        >I have saved the safety backup and want to apply this restore.</span
+      ></label
+    >
+    <button id="backup-apply" class="button" type="button" disabled>
+      Restore and reload StudyLab
+    </button>
+    <p>
+      StudyLab reloads after a successful restore to use the restored records. If you
+      change saved work in another tab after this preview, preview the file again before
+      restoring.
+    </p>
+  </div>
+</section>

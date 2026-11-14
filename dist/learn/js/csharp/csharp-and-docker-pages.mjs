@@ -335,12 +335,14 @@ export function newCoursePage({ view, page, id, course }) {
     title += ' progress';
     description =
       'Your completed lessons and last checked quiz scores. Completion is self-reported and stored in this browser.';
-    content = lessons
-      .map(
-        (l) =>
-          `<article class="panel"><h2>${link('#cs-lesson/' + l.id, l.title, 'text-link')}</h2><p>${state[l.id]?.complete === true ? 'Complete' : 'Not marked complete'} . Readiness ${(state[l.id]?.readiness || []).filter(Boolean).length}/3 self-checked . Quiz ${Number.isInteger(state[l.id]?.score) ? state[l.id].score : 0}/${l.quiz.length}</p></article>`,
-      )
-      .join('');
+    content =
+      link('#backup', 'Back up or restore progress') +
+      lessons
+        .map(
+          (l) =>
+            `<article class="panel"><h2>${link('#cs-lesson/' + l.id, l.title, 'text-link')}</h2><p>${state[l.id]?.complete === true ? 'Complete' : 'Not marked complete'} . Readiness ${(state[l.id]?.readiness || []).filter(Boolean).length}/3 self-checked . Quiz ${Number.isInteger(state[l.id]?.score) ? state[l.id].score : 0}/${l.quiz.length}</p></article>`,
+        )
+        .join('');
   } else if (page === 'cs-downloads') {
     title += ' complete examples';
     description =
