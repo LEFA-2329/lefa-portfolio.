@@ -83,3 +83,15 @@ test('numbered parts reconstruct every complete source file exactly', async () =
   const config = exampleFiles['03-ef-sqlite'].find((f) => f.name === 'appsettings.json');
   assert.doesNotThrow(() => JSON.parse(config.content));
 });
+test('beginner guidance provides a separate runnable starting example and standard hyphens', () => {
+  const guide = readFileSync(
+    new URL('../dist/learn/pages/csharp-beginner-guide.html', import.meta.url),
+    'utf8',
+  );
+  assert.match(guide, /separate Console App/);
+  assert.match(guide, /Hello Lefa\. You are 22\./);
+  assert.match(guide, /cs-lesson\/cs-crud-minimal/);
+  assert.match(guide, /Dependency injection means/i);
+  assert.ok(!/[\u2013\u2014]/.test(guide));
+  for (const unit of courseUnits) assert.ok(!/[\u2013\u2014]/.test(unit.sessions));
+});

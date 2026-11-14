@@ -1,13 +1,36 @@
-import { colourCode } from './code-syntax-colours.mjs?v=code-colours-47';
+import { colourCode } from './code-syntax-colours.mjs?v=beginner-csharp-48';
 import {
   codeParts,
   orderedTeachingFiles,
-} from './step-by-step-code.mjs?v=code-colours-47';
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=code-colours-47';
+} from './step-by-step-code.mjs?v=beginner-csharp-48';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=beginner-csharp-48';
 import { escapeHTML as e } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=40';
-import { courseUnits, courseLessons } from './course-outline-and-lessons.mjs?v=csharp-44';
-import { exampleFiles } from './complete-example-files.mjs?v=code-colours-47';
+import {
+  courseUnits,
+  courseLessons,
+} from './course-outline-and-lessons.mjs?v=beginner-csharp-48';
+import { exampleFiles } from './complete-example-files.mjs?v=beginner-csharp-48';
 import { sourceZip } from './project-zip-download.mjs?v=csharp-44';
+const beginnerGoals = {
+  'csharp-1':
+    'Think of a program as small steps that work with values and objects. In this unit you will learn how objects are cleaned up, how to reuse code and how to handle work that takes time. Try one feature before combining several.',
+  'csharp-2':
+    'Imagine a student office. A request asks the office to add, show, change or remove a student. Your API receives that request, checks it and sends back a result. Start with the web foundations, then the in-memory CRUD example before adding a database.',
+  'csharp-3':
+    'Start with saving and reading a small piece of data. A file stores data on disk. A database stores it in organised tables. Learn one storage option first, then compare the others.',
+  'csharp-4':
+    'Think of a screen, its data and the code that connects them. The View is the screen. The Model describes the data. The ViewModel gives the screen values and actions. Start with one textbox and one button.',
+  'csharp-5':
+    'A class library is a toolbox that several projects can share. Start by calling one ordinary method from that toolbox. Then explore reflection, which lets code inspect types, and dynamic, which checks some operations while the program runs.',
+};
+function beginnerGuide(unit) {
+  return renderHtmlPage('studylab/csharp-beginner-guide', {
+    dynamic_1: e(
+      beginnerGoals[unit] ||
+        'Start with the small console example, then follow the web foundations and beginner CRUD lessons. Take one step at a time.',
+    ),
+  });
+}
 const key = 'studylab-csharp-learning-v1';
 export const courseForLesson = (lesson) =>
   lesson?.unit.startsWith('docker-') ? 'docker' : 'csharp';
@@ -90,10 +113,11 @@ export function newCoursePage({ view, page, id, course }) {
       dynamic_4: e(lesson.title),
       dynamic_5: e(lesson.outcomes.join(', ') + ' . ' + unit.sessions),
       dynamic_6: renderHtmlPage('studylab/' + lesson.page, {}),
+      dynamic_11: course === 'csharp' ? beginnerGuide(lesson.unit) : '',
       dynamic_10: orderedTeachingFiles(files)
         .map(
           ({ file, index }, fileNumber) =>
-            `<section class="panel"><h3>File ${fileNumber + 1}: ${e(file.name)}</h3><p>${e(filePurpose(file.name))}</p><p>Use the numbered parts below in this order inside <strong>${e(file.name)}</strong>. A part can contain an unfinished class or block; it is a fragment, not a separate runnable program. The complete file is provided afterwards.</p>${codeParts(
+            `<section class="panel"><h3>File ${fileNumber + 1}: ${e(file.name)}</h3><p>${e(filePurpose(file.name))}</p><p>Use the numbered parts below in this order inside <strong>${e(file.name)}</strong>. A part is a small piece of this file. Add the next part underneath it. Build only after all parts of the file are in place. The complete file is provided afterwards.</p>${codeParts(
               file,
             )
               .map(
@@ -210,7 +234,7 @@ export function newCoursePage({ view, page, id, course }) {
     description =
       course === 'docker'
         ? 'A separate practical module: build .NET images, run an API and MVC website with SQL Server, then manage networks and persistent data.'
-        : 'Follow Units 1–5 from the supplied outline. Read simple explanations, inspect complete files, test in Visual Studio, and practise with worked answers.';
+        : 'Follow Units 1-5 from the supplied outline. Read simple explanations, inspect complete files, test in Visual Studio, and practise with worked answers.';
   let content = '';
   if (page === 'cs-progress') {
     title += ' progress';
@@ -249,15 +273,17 @@ export function newCoursePage({ view, page, id, course }) {
       title = chosen[0].title;
       description = chosen[0].sessions;
     }
-    content = chosen
-      .map(
-        (u) =>
-          `<section class="course-unit"><h2>${course === 'docker' ? '' : `Unit ${u.number}: `}${link('#cs-unit/' + u.id, u.title, 'text-link')}</h2><p>${e(u.sessions)}</p><details><summary>Learning outcomes</summary><ul>${u.outcomes.map((o) => `<li>${e(o)}</li>`).join('')}</ul></details><div class="course-lesson-links">${lessons
-            .filter((l) => l.unit === u.id)
-            .map((l) => link('#cs-lesson/' + l.id, l.title, 'topic-link'))
-            .join('')}</div></section>`,
-      )
-      .join('');
+    content =
+      (course === 'csharp' ? beginnerGuide(page === 'cs-unit' ? id : '') : '') +
+      chosen
+        .map(
+          (u) =>
+            `<section class="course-unit"><h2>${course === 'docker' ? '' : `Unit ${u.number}: `}${link('#cs-unit/' + u.id, u.title, 'text-link')}</h2><p>${e(u.sessions)}</p><details><summary>Learning outcomes</summary><ul>${u.outcomes.map((o) => `<li>${e(o)}</li>`).join('')}</ul></details><div class="course-lesson-links">${lessons
+              .filter((l) => l.unit === u.id)
+              .map((l) => link('#cs-lesson/' + l.id, l.title, 'topic-link'))
+              .join('')}</div></section>`,
+        )
+        .join('');
   }
   view.innerHTML = renderHtmlPage('studylab/csharp-course-shell', {
     dynamic_1: course === 'docker' ? 'DOCKER . PRACTICAL LEARNING' : 'C# . PROG6212',

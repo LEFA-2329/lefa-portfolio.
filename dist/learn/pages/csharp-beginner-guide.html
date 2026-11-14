@@ -1,0 +1,130 @@
+<section class="panel" aria-labelledby="beginner-start">
+  <h2 id="beginner-start">New to C#? Start here</h2>
+  <p>{{dynamic_1}}</p>
+  <p>
+    C# is the language you write. .NET provides tools and ready-made features that run
+    your program. Visual Studio is the app where you edit, build and run it.
+  </p>
+  <p>
+    Suggested web learning order:
+    <a href="#cs-lesson/cs-web-foundations">1. Understand web apps</a>,
+    <a href="#cs-lesson/cs-crud-minimal">2. Try beginner CRUD</a>,
+    <a href="#cs-lesson/cs-crud-controllers">3. Organise code with controllers</a>, then
+    <a href="#cs-lesson/cs-ef-sqlite">4. Save data in a database</a>. You can return to
+    the other units whenever you need them.
+  </p>
+  <ol>
+    <li>Read the short explanation first. You do not need to memorise every word.</li>
+    <li>
+      Download the example ZIP, extract it, then open its .csproj file in Visual Studio.
+      This file tells Visual Studio how to build the project.
+    </li>
+    <li>
+      Wait for package restore. A package is a library of ready-made code. NuGet downloads
+      the packages listed in the project.
+    </li>
+    <li>
+      Follow one numbered part at a time. Add the parts to the same named file, in order.
+      The full version is below if you get stuck.
+    </li>
+    <li>
+      Choose Build &gt; Build Solution to check the code. Then follow this lesson's run
+      instructions and compare the result with its expected output.
+    </li>
+    <li>
+      Change one small thing, run again and explain what changed. Try the task before
+      reading its answer.
+    </li>
+  </ol>
+  <details>
+    <summary>Try your first C# program in a separate Console App</summary>
+    <p>
+      In Visual Studio choose Create a new project &gt; Console App (C#), then select .NET
+      10. Replace everything in Program.cs with this code. Keep this practice project
+      separate from the API and desktop projects.
+    </p>
+    <div class="cs-source-file">
+      <pre tabindex="0"><code><span class="code-comment">// Store a name as text.</span>
+<span class="code-keyword">string</span> name = <span class="code-string">"Lefa"</span>;
+<span class="code-comment">// Store an age as a whole number.</span>
+<span class="code-keyword">int</span> age = <span class="code-number">22</span>;
+<span class="code-comment">// Print a message. Braces insert the stored values.</span>
+<span class="code-type">Console</span>.WriteLine($<span class="code-string">"Hello {name}. You are {age}."</span>);</code></pre>
+    </div>
+    <p>
+      Choose Debug &gt; Start Without Debugging. Expected output:
+      <samp>Hello Lefa. You are 22.</samp>
+    </p>
+    <p>
+      <code>string</code> means text. <code>int</code> means a whole number. A variable is
+      a named place to store a value. <code>=</code> stores the value on the right in the
+      variable on the left. Double quotes surround text. A semicolon ends these
+      statements. <code>//</code> starts a comment for the reader; the program ignores it.
+    </p>
+    <p>
+      Try it: change the name to your own and add 1 to the age. Predict the message, then
+      run it again.
+    </p>
+  </details>
+  <details>
+    <summary>Simple meanings of words used in these lessons</summary>
+    <dl>
+      <dt>Class and object</dt>
+      <dd>
+        A class describes a kind of thing. An object is one thing created from that
+        description. A Student class can describe many student objects.
+      </dd>
+      <dt>Property</dt>
+      <dd>A named value on an object, such as a student's Name or Age.</dd>
+      <dt>Method, parameter and return</dt>
+      <dd>
+        A method is a named set of steps. A parameter receives input. Return sends a
+        result back to the code that called it.
+      </dd>
+      <dt>List and LINQ</dt>
+      <dd>
+        A list holds several items. LINQ lets you find, sort or select information from
+        those items.
+      </dd>
+      <dt>API, request and response</dt>
+      <dd>
+        An API lets programs ask each other to do work. A request is the question sent to
+        it. A response is the result sent back.
+      </dd>
+      <dt>Route and endpoint</dt>
+      <dd>
+        A route is an address pattern such as /api/students. An endpoint connects an
+        address and HTTP action to the code that handles it.
+      </dd>
+      <dt>CRUD</dt>
+      <dd>Create adds an item. Read shows it. Update changes it. Delete removes it.</dd>
+      <dt>DTO and JSON</dt>
+      <dd>
+        A DTO is a small object used to carry data into or out of an API. JSON is a text
+        format used to send that data.
+      </dd>
+      <dt>Database, EF Core and migration</dt>
+      <dd>
+        A database stores rows that remain after the app closes. EF Core helps C# work
+        with those rows. A migration describes a change to database tables.
+      </dd>
+      <dt>Service and dependency injection</dt>
+      <dd>
+        A service does a job for other code. Dependency injection means .NET supplies a
+        registered service when your code needs it.
+      </dd>
+      <dt>async and await</dt>
+      <dd>
+        Some work, such as reading a database, takes time. Await lets a method wait for
+        that work without keeping its thread busy. Async allows await in the method. It
+        does not automatically create a new thread.
+      </dd>
+      <dt>Build error and runtime error</dt>
+      <dd>
+        A build error stops the code from compiling. A runtime error happens after the
+        program starts. Read the first error, check its file and line, then fix one issue
+        at a time.
+      </dd>
+    </dl>
+  </details>
+</section>

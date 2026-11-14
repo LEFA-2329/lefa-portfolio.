@@ -4,7 +4,7 @@ export const courseUnits = [
     id: 'csharp-1',
     number: 1,
     title: 'Object lifetime and advanced C#',
-    sessions: '1–12',
+    sessions: '1-12',
     outcomes: [
       'LO1 Explain garbage collection in .NET.',
       'LO2 Develop programs using disposable objects.',
@@ -24,7 +24,7 @@ export const courseUnits = [
     id: 'csharp-2',
     number: 2,
     title: 'ASP.NET Core and REST API development',
-    sessions: '13–34',
+    sessions: '13-34',
     outcomes: [
       'LO1 Explain the Model View Controller pattern.',
       'LO2 Identify ASP.NET Core features.',
@@ -36,7 +36,7 @@ export const courseUnits = [
     id: 'csharp-3',
     number: 3,
     title: 'Files, data access and desktop applications',
-    sessions: '35–45',
+    sessions: '35-45',
     outcomes: [
       'LO1 Create desktop applications that store data.',
       'LO2 Manipulate files and directories with core I/O types.',
@@ -57,7 +57,7 @@ export const courseUnits = [
     id: 'csharp-4',
     number: 4,
     title: 'WPF, MVVM, notifications and commands',
-    sessions: '46–58',
+    sessions: '46-58',
     outcomes: [
       'LO1 Use MVVM in WPF.',
       'LO2 Explain Model, View and ViewModel.',
@@ -71,7 +71,7 @@ export const courseUnits = [
     id: 'csharp-5',
     number: 5,
     title: 'Libraries, reflection and dynamic programming',
-    sessions: '59–62',
+    sessions: '59-62',
     outcomes: [
       'LO1 Share code through class libraries.',
       'LO2 Explain when a class library is useful.',

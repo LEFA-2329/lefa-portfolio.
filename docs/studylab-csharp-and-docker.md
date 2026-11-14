@@ -1,6 +1,6 @@
 # C# PROG6212 and Docker
 
-C# PROG6212 follows Units 1–5 from the supplied outline. Docker is a separate picker entry with foundations/image creation and Compose topics, rather than a page named Learning Unit 6. The PRLD display code is PRLD5121; existing internal prld keys and routes remain stable so previous work is preserved.
+C# PROG6212 follows Units 1-5 from the supplied outline. Docker is a separate picker entry with foundations/image creation and Compose topics, rather than a page named Learning Unit 6. The PRLD display code is PRLD5121; existing internal prld keys and routes remain stable so previous work is preserved.
 
 There are 28 C# lessons, 7 Docker lessons, 70 expandable tasks/answers, 35 checked quiz questions, and 14 complete example packs. Each lesson shows the relevant source files and offers a browser-generated ZIP. Examples use .NET 10. Lesson narratives distinguish expected results, classroom shortcuts and modern/legacy APIs. C# is displayed in StudyLab and executed locally in Visual Studio/.NET, rather than pretending to run C# in JavaScript.
 
@@ -45,3 +45,7 @@ Original explanations were checked against Microsoft Learn documentation for ASP
 Each lesson now shows ordered files with small numbered code fragments, followed by the complete project files. Source comments beginning with STUDY PART define meaningful boundaries; C# comments were placed at syntax-node boundaries rather than inside strings or method bodies. XML, Docker, SQL and HTTP examples use their own comment syntax. JSON stays valid JSON, with explanations outside the code.
 
 Edit the source examples to change comments or boundaries. `step-by-step-code.mjs` extracts parts without removing text, so joining the parts exactly reconstructs the downloadable file. A fragment can contain an unfinished class/block and is labelled as such; combine the fragments in the same file before building. The complete-file section and ZIP remain the runnable reference.
+
+## Beginner guidance
+
+The editable csharp-beginner-guide.html appears on C# course and lesson pages. It explains setup, a separate runnable console example, common terms and a suggested web learning order. Unit-specific plain-English introductions live in beginnerGoals in csharp-and-docker-pages.mjs. Keep displayed punctuation to standard hyphens.
