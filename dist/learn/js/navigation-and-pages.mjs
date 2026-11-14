@@ -3,7 +3,7 @@ import {
   newCoursePage,
   courseForLesson,
   courseName,
-} from './csharp/csharp-and-docker-pages.mjs?v=guided-csharp-50';
+} from './csharp/csharp-and-docker-pages.mjs?v=study-packs-53';
 import {
   courseLessons as csharpLessons,
   courseUnits as csharpUnits,
@@ -12,7 +12,7 @@ import {
   studyBreakPage,
   helpfulResourcesPage,
 } from './shared/study-break-and-resources.mjs?v=csharp-44';
-import { renderHtmlPage } from '../../shared/render-html-page.mjs?v=csharp-44';
+import { renderHtmlPage } from '../../shared/render-html-page.mjs?v=study-packs-53';
 import { builderPage } from './database/normalisation/normalisation-diagram-builder.mjs?v=40';
 import { normalisationPracticePage } from './database/normalisation/normalisation-question-page.mjs?v=40';
 import { databaseExamPage } from './database/database-exam-page.mjs?v=40';
@@ -30,7 +30,7 @@ import {
   databaseResources,
   dbUnits,
   dbLessons,
-} from './database/database-pages.mjs?v=csharp-44';
+} from './database/database-pages.mjs?v=study-packs-53';
 import { sqlPage } from './database/sql/sql-workspace-page.mjs?v=csharp-44';
 import './shared/theme-settings.mjs?v=csharp-44';
 import { examPage } from './programming-logic/practice-exam-page.mjs?v=csharp-44';

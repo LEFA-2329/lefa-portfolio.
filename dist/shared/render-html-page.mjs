@@ -1,4 +1,4 @@
-import { htmlPages } from './compiled-html-pages.mjs?v=guided-csharp-50';
+import { htmlPages } from './compiled-html-pages.mjs?v=study-packs-53';
 
 // These templates are authored in this repository and compiled before publication.
 // Callers supply trusted markup or already escaped text; never pass raw user input.
