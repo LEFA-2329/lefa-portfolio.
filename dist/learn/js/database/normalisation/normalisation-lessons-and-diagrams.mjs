@@ -1,5 +1,5 @@
-import { escapeHTML as e } from '../../programming-logic/pseudocode-parser-and-diagrams.mjs?v=38';
-import { additionalExamples } from './additional-normalisation-cases.mjs?v=38';
+import { escapeHTML as e } from '../../programming-logic/pseudocode-parser-and-diagrams.mjs?v=39';
+import { additionalExamples } from './additional-normalisation-cases.mjs?v=39';
 const D = (from, to, kind = 'full') => ({ from, to, kind });
 const T = (name, key, attributes, dependencies, foreign = {}) => ({
   name,

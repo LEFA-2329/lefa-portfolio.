@@ -82,3 +82,126 @@
     font-size: 1.8rem;
   }
 }
+
+.break-game-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 24px 0;
+}
+.break-game-picker button {
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+.break-game-picker button[aria-pressed='true'] {
+  background: var(--chosen-accent);
+  color: var(--accent-ink);
+}
+.break-game[hidden],
+#refresh-game-host[hidden] {
+  display: none;
+}
+.word-search-board {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  max-width: 520px;
+  gap: 3px;
+  margin: 20px 0;
+}
+.word-search-board button {
+  aspect-ratio: 1;
+  min-width: 0;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--surface-alt);
+  color: var(--ink);
+  font: 700 1rem monospace;
+  cursor: pointer;
+}
+.word-search-board .word-found {
+  background: var(--chosen-accent);
+  color: var(--accent-ink);
+}
+.word-search-board .word-start {
+  outline: 3px solid var(--ink);
+  outline-offset: 1px;
+  z-index: 1;
+}
+.word-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  padding: 0;
+  list-style: none;
+  font-family: monospace;
+}
+.sliding-board,
+.tic-board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  max-width: 360px;
+  margin: 24px 0;
+}
+.sliding-board button,
+.tic-board button {
+  aspect-ratio: 1;
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface-alt);
+  color: var(--ink);
+  font-size: 2rem;
+  cursor: pointer;
+}
+.sliding-board .empty-tile {
+  background: var(--paper);
+  border-style: dashed;
+  cursor: default;
+}
+.snake-board {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  max-width: 420px;
+  aspect-ratio: 1;
+  border: 3px solid var(--ink);
+  background: var(--paper);
+  margin: 20px 0;
+}
+.snake-board span {
+  aspect-ratio: 1;
+  min-width: 0;
+  display: grid;
+  place-items: center;
+  line-height: 1;
+}
+.snake-board .snake-body {
+  background: var(--ink);
+  border: 1px solid var(--paper);
+  border-radius: 4px;
+}
+.snake-board .snake-fruit {
+  background: var(--chosen-accent);
+  color: var(--accent-ink);
+  border-radius: 50%;
+}
+.snake-directions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-width: 420px;
+}
+.snake-directions button {
+  min-width: 70px;
+  min-height: 48px;
+}
+.refresh-games button:focus-visible,
+.snake-board:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}

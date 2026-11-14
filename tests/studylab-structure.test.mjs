@@ -34,7 +34,7 @@ for (const file of modules) {
     }
 }
 assert(imports > 80);
-assert.equal(modules.length, 44);
+assert.equal(modules.length, 46);
 const master = readFileSync(path.join(root, 'styles.css'), 'utf8');
 const styles = [...master.matchAll(/@import url\(['"](.+?)['"]\)/g)].map(
   (m) => m[1].split('?')[0],
@@ -56,7 +56,7 @@ for (const file of styles) assert(existsSync(path.join(root, file)));
 assert(existsSync(path.join(root, 'vendor/sqljs/sql-wasm.wasm')));
 assert(
   readFileSync(path.join(root, 'index.html'), 'utf8').includes(
-    './studylab-start.mjs?v=studylab-38',
+    './studylab-start.mjs?v=studylab-39',
   ),
 );
 console.log(

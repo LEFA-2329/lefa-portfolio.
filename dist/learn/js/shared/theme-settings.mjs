@@ -1,4 +1,4 @@
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=38';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=39';
 import {
   themes,
   defaults,
@@ -6,8 +6,8 @@ import {
   createPreferenceStore,
   resolvedTheme,
   SETTINGS_KEY,
-} from './display-preferences.mjs?v=38';
-import { escapeHTML as escape } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=38';
+} from './display-preferences.mjs?v=39';
+import { escapeHTML as escape } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=39';
 
 const launch = document.querySelector('#settings-open');
 const device = matchMedia('(prefers-color-scheme: dark)');

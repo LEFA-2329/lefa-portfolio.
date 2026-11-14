@@ -1,7 +1,8 @@
+import { mountRefreshGame } from './refresh-games.mjs?v=39';
 // Page layouts: pages/study-break.html and pages/helpful-resources.html.
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=38';
-import { escapeHTML as escape } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=38';
-import { resources, recommendedTopic } from './study-resource-catalog.mjs?v=38';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=39';
+import { escapeHTML as escape } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=39';
+import { resources, recommendedTopic } from './study-resource-catalog.mjs?v=39';
 export function shuffledGarden(random = Math.random) {
   const cards = ['🌻', '🌿', '🌸', '🍀', '🌵', '🍄'].flatMap((symbol) => [
     symbol,
@@ -92,8 +93,21 @@ export function studyBreakPage({ view, returnTo = '#home' }) {
   });
   view.querySelector('#break-restart').addEventListener('click', reset);
   reset();
-  // No timers or global listeners to leak when leaving this page.
-  return () => {};
+  let cleanupGame = () => {};
+  for (const button of view.querySelectorAll('[data-break-game]')) {
+    button.addEventListener('click', () => {
+      cleanupGame();
+      cleanupGame = () => {};
+      const game = button.dataset.breakGame;
+      const host = view.querySelector('#refresh-game-host');
+      view.querySelector('.break-game').hidden = game !== 'garden';
+      host.hidden = game === 'garden';
+      for (const choice of view.querySelectorAll('[data-break-game]'))
+        choice.setAttribute('aria-pressed', String(choice === button));
+      if (game !== 'garden') cleanupGame = mountRefreshGame(host, game);
+    });
+  }
+  return () => cleanupGame();
 }
 export function helpfulResourcesPage({ view, course, title = '', returnTo = '#home' }) {
   view.innerHTML = renderHtmlPage('studylab/helpful-resources', {

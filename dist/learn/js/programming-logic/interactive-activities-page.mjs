@@ -1,7 +1,7 @@
-import { workStore } from '../shared/saved-work-storage.mjs?v=38';
-import { cleanActivity } from '../shared/saved-programming-answers.mjs?v=38';
-import { activities, checkActivity } from './content/interactive-activities.mjs?v=38';
-import { escapeHTML as e } from './pseudocode-parser-and-diagrams.mjs?v=38';
+import { workStore } from '../shared/saved-work-storage.mjs?v=39';
+import { cleanActivity } from '../shared/saved-programming-answers.mjs?v=39';
+import { activities, checkActivity } from './content/interactive-activities.mjs?v=39';
+import { escapeHTML as e } from './pseudocode-parser-and-diagrams.mjs?v=39';
 const work = new Map();
 let filters = { unit: 'All', kind: 'All' };
 const types = ['Missing line', 'Predict the output', 'Reorder statements', 'Debugging'];
