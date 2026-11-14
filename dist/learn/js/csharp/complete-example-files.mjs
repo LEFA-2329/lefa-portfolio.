@@ -1,0 +1,435 @@
+// Generated from downloads/csharp. Edit the actual source files, then npm run build.
+export const exampleFiles = {
+  "01-minimal-api": [
+    {
+      "name": "Program.cs",
+      "content": "using System.Collections.Concurrent;\n\nvar builder = WebApplication.CreateBuilder(args);\nbuilder.Services.AddSingleton<StudentStore>();\nvar app = builder.Build();\napp.MapGet(\"/api/students\", (StudentStore db) => Results.Ok(db.Rows.Values.OrderBy(x => x.Id)));\napp.MapGet(\"/api/students/{id:int}\", (int id, StudentStore db) => db.Rows.TryGetValue(id, out var row) ? Results.Ok(row) : Results.NotFound());\napp.MapPost(\"/api/students\", (StudentInput input, StudentStore db) =>\n{\n    if (string.IsNullOrWhiteSpace(input.Name) || input.Name.Length > 80 || input.Age < 16 || input.Age > 100)\n        return Results.BadRequest(\"Name is required (up to 80 characters). Age must be 16 to 100.\");\n    int id = db.NextId();\n    var row = new Student(id, input.Name.Trim(), input.Age);\n    db.Rows[id] = row;\n    return Results.Created($\"/api/students/{id}\", row);\n});\napp.MapPut(\"/api/students/{id:int}\", (int id, StudentInput input, StudentStore db) =>\n{\n    if (string.IsNullOrWhiteSpace(input.Name) || input.Name.Length > 80 || input.Age < 16 || input.Age > 100)\n        return Results.BadRequest(\"Invalid student.\");\n    while (db.Rows.TryGetValue(id, out var old))\n    {\n        if (db.Rows.TryUpdate(id, new Student(id, input.Name.Trim(), input.Age), old))\n            return Results.NoContent();\n    }\n\n    return Results.NotFound();\n});\napp.MapDelete(\"/api/students/{id:int}\", (int id, StudentStore db) => db.Rows.TryRemove(id, out _) ? Results.NoContent() : Results.NotFound());\napp.Run();\npublic record Student(int Id, string Name, int Age);\npublic record StudentInput(string Name, int Age);\npublic class StudentStore\n{\n    private int id;\n    public ConcurrentDictionary<int, Student> Rows { get; } = new();\n\n    public int NextId() => Interlocked.Increment(ref id);\n}\n"
+    },
+    {
+      "name": "README.md",
+      "content": "# Minimal API CRUD\n\nOpen StudyLab.csproj in Visual Studio with the .NET 10 SDK installed. Restore packages, build, and follow the matching StudyLab lesson. Keep each example in its own folder.\n\nFrom this folder: `dotnet run --urls http://localhost:5100`\n\nUse the included requests.http with Visual Studio HTTP editor, or curl.exe. Stop the previous project before reusing port 5100.\n\nTeaching example. Local HTTP is for localhost testing only. Use HTTPS, configured secrets and proper deployment controls on a shared server.\n"
+    },
+    {
+      "name": "StudyLab.csproj",
+      "content": "<Project Sdk=\"Microsoft.NET.Sdk.Web\">\n  <PropertyGroup>\n    <TargetFramework>net10.0</TargetFramework>\n    <Nullable>enable</Nullable>\n    <ImplicitUsings>enable</ImplicitUsings>\n  </PropertyGroup>\n</Project>\n"
+    },
+    {
+      "name": "requests.http",
+      "content": "@base = http://localhost:5100\nGET {{base}}/api/students\n### Create\nPOST {{base}}/api/students\nContent-Type: application/json\n\n{\"name\":\"Lefa\",\"age\":22}\n### One\nGET {{base}}/api/students/1\n### Replace\nPUT {{base}}/api/students/1\nContent-Type: application/json\n\n{\"name\":\"Lefa Malatji\",\"age\":23}\n### Delete\nDELETE {{base}}/api/students/1\n### Missing\nGET {{base}}/api/students/999\n"
+    }
+  ],
+  "02-controller-api": [
+    {
+      "name": "Controllers/StudentsController.cs",
+      "content": "using Microsoft.AspNetCore.Mvc;\n\n[ApiController]\n[Route(\"api/students\")]\npublic class StudentsController(StudentStore db) : ControllerBase\n{\n    [HttpGet]\n    public IActionResult GetAll() => Ok(db.Rows.Values.OrderBy(x => x.Id));\n    [HttpGet(\"{id:int}\")]\n    public IActionResult Get(int id) => db.Rows.TryGetValue(id, out var row) ? Ok(row) : NotFound();\n    [HttpPost]\n    public IActionResult Create(StudentInput input)\n    {\n        if (string.IsNullOrWhiteSpace(input.Name))\n            return BadRequest(\"Name cannot be blank.\");\n        var row = new Student\n        {\n            Id = db.NextId(),\n            Name = input.Name.Trim(),\n            Age = input.Age\n        };\n        db.Rows[row.Id] = row;\n        return CreatedAtAction(nameof(Get), new { id = row.Id }, row);\n    }\n\n    [HttpPut(\"{id:int}\")]\n    public IActionResult Update(int id, StudentInput input)\n    {\n        if (string.IsNullOrWhiteSpace(input.Name))\n            return BadRequest(\"Name cannot be blank.\");\n        while (db.Rows.TryGetValue(id, out var old))\n        {\n            var row = new Student\n            {\n                Id = id,\n                Name = input.Name.Trim(),\n                Age = input.Age\n            };\n            if (db.Rows.TryUpdate(id, row, old))\n                return NoContent();\n        }\n\n        return NotFound();\n    }\n\n    [HttpDelete(\"{id:int}\")]\n    public IActionResult Delete(int id) => db.Rows.TryRemove(id, out _) ? NoContent() : NotFound();\n}\n"
+    },
+    {
+      "name": "Models/Student.cs",
+      "content": "using System.ComponentModel.DataAnnotations;\n\npublic class Student\n{\n    public int Id { get; set; }\n\n    [Required, StringLength(80)]\n    public string Name { get; set; } = \"\";\n\n    [Range(16, 100)]\n    public int Age { get; set; }\n}\n\npublic record StudentInput([Required, StringLength(80)] string Name, [Range(16, 100)] int Age);\n"
+    },
+    {
+      "name": "Program.cs",
+      "content": "var builder = WebApplication.CreateBuilder(args);\nbuilder.Services.AddControllers();\nbuilder.Services.AddSingleton<StudentStore>();\nvar app = builder.Build();\napp.MapControllers();\napp.Run();\n"
+    },
+    {
+      "name": "README.md",
+      "content": "# Controller CRUD without a database\n\nOpen StudyLab.csproj in Visual Studio with the .NET 10 SDK installed. Restore packages, build, and follow the matching StudyLab lesson. Keep each example in its own folder.\n\nFrom this folder: `dotnet run --urls http://localhost:5100`\n\nUse the included requests.http with Visual Studio HTTP editor, or curl.exe. Stop the previous project before reusing port 5100.\n\nTeaching example. Local HTTP is for localhost testing only. Use HTTPS, configured secrets and proper deployment controls on a shared server.\n"
+    },
+    {
+      "name": "StudentStore.cs",
+      "content": "using System.Collections.Concurrent;\n\npublic class StudentStore\n{\n    private int id;\n    public ConcurrentDictionary<int, Student> Rows { get; } = new();\n\n    public int NextId() => Interlocked.Increment(ref id);\n}\n"
+    },
+    {
+      "name": "StudyLab.csproj",
+      "content": "<Project Sdk=\"Microsoft.NET.Sdk.Web\">\n  <PropertyGroup>\n    <TargetFramework>net10.0</TargetFramework>\n    <Nullable>enable</Nullable>\n    <ImplicitUsings>enable</ImplicitUsings>\n  </PropertyGroup>\n</Project>\n"
+    },
+    {
+      "name": "requests.http",
+      "content": "@base = http://localhost:5100\nGET {{base}}/api/students\n### Create\nPOST {{base}}/api/students\nContent-Type: application/json\n\n{\"name\":\"Lefa\",\"age\":22}\n### One\nGET {{base}}/api/students/1\n### Replace\nPUT {{base}}/api/students/1\nContent-Type: application/json\n\n{\"name\":\"Lefa Malatji\",\"age\":23}\n### Delete\nDELETE {{base}}/api/students/1\n### Missing\nGET {{base}}/api/students/999\n"
+    }
+  ],
+  "03-ef-sqlite": [
+    {
+      "name": "Controllers/StudentsController.cs",
+      "content": "using Microsoft.AspNetCore.Mvc;\nusing Microsoft.EntityFrameworkCore;\n\n[ApiController]\n[Route(\"api/students\")]\npublic class StudentsController(SchoolDb db) : ControllerBase\n{\n    [HttpGet]\n    public async Task<ActionResult<List<Student>>> GetAll(CancellationToken ct) => await db.Students.AsNoTracking().OrderBy(s => s.Id).ToListAsync(ct);\n    [HttpGet(\"{id:int}\")]\n    public async Task<ActionResult<Student>> Get(int id, CancellationToken ct)\n    {\n        var row = await db.Students.FindAsync([id], ct);\n        return row is null ? NotFound() : Ok(row);\n    }\n\n    [HttpPost]\n    public async Task<IActionResult> Create(StudentInput input, CancellationToken ct)\n    {\n        if (string.IsNullOrWhiteSpace(input.Name))\n            return BadRequest(\"Name cannot be blank.\");\n        var row = new Student\n        {\n            Name = input.Name.Trim(),\n            Age = input.Age\n        };\n        db.Students.Add(row);\n        await db.SaveChangesAsync(ct);\n        return CreatedAtAction(nameof(Get), new { id = row.Id }, row);\n    }\n\n    [HttpPut(\"{id:int}\")]\n    public async Task<IActionResult> Update(int id, StudentInput input, CancellationToken ct)\n    {\n        if (string.IsNullOrWhiteSpace(input.Name))\n            return BadRequest(\"Name cannot be blank.\");\n        var row = await db.Students.FindAsync([id], ct);\n        if (row is null)\n            return NotFound();\n        row.Name = input.Name.Trim();\n        row.Age = input.Age;\n        await db.SaveChangesAsync(ct);\n        return NoContent();\n    }\n\n    [HttpDelete(\"{id:int}\")]\n    public async Task<IActionResult> Delete(int id, CancellationToken ct)\n    {\n        var row = await db.Students.FindAsync([id], ct);\n        if (row is null)\n            return NotFound();\n        db.Students.Remove(row);\n        await db.SaveChangesAsync(ct);\n        return NoContent();\n    }\n}\n"
+    },
+    {
+      "name": "Data/SchoolDb.cs",
+      "content": "using Microsoft.EntityFrameworkCore;\n\npublic class SchoolDb(DbContextOptions<SchoolDb> options) : DbContext(options)\n{\n    public DbSet<Student> Students => Set<Student>();\n}\n"
+    },
+    {
+      "name": "Models/Student.cs",
+      "content": "using System.ComponentModel.DataAnnotations;\n\npublic class Student\n{\n    public int Id { get; set; }\n\n    [Required, StringLength(80)]\n    public string Name { get; set; } = \"\";\n\n    [Range(16, 100)]\n    public int Age { get; set; }\n}\n\npublic record StudentInput([Required, StringLength(80)] string Name, [Range(16, 100)] int Age);\n"
+    },
+    {
+      "name": "Program.cs",
+      "content": "using Microsoft.EntityFrameworkCore;\n\nvar builder = WebApplication.CreateBuilder(args);\nbuilder.Services.AddControllers();\nbuilder.Services.AddDbContext<SchoolDb>(options => options.UseSqlite(builder.Configuration.GetConnectionString(\"School\") ?? throw new InvalidOperationException(\"Set ConnectionStrings:School.\")));\nvar app = builder.Build();\n// Run the migration commands in the lesson before starting this project.\napp.MapControllers();\napp.Run();\n"
+    },
+    {
+      "name": "README.md",
+      "content": "# EF Core Sqlite CRUD\n\nOpen StudyLab.csproj in Visual Studio with the .NET 10 SDK installed. Restore packages, build, and follow the matching StudyLab lesson. Keep each example in its own folder.\n\nFrom this folder: `dotnet run --urls http://localhost:5100`\n\nUse the included requests.http with Visual Studio HTTP editor, or curl.exe. Stop the previous project before reusing port 5100.\n\nTeaching example. Local HTTP is for localhost testing only. Use HTTPS, configured secrets and proper deployment controls on a shared server.\n"
+    },
+    {
+      "name": "StudyLab.csproj",
+      "content": "<Project Sdk=\"Microsoft.NET.Sdk.Web\">\n  <PropertyGroup>\n    <TargetFramework>net10.0</TargetFramework>\n    <Nullable>enable</Nullable>\n    <ImplicitUsings>enable</ImplicitUsings>\n  </PropertyGroup>\n  <ItemGroup>\n    <PackageReference Include=\"Microsoft.EntityFrameworkCore.Sqlite\" Version=\"10.0.15\"/>\n    <PackageReference Include=\"Microsoft.EntityFrameworkCore.Design\" Version=\"10.0.15\"/>\n  </ItemGroup>\n  <ItemGroup>\n    <PackageReference Include=\"SQLitePCLRaw.bundle_e_sqlite3\" Version=\"3.0.5\"/>\n    <PackageReference Include=\"SQLitePCLRaw.lib.e_sqlite3\" Version=\"3.53.3\"/>\n  </ItemGroup>\n  <ItemGroup>\n    <PackageReference Include=\"System.Security.Cryptography.Pkcs\" Version=\"10.0.15\"/>\n  </ItemGroup>\n</Project>\n"
+    },
+    {
+      "name": "appsettings.json",
+      "content": "{\n  \"ConnectionStrings\": {\n    \"School\": \"Data Source=school.db\"\n  }\n}\n"
+    },
+    {
+      "name": "requests.http",
+      "content": "@base = http://localhost:5100\nGET {{base}}/api/students\n### Create\nPOST {{base}}/api/students\nContent-Type: application/json\n\n{\"name\":\"Lefa\",\"age\":22}\n### One\nGET {{base}}/api/students/1\n### Replace\nPUT {{base}}/api/students/1\nContent-Type: application/json\n\n{\"name\":\"Lefa Malatji\",\"age\":23}\n### Delete\nDELETE {{base}}/api/students/1\n### Missing\nGET {{base}}/api/students/999\n"
+    }
+  ],
+  "04-ef-sqlserver": [
+    {
+      "name": "Controllers/StudentsController.cs",
+      "content": "using Microsoft.AspNetCore.Mvc;\nusing Microsoft.EntityFrameworkCore;\n\n[ApiController]\n[Route(\"api/students\")]\npublic class StudentsController(SchoolDb db) : ControllerBase\n{\n    [HttpGet]\n    public async Task<ActionResult<List<Student>>> GetAll(CancellationToken ct) => await db.Students.AsNoTracking().OrderBy(s => s.Id).ToListAsync(ct);\n    [HttpGet(\"{id:int}\")]\n    public async Task<ActionResult<Student>> Get(int id, CancellationToken ct)\n    {\n        var row = await db.Students.FindAsync([id], ct);\n        return row is null ? NotFound() : Ok(row);\n    }\n\n    [HttpPost]\n    public async Task<IActionResult> Create(StudentInput input, CancellationToken ct)\n    {\n        if (string.IsNullOrWhiteSpace(input.Name))\n            return BadRequest(\"Name cannot be blank.\");\n        var row = new Student\n        {\n            Name = input.Name.Trim(),\n            Age = input.Age\n        };\n        db.Students.Add(row);\n        await db.SaveChangesAsync(ct);\n        return CreatedAtAction(nameof(Get), new { id = row.Id }, row);\n    }\n\n    [HttpPut(\"{id:int}\")]\n    public async Task<IActionResult> Update(int id, StudentInput input, CancellationToken ct)\n    {\n        if (string.IsNullOrWhiteSpace(input.Name))\n            return BadRequest(\"Name cannot be blank.\");\n        var row = await db.Students.FindAsync([id], ct);\n        if (row is null)\n            return NotFound();\n        row.Name = input.Name.Trim();\n        row.Age = input.Age;\n        await db.SaveChangesAsync(ct);\n        return NoContent();\n    }\n\n    [HttpDelete(\"{id:int}\")]\n    public async Task<IActionResult> Delete(int id, CancellationToken ct)\n    {\n        var row = await db.Students.FindAsync([id], ct);\n        if (row is null)\n            return NotFound();\n        db.Students.Remove(row);\n        await db.SaveChangesAsync(ct);\n        return NoContent();\n    }\n}\n"
+    },
+    {
+      "name": "Data/SchoolDb.cs",
+      "content": "using Microsoft.EntityFrameworkCore;\n\npublic class SchoolDb(DbContextOptions<SchoolDb> options) : DbContext(options)\n{\n    public DbSet<Student> Students => Set<Student>();\n}\n"
+    },
+    {
+      "name": "Models/Student.cs",
+      "content": "using System.ComponentModel.DataAnnotations;\n\npublic class Student\n{\n    public int Id { get; set; }\n\n    [Required, StringLength(80)]\n    public string Name { get; set; } = \"\";\n\n    [Range(16, 100)]\n    public int Age { get; set; }\n}\n\npublic record StudentInput([Required, StringLength(80)] string Name, [Range(16, 100)] int Age);\n"
+    },
+    {
+      "name": "Program.cs",
+      "content": "using Microsoft.EntityFrameworkCore;\n\nvar builder = WebApplication.CreateBuilder(args);\nbuilder.Services.AddControllers();\nbuilder.Services.AddDbContext<SchoolDb>(options => options.UseSqlServer(builder.Configuration.GetConnectionString(\"School\") ?? throw new InvalidOperationException(\"Set ConnectionStrings:School.\")));\nvar app = builder.Build();\n// Run the migration commands in the lesson before starting this project.\napp.MapControllers();\napp.Run();\n"
+    },
+    {
+      "name": "README.md",
+      "content": "# EF Core SqlServer CRUD\n\nOpen StudyLab.csproj in Visual Studio with the .NET 10 SDK installed. Restore packages, build, and follow the matching StudyLab lesson. Keep each example in its own folder.\n\nFrom this folder: `dotnet run --urls http://localhost:5100`\n\nUse the included requests.http with Visual Studio HTTP editor, or curl.exe. Stop the previous project before reusing port 5100.\n\nTeaching example. Local HTTP is for localhost testing only. Use HTTPS, configured secrets and proper deployment controls on a shared server.\n"
+    },
+    {
+      "name": "StudyLab.csproj",
+      "content": "<Project Sdk=\"Microsoft.NET.Sdk.Web\">\n  <PropertyGroup>\n    <TargetFramework>net10.0</TargetFramework>\n    <Nullable>enable</Nullable>\n    <ImplicitUsings>enable</ImplicitUsings>\n  </PropertyGroup>\n  <ItemGroup>\n    <PackageReference Include=\"Microsoft.EntityFrameworkCore.SqlServer\" Version=\"10.0.15\"/>\n    <PackageReference Include=\"Microsoft.EntityFrameworkCore.Design\" Version=\"10.0.15\"/>\n  </ItemGroup>\n  <ItemGroup>\n    <PackageReference Include=\"System.Security.Cryptography.Pkcs\" Version=\"10.0.15\"/>\n  </ItemGroup>\n</Project>\n"
+    },
+    {
+      "name": "appsettings.json",
+      "content": "{\n  \"ConnectionStrings\": {\n    \"School\": \"Server=LEFA\\\\SQLEXPRESS;Database=StudyLabSchool;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True\"\n  }\n}\n"
+    },
+    {
+      "name": "requests.http",
+      "content": "@base = http://localhost:5100\nGET {{base}}/api/students\n### Create\nPOST {{base}}/api/students\nContent-Type: application/json\n\n{\"name\":\"Lefa\",\"age\":22}\n### One\nGET {{base}}/api/students/1\n### Replace\nPUT {{base}}/api/students/1\nContent-Type: application/json\n\n{\"name\":\"Lefa Malatji\",\"age\":23}\n### Delete\nDELETE {{base}}/api/students/1\n### Missing\nGET {{base}}/api/students/999\n"
+    }
+  ],
+  "05-ado-sqlserver": [
+    {
+      "name": "Controllers/StudentsController.cs",
+      "content": "using Microsoft.AspNetCore.Mvc;\nusing Microsoft.Data.SqlClient;\nusing System.Data;\n\n[ApiController, Route(\"api/students\")]\npublic class StudentsController(IConfiguration config) : ControllerBase\n{\n    SqlConnection Connect() => new(config.GetConnectionString(\"School\") ?? throw new InvalidOperationException(\"Set School connection.\"));\n    static Student Read(SqlDataReader r) => new()\n    {\n        Id = r.GetInt32(0),\n        Name = r.GetString(1),\n        Age = r.GetInt32(2)\n    };\n    [HttpGet]\n    public async Task<IActionResult> All(CancellationToken ct)\n    {\n        await using var c = Connect();\n        await c.OpenAsync(ct);\n        await using var cmd = new SqlCommand(\"SELECT Id,Name,Age FROM dbo.Students ORDER BY Id\", c);\n        await using var r = await cmd.ExecuteReaderAsync(ct);\n        var rows = new List<Student>();\n        while (await r.ReadAsync(ct))\n            rows.Add(Read(r));\n        return Ok(rows);\n    }\n\n    [HttpGet(\"{id:int}\")]\n    public async Task<IActionResult> One(int id, CancellationToken ct)\n    {\n        await using var c = Connect();\n        await c.OpenAsync(ct);\n        await using var cmd = new SqlCommand(\"SELECT Id,Name,Age FROM dbo.Students WHERE Id=@id\", c);\n        cmd.Parameters.Add(\"@id\", SqlDbType.Int).Value = id;\n        await using var r = await cmd.ExecuteReaderAsync(ct);\n        return await r.ReadAsync(ct) ? Ok(Read(r)) : NotFound();\n    }\n\n    [HttpPost]\n    public async Task<IActionResult> Create(StudentInput input, CancellationToken ct)\n    {\n        if (string.IsNullOrWhiteSpace(input.Name))\n            return BadRequest(\"Name cannot be blank.\");\n        await using var c = Connect();\n        await c.OpenAsync(ct);\n        await using var cmd = new SqlCommand(\"INSERT dbo.Students(Name,Age) OUTPUT INSERTED.Id VALUES(@name,@age)\", c);\n        Fill(cmd, input);\n        var id = Convert.ToInt32(await cmd.ExecuteScalarAsync(ct));\n        return CreatedAtAction(nameof(One), new { id }, new Student { Id = id, Name = input.Name.Trim(), Age = input.Age });\n    }\n\n    [HttpPut(\"{id:int}\")]\n    public async Task<IActionResult> Update(int id, StudentInput input, CancellationToken ct)\n    {\n        if (string.IsNullOrWhiteSpace(input.Name))\n            return BadRequest(\"Name cannot be blank.\");\n        await using var c = Connect();\n        await c.OpenAsync(ct);\n        await using var cmd = new SqlCommand(\"UPDATE dbo.Students SET Name=@name,Age=@age WHERE Id=@id\", c);\n        Fill(cmd, input);\n        cmd.Parameters.Add(\"@id\", SqlDbType.Int).Value = id;\n        return await cmd.ExecuteNonQueryAsync(ct) == 0 ? NotFound() : NoContent();\n    }\n\n    [HttpDelete(\"{id:int}\")]\n    public async Task<IActionResult> Delete(int id, CancellationToken ct)\n    {\n        await using var c = Connect();\n        await c.OpenAsync(ct);\n        await using var cmd = new SqlCommand(\"DELETE dbo.Students WHERE Id=@id\", c);\n        cmd.Parameters.Add(\"@id\", SqlDbType.Int).Value = id;\n        return await cmd.ExecuteNonQueryAsync(ct) == 0 ? NotFound() : NoContent();\n    }\n\n    static void Fill(SqlCommand cmd, StudentInput input)\n    {\n        cmd.Parameters.Add(\"@name\", SqlDbType.NVarChar, 80).Value = input.Name.Trim();\n        cmd.Parameters.Add(\"@age\", SqlDbType.Int).Value = input.Age;\n    }\n}\n"
+    },
+    {
+      "name": "Models/Student.cs",
+      "content": "using System.ComponentModel.DataAnnotations;\n\npublic class Student\n{\n    public int Id { get; set; }\n\n    [Required, StringLength(80)]\n    public string Name { get; set; } = \"\";\n\n    [Range(16, 100)]\n    public int Age { get; set; }\n}\n\npublic record StudentInput([Required, StringLength(80)] string Name, [Range(16, 100)] int Age);\n"
+    },
+    {
+      "name": "Program.cs",
+      "content": "var builder = WebApplication.CreateBuilder(args);\nbuilder.Services.AddControllers();\nvar app = builder.Build();\napp.MapControllers();\napp.Run();\n"
+    },
+    {
+      "name": "README.md",
+      "content": "# ADO.NET SQL Server CRUD\n\nOpen StudyLab.csproj in Visual Studio with the .NET 10 SDK installed. Restore packages, build, and follow the matching StudyLab lesson. Keep each example in its own folder.\n\nFrom this folder: `dotnet run --urls http://localhost:5100`\n\nUse the included requests.http with Visual Studio HTTP editor, or curl.exe. Stop the previous project before reusing port 5100.\n\nTeaching example. Local HTTP is for localhost testing only. Use HTTPS, configured secrets and proper deployment controls on a shared server.\n"
+    },
+    {
+      "name": "StudyLab.csproj",
+      "content": "<Project Sdk=\"Microsoft.NET.Sdk.Web\">\n  <PropertyGroup>\n    <TargetFramework>net10.0</TargetFramework>\n    <Nullable>enable</Nullable>\n    <ImplicitUsings>enable</ImplicitUsings>\n  </PropertyGroup>\n  <ItemGroup>\n    <PackageReference Include=\"Microsoft.Data.SqlClient\" Version=\"7.1.2\"/>\n  </ItemGroup>\n  <ItemGroup>\n    <PackageReference Include=\"System.Security.Cryptography.Pkcs\" Version=\"10.0.15\"/>\n  </ItemGroup>\n</Project>\n"
+    },
+    {
+      "name": "appsettings.json",
+      "content": "{\n  \"ConnectionStrings\": {\n    \"School\": \"Server=LEFA\\\\SQLEXPRESS;Database=StudyLabAdo;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True\"\n  }\n}\n"
+    },
+    {
+      "name": "requests.http",
+      "content": "@base = http://localhost:5100\nGET {{base}}/api/students\n### Create\nPOST {{base}}/api/students\nContent-Type: application/json\n\n{\"name\":\"Lefa\",\"age\":22}\n### One\nGET {{base}}/api/students/1\n### Replace\nPUT {{base}}/api/students/1\nContent-Type: application/json\n\n{\"name\":\"Lefa Malatji\",\"age\":23}\n### Delete\nDELETE {{base}}/api/students/1\n### Missing\nGET {{base}}/api/students/999\n"
+    },
+    {
+      "name": "setup.sql",
+      "content": "IF DB_ID('StudyLabAdo') IS NULL CREATE DATABASE StudyLabAdo;\nGO\nUSE StudyLabAdo;\nGO\nCREATE TABLE dbo.Students(Id int IDENTITY PRIMARY KEY, Name nvarchar(80) NOT NULL, Age int NOT NULL CHECK(Age BETWEEN 16 AND 100));\n"
+    }
+  ],
+  "06-secure-api": [
+    {
+      "name": "Controllers/StudentsController.cs",
+      "content": "using Microsoft.AspNetCore.Authorization;\nusing Microsoft.AspNetCore.Mvc;\nusing Microsoft.EntityFrameworkCore;\nusing System.Security.Claims;\n\n[Authorize, ApiController, Route(\"api/students\")]\npublic class StudentsController(AppDb db) : ControllerBase\n{\n    string Owner => User.FindFirstValue(ClaimTypes.NameIdentifier)!;\n\n    IQueryable<Student> Mine => db.Students.Where(s => s.OwnerId == Owner);\n\n    static StudentView ViewOf(Student s) => new(s.Id, s.Name, s.Age, s.Version);\n    [HttpGet]\n    public async Task<IActionResult> All(int page = 1, int pageSize = 10, string? search = null, CancellationToken ct = default)\n    {\n        if (page < 1 || page > 100000 || pageSize < 1 || pageSize > 100 || search?.Length > 80)\n            return BadRequest(\"Page 1-100000, pageSize 1-100, search up to 80 letters.\");\n        var q = Mine.AsNoTracking();\n        if (!string.IsNullOrWhiteSpace(search))\n            q = q.Where(s => s.Name.Contains(search));\n        var total = await q.CountAsync(ct);\n        var items = await q.OrderBy(s => s.Id).Skip((page - 1) * pageSize).Take(pageSize).Select(s => new StudentView(s.Id, s.Name, s.Age, s.Version)).ToListAsync(ct);\n        return Ok(new { page, pageSize, total, items });\n    }\n\n    [HttpGet(\"{id:int}\")]\n    public async Task<IActionResult> One(int id, CancellationToken ct)\n    {\n        var s = await Mine.SingleOrDefaultAsync(s => s.Id == id, ct);\n        return s is null ? NotFound() : Ok(ViewOf(s));\n    }\n\n    [HttpPost]\n    public async Task<IActionResult> Create(StudentInput input, CancellationToken ct)\n    {\n        if (string.IsNullOrWhiteSpace(input.Name))\n            return BadRequest(\"Name cannot be blank.\");\n        var s = new Student\n        {\n            Name = input.Name.Trim(),\n            Age = input.Age,\n            OwnerId = Owner\n        };\n        db.Students.Add(s);\n        await db.SaveChangesAsync(ct);\n        return CreatedAtAction(nameof(One), new { id = s.Id }, ViewOf(s));\n    }\n\n    [HttpPut(\"{id:int}\")]\n    public async Task<IActionResult> Update(int id, StudentUpdate input, CancellationToken ct)\n    {\n        if (string.IsNullOrWhiteSpace(input.Name))\n            return BadRequest(\"Name cannot be blank.\");\n        var s = await Mine.SingleOrDefaultAsync(s => s.Id == id, ct);\n        if (s is null)\n            return NotFound();\n        if (s.Version != input.Version)\n            return Conflict(\"This student changed. GET it again before saving.\");\n        s.Name = input.Name.Trim();\n        s.Age = input.Age;\n        s.Version = Guid.NewGuid();\n        try\n        {\n            await db.SaveChangesAsync(ct);\n        }\n        catch (DbUpdateConcurrencyException)\n        {\n            return Conflict(\"Another request changed this student.\");\n        }\n\n        return Ok(ViewOf(s));\n    }\n\n    [HttpPatch(\"{id:int}\")]\n    public async Task<IActionResult> Patch(int id, StudentPatch input, CancellationToken ct)\n    {\n        if (input.Name is null && input.Age is null)\n            return BadRequest(\"Provide Name or Age.\");\n        if (input.Name is not null && string.IsNullOrWhiteSpace(input.Name))\n            return BadRequest(\"Name cannot be blank.\");\n        var row = await Mine.SingleOrDefaultAsync(s => s.Id == id, ct);\n        if (row is null)\n            return NotFound();\n        if (row.Version != input.Version)\n            return Conflict(\"Record changed. Reload it.\");\n        if (input.Name is not null)\n            row.Name = input.Name.Trim();\n        if (input.Age.HasValue)\n            row.Age = input.Age.Value;\n        row.Version = Guid.NewGuid();\n        try\n        {\n            await db.SaveChangesAsync(ct);\n        }\n        catch (DbUpdateConcurrencyException)\n        {\n            return Conflict(\"Record changed. Reload it.\");\n        }\n\n        return Ok(ViewOf(row));\n    }\n\n    [HttpDelete(\"{id:int}\")]\n    public async Task<IActionResult> Delete(int id, CancellationToken ct)\n    {\n        var s = await Mine.SingleOrDefaultAsync(s => s.Id == id, ct);\n        if (s is null)\n            return NotFound();\n        db.Students.Remove(s);\n        try\n        {\n            await db.SaveChangesAsync(ct);\n        }\n        catch (DbUpdateConcurrencyException)\n        {\n            return Conflict(\"Record changed. Reload before deleting.\");\n        }\n\n        return NoContent();\n    }\n}\n"
+    },
+    {
+      "name": "Data/AppDb.cs",
+      "content": "using Microsoft.AspNetCore.Identity;\nusing Microsoft.AspNetCore.Identity.EntityFrameworkCore;\nusing Microsoft.EntityFrameworkCore;\n\npublic class AppDb(DbContextOptions<AppDb> options) : IdentityDbContext<IdentityUser>(options)\n{\n    public DbSet<Student> Students => Set<Student>();\n\n    protected override void OnModelCreating(ModelBuilder b)\n    {\n        base.OnModelCreating(b);\n        b.Entity<Student>().Property(s => s.Version).IsConcurrencyToken();\n    }\n}\n"
+    },
+    {
+      "name": "Models/Student.cs",
+      "content": "using System.ComponentModel.DataAnnotations;\n\npublic class Student\n{\n    public int Id { get; set; }\n\n    [MaxLength(80)]\n    public string Name { get; set; } = \"\";\n    public int Age { get; set; }\n    public string OwnerId { get; set; } = \"\";\n    public Guid Version { get; set; } = Guid.NewGuid();\n}\n\npublic record StudentInput([Required, StringLength(80)] string Name, [Range(16, 100)] int Age);\npublic record StudentUpdate([Required, StringLength(80)] string Name, [Range(16, 100)] int Age, Guid Version);\npublic record StudentView(int Id, string Name, int Age, Guid Version);\npublic record StudentPatch([StringLength(80)] string? Name, [Range(16, 100)] int? Age, Guid Version);\n"
+    },
+    {
+      "name": "Program.cs",
+      "content": "using Microsoft.AspNetCore.Identity;\nusing Microsoft.EntityFrameworkCore;\nusing System.Threading.RateLimiting;\n\nvar builder = WebApplication.CreateBuilder(args);\nbuilder.Services.AddControllers();\nbuilder.Services.AddProblemDetails();\nbuilder.Services.AddDbContext<AppDb>(o => o.UseSqlite(builder.Configuration.GetConnectionString(\"School\") ?? \"Data Source=secure-school.db\"));\nbuilder.Services.AddIdentityApiEndpoints<IdentityUser>().AddEntityFrameworkStores<AppDb>();\nbuilder.Services.AddAuthorization();\nbuilder.Services.AddRateLimiter(o =>\n{\n    o.RejectionStatusCode = 429;\n    o.AddPolicy(\"api\", context => RateLimitPartition.GetFixedWindowLimiter(context.User.Identity?.Name ?? context.Connection.RemoteIpAddress?.ToString() ?? \"local\", _ => new FixedWindowRateLimiterOptions { PermitLimit = 60, Window = TimeSpan.FromMinutes(1), QueueLimit = 0 }));\n});\nvar app = builder.Build();\napp.UseExceptionHandler();\napp.UseAuthentication();\napp.UseAuthorization();\napp.UseRateLimiter();\napp.MapGroup(\"/auth\").MapIdentityApi<IdentityUser>();\napp.MapControllers().RequireRateLimiting(\"api\");\napp.Run();\n"
+    },
+    {
+      "name": "README.md",
+      "content": "# Authenticated asynchronous CRUD with paging and concurrency\n\nOpen StudyLab.csproj in Visual Studio with the .NET 10 SDK installed. Restore packages, build, and follow the matching StudyLab lesson. Keep each example in its own folder.\n\nFrom this folder: `dotnet run --urls http://localhost:5100`\n\nUse the included requests.http with Visual Studio HTTP editor, or curl.exe. Stop the previous project before reusing port 5100.\n\nTeaching example. Local HTTP is for localhost testing only. Use HTTPS, configured secrets and proper deployment controls on a shared server.\n"
+    },
+    {
+      "name": "StudyLab.csproj",
+      "content": "<Project Sdk=\"Microsoft.NET.Sdk.Web\">\n  <PropertyGroup>\n    <TargetFramework>net10.0</TargetFramework>\n    <Nullable>enable</Nullable>\n    <ImplicitUsings>enable</ImplicitUsings>\n  </PropertyGroup>\n  <ItemGroup>\n    <PackageReference Include=\"Microsoft.AspNetCore.Identity.EntityFrameworkCore\" Version=\"10.0.15\"/>\n    <PackageReference Include=\"Microsoft.EntityFrameworkCore.Sqlite\" Version=\"10.0.15\"/>\n    <PackageReference Include=\"Microsoft.EntityFrameworkCore.Design\" Version=\"10.0.15\"/>\n  </ItemGroup>\n  <ItemGroup>\n    <PackageReference Include=\"SQLitePCLRaw.bundle_e_sqlite3\" Version=\"3.0.5\"/>\n    <PackageReference Include=\"SQLitePCLRaw.lib.e_sqlite3\" Version=\"3.53.3\"/>\n  </ItemGroup>\n  <ItemGroup>\n    <PackageReference Include=\"System.Security.Cryptography.Pkcs\" Version=\"10.0.15\"/>\n  </ItemGroup>\n</Project>\n"
+    },
+    {
+      "name": "requests.http",
+      "content": "@base = http://localhost:5100\nPOST {{base}}/auth/register\nContent-Type: application/json\n\n{\"email\":\"student@example.com\",\"password\":\"ChooseYourOwn_Strong123!\"}\n### Login: copy accessToken from response into token below\nPOST {{base}}/auth/login?useCookies=false\nContent-Type: application/json\n\n{\"email\":\"student@example.com\",\"password\":\"ChooseYourOwn_Strong123!\"}\n### Replace placeholder locally, never publish your token\n@token = PASTE_ACCESS_TOKEN_HERE\nGET {{base}}/api/students?page=1&pageSize=5&search=Lefa\nAuthorization: Bearer {{token}}\n### Create\nPOST {{base}}/api/students\nAuthorization: Bearer {{token}}\nContent-Type: application/json\n\n{\"name\":\"Lefa\",\"age\":22}\n### Copy the actual version from GET/POST into this body before PUT\nPUT {{base}}/api/students/1\nAuthorization: Bearer {{token}}\nContent-Type: application/json\n\n{\"name\":\"Lefa Updated\",\"age\":23,\"version\":\"PASTE_VERSION_FROM_GET\"}\n### Delete\nDELETE {{base}}/api/students/1\nAuthorization: Bearer {{token}}\n\n### Partial update: copy a fresh actual version from GET first\nPATCH {{base}}/api/students/1\nAuthorization: Bearer {{token}}\nContent-Type: application/json\n\n{\"age\":24,\"version\":\"PASTE_VERSION_FROM_GET\"}\n"
+    }
+  ],
+  "07-mvc-client": [
+    {
+      "name": "Controllers/StudentsController.cs",
+      "content": "using Microsoft.AspNetCore.Mvc;\nusing System.Net.Http.Json;\n\npublic class StudentsController(IHttpClientFactory factory) : Controller\n{\n    HttpClient Api => factory.CreateClient(\"School\");\n\n    public async Task<IActionResult> Index()\n    {\n        var rows = await Api.GetFromJsonAsync<List<Student>>(\"api/students\") ?? [];\n        return View(rows);\n    }\n\n    [HttpPost, ValidateAntiForgeryToken]\n    public async Task<IActionResult> Create(StudentInput input)\n    {\n        if (!ModelState.IsValid)\n        {\n            TempData[\"Error\"] = \"Check name and age.\";\n            return RedirectToAction(nameof(Index));\n        }\n\n        var r = await Api.PostAsJsonAsync(\"api/students\", input);\n        TempData[\"Error\"] = r.IsSuccessStatusCode ? \"Student created.\" : \"API rejected create.\";\n        return RedirectToAction(nameof(Index));\n    }\n\n    [HttpPost, ValidateAntiForgeryToken]\n    public async Task<IActionResult> Update(int id, StudentInput input)\n    {\n        if (!ModelState.IsValid)\n        {\n            TempData[\"Error\"] = \"Invalid student.\";\n            return RedirectToAction(nameof(Index));\n        }\n\n        var r = await Api.PutAsJsonAsync($\"api/students/{id}\", input);\n        TempData[\"Error\"] = r.IsSuccessStatusCode ? \"Student updated.\" : \"API rejected update.\";\n        return RedirectToAction(nameof(Index));\n    }\n\n    [HttpPost, ValidateAntiForgeryToken]\n    public async Task<IActionResult> Delete(int id)\n    {\n        var r = await Api.DeleteAsync($\"api/students/{id}\");\n        TempData[\"Error\"] = r.IsSuccessStatusCode ? \"Student deleted.\" : \"API rejected delete.\";\n        return RedirectToAction(nameof(Index));\n    }\n}\n"
+    },
+    {
+      "name": "Models/Student.cs",
+      "content": "using System.ComponentModel.DataAnnotations;\n\npublic class Student\n{\n    public int Id { get; set; }\n\n    [Required, StringLength(80)]\n    public string Name { get; set; } = \"\";\n\n    [Range(16, 100)]\n    public int Age { get; set; }\n}\n\npublic record StudentInput([Required, StringLength(80)] string Name, [Range(16, 100)] int Age);\n"
+    },
+    {
+      "name": "Program.cs",
+      "content": "var builder = WebApplication.CreateBuilder(args);\nbuilder.Services.AddControllersWithViews();\nbuilder.Services.AddHttpClient(\"School\", client => client.BaseAddress = new Uri(builder.Configuration[\"SchoolApi\"] ?? \"http://localhost:5100/\"));\nvar app = builder.Build();\napp.UseStaticFiles();\napp.MapControllerRoute(\"default\", \"{controller=Students}/{action=Index}/{id?}\");\napp.Run();\n"
+    },
+    {
+      "name": "README.md",
+      "content": "# MVC website calling the CRUD API\n\nOpen StudyLab.csproj in Visual Studio with the .NET 10 SDK installed. Restore packages, build, and follow the matching StudyLab lesson. Keep each example in its own folder.\n\nFrom this folder: `dotnet run --urls http://localhost:5100`\n\nUse the included requests.http with Visual Studio HTTP editor, or curl.exe. Stop the previous project before reusing port 5100.\n\nTeaching example. Local HTTP is for localhost testing only. Use HTTPS, configured secrets and proper deployment controls on a shared server.\n"
+    },
+    {
+      "name": "StudyLab.csproj",
+      "content": "<Project Sdk=\"Microsoft.NET.Sdk.Web\">\n  <PropertyGroup>\n    <TargetFramework>net10.0</TargetFramework>\n    <Nullable>enable</Nullable>\n    <ImplicitUsings>enable</ImplicitUsings>\n  </PropertyGroup>\n</Project>\n"
+    },
+    {
+      "name": "Views/Students/Index.cshtml",
+      "content": "@model List<Student>\n<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"/><title>School</title></head><body>\n<h1>Students</h1><p>@TempData[\"Error\"]</p>\n<form method=\"post\" action=\"/Students/Create\">@Html.AntiForgeryToken()<label>Name <input name=\"Name\" required maxlength=\"80\"/></label><label>Age <input name=\"Age\" type=\"number\" min=\"16\" max=\"100\" required/></label><button>Create</button></form>\n@foreach(var s in Model){\n <form method=\"post\" action=\"/Students/Update/@s.Id\">@Html.AntiForgeryToken()<input name=\"Name\" value=\"@s.Name\" required maxlength=\"80\"/><input name=\"Age\" value=\"@s.Age\" type=\"number\" min=\"16\" max=\"100\"/><button>Save changes</button></form>\n <form method=\"post\" action=\"/Students/Delete/@s.Id\">@Html.AntiForgeryToken()<button>Delete @s.Name</button></form>\n}\n</body></html>\n"
+    },
+    {
+      "name": "appsettings.json",
+      "content": "{\"SchoolApi\":\"http://localhost:5100/\"}\n"
+    }
+  ],
+  "08-csharp-features": [
+    {
+      "name": "Program.cs",
+      "content": "using System.Diagnostics;\nusing System.Runtime.Loader;\n\n// using closes the file even if later code throws. GC alone does not close it promptly.\nusing (var writer = new StreamWriter(\"lifetime.txt\"))\n{\n    writer.WriteLine(\"Saved safely\");\n}\n\nConsole.WriteLine(File.ReadAllText(\"lifetime.txt\").Trim());\nvar total = new Money(10m) + new Money(5m);\nConsole.WriteLine($\"Money total: {total.Amount}\");\ntry\n{\n    Enroll(-1);\n}\ncatch (EnrollmentException ex)\n{\n    Console.WriteLine(ex.Message);\n}\n\nConsole.WriteLine(\"lefa\".Greeting());\nvar anonymous = new\n{\n    Name = \"Lefa\",\n    Mark = 80\n};\nConsole.WriteLine($\"{anonymous.Name}: {anonymous.Mark}\");\nvar students = new[]\n{\n    new Student(\"Lefa\", 80),\n    new Student(\"Thabo\", 45),\n    new Student(\"Mpho\", 90)\n};\nvar passes = students.Where(s => s.Mark >= 50).OrderBy(s => s.Name).Select(s => new { s.Name, s.Mark });\nforeach (var s in passes)\n    Console.WriteLine($\"Pass: {s.Name} {s.Mark}\");\nusing (var process = Process.GetCurrentProcess())\n    Console.WriteLine($\"Process name: {process.ProcessName}\");\nConsole.WriteLine($\"Domain: {AppDomain.CurrentDomain.FriendlyName}\");\nConsole.WriteLine($\"Load context: {AssemblyLoadContext.Default.Name}\");\nint count = 0;\nParallel.For(0, 1000, _ => Interlocked.Increment(ref count));\nConsole.WriteLine($\"Safe count: {count}\");\nvar thread = new Thread(() => Console.WriteLine(\"Worker thread finished\"));\nthread.Start();\nthread.Join();\nvar results = await Task.WhenAll(LoadAsync(\"A\"), LoadAsync(\"B\"));\nConsole.WriteLine(string.Join(\",\", results));\nusing var cts = new CancellationTokenSource();\ncts.Cancel();\ntry\n{\n    await Task.Delay(100, cts.Token);\n}\ncatch (OperationCanceledException)\n{\n    Console.WriteLine(\"Cancelled safely\");\n}\n\nstatic void Enroll(int age)\n{\n    if (age < 0)\n        throw new EnrollmentException(\"Age cannot be negative.\");\n}\n\nstatic async Task<string> LoadAsync(string name)\n{\n    await Task.Delay(20);\n    return name;\n}\n\npublic record Student(string Name, int Mark);\npublic readonly record struct Money(decimal Amount)\n{\n    public static Money operator +(Money a, Money b) => new(a.Amount + b.Amount);\n}\n\npublic class EnrollmentException(string message) : Exception(message);\npublic static class StudentExtensions\n{\n    public static string Greeting(this string name) => $\"Hello, {name}\";\n}\n"
+    },
+    {
+      "name": "README.md",
+      "content": "# C# language, object lifetime and async lab\n\nOpen StudyLab.csproj in Visual Studio with the .NET 10 SDK installed. Restore packages, build, and follow the matching StudyLab lesson. Keep each example in its own folder.\n\nFrom this folder: `dotnet run`\n\nTeaching example. Local HTTP is for localhost testing only. Use HTTPS, configured secrets and proper deployment controls on a shared server.\n"
+    },
+    {
+      "name": "StudyLab.csproj",
+      "content": "<Project Sdk=\"Microsoft.NET.Sdk\">\n  <PropertyGroup>\n    <TargetFramework>net10.0</TargetFramework>\n    <Nullable>enable</Nullable>\n    <ImplicitUsings>enable</ImplicitUsings>\n    <OutputType>Exe</OutputType>\n  </PropertyGroup>\n</Project>\n"
+    }
+  ],
+  "09-desktop-data": [
+    {
+      "name": "App.xaml",
+      "content": "<Application xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\" x:Class=\"DesktopData.App\" StartupUri=\"MainWindow.xaml\"/>\n"
+    },
+    {
+      "name": "App.xaml.cs",
+      "content": "using System.Windows;\n\nnamespace DesktopData;\npublic partial class App : Application\n{\n}\n"
+    },
+    {
+      "name": "MainWindow.xaml",
+      "content": "<Window xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\" x:Class=\"DesktopData.MainWindow\" Title=\"Student data lab\" Width=\"620\" Height=\"540\">\n  <StackPanel Margin=\"20\">\n    <TextBlock Text=\"Student data lab\" FontSize=\"24\"/>\n    <TextBlock Text=\"Name\"/>\n    <TextBox x:Name=\"NameBox\"/>\n    <TextBlock Text=\"Age (16-100)\"/>\n    <TextBox x:Name=\"AgeBox\" Text=\"22\"/>\n    <ComboBox x:Name=\"StorageMode\" SelectedIndex=\"0\" Margin=\"0,8\">\n      <ComboBoxItem Content=\"EF Core SQLite\"/>\n      <ComboBoxItem Content=\"ADO.NET SQL Server\"/>\n    </ComboBox>\n    <WrapPanel>\n      <Button Content=\"Create\" Click=\"Create\" Padding=\"10\"/>\n      <Button Content=\"Read\" Click=\"Read\" Padding=\"10\"/>\n      <Button Content=\"Update selected\" Click=\"Update\" Padding=\"10\"/>\n      <Button Content=\"Delete selected\" Click=\"Delete\" Padding=\"10\"/>\n    </WrapPanel>\n    <ListBox x:Name=\"Rows\" Height=\"180\" DisplayMemberPath=\"Name\" SelectionChanged=\"SelectRow\"/>\n    <WrapPanel>\n      <Button Content=\"Export JSON\" Click=\"Export\" Padding=\"10\"/>\n      <Button Content=\"Read JSON\" Click=\"ReadJson\" Padding=\"10\"/>\n    </WrapPanel>\n    <TextBlock x:Name=\"Status\" TextWrapping=\"Wrap\"/>\n  </StackPanel>\n</Window>\n"
+    },
+    {
+      "name": "MainWindow.xaml.cs",
+      "content": "using System.Windows;\nusing System.Windows.Controls;\nusing System.IO;\nusing System.Text.Json;\nusing Microsoft.EntityFrameworkCore;\nusing Microsoft.Data.SqlClient;\nusing System.Data;\n\nnamespace DesktopData;\npublic partial class MainWindow : Window\n{\n    readonly string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), \"StudyLabData\");\n    public MainWindow()\n    {\n        InitializeComponent();\n        Directory.CreateDirectory(folder);\n        using var db = Db();\n        db.Database.EnsureCreated();\n    }\n\n    SchoolDb Db() => new(Path.Combine(folder, \"school.db\"));\n    SqlConnection Connect() => new(Environment.GetEnvironmentVariable(\"STUDYLAB_SQL\") ?? @\"Server=LEFA\\SQLEXPRESS;Database=StudyLabAdo;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True\");\n    bool Ado => StorageMode.SelectedIndex == 1;\n\n    Student Input()\n    {\n        if (string.IsNullOrWhiteSpace(NameBox.Text) || NameBox.Text.Length > 80 || !int.TryParse(AgeBox.Text, out int age) || age < 16 || age > 100)\n            throw new ArgumentException(\"Enter a name up to 80 characters and age 16-100.\");\n        return new()\n        {\n            Name = NameBox.Text.Trim(),\n            Age = age\n        };\n    }\n\n    List<Student> Load()\n    {\n        if (!Ado)\n        {\n            using var db = Db();\n            return db.Students.AsNoTracking().OrderBy(s => s.Id).ToList();\n        }\n\n        using var c = Connect();\n        c.Open();\n        using var cmd = new SqlCommand(\"SELECT Id,Name,Age FROM dbo.Students ORDER BY Id\", c);\n        using var r = cmd.ExecuteReader();\n        var rows = new List<Student>();\n        while (r.Read())\n            rows.Add(new() { Id = r.GetInt32(0), Name = r.GetString(1), Age = r.GetInt32(2) });\n        return rows;\n    }\n\n    void Guard(Action action)\n    {\n        try\n        {\n            action();\n        }\n        catch (Exception ex)\n        {\n            Status.Text = ex.Message;\n        }\n    }\n\n    void Read(object sender, RoutedEventArgs e) => Guard(() =>\n    {\n        Rows.ItemsSource = Load();\n        Status.Text = \"Rows loaded.\";\n    });\n    void Create(object sender, RoutedEventArgs e) => Guard(() =>\n    {\n        var s = Input();\n        if (Ado)\n            Execute(\"INSERT dbo.Students(Name,Age) VALUES(@name,@age)\", s);\n        else\n        {\n            using var db = Db();\n            db.Students.Add(s);\n            db.SaveChanges();\n        }\n\n        Read(sender, e);\n    });\n    void Update(object sender, RoutedEventArgs e) => Guard(() =>\n    {\n        if (Rows.SelectedItem is not Student selected)\n            throw new ArgumentException(\"Select a student.\");\n        var s = Input();\n        s.Id = selected.Id;\n        if (Ado)\n            Execute(\"UPDATE dbo.Students SET Name=@name,Age=@age WHERE Id=@id\", s);\n        else\n        {\n            using var db = Db();\n            db.Students.Update(s);\n            db.SaveChanges();\n        }\n\n        Read(sender, e);\n    });\n    void Delete(object sender, RoutedEventArgs e) => Guard(() =>\n    {\n        if (Rows.SelectedItem is not Student s)\n            throw new ArgumentException(\"Select a student.\");\n        if (Ado)\n            Execute(\"DELETE dbo.Students WHERE Id=@id\", s);\n        else\n        {\n            using var db = Db();\n            db.Students.Remove(s);\n            db.SaveChanges();\n        }\n\n        Read(sender, e);\n    });\n    void Execute(string sql, Student s)\n    {\n        using var c = Connect();\n        c.Open();\n        using var cmd = new SqlCommand(sql, c);\n        cmd.Parameters.Add(\"@id\", SqlDbType.Int).Value = s.Id;\n        cmd.Parameters.Add(\"@name\", SqlDbType.NVarChar, 80).Value = s.Name;\n        cmd.Parameters.Add(\"@age\", SqlDbType.Int).Value = s.Age;\n        cmd.ExecuteNonQuery();\n    }\n\n    void SelectRow(object sender, SelectionChangedEventArgs e)\n    {\n        if (Rows.SelectedItem is Student s)\n        {\n            NameBox.Text = s.Name;\n            AgeBox.Text = s.Age.ToString();\n        }\n    }\n\n    void Export(object sender, RoutedEventArgs e) => Guard(() =>\n    {\n        var file = Path.Combine(folder, \"students.json\");\n        File.WriteAllText(file, JsonSerializer.Serialize(Load(), new JsonSerializerOptions { WriteIndented = true }));\n        Status.Text = \"Saved: \" + file;\n    });\n    void ReadJson(object sender, RoutedEventArgs e) => Guard(() =>\n    {\n        Rows.ItemsSource = JsonSerializer.Deserialize<List<Student>>(File.ReadAllText(Path.Combine(folder, \"students.json\"))) ?? [];\n        Status.Text = \"JSON preview loaded. It has not been inserted into the database.\";\n    });\n}\n\npublic class Student\n{\n    public int Id { get; set; }\n    public string Name { get; set; } = \"\";\n    public int Age { get; set; }\n}\n\npublic class SchoolDb(string path) : DbContext\n{\n    public DbSet<Student> Students => Set<Student>();\n\n    protected override void OnConfiguring(DbContextOptionsBuilder o) => o.UseSqlite(\"Data Source=\" + path);\n}\n"
+    },
+    {
+      "name": "README.md",
+      "content": "# WPF file, ADO.NET and EF Core data lab\n\nOpen StudyLab.csproj in Visual Studio with the .NET 10 SDK installed. Restore packages, build, and follow the matching StudyLab lesson. Keep each example in its own folder.\n\nFrom this folder: `dotnet run`\n\nTeaching example. Local HTTP is for localhost testing only. Use HTTPS, configured secrets and proper deployment controls on a shared server.\n"
+    },
+    {
+      "name": "StudyLab.csproj",
+      "content": "<Project Sdk=\"Microsoft.NET.Sdk\">\n  <PropertyGroup>\n    <TargetFramework>net10.0-windows</TargetFramework>\n    <Nullable>enable</Nullable>\n    <ImplicitUsings>enable</ImplicitUsings>\n    <OutputType>WinExe</OutputType>\n    <UseWPF>true</UseWPF>\n    <EnableWindowsTargeting>true</EnableWindowsTargeting>\n  </PropertyGroup>\n  <ItemGroup>\n    <PackageReference Include=\"Microsoft.EntityFrameworkCore.Sqlite\" Version=\"10.0.15\"/>\n    <PackageReference Include=\"Microsoft.Data.SqlClient\" Version=\"7.1.2\"/>\n  </ItemGroup>\n  <ItemGroup>\n    <PackageReference Include=\"SQLitePCLRaw.bundle_e_sqlite3\" Version=\"3.0.5\"/>\n    <PackageReference Include=\"SQLitePCLRaw.lib.e_sqlite3\" Version=\"3.53.3\"/>\n  </ItemGroup>\n  <ItemGroup>\n    <PackageReference Include=\"System.Security.Cryptography.Pkcs\" Version=\"10.0.15\"/>\n  </ItemGroup>\n</Project>\n"
+    }
+  ],
+  "10-wpf-mvvm": [
+    {
+      "name": "App.xaml",
+      "content": "<Application xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\" x:Class=\"MvvmLab.App\" StartupUri=\"MainWindow.xaml\"/>\n"
+    },
+    {
+      "name": "App.xaml.cs",
+      "content": "using System.Windows;\n\nnamespace MvvmLab;\npublic partial class App : Application\n{\n}\n"
+    },
+    {
+      "name": "MainWindow.xaml",
+      "content": "<Window xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\" xmlns:local=\"clr-namespace:MvvmLab\" x:Class=\"MvvmLab.MainWindow\" Title=\"MVVM student list\" Width=\"500\" Height=\"400\">\n  <Window.DataContext>\n    <local:StudentViewModel/>\n  </Window.DataContext>\n  <StackPanel Margin=\"20\">\n    <TextBlock Text=\"Name\"/>\n    <TextBox Text=\"{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}\"/>\n    <TextBlock Text=\"Age\"/>\n    <TextBox Text=\"{Binding AgeText, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}\"/>\n    <Button Content=\"Add student\" Command=\"{Binding AddCommand}\" Margin=\"0,10\"/>\n    <ListBox ItemsSource=\"{Binding Students}\"/>\n    <TextBlock Text=\"{Binding Status}\" TextWrapping=\"Wrap\"/>\n  </StackPanel>\n</Window>\n"
+    },
+    {
+      "name": "MainWindow.xaml.cs",
+      "content": "using System.Windows;\n\nnamespace MvvmLab;\npublic partial class MainWindow : Window\n{\n    public MainWindow()\n    {\n        InitializeComponent();\n    }\n}\n"
+    },
+    {
+      "name": "README.md",
+      "content": "# WPF MVVM binding, validation and commands\n\nOpen StudyLab.csproj in Visual Studio with the .NET 10 SDK installed. Restore packages, build, and follow the matching StudyLab lesson. Keep each example in its own folder.\n\nFrom this folder: `dotnet run`\n\nTeaching example. Local HTTP is for localhost testing only. Use HTTPS, configured secrets and proper deployment controls on a shared server.\n"
+    },
+    {
+      "name": "StudentViewModel.cs",
+      "content": "using System.Collections.ObjectModel;\nusing System.ComponentModel;\nusing System.Runtime.CompilerServices;\nusing System.Windows.Input;\n\nnamespace MvvmLab;\npublic class StudentViewModel : INotifyPropertyChanged, IDataErrorInfo\n{\n    string name = \"\", ageText = \"\", status = \"Enter a valid name and age.\";\n    public string Name\n    {\n        get => name;\n        set\n        {\n            name = value;\n            Changed();\n            AddCommand.Refresh();\n        }\n    }\n\n    public string AgeText\n    {\n        get => ageText;\n        set\n        {\n            ageText = value;\n            Changed();\n            AddCommand.Refresh();\n        }\n    }\n\n    public string Status\n    {\n        get => status;\n        private set\n        {\n            status = value;\n            Changed();\n        }\n    }\n\n    public ObservableCollection<string> Students { get; } = [];\n    public RelayCommand AddCommand { get; }\n\n    public StudentViewModel()\n    {\n        AddCommand = new(() =>\n        {\n            Students.Add($\"{Name.Trim()} ({AgeText})\");\n            Status = \"Student added.\";\n            Name = \"\";\n            AgeText = \"\";\n        }, () => string.IsNullOrEmpty(this[nameof(Name)]) && string.IsNullOrEmpty(this[nameof(AgeText)]));\n    }\n\n    public string Error => \"\";\n\n    public string this[string column] => column == nameof(Name) ? (string.IsNullOrWhiteSpace(Name) || Name.Length > 80 ? \"Name is required, up to 80 characters.\" : \"\") : column == nameof(AgeText) ? (!int.TryParse(AgeText, out int age) || age < 16 || age > 100 ? \"Age must be 16 to 100.\" : \"\") : \"\";\n    public event PropertyChangedEventHandler? PropertyChanged;\n    void Changed([CallerMemberName] string? property = null) => PropertyChanged?.Invoke(this, new(property));\n}\n\npublic class RelayCommand(Action run, Func<bool> allowed) : ICommand\n{\n    public bool CanExecute(object? p) => allowed();\n    public void Execute(object? p) => run();\n    public event EventHandler? CanExecuteChanged;\n    public void Refresh() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);\n}\n"
+    },
+    {
+      "name": "StudyLab.csproj",
+      "content": "<Project Sdk=\"Microsoft.NET.Sdk\">\n  <PropertyGroup>\n    <TargetFramework>net10.0-windows</TargetFramework>\n    <Nullable>enable</Nullable>\n    <ImplicitUsings>enable</ImplicitUsings>\n    <OutputType>WinExe</OutputType>\n    <UseWPF>true</UseWPF>\n    <EnableWindowsTargeting>true</EnableWindowsTargeting>\n  </PropertyGroup>\n</Project>\n"
+    }
+  ],
+  "11-libraries-reflection": [
+    {
+      "name": "Program.cs",
+      "content": "using SharedRules;\nusing System.Reflection;\nusing System.Reflection.Emit;\n\nConsole.WriteLine($\"Pass: {MarkRules.IsPass(70)}\");\nType type = typeof(MarkRules);\nConsole.WriteLine($\"Type: {type.Name}\");\nvar method = type.GetMethod(nameof(MarkRules.IsPass))!;\nConsole.WriteLine($\"Late binding: {method.Invoke(null, [40])}\");\nConsole.WriteLine(type.GetCustomAttribute<StudyTopicAttribute>()!.Title);\ndynamic student = new System.Dynamic.ExpandoObject();\nstudent.Name = \"Lefa\";\nConsole.WriteLine(student.Name);\n// Reflection.Emit builds a method at runtime; it is not a C# source-code compiler.\nvar asm = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName(\"GeneratedStudyRules\"), AssemblyBuilderAccess.Run);\nvar module = asm.DefineDynamicModule(\"Main\");\nvar tb = module.DefineType(\"GeneratedRules\", TypeAttributes.Public);\nvar mb = tb.DefineMethod(\"Seven\", MethodAttributes.Public | MethodAttributes.Static, typeof(int), Type.EmptyTypes);\nvar il = mb.GetILGenerator();\nil.Emit(OpCodes.Ldc_I4_7);\nil.Emit(OpCodes.Ret);\nvar generated = tb.CreateType()!;\nConsole.WriteLine($\"Emitted result: {generated.GetMethod(\"Seven\")!.Invoke(null, null)}\");\n"
+    },
+    {
+      "name": "README.md",
+      "content": "# Class libraries, reflection, dynamic and emitted code\n\nOpen StudyLab.csproj in Visual Studio with the .NET 10 SDK installed. Restore packages, build, and follow the matching StudyLab lesson. Keep each example in its own folder.\n\nFrom this folder: `dotnet run`\n\nTeaching example. Local HTTP is for localhost testing only. Use HTTPS, configured secrets and proper deployment controls on a shared server.\n"
+    },
+    {
+      "name": "SharedRules/MarkRules.cs",
+      "content": "namespace SharedRules;\n[AttributeUsage(AttributeTargets.Class)]\npublic class StudyTopicAttribute(string title) : Attribute\n{\n    public string Title { get; } = title;\n}\n\n[StudyTopic(\"Marks and passes\")]\npublic static class MarkRules\n{\n    public static bool IsPass(int mark) => mark >= 50;\n}\n"
+    },
+    {
+      "name": "SharedRules/SharedRules.csproj",
+      "content": "<Project Sdk=\"Microsoft.NET.Sdk\">\n  <PropertyGroup>\n    <TargetFramework>net10.0</TargetFramework>\n    <ImplicitUsings>enable</ImplicitUsings>\n    <Nullable>enable</Nullable>\n  </PropertyGroup>\n</Project>\n"
+    },
+    {
+      "name": "StudyLab.csproj",
+      "content": "<Project Sdk=\"Microsoft.NET.Sdk\">\n  <PropertyGroup>\n    <TargetFramework>net10.0</TargetFramework>\n    <Nullable>enable</Nullable>\n    <ImplicitUsings>enable</ImplicitUsings>\n    <OutputType>Exe</OutputType>\n  </PropertyGroup>\n  <ItemGroup>\n    <Compile Remove=\"SharedRules/**/*.cs\"/>\n    <ProjectReference Include=\"SharedRules/SharedRules.csproj\"/>\n  </ItemGroup>\n</Project>\n"
+    }
+  ],
+  "12-docker-school": [
+    {
+      "name": ".env.example",
+      "content": "SQL_PASSWORD=ReplaceWithYourOwn_Strong123!\n"
+    },
+    {
+      "name": ".gitignore",
+      "content": ".env\n**/bin/\n**/obj/\n"
+    },
+    {
+      "name": "Api/.dockerignore",
+      "content": "bin\nobj\n.git\n.env\n*.db\n"
+    },
+    {
+      "name": "Api/Controllers/StudentsController.cs",
+      "content": "using Microsoft.AspNetCore.Mvc;\nusing Microsoft.EntityFrameworkCore;\n\n[ApiController]\n[Route(\"api/students\")]\npublic class StudentsController(SchoolDb db) : ControllerBase\n{\n    [HttpGet]\n    public async Task<ActionResult<List<Student>>> GetAll(CancellationToken ct) => await db.Students.AsNoTracking().OrderBy(s => s.Id).ToListAsync(ct);\n    [HttpGet(\"{id:int}\")]\n    public async Task<ActionResult<Student>> Get(int id, CancellationToken ct)\n    {\n        var row = await db.Students.FindAsync([id], ct);\n        return row is null ? NotFound() : Ok(row);\n    }\n\n    [HttpPost]\n    public async Task<IActionResult> Create(StudentInput input, CancellationToken ct)\n    {\n        if (string.IsNullOrWhiteSpace(input.Name))\n            return BadRequest(\"Name cannot be blank.\");\n        var row = new Student\n        {\n            Name = input.Name.Trim(),\n            Age = input.Age\n        };\n        db.Students.Add(row);\n        await db.SaveChangesAsync(ct);\n        return CreatedAtAction(nameof(Get), new { id = row.Id }, row);\n    }\n\n    [HttpPut(\"{id:int}\")]\n    public async Task<IActionResult> Update(int id, StudentInput input, CancellationToken ct)\n    {\n        if (string.IsNullOrWhiteSpace(input.Name))\n            return BadRequest(\"Name cannot be blank.\");\n        var row = await db.Students.FindAsync([id], ct);\n        if (row is null)\n            return NotFound();\n        row.Name = input.Name.Trim();\n        row.Age = input.Age;\n        await db.SaveChangesAsync(ct);\n        return NoContent();\n    }\n\n    [HttpDelete(\"{id:int}\")]\n    public async Task<IActionResult> Delete(int id, CancellationToken ct)\n    {\n        var row = await db.Students.FindAsync([id], ct);\n        if (row is null)\n            return NotFound();\n        db.Students.Remove(row);\n        await db.SaveChangesAsync(ct);\n        return NoContent();\n    }\n}\n"
+    },
+    {
+      "name": "Api/Data/SchoolDb.cs",
+      "content": "using Microsoft.EntityFrameworkCore;\n\npublic class SchoolDb(DbContextOptions<SchoolDb> options) : DbContext(options)\n{\n    public DbSet<Student> Students => Set<Student>();\n}\n"
+    },
+    {
+      "name": "Api/Dockerfile",
+      "content": "FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build\nWORKDIR /src\nCOPY StudyLab.csproj ./\nRUN dotnet restore\nCOPY . .\nRUN dotnet publish StudyLab.csproj -c Release -o /out --no-restore\nFROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final\nWORKDIR /app\nCOPY --from=build /out .\nENV ASPNETCORE_HTTP_PORTS=8080\nEXPOSE 8080\nUSER $APP_UID\nENTRYPOINT [\"dotnet\", \"StudyLab.dll\"]\n"
+    },
+    {
+      "name": "Api/Models/Student.cs",
+      "content": "using System.ComponentModel.DataAnnotations;\n\npublic class Student\n{\n    public int Id { get; set; }\n\n    [Required, StringLength(80)]\n    public string Name { get; set; } = \"\";\n\n    [Range(16, 100)]\n    public int Age { get; set; }\n}\n\npublic record StudentInput([Required, StringLength(80)] string Name, [Range(16, 100)] int Age);\n"
+    },
+    {
+      "name": "Api/Program.cs",
+      "content": "using Microsoft.EntityFrameworkCore;\n\nvar builder = WebApplication.CreateBuilder(args);\nbuilder.Services.AddControllers();\nbuilder.Services.AddDbContext<SchoolDb>(o => o.UseSqlServer(builder.Configuration.GetConnectionString(\"School\"), sql => sql.EnableRetryOnFailure()));\nvar app = builder.Build();\n// Classroom startup migration. In production prefer a reviewed migration job.\nif (builder.Configuration.GetValue<bool>(\"StudyLabMigrate\"))\n{\n    using var scope = app.Services.CreateScope();\n    scope.ServiceProvider.GetRequiredService<SchoolDb>().Database.Migrate();\n}\n\napp.MapGet(\"/health\", () => Results.Ok(new { status = \"ready\" }));\napp.MapControllers();\napp.Run();\n"
+    },
+    {
+      "name": "Api/StudyLab.csproj",
+      "content": "<Project Sdk=\"Microsoft.NET.Sdk.Web\">\n  <PropertyGroup>\n    <TargetFramework>net10.0</TargetFramework>\n    <Nullable>enable</Nullable>\n    <ImplicitUsings>enable</ImplicitUsings>\n  </PropertyGroup>\n  <ItemGroup>\n    <PackageReference Include=\"Microsoft.EntityFrameworkCore.SqlServer\" Version=\"10.0.15\"/>\n    <PackageReference Include=\"Microsoft.EntityFrameworkCore.Design\" Version=\"10.0.15\"/>\n  </ItemGroup>\n  <ItemGroup>\n    <PackageReference Include=\"System.Security.Cryptography.Pkcs\" Version=\"10.0.15\"/>\n  </ItemGroup>\n</Project>\n"
+    },
+    {
+      "name": "Api/appsettings.json",
+      "content": "{}"
+    },
+    {
+      "name": "Api/requests.http",
+      "content": "@base = http://localhost:5100\nGET {{base}}/api/students\n### Create\nPOST {{base}}/api/students\nContent-Type: application/json\n\n{\"name\":\"Lefa\",\"age\":22}\n### One\nGET {{base}}/api/students/1\n### Replace\nPUT {{base}}/api/students/1\nContent-Type: application/json\n\n{\"name\":\"Lefa Malatji\",\"age\":23}\n### Delete\nDELETE {{base}}/api/students/1\n### Missing\nGET {{base}}/api/students/999\n"
+    },
+    {
+      "name": "README.md",
+      "content": "# Docker school stack\n\nRequires Docker Desktop with Linux containers and an x64 host supported by SQL Server containers. On unsupported ARM hardware use a compatible remote SQL Server or the standalone SQLite lesson instead; do not promise native SQL Server ARM support.\n\n1. Extract into a new folder. Copy .env.example to .env and choose your own strong password. Never publish .env.\n2. Generate an API migration once BEFORE building images: from Api run dotnet tool install --global dotnet-ef --version 10.0.15 (skip if already installed), then dotnet ef migrations add InitialCreate. This does not need a running database. The generated migrations must be included in the image.\n3. From the root run docker compose config --quiet, then docker compose up --build -d.\n4. Check docker compose ps and docker compose logs api. Wait for the API to finish its migration before opening the website.\n5. API: http://localhost:5100/api/students . Website: http://localhost:5200 . API health: http://localhost:5100/health .\n6. Add a student in the website. Run docker compose down, then docker compose up -d. The student remains because the named volume survives.\n7. Stop with docker compose down. docker compose down -v deletes the database volume; use it ONLY when you intend to erase this practice data.\n\nThe sa account, certificate trust bypass and startup migration are classroom shortcuts. Production needs a least-privilege application login, validated certificates, a secrets manager, separate migration job, backups and TLS/reverse proxy.\n"
+    },
+    {
+      "name": "Website/.dockerignore",
+      "content": "bin\nobj\n.git\n.env\n*.db\n"
+    },
+    {
+      "name": "Website/Controllers/StudentsController.cs",
+      "content": "using Microsoft.AspNetCore.Mvc;\nusing System.Net.Http.Json;\n\npublic class StudentsController(IHttpClientFactory factory) : Controller\n{\n    HttpClient Api => factory.CreateClient(\"School\");\n\n    public async Task<IActionResult> Index()\n    {\n        var rows = await Api.GetFromJsonAsync<List<Student>>(\"api/students\") ?? [];\n        return View(rows);\n    }\n\n    [HttpPost, ValidateAntiForgeryToken]\n    public async Task<IActionResult> Create(StudentInput input)\n    {\n        if (!ModelState.IsValid)\n        {\n            TempData[\"Error\"] = \"Check name and age.\";\n            return RedirectToAction(nameof(Index));\n        }\n\n        var r = await Api.PostAsJsonAsync(\"api/students\", input);\n        TempData[\"Error\"] = r.IsSuccessStatusCode ? \"Student created.\" : \"API rejected create.\";\n        return RedirectToAction(nameof(Index));\n    }\n\n    [HttpPost, ValidateAntiForgeryToken]\n    public async Task<IActionResult> Update(int id, StudentInput input)\n    {\n        if (!ModelState.IsValid)\n        {\n            TempData[\"Error\"] = \"Invalid student.\";\n            return RedirectToAction(nameof(Index));\n        }\n\n        var r = await Api.PutAsJsonAsync($\"api/students/{id}\", input);\n        TempData[\"Error\"] = r.IsSuccessStatusCode ? \"Student updated.\" : \"API rejected update.\";\n        return RedirectToAction(nameof(Index));\n    }\n\n    [HttpPost, ValidateAntiForgeryToken]\n    public async Task<IActionResult> Delete(int id)\n    {\n        var r = await Api.DeleteAsync($\"api/students/{id}\");\n        TempData[\"Error\"] = r.IsSuccessStatusCode ? \"Student deleted.\" : \"API rejected delete.\";\n        return RedirectToAction(nameof(Index));\n    }\n}\n"
+    },
+    {
+      "name": "Website/Dockerfile",
+      "content": "FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build\nWORKDIR /src\nCOPY StudyLab.csproj ./\nRUN dotnet restore\nCOPY . .\nRUN dotnet publish StudyLab.csproj -c Release -o /out --no-restore\nFROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final\nWORKDIR /app\nCOPY --from=build /out .\nENV ASPNETCORE_HTTP_PORTS=8080\nEXPOSE 8080\nUSER $APP_UID\nENTRYPOINT [\"dotnet\", \"StudyLab.dll\"]\n"
+    },
+    {
+      "name": "Website/Models/Student.cs",
+      "content": "using System.ComponentModel.DataAnnotations;\n\npublic class Student\n{\n    public int Id { get; set; }\n\n    [Required, StringLength(80)]\n    public string Name { get; set; } = \"\";\n\n    [Range(16, 100)]\n    public int Age { get; set; }\n}\n\npublic record StudentInput([Required, StringLength(80)] string Name, [Range(16, 100)] int Age);\n"
+    },
+    {
+      "name": "Website/Program.cs",
+      "content": "var builder = WebApplication.CreateBuilder(args);\nbuilder.Services.AddControllersWithViews();\nbuilder.Services.AddHttpClient(\"School\", client => client.BaseAddress = new Uri(builder.Configuration[\"SchoolApi\"] ?? \"http://localhost:5100/\"));\nvar app = builder.Build();\napp.UseStaticFiles();\napp.MapControllerRoute(\"default\", \"{controller=Students}/{action=Index}/{id?}\");\napp.Run();\n"
+    },
+    {
+      "name": "Website/StudyLab.csproj",
+      "content": "<Project Sdk=\"Microsoft.NET.Sdk.Web\">\n  <PropertyGroup>\n    <TargetFramework>net10.0</TargetFramework>\n    <Nullable>enable</Nullable>\n    <ImplicitUsings>enable</ImplicitUsings>\n  </PropertyGroup>\n</Project>\n"
+    },
+    {
+      "name": "Website/Views/Students/Index.cshtml",
+      "content": "@model List<Student>\n<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"/><title>School</title></head><body>\n<h1>Students</h1><p>@TempData[\"Error\"]</p>\n<form method=\"post\" action=\"/Students/Create\">@Html.AntiForgeryToken()<label>Name <input name=\"Name\" required maxlength=\"80\"/></label><label>Age <input name=\"Age\" type=\"number\" min=\"16\" max=\"100\" required/></label><button>Create</button></form>\n@foreach(var s in Model){\n <form method=\"post\" action=\"/Students/Update/@s.Id\">@Html.AntiForgeryToken()<input name=\"Name\" value=\"@s.Name\" required maxlength=\"80\"/><input name=\"Age\" value=\"@s.Age\" type=\"number\" min=\"16\" max=\"100\"/><button>Save changes</button></form>\n <form method=\"post\" action=\"/Students/Delete/@s.Id\">@Html.AntiForgeryToken()<button>Delete @s.Name</button></form>\n}\n</body></html>\n"
+    },
+    {
+      "name": "Website/appsettings.json",
+      "content": "{\"SchoolApi\":\"http://api:8080/\"}"
+    },
+    {
+      "name": "compose.yaml",
+      "content": "services:\n  db:\n    image: mcr.microsoft.com/mssql/server:2022-latest\n    environment:\n      ACCEPT_EULA: \"Y\"\n      MSSQL_PID: Developer\n      MSSQL_SA_PASSWORD: ${SQL_PASSWORD:?Set SQL_PASSWORD in .env first}\n    volumes:\n      - school-data:/var/opt/mssql\n    healthcheck:\n      test:\n        - CMD-SHELL\n        - >-\n          /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -C -Q \"SELECT 1\" -b -o /dev/null\n      interval: 10s\n      timeout: 5s\n      retries: 20\n      start_period: 30s\n  api:\n    build: ./Api\n    environment:\n      ConnectionStrings__School: \"Server=db,1433;Database=StudyLabDocker;User Id=sa;Password=${SQL_PASSWORD};Encrypt=True;TrustServerCertificate=True\"\n      StudyLabMigrate: \"true\"\n    ports:\n      - \"127.0.0.1:5100:8080\"\n    depends_on:\n      db:\n        condition: service_healthy\n  website:\n    build: ./Website\n    environment:\n      SchoolApi: http://api:8080/\n    ports:\n      - \"127.0.0.1:5200:8080\"\n    depends_on:\n      api:\n        condition: service_started\nvolumes:\n  school-data:\n"
+    }
+  ],
+  "13-api-http-tests": [
+    {
+      "name": "Program.cs",
+      "content": "using System.Net;\nusing System.Net.Http.Json;\n\nusing var client = new HttpClient\n{\n    BaseAddress = new Uri(\"http://localhost:5100/\")\n};\n// Start project 02-controller-api first, in a different terminal.\nvar created = await client.PostAsJsonAsync(\"api/students\", new { name = \"Test student\", age = 22 });\nCheck(created.StatusCode == HttpStatusCode.Created, \"POST returns 201\");\nvar row = await created.Content.ReadFromJsonAsync<Student>();\nCheck(row is not null && row.Name == \"Test student\", \"POST body has name and ID\");\nint id = row!.Id;\ntry\n{\n    var read = await client.GetFromJsonAsync<Student>($\"api/students/{id}\");\n    Check(read?.Age == 22, \"GET reads created data\");\n    var invalid = await client.PutAsJsonAsync($\"api/students/{id}\", new { name = \"Test student\", age = 2 });\n    Check(invalid.StatusCode == HttpStatusCode.BadRequest, \"Invalid age returns 400\");\n    var updated = await client.PutAsJsonAsync($\"api/students/{id}\", new { name = \"Updated\", age = 23 });\n    Check(updated.StatusCode == HttpStatusCode.NoContent, \"PUT returns 204\");\n    read = await client.GetFromJsonAsync<Student>($\"api/students/{id}\");\n    Check(read?.Name == \"Updated\" && read.Age == 23, \"GET confirms updated values\");\n    var deleted = await client.DeleteAsync($\"api/students/{id}\");\n    Check(deleted.StatusCode == HttpStatusCode.NoContent, \"DELETE returns 204\");\n    var missing = await client.GetAsync($\"api/students/{id}\");\n    Check(missing.StatusCode == HttpStatusCode.NotFound, \"GET after delete returns 404\");\n}\nfinally\n{\n    await client.DeleteAsync($\"api/students/{id}\");\n}\n\nConsole.WriteLine(\"All CRUD checks passed.\");\nstatic void Check(bool condition, string message)\n{\n    if (!condition)\n        throw new Exception(\"FAIL: \" + message);\n    Console.WriteLine(\"PASS: \" + message);\n}\n\npublic record Student(int Id, string Name, int Age);\n"
+    },
+    {
+      "name": "README.md",
+      "content": "# Repeatable HTTP CRUD checks\n\nStart project 02-controller-api on http://localhost:5100 in another terminal. Open this .csproj and run it, or run dotnet run from this folder. It creates and deletes its own test student. Do not point this lab at a production API. Expected: eight PASS lines followed by All CRUD checks passed. A failed assertion throws and makes the process fail.\n"
+    },
+    {
+      "name": "StudyLab.csproj",
+      "content": "<Project Sdk=\"Microsoft.NET.Sdk\">\n  <PropertyGroup>\n    <TargetFramework>net10.0</TargetFramework>\n    <OutputType>Exe</OutputType>\n    <ImplicitUsings>enable</ImplicitUsings>\n    <Nullable>enable</Nullable>\n  </PropertyGroup>\n</Project>\n"
+    }
+  ],
+  "14-openapi-swagger": [
+    {
+      "name": "Controllers/StudentsController.cs",
+      "content": "using Microsoft.AspNetCore.Mvc;\n\n[ApiController]\n[Route(\"api/students\")]\npublic class StudentsController(StudentStore db) : ControllerBase\n{\n    [HttpGet]\n    public IActionResult GetAll() => Ok(db.Rows.Values.OrderBy(x => x.Id));\n    [HttpGet(\"{id:int}\")]\n    public IActionResult Get(int id) => db.Rows.TryGetValue(id, out var row) ? Ok(row) : NotFound();\n    [HttpPost]\n    public IActionResult Create(StudentInput input)\n    {\n        if (string.IsNullOrWhiteSpace(input.Name))\n            return BadRequest(\"Name cannot be blank.\");\n        var row = new Student\n        {\n            Id = db.NextId(),\n            Name = input.Name.Trim(),\n            Age = input.Age\n        };\n        db.Rows[row.Id] = row;\n        return CreatedAtAction(nameof(Get), new { id = row.Id }, row);\n    }\n\n    [HttpPut(\"{id:int}\")]\n    public IActionResult Update(int id, StudentInput input)\n    {\n        if (string.IsNullOrWhiteSpace(input.Name))\n            return BadRequest(\"Name cannot be blank.\");\n        while (db.Rows.TryGetValue(id, out var old))\n        {\n            var row = new Student\n            {\n                Id = id,\n                Name = input.Name.Trim(),\n                Age = input.Age\n            };\n            if (db.Rows.TryUpdate(id, row, old))\n                return NoContent();\n        }\n\n        return NotFound();\n    }\n\n    [HttpDelete(\"{id:int}\")]\n    public IActionResult Delete(int id) => db.Rows.TryRemove(id, out _) ? NoContent() : NotFound();\n}\n"
+    },
+    {
+      "name": "Models/Student.cs",
+      "content": "using System.ComponentModel.DataAnnotations;\n\npublic class Student\n{\n    public int Id { get; set; }\n\n    [Required, StringLength(80)]\n    public string Name { get; set; } = \"\";\n\n    [Range(16, 100)]\n    public int Age { get; set; }\n}\n\npublic record StudentInput([Required, StringLength(80)] string Name, [Range(16, 100)] int Age);\n"
+    },
+    {
+      "name": "Program.cs",
+      "content": "var builder = WebApplication.CreateBuilder(args);\nbuilder.Services.AddControllers();\nbuilder.Services.AddOpenApi();\nbuilder.Services.AddSingleton<StudentStore>();\nvar app = builder.Build();\nif (app.Environment.IsDevelopment())\n{\n    app.MapOpenApi();\n    app.UseSwaggerUI(o => o.SwaggerEndpoint(\"/openapi/v1.json\", \"StudyLab API\"));\n}\n\napp.MapControllers();\napp.Run();\n"
+    },
+    {
+      "name": "README.md",
+      "content": "# OpenAPI and Swagger UI\n\nOpen StudyLab.csproj in Visual Studio. Set the development environment. In PowerShell run `$env:ASPNETCORE_ENVIRONMENT=\"Development\"` then `dotnet run --urls http://localhost:5100`. Open http://localhost:5100/swagger and http://localhost:5100/openapi/v1.json.\n\nThe built-in OpenAPI generator produces the JSON document. The SwaggerUI package displays it. No AddSwaggerGen is needed in this combination. The UI/document routes are exposed only in Development.\n"
+    },
+    {
+      "name": "StudentStore.cs",
+      "content": "using System.Collections.Concurrent;\n\npublic class StudentStore\n{\n    private int id;\n    public ConcurrentDictionary<int, Student> Rows { get; } = new();\n\n    public int NextId() => Interlocked.Increment(ref id);\n}\n"
+    },
+    {
+      "name": "StudyLab.csproj",
+      "content": "<Project Sdk=\"Microsoft.NET.Sdk.Web\">\n  <PropertyGroup>\n    <TargetFramework>net10.0</TargetFramework>\n    <Nullable>enable</Nullable>\n    <ImplicitUsings>enable</ImplicitUsings>\n  </PropertyGroup>\n  <ItemGroup>\n    <PackageReference Include=\"Microsoft.AspNetCore.OpenApi\" Version=\"10.0.15\"/>\n    <PackageReference Include=\"Swashbuckle.AspNetCore.SwaggerUI\" Version=\"11.0.1\"/>\n  </ItemGroup>\n</Project>\n"
+    },
+    {
+      "name": "requests.http",
+      "content": "@base = http://localhost:5100\nGET {{base}}/api/students\n### Create\nPOST {{base}}/api/students\nContent-Type: application/json\n\n{\"name\":\"Lefa\",\"age\":22}\n### One\nGET {{base}}/api/students/1\n### Replace\nPUT {{base}}/api/students/1\nContent-Type: application/json\n\n{\"name\":\"Lefa Malatji\",\"age\":23}\n### Delete\nDELETE {{base}}/api/students/1\n### Missing\nGET {{base}}/api/students/999\n"
+    }
+  ]
+};

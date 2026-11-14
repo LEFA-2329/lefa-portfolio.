@@ -1,0 +1,83 @@
+<div class="theory">
+  <p>
+    Compose is a set of instructions for several containers that belong together. Our
+    stack has a website, an API and SQL Server.
+  </p>
+  <section>
+    <h2>How to test this example in Visual Studio</h2>
+    <p>
+      Download the project below, extract it into its own folder, then open
+      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+      Solution. For console projects choose Start Without Debugging. For API projects use
+      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
+      then run the command shown in the lesson. Do not paste all files into Program.cs:
+      use the exact file names displayed below.
+    </p>
+  </section>
+  <section>
+    <h2>Prepare your computer</h2>
+    <p>
+      Install Docker Desktop with Linux containers enabled and the .NET10 SDK. For the
+      full SQL Server stack use supported x64 hardware with enough memory for SQL Server.
+      WPF does not run in the Linux ASP.NET image. Accept applicable vendor licences
+      yourself during installation. Run docker version and docker compose version in a
+      terminal; start Docker Desktop if the engine cannot be reached.
+    </p>
+  </section>
+  <section>
+    <h2>Before the first start</h2>
+    <p>
+      Download the complete stack. It contains Api, Website, compose.yaml and
+      .env.example. Copy .env.example to .env in the root folder. Replace the
+      demonstration password with your own strong local password. Do not commit .env. In
+      Api generate InitialCreate with dotnet ef migrations add InitialCreate before
+      building the images. The classroom API applies those migrations when
+      StudyLabMigrate=true.
+    </p>
+    <pre><code>docker compose config --quiet
+docker compose up --build -d
+docker compose ps
+docker compose logs api</code></pre>
+  </section>
+  <section>
+    <h2>Follow the startup order</h2>
+    <p>
+      db starts SQL Server Developer edition and stores files in school-data. Its sqlcmd
+      healthcheck must succeed before api starts. api retries transient database
+      connections and performs its classroom migration. website starts after the API
+      container is started; that is not the same as API readiness, so wait for the API
+      migration to finish in logs before opening the website.
+    </p>
+  </section>
+  <section>
+    <h2>Test every tier</h2>
+    <p>
+      Open http://localhost:5100/health, then http://localhost:5100/api/students, then
+      http://localhost:5200. Expected: a ready health response, an empty list on a new
+      database, then an MVC form. Create Lefa,22 in the website. The website calls api;
+      api writes a SQL Server row. Read, update and delete through the form. Keep a row
+      for the volume test.
+    </p>
+  </section>
+  <section>
+    <h2>Try it yourself</h2>
+    <details class="panel">
+      <summary>Why use db,1433 instead of localhost inside api?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        localhost inside api means the API container itself. Compose DNS resolves db to
+        the database service.
+      </p>
+    </details>
+    <details class="panel">
+      <summary>
+        Is depends_on:service_started enough to prove SQL Server can accept connections?
+      </summary>
+      <h3>Worked answer</h3>
+      <p>
+        No. The database uses a healthcheck and service_healthy condition, plus transient
+        retry handling.
+      </p>
+    </details>
+  </section>
+</div>

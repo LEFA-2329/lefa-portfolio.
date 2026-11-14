@@ -241,3 +241,34 @@
     break-inside: avoid;
   }
 }
+/* C# and Docker lessons: source stays readable without widening the phone viewport. */
+.cs-source-file {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+  margin: 14px 0;
+  background: var(--surface);
+}
+.cs-source-file summary {
+  font-weight: 700;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+.cs-source-file pre {
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: pre;
+}
+#csharp-course-content .panel {
+  margin: 18px 0;
+}
+#csharp-course-content .course-lesson-links {
+  display: grid;
+  gap: 12px;
+}
+#cs-quiz fieldset {
+  min-width: 0;
+  border: 1px solid var(--line);
+  padding: 14px;
+  margin: 14px 0;
+}

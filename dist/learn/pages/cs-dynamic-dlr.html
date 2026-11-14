@@ -1,0 +1,58 @@
+<div class="theory">
+  <p>
+    var and dynamic are not the same. var asks the compiler to work out a fixed type.
+    dynamic postpones many member checks until runtime.
+  </p>
+  <section>
+    <h2>How to test this example in Visual Studio</h2>
+    <p>
+      Download the project below, extract it into its own folder, then open
+      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+      Solution. For console projects choose Start Without Debugging. For API projects use
+      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
+      then run the command shown in the lesson. Do not paste all files into Program.cs:
+      use the exact file names displayed below.
+    </p>
+  </section>
+  <section>
+    <h2>Try an expandable object</h2>
+    <pre><code>dynamic student = new System.Dynamic.ExpandoObject();
+student.Name = &quot;Lefa&quot;;
+Console.WriteLine(student.Name);</code></pre>
+    <p>
+      Expected: Lefa. A misspelled student.Nmae can fail at runtime. With var student =
+      new { Name = "Lefa" }, Name is compiler checked and the anonymous object has a fixed
+      read-only shape. dynamic can help with dynamic-object interoperability, but should
+      not replace clear types in normal domain/API code.
+    </p>
+  </section>
+  <section>
+    <h2>DLR, CLR and intermediate code</h2>
+    <p>
+      C# compiles to Common Intermediate Language and metadata in an assembly. The Common
+      Language Runtime executes managed code, often through JIT compilation; ahead-of-time
+      compilation is another deployment option. The Dynamic Language Runtime supplies
+      dynamic binding infrastructure and call-site caching. It does not turn dynamic into
+      a separate database or make unknown member access safe.
+    </p>
+  </section>
+  <section>
+    <h2>Try it yourself</h2>
+    <details class="panel">
+      <summary>Choose var or dynamic for a normal Student DTO.</summary>
+      <h3>Worked answer</h3>
+      <p>
+        Use a named Student type (possibly held in a var local). Keep compile-time checks
+        for routine structured data.
+      </p>
+    </details>
+    <details class="panel">
+      <summary>What does a runtime binder exception suggest?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        A member name, argument list or runtime type did not support the requested
+        operation. Inspect the actual value/type.
+      </p>
+    </details>
+  </section>
+</div>

@@ -6,3 +6,6 @@ node_modules/
 
 # Generated from the readable HTML page sources.
 dist/shared/compiled-html-pages.mjs
+
+# Generated from complete editable C# project files.
+dist/learn/js/csharp/complete-example-files.mjs

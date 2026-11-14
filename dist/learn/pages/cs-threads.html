@@ -1,0 +1,69 @@
+<div class="theory">
+  <p>
+    One worker can do jobs in order. Several workers can work at the same time, but they
+    must not fight over the same notebook.
+  </p>
+  <section>
+    <h2>How to test this example in Visual Studio</h2>
+    <p>
+      Download the project below, extract it into its own folder, then open
+      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+      Solution. For console projects choose Start Without Debugging. For API projects use
+      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
+      then run the command shown in the lesson. Do not paste all files into Program.cs:
+      use the exact file names displayed below.
+    </p>
+  </section>
+  <section>
+    <h2>Make shared updates safe</h2>
+    <pre><code>int count = 0;
+Parallel.For(0, 1000, _ =&gt; Interlocked.Increment(ref count));
+Console.WriteLine($&quot;Safe count: {count}&quot;);
+var worker = new Thread(() =&gt; Console.WriteLine(&quot;Worker thread finished&quot;));
+worker.Start();
+worker.Join();</code></pre>
+    <p>
+      Expected count: 1000. count++ reads, adds and writes, so racing workers can lose
+      updates. Interlocked makes this small update atomic. lock protects a larger critical
+      section; keep locks short. Join waits for a thread to finish and blocks the caller.
+    </p>
+  </section>
+  <section>
+    <h2>Choose the right model</h2>
+    <ul>
+      <li>Multithreading: more than one thread can make progress.</li>
+      <li>
+        Parallelism: work executes at the same time, useful for sufficiently large CPU
+        calculations. Task.Run can offload CPU work from a desktop UI thread.
+      </li>
+      <li>
+        Asynchrony: do not block while waiting for I/O. It can use the same thread again
+        later; async does not always create a new thread.
+      </li>
+      <li>
+        WPF controls belong to their UI thread. Use Dispatcher for UI updates from another
+        thread. Never share a DbContext across parallel tasks; give independent work
+        separate scopes or contexts.
+      </li>
+    </ul>
+  </section>
+  <section>
+    <h2>Try it yourself</h2>
+    <details class="panel">
+      <summary>Why is a static List dangerous for simultaneous API writes?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        Concurrent mutation can corrupt assumptions. Use a real database, a properly
+        locked store, or a suitable concurrent collection for an in-memory demo.
+      </p>
+    </details>
+    <details class="panel">
+      <summary>When is Parallel.For a bad choice?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        For tiny jobs or waiting on network I/O, overhead or blocked workers can make it
+        slower.
+      </p>
+    </details>
+  </section>
+</div>

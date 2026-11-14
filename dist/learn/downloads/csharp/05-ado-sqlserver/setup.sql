@@ -1,0 +1,5 @@
+IF DB_ID('StudyLabAdo') IS NULL CREATE DATABASE StudyLabAdo;
+GO
+USE StudyLabAdo;
+GO
+CREATE TABLE dbo.Students(Id int IDENTITY PRIMARY KEY, Name nvarchar(80) NOT NULL, Age int NOT NULL CHECK(Age BETWEEN 16 AND 100));

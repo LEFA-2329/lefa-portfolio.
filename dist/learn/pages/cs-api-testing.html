@@ -1,0 +1,105 @@
+<div class="theory">
+  <p>
+    Testing means checking what happens, not just noticing that a page opens. Test the
+    happy path and the mistakes that real people make.
+  </p>
+  <section>
+    <h2>How to test this example in Visual Studio</h2>
+    <p>
+      Download the project below, extract it into its own folder, then open
+      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+      Solution. For console projects choose Start Without Debugging. For API projects use
+      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
+      then run the command shown in the lesson. Do not paste all files into Program.cs:
+      use the exact file names displayed below.
+    </p>
+  </section>
+  <section>
+    <h2>A repeatable request checklist</h2>
+    <ul>
+      <li>
+        Start the in-memory API fresh. GET the empty list. POST a valid student and record
+        the returned ID and Location header.
+      </li>
+      <li>
+        GET that ID and check name/age. PUT a different name; GET again to prove
+        persistence within this process. DELETE it; GET must return 404.
+      </li>
+      <li>
+        POST an invalid age, empty name, whitespace-only name and name longer than 80
+        characters; all should return 400. Send broken JSON and confirm rejection.
+      </li>
+      <li>
+        For EF examples restart without deleting the database and check that kept rows
+        survive. For the secure API test 401, cross-owner access, stale versions and
+        page-size limits.
+      </li>
+      <li>
+        A unit test isolates a service or validation rule. An integration test starts a
+        test host with WebApplicationFactory&lt;Program&gt; and a separate test database.
+        Never run destructive tests against a real student database.
+      </li>
+    </ul>
+  </section>
+  <section>
+    <h2>OpenAPI and Swagger are related, not identical</h2>
+    <p>
+      Microsoft.AspNetCore.OpenApi can generate an OpenAPI document. AddOpenApi registers
+      generation; MapOpenApi exposes /openapi/v1.json in Development. A Swagger UI is a
+      separate viewer. Install a compatible Swagger UI package and configure its endpoint
+      to that JSON if you want an interactive web page. A .NET 10 template does not
+      promise /swagger will exist by default. The supplied .http files work without
+      Swagger.
+    </p>
+  </section>
+  <section>
+    <h2>Debug failures systematically</h2>
+    <ul>
+      <li>
+        404: check exact route, HTTP method and launch port. 400: inspect validation
+        response and JSON Content-Type. 415: wrong request media type.
+      </li>
+      <li>
+        500: inspect the server log and breakpoint locally. Do not return passwords, stack
+        traces or connection strings to clients.
+      </li>
+      <li>
+        CS0246: missing using, file, namespace or NuGet restore. Unable to resolve
+        service: add the missing DI registration.
+      </li>
+      <li>
+        No database table: run migrations. Cannot connect: check database service and
+        connection string. 401: send a valid unexpired token. 409: fetch the latest
+        version before editing.
+      </li>
+    </ul>
+  </section>
+  <section>
+    <h2>Try it yourself</h2>
+    <details class="panel">
+      <summary>Design one positive and one negative test for PUT.</summary>
+      <h3>Worked answer</h3>
+      <p>
+        Positive: update an existing row then GET it. Negative: an invalid age must be
+        rejected and must not change the stored row.
+      </p>
+    </details>
+    <details class="panel">
+      <summary>Why is “the response was 200” not enough?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        The body might contain the wrong data. Check status, headers, response shape and
+        stored state.
+      </p>
+    </details>
+  </section>
+  <section>
+    <h2>Run the repeatable HTTP checks</h2>
+    <p>
+      The downloadable project below is a console test runner. Start API project02 on
+      port5100 in one terminal. Open this test project in another terminal and run
+      <code>dotnet run</code>. Expected: eight PASS lines and All CRUD checks passed. Each
+      check asserts status or stored values; a failed check throws.
+    </p>
+  </section>
+</div>

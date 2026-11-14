@@ -1,0 +1,58 @@
+<div class="theory">
+  <p>
+    When you order food, you do not need to stand frozen at the counter. An asynchronous
+    method can wait for I/O and let the thread do other useful work.
+  </p>
+  <section>
+    <h2>How to test this example in Visual Studio</h2>
+    <p>
+      Download the project below, extract it into its own folder, then open
+      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+      Solution. For console projects choose Start Without Debugging. For API projects use
+      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
+      then run the command shown in the lesson. Do not paste all files into Program.cs:
+      use the exact file names displayed below.
+    </p>
+  </section>
+  <section>
+    <h2>Follow a Task</h2>
+    <pre><code>static async Task&lt;string&gt; LoadAsync(string name)
+{
+    await Task.Delay(20);
+    return name;
+}
+var values = await Task.WhenAll(LoadAsync(&quot;A&quot;), LoadAsync(&quot;B&quot;));
+Console.WriteLine(string.Join(&quot;,&quot;, values));</code></pre>
+    <p>
+      Expected: A,B. The operations overlap their waiting time. WhenAll returns results in
+      input order, not completion order. Use async Task for work and async Task&lt;T&gt;
+      for a result. async void is mainly for event handlers.
+    </p>
+  </section>
+  <section>
+    <h2>Cancellation and errors</h2>
+    <p>
+      Pass a CancellationToken into HTTP, database and delay methods. A cancelled task
+      usually throws OperationCanceledException at await. A task failure is rethrown at
+      await; handle it where you can recover. Avoid .Result or .Wait on a UI thread. Do
+      not hold a lock across await. For CPU work use a bounded amount of parallel work,
+      rather than launching unlimited tasks.
+    </p>
+  </section>
+  <section>
+    <h2>Try it yourself</h2>
+    <details class="panel">
+      <summary>Why use Task.Delay instead of Thread.Sleep in an async demo?</summary>
+      <h3>Worked answer</h3>
+      <p>Task.Delay yields while waiting. Thread.Sleep blocks the current thread.</p>
+    </details>
+    <details class="panel">
+      <summary>Rewrite two sequential downloads as overlapping I/O.</summary>
+      <h3>Worked answer</h3>
+      <p>
+        Create both tasks first, then await Task.WhenAll. Still limit concurrency for
+        large batches.
+      </p>
+    </details>
+  </section>
+</div>

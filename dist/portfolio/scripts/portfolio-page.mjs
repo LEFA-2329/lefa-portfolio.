@@ -1,4 +1,4 @@
-import { renderHtmlPage } from '../../shared/render-html-page.mjs?v=32';
+import { renderHtmlPage } from '../../shared/render-html-page.mjs?v=csharp-44';
 const cards = [...document.querySelectorAll('.project')];
 document.querySelectorAll('[data-filter]').forEach((btn) =>
   btn.addEventListener('click', () => {

@@ -34,7 +34,7 @@ for (const file of modules) {
     }
 }
 assert(imports > 80);
-assert.equal(modules.length, 47);
+assert.equal(modules.length, 51);
 const master = readFileSync(path.join(root, 'styles.css'), 'utf8');
 const styles = [...master.matchAll(/@import url\(['"](.+?)['"]\)/g)].map(
   (m) => m[1].split('?')[0],
@@ -56,7 +56,7 @@ for (const file of styles) assert(existsSync(path.join(root, file)));
 assert(existsSync(path.join(root, 'vendor/sqljs/sql-wasm.wasm')));
 assert(
   readFileSync(path.join(root, 'index.html'), 'utf8').includes(
-    './studylab-start.mjs?v=punctuation-43',
+    './studylab-start.mjs?v=csharp-44',
   ),
 );
 console.log(

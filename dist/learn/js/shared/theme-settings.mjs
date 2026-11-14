@@ -1,4 +1,4 @@
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=40';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=csharp-44';
 import {
   themes,
   defaults,
@@ -128,9 +128,12 @@ function openSettings() {
       .forEach((link) => link.addEventListener('click', () => closeSettings(false)));
   }
   const course = document.querySelector('#course-select')?.value;
-  panel.querySelector('#settings-progress').href =
-    '#progress/' +
-    (['prld', 'database', 'intermediate', 'advanced'].includes(course) ? course : 'prld');
+  panel.querySelector('#settings-progress').href = ['csharp', 'docker'].includes(course)
+    ? '#cs-progress/' + course
+    : '#progress/' +
+      (['prld', 'database', 'intermediate', 'advanced'].includes(course)
+        ? course
+        : 'prld');
   apply();
   status('Your current settings are ready. Changes save automatically.');
   panel.hidden = false;

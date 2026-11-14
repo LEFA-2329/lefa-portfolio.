@@ -1,0 +1,67 @@
+<div class="theory">
+  <p>
+    MVVM keeps the screen separate from the decisions behind it. The View displays; the
+    ViewModel offers screen-friendly properties and commands; the Model holds the
+    underlying data and rules.
+  </p>
+  <section>
+    <h2>How to test this example in Visual Studio</h2>
+    <p>
+      Download the project below, extract it into its own folder, then open
+      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+      Solution. For console projects choose Start Without Debugging. For API projects use
+      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
+      then run the command shown in the lesson. Do not paste all files into Program.cs:
+      use the exact file names displayed below.
+    </p>
+  </section>
+  <section>
+    <h2>Open the Windows example</h2>
+    <p>
+      Open this project on Windows with .NET desktop development installed.
+      MainWindow.xaml is the View. StudentViewModel.cs holds the ViewModel and a reusable
+      command helper. App.xaml chooses the startup window. The window’s DataContext is the
+      object the bindings read. The tiny code-behind only calls InitializeComponent.
+    </p>
+  </section>
+  <section>
+    <h2>Read a binding</h2>
+    <pre><code>&lt;TextBox Text=&quot;{Binding Name, UpdateSourceTrigger=PropertyChanged}&quot;/&gt;
+&lt;Button Content=&quot;Add student&quot; Command=&quot;{Binding AddCommand}&quot;/&gt;</code></pre>
+    <p>
+      Binding Name reads and writes the ViewModel’s Name property. PropertyChanged updates
+      the source while typing. A command expresses an action without putting all business
+      logic in a click handler. ObservableCollection tells the View when items are added
+      or removed. Expected: Add remains disabled until a valid name and age are entered;
+      after adding, a new list entry appears.
+    </p>
+  </section>
+  <section>
+    <h2>Keep layers understandable</h2>
+    <p>
+      Use services/repositories for database work rather than building SQL strings in
+      XAML. The Model is not always an EF entity: it can be a domain object or DTO. MVVM
+      and MVC solve related separation problems for different UI styles; their third parts
+      have different jobs.
+    </p>
+  </section>
+  <section>
+    <h2>Try it yourself</h2>
+    <details class="panel">
+      <summary>Where should a “Can enrol?” rule live?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        In a model/domain service, used by the ViewModel. Avoid burying reusable rules
+        only in a UI control.
+      </p>
+    </details>
+    <details class="panel">
+      <summary>What happens if DataContext is missing?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        Bindings may have no source. Inspect the Visual Studio Output window for binding
+        errors; set the intended ViewModel.
+      </p>
+    </details>
+  </section>
+</div>

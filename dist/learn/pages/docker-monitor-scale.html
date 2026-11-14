@@ -1,0 +1,100 @@
+<div class="theory">
+  <p>
+    A working stack needs observation. Start by asking which service is failing, then
+    inspect that service’s logs and dependencies.
+  </p>
+  <section>
+    <h2>How to test this example in Visual Studio</h2>
+    <p>
+      Download the project below, extract it into its own folder, then open
+      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+      Solution. For console projects choose Start Without Debugging. For API projects use
+      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
+      then run the command shown in the lesson. Do not paste all files into Program.cs:
+      use the exact file names displayed below.
+    </p>
+  </section>
+  <section>
+    <h2>Prepare your computer</h2>
+    <p>
+      Install Docker Desktop with Linux containers enabled and the .NET10 SDK. For the
+      full SQL Server stack use supported x64 hardware with enough memory for SQL Server.
+      WPF does not run in the Linux ASP.NET image. Accept applicable vendor licences
+      yourself during installation. Run docker version and docker compose version in a
+      terminal; start Docker Desktop if the engine cannot be reached.
+    </p>
+  </section>
+  <section>
+    <h2>Useful commands</h2>
+    <pre><code>docker compose ps
+docker compose logs --tail 100 api
+docker compose logs --tail 100 db
+docker compose top
+docker stats --no-stream
+docker compose restart website
+docker compose stop
+docker compose start</code></pre>
+    <p>
+      ps shows state and published ports. logs shows startup/errors. stats shows resource
+      use. restart does not rebuild changed source; use up --build for that. stop pauses
+      the stack’s processes; down removes the stack containers/network but normally keeps
+      named volumes.
+    </p>
+  </section>
+  <section>
+    <h2>Scaling without a port conflict</h2>
+    <p>
+      The supplied api publishes one fixed host port5100, so blindly using --scale api=2
+      will cause a host-port collision. For a scaling exercise, copy the Compose file,
+      remove api’s host ports section, add expose:["8080"], keep internal service-name
+      access and put a proper reverse proxy/load balancer in front. Then docker compose -f
+      compose.scale.yaml up -d --scale api=2 can create replicas. Use a separate reviewed
+      migration job before replicas start; do not let each production replica race a
+      startup migration.
+    </p>
+  </section>
+  <section>
+    <h2>Troubleshooting table in words</h2>
+    <ul>
+      <li>
+        db unhealthy: check password strength, memory, startup time, architecture support
+        and SQL logs.
+      </li>
+      <li>
+        API migration error: verify generated migrations were copied into Api before image
+        build, and check connection/permissions.
+      </li>
+      <li>Website connection refused: wait for API readiness and check SchoolApi.</li>
+      <li>Port in use: change the host side or stop the conflicting process.</li>
+      <li>
+        No matching image architecture: choose supported hardware or a compatible database
+        alternative.
+      </li>
+      <li>
+        File changes not visible: rebuild the image and recreate the service; restarting
+        an old image is not a rebuild.
+      </li>
+    </ul>
+  </section>
+  <section>
+    <h2>Try it yourself</h2>
+    <details class="panel">
+      <summary>
+        Why can service_started still lead to a temporary website failure?
+      </summary>
+      <h3>Worked answer</h3>
+      <p>
+        It means the process was started, not that migrations and dependency checks are
+        complete. Add/read readiness handling for a production design.
+      </p>
+    </details>
+    <details class="panel">
+      <summary>Should you solve every error by deleting volumes?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        No. Diagnose first. Deleting volumes can erase the evidence and the data without
+        fixing the underlying issue.
+      </p>
+    </details>
+  </section>
+</div>

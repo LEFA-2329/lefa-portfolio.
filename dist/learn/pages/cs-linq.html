@@ -1,0 +1,62 @@
+<div class="theory">
+  <p>
+    LINQ is a set of tools for asking questions about data. Imagine a tray of student
+    cards: keep the passing cards, sort them, then copy only the information you need.
+  </p>
+  <section>
+    <h2>How to test this example in Visual Studio</h2>
+    <p>
+      Download the project below, extract it into its own folder, then open
+      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+      Solution. For console projects choose Start Without Debugging. For API projects use
+      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
+      then run the command shown in the lesson. Do not paste all files into Program.cs:
+      use the exact file names displayed below.
+    </p>
+  </section>
+  <section>
+    <h2>Filter, sort, project and group</h2>
+    <pre><code>var passes = students.Where(s =&gt; s.Mark &gt;= 50)
+    .OrderBy(s =&gt; s.Name)
+    .Select(s =&gt; new { s.Name, s.Mark });
+foreach (var student in passes)
+    Console.WriteLine($&quot;Pass: {student.Name} {student.Mark}&quot;);
+var average = students.Average(s =&gt; s.Mark);
+var groups = students.GroupBy(s =&gt; s.Mark &gt;= 50);</code></pre>
+    <p>
+      Where filters; OrderBy sorts; Select projects into a small anonymous object.
+      Anonymous types have compiler-generated read-only properties and are useful inside a
+      method. Use named DTOs for API contracts. Expected passing rows: Lefa 80 and Mpho
+      90.
+    </p>
+  </section>
+  <section>
+    <h2>Deferred execution and database queries</h2>
+    <p>
+      Many LINQ operators describe a query without immediately running it. foreach,
+      ToList, Count and similar terminal operations execute it. A List uses
+      LINQ-to-Objects. An EF IQueryable can translate supported operations into SQL. Do
+      filtering and paging before ToListAsync to avoid loading the whole table. First
+      throws when no match exists; FirstOrDefault can return null. Check for null.
+    </p>
+  </section>
+  <section>
+    <h2>Try it yourself</h2>
+    <details class="panel">
+      <summary>Return only names for marks 80 and above.</summary>
+      <h3>Worked answer</h3>
+      <p>
+        students.Where(s =&gt; s.Mark &gt;= 80).Select(s =&gt; s.Name). Expected: Lefa,
+        Mpho.
+      </p>
+    </details>
+    <details class="panel">
+      <summary>Explain why ToList before Where can waste memory.</summary>
+      <h3>Worked answer</h3>
+      <p>
+        It loads every row before filtering. On a database query, filter first and
+        materialize the smaller result.
+      </p>
+    </details>
+  </section>
+</div>

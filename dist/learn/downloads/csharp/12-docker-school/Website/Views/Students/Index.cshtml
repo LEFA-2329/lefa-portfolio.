@@ -1,0 +1,9 @@
+@model List<Student>
+<!doctype html><html lang="en"><head><meta charset="utf-8"/><title>School</title></head><body>
+<h1>Students</h1><p>@TempData["Error"]</p>
+<form method="post" action="/Students/Create">@Html.AntiForgeryToken()<label>Name <input name="Name" required maxlength="80"/></label><label>Age <input name="Age" type="number" min="16" max="100" required/></label><button>Create</button></form>
+@foreach(var s in Model){
+ <form method="post" action="/Students/Update/@s.Id">@Html.AntiForgeryToken()<input name="Name" value="@s.Name" required maxlength="80"/><input name="Age" value="@s.Age" type="number" min="16" max="100"/><button>Save changes</button></form>
+ <form method="post" action="/Students/Delete/@s.Id">@Html.AntiForgeryToken()<button>Delete @s.Name</button></form>
+}
+</body></html>

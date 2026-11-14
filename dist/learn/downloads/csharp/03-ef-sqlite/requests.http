@@ -1,0 +1,18 @@
+@base = http://localhost:5100
+GET {{base}}/api/students
+### Create
+POST {{base}}/api/students
+Content-Type: application/json
+
+{"name":"Lefa","age":22}
+### One
+GET {{base}}/api/students/1
+### Replace
+PUT {{base}}/api/students/1
+Content-Type: application/json
+
+{"name":"Lefa Malatji","age":23}
+### Delete
+DELETE {{base}}/api/students/1
+### Missing
+GET {{base}}/api/students/999

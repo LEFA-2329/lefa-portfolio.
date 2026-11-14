@@ -1,4 +1,4 @@
-import { renderHtmlPage } from '../../../../shared/render-html-page.mjs?v=40';
+import { renderHtmlPage } from '../../../../shared/render-html-page.mjs?v=csharp-44';
 import { exercises } from './sql-practice-challenges.mjs?v=40';
 export { exercises };
 const cleanDraft = (raw) => ({

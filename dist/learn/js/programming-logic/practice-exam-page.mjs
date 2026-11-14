@@ -41,7 +41,7 @@ export function examPage({ view, crumb, sidebar }) {
   };
   const intro = () =>
     crumb('Practice exams') +
-    '<p class="eyebrow">PUT THE CONCEPTS TOGETHER</p><h1>PRLD practice exam</h1>';
+    '<p class="eyebrow">PUT THE CONCEPTS TOGETHER</p><h1>PRLD5121 practice exam</h1>';
   function setup() {
     stop();
     view.innerHTML =

@@ -1,6 +1,42 @@
 // Curated links checked November 2026. Edit these records to add learning resources.
 export const resources = [
   {
+    topics: ['csharp'],
+    kind: 'Official tutorial',
+    provider: 'Microsoft Learn',
+    title: 'Build a controller-based Web API',
+    url: 'https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-10.0',
+    description: 'Follow ASP.NET Core routing, models and CRUD actions.',
+    note: 'Match the documentation framework version to your project.',
+  },
+  {
+    topics: ['csharp'],
+    kind: 'Official guide',
+    provider: 'Microsoft Learn',
+    title: 'Manage object lifetime and garbage collection',
+    url: 'https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/fundamentals',
+    description: 'Understand managed memory and resource cleanup.',
+    note: 'Use alongside the object lifetime lessons.',
+  },
+  {
+    topics: ['docker'],
+    kind: 'Official guide',
+    provider: 'Docker',
+    title: 'Docker Compose quickstart',
+    url: 'https://docs.docker.com/compose/gettingstarted/',
+    description: 'Build and run a multi-container application.',
+    note: 'Use the StudyLab Docker project for the .NET and SQL Server stack.',
+  },
+  {
+    topics: ['docker'],
+    kind: 'Official guide',
+    provider: 'Microsoft Learn',
+    title: 'Run SQL Server in Docker',
+    url: 'https://learn.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker',
+    description: 'Review supported hosts, container settings and database connections.',
+    note: 'Check SQL Server architecture and memory requirements before starting.',
+  },
+  {
     topics: ['programming', 'algorithms'],
     kind: 'Course + videos',
     provider: 'Harvard CS50',
@@ -125,6 +161,8 @@ export const resources = [
   },
 ];
 export function recommendedTopic(course, title = '') {
+  if (course === 'csharp') return 'csharp';
+  if (course === 'docker') return 'docker';
   if (/hadoop|mapreduce|hdfs|big data/i.test(title)) return 'hadoop';
   if (/normali|dependenc|design|erd|entit/i.test(title)) return 'design';
   if (/join|relationship/i.test(title)) return 'joins';

@@ -1,0 +1,77 @@
+<div class="theory">
+  <p>
+    Think of memory as a toy box. The garbage collector can recycle unreachable toys. A
+    file handle is more like a borrowed key: return it promptly, rather than waiting for a
+    cleanup day.
+  </p>
+  <section>
+    <h2>How to test this example in Visual Studio</h2>
+    <p>
+      Download the project below, extract it into its own folder, then open
+      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+      Solution. For console projects choose Start Without Debugging. For API projects use
+      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
+      then run the command shown in the lesson. Do not paste all files into Program.cs:
+      use the exact file names displayed below.
+    </p>
+  </section>
+  <section>
+    <h2>What the runtime does</h2>
+    <ul>
+      <li>
+        Managed objects live on the managed heap. Roots include active local references,
+        statics and references reachable from them. Unreachable objects can be collected;
+        a value going out of scope does not promise an immediate collection.
+      </li>
+      <li>
+        Generations 0, 1 and 2 group objects by survival. Collection may move objects and
+        update references. Large objects are handled specially. Do not depend on
+        collection timing for program correctness.
+      </li>
+      <li>
+        IDisposable.Dispose releases owned resources such as streams and connections.
+        using is a try/finally shortcut. await using works with IAsyncDisposable. The GC
+        does not call Dispose for you.
+      </li>
+      <li>
+        A finalizer is a fallback for unmanaged-resource ownership, not a normal cleanup
+        timer. Prefer SafeHandle over writing a raw finalizer. Avoid GC.Collect in
+        everyday application code.
+      </li>
+    </ul>
+  </section>
+  <section>
+    <h2>Read the example</h2>
+    <pre><code>using (var writer = new StreamWriter(&quot;lifetime.txt&quot;))
+{
+    writer.WriteLine(&quot;Saved safely&quot;);
+}
+Console.WriteLine(File.ReadAllText(&quot;lifetime.txt&quot;).Trim());</code></pre>
+    <p>
+      Expected line: <strong>Saved safely</strong>. StreamWriter opens the file; WriteLine
+      writes text; leaving the block closes the writer even if the block throws. System.IO
+      is built into .NET, so no extra NuGet package is needed.
+    </p>
+  </section>
+  <section>
+    <h2>Try it yourself</h2>
+    <details class="panel">
+      <summary>
+        Why can an unclosed file stay locked even when you no longer use the variable?
+      </summary>
+      <h3>Worked answer</h3>
+      <p>
+        The reference becoming unreachable does not guarantee immediate finalization.
+        Close your owned stream with using.
+      </p>
+    </details>
+    <details class="panel">
+      <summary>Change the code to append two lines.</summary>
+      <h3>Worked answer</h3>
+      <p>
+        Use File.AppendAllText("lifetime.txt", "First\nSecond\n"). ReadAllLines returns
+        one string per line.
+      </p>
+    </details>
+  </section>
+</div>

@@ -1,0 +1,47 @@
+<div class="theory">
+  <p>
+    OpenAPI is a machine-readable map of your API. Swagger UI draws a test page from that
+    map. They are separate tools.
+  </p>
+  <h2>Open and run the complete example</h2>
+  <p>
+    Download the ZIP below and open StudyLab.csproj in Visual Studio. Restore its
+    packages. The project includes Microsoft.AspNetCore.OpenApi for generating the
+    document and Swashbuckle.AspNetCore.SwaggerUI for displaying it.
+  </p>
+  <p>In Visual Studio’s PowerShell terminal, inside the project folder:</p>
+  <pre><code>$env:ASPNETCORE_ENVIRONMENT="Development"
+dotnet run --urls http://localhost:5100</code></pre>
+  <p>
+    Open http://localhost:5100/openapi/v1.json to see the document. Open
+    http://localhost:5100/swagger to see the test UI. Expand POST /api/students, choose
+    Try it out, paste {"name":"Lefa","age":22}, then Execute. Expected: 201 Created. Use
+    GET to read it, PUT to edit, DELETE to remove it, then GET again for404.
+  </p>
+  <h2>Read Program.cs</h2>
+  <p>
+    AddOpenApi registers the generator. MapOpenApi exposes the document route.
+    UseSwaggerUI points the viewer at that route. MapControllers maps the actual API
+    operations. This combination does not need AddSwaggerGen. If /swagger gives404, check
+    the environment, installed UI package, port and Program.cs; the built-in .NET10
+    template alone does not promise a Swagger UI.
+  </p>
+  <h2>Try it yourself</h2>
+  <details class="panel">
+    <summary>
+      Why should the document and UI routes be restricted in a deployed service?
+    </summary>
+    <p>
+      They can reveal the API surface and permit convenient requests. Expose them only
+      deliberately, with suitable access control. Hiding documentation is not a substitute
+      for securing endpoints.
+    </p>
+  </details>
+  <details class="panel">
+    <summary>What should happen when you post an age of2?</summary>
+    <p>
+      The controller’s validation should return400. An attractive UI does not replace
+      server-side validation.
+    </p>
+  </details>
+</div>

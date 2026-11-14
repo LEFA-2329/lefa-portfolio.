@@ -1,0 +1,110 @@
+<div class="theory">
+  <p>
+    A controller puts related endpoints in one named class. It is like putting all
+    student-counter instructions in one labelled folder.
+  </p>
+  <section>
+    <h2>How to test this example in Visual Studio</h2>
+    <p>
+      Download the project below, extract it into its own folder, then open
+      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+      Solution. For console projects choose Start Without Debugging. For API projects use
+      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
+      then run the command shown in the lesson. Do not paste all files into Program.cs:
+      use the exact file names displayed below.
+    </p>
+  </section>
+  <section>
+    <h2>Install and create the right project</h2>
+    <ul>
+      <li>
+        Install Visual Studio with ASP.NET and web development and a .NET 10-compatible
+        SDK. For WPF also install .NET desktop development. Check Tools → Get Tools and
+        Features if templates are missing.
+      </li>
+      <li>
+        Create ASP.NET Core Empty for the Minimal API, or ASP.NET Core Web API with Use
+        controllers for a controller project. Select .NET 10. Alternatively open the
+        supplied .csproj to get exactly the lesson files.
+      </li>
+      <li>
+        Use a separate folder for every example. Delete the generated weather sample if it
+        conflicts with the supplied files. Restore NuGet packages before building.
+      </li>
+      <li>
+        In View → Terminal, cd into the folder containing StudyLab.csproj. For local API
+        testing run dotnet run --urls http://localhost:5100. Open requests.http and use
+        Send Request above each request. Use the actual port from the console if you
+        launch with a different profile.
+      </li>
+    </ul>
+  </section>
+  <section>
+    <h2>Your first request</h2>
+    <pre><code>GET http://localhost:5100/api/students</code></pre>
+    <p>
+      Initially expect 200 OK with []. A browser address bar can send GET, but cannot
+      conveniently send all CRUD methods. Use the .http editor, Postman, curl.exe or a
+      Swagger UI. The JSON object is a data packet, not an HTML page.
+    </p>
+  </section>
+  <section>
+    <h2>Read the controller from top to bottom</h2>
+    <ul>
+      <li>
+        [ApiController] turns model-validation failures into 400 responses.
+        [Route("api/students")] is the shared URL prefix.
+      </li>
+      <li>
+        [HttpGet], [HttpPost], [HttpPut] and [HttpDelete] choose the HTTP verb. {id:int}
+        accepts an integer route parameter.
+      </li>
+      <li>
+        Constructor injection supplies StudentStore from the container. Singleton means
+        one store per application process; Scoped normally means one per HTTP request;
+        Transient means a new instance when resolved.
+      </li>
+      <li>
+        StudentInput uses Required, StringLength and Range from
+        System.ComponentModel.DataAnnotations. A DTO limits what clients can set. Do not
+        accept an entire database entity just because it is convenient.
+      </li>
+      <li>
+        CreatedAtAction uses the read-one action to build the Location URL. Action names
+        are C# method names; route names and action names are not always the same thing.
+      </li>
+    </ul>
+  </section>
+  <section>
+    <h2>Response shape and failure cases</h2>
+    <pre><code>POST /api/students
+Content-Type: application/json
+
+{&quot;name&quot;:&quot;Lefa&quot;,&quot;age&quot;:22}</code></pre>
+    <p>
+      Expected: 201 Created and {"id":1,"name":"Lefa","age":22} on a fresh store. Invalid
+      JSON can fail before your action runs. A blank name or age outside 16–100 returns
+      400. An unknown ID returns 404. A successful PUT/DELETE returns 204; an empty
+      response is correct.
+    </p>
+  </section>
+  <section>
+    <h2>Try it yourself</h2>
+    <details class="panel">
+      <summary>Why not let POST accept an Id chosen by the user?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        The server should own identity assignment. A create DTO excludes Id and prevents
+        accidental overwriting.
+      </p>
+    </details>
+    <details class="panel">
+      <summary>Add a course field safely.</summary>
+      <h3>Worked answer</h3>
+      <p>
+        Add Course to the model and input DTO, validate its length, map it in POST/PUT,
+        then add request tests. A database-backed model also needs a migration.
+      </p>
+    </details>
+  </section>
+</div>

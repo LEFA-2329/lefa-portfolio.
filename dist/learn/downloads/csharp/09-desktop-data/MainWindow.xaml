@@ -1,0 +1,25 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Class="DesktopData.MainWindow" Title="Student data lab" Width="620" Height="540">
+  <StackPanel Margin="20">
+    <TextBlock Text="Student data lab" FontSize="24"/>
+    <TextBlock Text="Name"/>
+    <TextBox x:Name="NameBox"/>
+    <TextBlock Text="Age (16-100)"/>
+    <TextBox x:Name="AgeBox" Text="22"/>
+    <ComboBox x:Name="StorageMode" SelectedIndex="0" Margin="0,8">
+      <ComboBoxItem Content="EF Core SQLite"/>
+      <ComboBoxItem Content="ADO.NET SQL Server"/>
+    </ComboBox>
+    <WrapPanel>
+      <Button Content="Create" Click="Create" Padding="10"/>
+      <Button Content="Read" Click="Read" Padding="10"/>
+      <Button Content="Update selected" Click="Update" Padding="10"/>
+      <Button Content="Delete selected" Click="Delete" Padding="10"/>
+    </WrapPanel>
+    <ListBox x:Name="Rows" Height="180" DisplayMemberPath="Name" SelectionChanged="SelectRow"/>
+    <WrapPanel>
+      <Button Content="Export JSON" Click="Export" Padding="10"/>
+      <Button Content="Read JSON" Click="ReadJson" Padding="10"/>
+    </WrapPanel>
+    <TextBlock x:Name="Status" TextWrapping="Wrap"/>
+  </StackPanel>
+</Window>

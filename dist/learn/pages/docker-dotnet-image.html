@@ -1,0 +1,84 @@
+<div class="theory">
+  <p>
+    A multi-stage build uses a large toolbox to build the app, then copies only the
+    finished app into a smaller runtime image.
+  </p>
+  <section>
+    <h2>How to test this example in Visual Studio</h2>
+    <p>
+      Download the project below, extract it into its own folder, then open
+      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+      Solution. For console projects choose Start Without Debugging. For API projects use
+      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
+      then run the command shown in the lesson. Do not paste all files into Program.cs:
+      use the exact file names displayed below.
+    </p>
+  </section>
+  <section>
+    <h2>Prepare your computer</h2>
+    <p>
+      Install Docker Desktop with Linux containers enabled and the .NET10 SDK. For the
+      full SQL Server stack use supported x64 hardware with enough memory for SQL Server.
+      WPF does not run in the Linux ASP.NET image. Accept applicable vendor licences
+      yourself during installation. Run docker version and docker compose version in a
+      terminal; start Docker Desktop if the engine cannot be reached.
+    </p>
+  </section>
+  <section>
+    <h2>Read Api/Dockerfile line by line</h2>
+    <ul>
+      <li>
+        FROM sdk:10.0 AS build includes the compiler and restore tools. WORKDIR chooses
+        the working folder.
+      </li>
+      <li>
+        COPY StudyLab.csproj then RUN dotnet restore caches dependency download until
+        project references change. COPY . . brings in source.
+      </li>
+      <li>dotnet publish -c Release -o /out --no-restore creates deployment output.</li>
+      <li>
+        FROM aspnet:10.0 starts the smaller runtime stage. COPY --from=build copies
+        published output, not the whole SDK.
+      </li>
+      <li>
+        ASPNETCORE_HTTP_PORTS=8080 chooses the container HTTP port. EXPOSE documents it;
+        it does not publish a host port.
+      </li>
+      <li>
+        USER $APP_UID uses the non-root app account provided by the Microsoft image.
+        ENTRYPOINT starts StudyLab.dll.
+      </li>
+    </ul>
+  </section>
+  <section>
+    <h2>Build from the correct folder</h2>
+    <pre><code>cd Api
+dotnet ef migrations add InitialCreate
+docker build -t studylab-api:1 .</code></pre>
+    <p>
+      Generate the migration once using the matching dotnet-ef tool before building; the
+      source project includes the SQL Server Design/provider packages. The dot at the end
+      is the build context. .dockerignore excludes bin,obj,.env and local databases.
+      Expected: build steps finish and studylab-api:1 appears in docker image ls.
+    </p>
+  </section>
+  <section>
+    <h2>Try it yourself</h2>
+    <details class="panel">
+      <summary>Why copy the csproj before all source files?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        A source-only change can reuse the dependency-restore layer instead of restoring
+        every time.
+      </p>
+    </details>
+    <details class="panel">
+      <summary>Why does COPY fail when building from the repository root?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        The Dockerfile paths are relative to its build context. Run from Api or pass the
+        intended context and Dockerfile paths.
+      </p>
+    </details>
+  </section>
+</div>

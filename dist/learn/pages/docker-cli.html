@@ -1,0 +1,75 @@
+<div class="theory">
+  <p>
+    Build makes the package; run starts it. Inspection and logs help you understand what
+    is happening instead of guessing.
+  </p>
+  <section>
+    <h2>How to test this example in Visual Studio</h2>
+    <p>
+      Download the project below, extract it into its own folder, then open
+      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+      Solution. For console projects choose Start Without Debugging. For API projects use
+      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
+      then run the command shown in the lesson. Do not paste all files into Program.cs:
+      use the exact file names displayed below.
+    </p>
+  </section>
+  <section>
+    <h2>Prepare your computer</h2>
+    <p>
+      Install Docker Desktop with Linux containers enabled and the .NET10 SDK. For the
+      full SQL Server stack use supported x64 hardware with enough memory for SQL Server.
+      WPF does not run in the Linux ASP.NET image. Accept applicable vendor licences
+      yourself during installation. Run docker version and docker compose version in a
+      terminal; start Docker Desktop if the engine cannot be reached.
+    </p>
+  </section>
+  <section>
+    <h2>Try the standalone image</h2>
+    <pre><code>docker build -t studylab-api:1 ./Api
+docker run --name school-api -d -p 127.0.0.1:5100:8080 studylab-api:1
+docker logs school-api
+docker inspect school-api
+docker stop school-api
+docker start school-api
+docker rm -f school-api</code></pre>
+    <p>
+      With no database configuration the standalone image can answer /health, but CRUD
+      needs the database connection supplied by Compose. The health route proves the API
+      process can answer, not that every dependency is healthy. rm removes only this
+      practice container; it does not uninstall Docker.
+    </p>
+  </section>
+  <section>
+    <h2>Registry workflow</h2>
+    <pre><code>docker tag studylab-api:1 YOUR_ACCOUNT/studylab-api:1
+docker login
+docker push YOUR_ACCOUNT/studylab-api:1
+docker pull YOUR_ACCOUNT/studylab-api:1</code></pre>
+    <p>
+      Use your own registry account and approved access. Do not publish images containing
+      secrets or private student data. Use immutable version tags/digests for reproducible
+      deployment, and scan/update base images. A later pull may differ if a mutable tag
+      was replaced.
+    </p>
+  </section>
+  <section>
+    <h2>Try it yourself</h2>
+    <details class="panel">
+      <summary>Port5100 is already allocated. What next?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        Stop the earlier local API/container or use a different host port, then update the
+        client URL.
+      </p>
+    </details>
+    <details class="panel">
+      <summary>What is the difference between stop and rm?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        stop ends the process but keeps the container definition/writable layer. rm
+        deletes the container.
+      </p>
+    </details>
+  </section>
+</div>

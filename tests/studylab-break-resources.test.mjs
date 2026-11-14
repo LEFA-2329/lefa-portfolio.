@@ -13,6 +13,7 @@ test('every supported resource topic has curated HTTPS links and dialect guidanc
     'support.microsoft.com',
     'cvw.cac.cornell.edu',
     'hadoop.apache.org',
+    'docs.docker.com',
   ];
   for (const topic of [
     'programming',

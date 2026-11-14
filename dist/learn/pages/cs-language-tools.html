@@ -1,0 +1,67 @@
+<div class="theory">
+  <p>
+    An operator overload teaches a type what a symbol means. An exception says a job could
+    not be completed. An extension method adds a convenient method-call spelling without
+    changing the original type.
+  </p>
+  <section>
+    <h2>How to test this example in Visual Studio</h2>
+    <p>
+      Download the project below, extract it into its own folder, then open
+      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+      Solution. For console projects choose Start Without Debugging. For API projects use
+      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
+      then run the command shown in the lesson. Do not paste all files into Program.cs:
+      use the exact file names displayed below.
+    </p>
+  </section>
+  <section>
+    <h2>Three tools, three jobs</h2>
+    <pre><code>public readonly record struct Money(decimal Amount)
+{
+    public static Money operator +(Money a, Money b) =&gt; new(a.Amount + b.Amount);
+}
+public class EnrollmentException(string message) : Exception(message);
+public static class StudentExtensions
+{
+    public static string Greeting(this string name) =&gt; $&quot;Hello, {name}&quot;;
+}</code></pre>
+    <p>
+      Money(10) + Money(5) returns a new Money with Amount 15. The compiler chooses this
+      overload because both operands are Money. Operators should behave predictably. Use
+      exceptions for exceptional failures; use TryParse or validation for ordinary invalid
+      input. Extension methods must be static and declare this on the first parameter;
+      they cannot access another class’s private data.
+    </p>
+  </section>
+  <section>
+    <h2>Expected output and debugging</h2>
+    <pre><code>Money total: 15
+Age cannot be negative.
+Hello, lefa</code></pre>
+    <p>
+      The full lab catches EnrollmentException so later examples still run. Catch the most
+      specific useful exception, and use throw; when rethrowing to keep the original stack
+      trace. Never silently swallow an exception.
+    </p>
+  </section>
+  <section>
+    <h2>Try it yourself</h2>
+    <details class="panel">
+      <summary>Add subtraction for Money.</summary>
+      <h3>Worked answer</h3>
+      <p>
+        public static Money operator -(Money a, Money b) =&gt; new(a.Amount - b.Amount);
+        Add it inside Money.
+      </p>
+    </details>
+    <details class="panel">
+      <summary>When should an extension method be avoided?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        Avoid hiding important business rules in surprising extensions. A normal service
+        or instance method can make ownership clearer.
+      </p>
+    </details>
+  </section>
+</div>
