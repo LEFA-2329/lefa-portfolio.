@@ -34,7 +34,7 @@ for (const file of modules) {
     }
 }
 assert(imports > 80);
-assert.equal(modules.length, 46);
+assert.equal(modules.length, 47);
 const master = readFileSync(path.join(root, 'styles.css'), 'utf8');
 const styles = [...master.matchAll(/@import url\(['"](.+?)['"]\)/g)].map(
   (m) => m[1].split('?')[0],

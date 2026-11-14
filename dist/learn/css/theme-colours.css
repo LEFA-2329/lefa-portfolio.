@@ -13,7 +13,7 @@
   --chosen-accent: #2563eb;
   --accent-ink: #fff;
   --code: #12243a;
-  color-scheme: light;
+  color-scheme: only light;
 }
 :root[data-theme='dark'] {
   --ink: #e6eef9;
