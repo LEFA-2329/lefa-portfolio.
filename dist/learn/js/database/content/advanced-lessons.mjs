@@ -5,7 +5,7 @@ export const advancedUnits = [
     id: 201,
     number: 1,
     title: 'Query optimisation and execution plans',
-    subtitle: 'Advanced Database · independent extension',
+    subtitle: 'Advanced Database. independent extension',
     chapter: '',
     sessions: 'Suggested study: two sessions',
     overview:
@@ -23,7 +23,7 @@ export const advancedUnits = [
     id: 202,
     number: 2,
     title: 'Transactions, isolation and deadlocks',
-    subtitle: 'Advanced Database · independent extension',
+    subtitle: 'Advanced Database. independent extension',
     chapter: '',
     sessions: 'Suggested study: two sessions',
     overview:
@@ -41,7 +41,7 @@ export const advancedUnits = [
     id: 203,
     number: 3,
     title: 'Advanced SQL: CTEs and window functions',
-    subtitle: 'Advanced Database · independent extension',
+    subtitle: 'Advanced Database. independent extension',
     chapter: '',
     sessions: 'Suggested study: two sessions',
     overview:
@@ -59,7 +59,7 @@ export const advancedUnits = [
     id: 204,
     number: 4,
     title: 'Database programming: triggers and dynamic SQL',
-    subtitle: 'Advanced Database · independent extension',
+    subtitle: 'Advanced Database. independent extension',
     chapter: '',
     sessions: 'Suggested study: two sessions',
     overview:
@@ -77,7 +77,7 @@ export const advancedUnits = [
     id: 205,
     number: 5,
     title: 'Advanced normalisation: BCNF and 4NF',
-    subtitle: 'Advanced Database · independent extension',
+    subtitle: 'Advanced Database. independent extension',
     chapter: '',
     sessions: 'Suggested study: two sessions',
     overview:
@@ -95,7 +95,7 @@ export const advancedUnits = [
     id: 206,
     number: 6,
     title: 'Database security and permissions',
-    subtitle: 'Advanced Database · independent extension',
+    subtitle: 'Advanced Database. independent extension',
     chapter: '',
     sessions: 'Suggested study: two sessions',
     overview:
@@ -113,7 +113,7 @@ export const advancedUnits = [
     id: 207,
     number: 7,
     title: 'Backup, restore and recovery planning',
-    subtitle: 'Advanced Database · independent extension',
+    subtitle: 'Advanced Database. independent extension',
     chapter: '',
     sessions: 'Suggested study: two sessions',
     overview:
@@ -134,7 +134,7 @@ export const advancedUnits = [
     id: 208,
     number: 8,
     title: 'Distributed databases, partitioning and NoSQL',
-    subtitle: 'Advanced Database · independent extension',
+    subtitle: 'Advanced Database. independent extension',
     chapter: '',
     sessions: 'Suggested study: two sessions',
     overview:

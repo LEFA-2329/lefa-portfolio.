@@ -1,7 +1,7 @@
 import {
   studyBreakPage,
   helpfulResourcesPage,
-} from './shared/study-break-and-resources.mjs?v=40';
+} from './shared/study-break-and-resources.mjs?v=punctuation-42';
 import { renderHtmlPage } from '../../shared/render-html-page.mjs?v=40';
 import { builderPage } from './database/normalisation/normalisation-diagram-builder.mjs?v=40';
 import { normalisationPracticePage } from './database/normalisation/normalisation-question-page.mjs?v=40';
@@ -10,7 +10,7 @@ import {
   progressPage,
   progressSummary,
   refreshLessonCompletion,
-} from './shared/learning-progress.mjs?v=40';
+} from './shared/learning-progress.mjs?v=punctuation-42';
 import { exercises as sqlChallenges } from './database/sql/sql-practice-challenges.mjs?v=40';
 import {
   databaseHome,
@@ -20,7 +20,7 @@ import {
   databaseResources,
   dbUnits,
   dbLessons,
-} from './database/database-pages.mjs?v=40';
+} from './database/database-pages.mjs?v=punctuation-42';
 import { sqlPage } from './database/sql/sql-workspace-page.mjs?v=40';
 import './shared/theme-settings.mjs?v=40';
 import { examPage } from './programming-logic/practice-exam-page.mjs?v=40';
@@ -535,7 +535,7 @@ function renderLessonTab() {
       )
       .join(
         '',
-      )}</select></label><label class="field-label">Error category<select name="category" required><option value="">Choose a category</option>${['Syntax', 'Logic', 'Calculation', 'Boundary', 'Initialisation', 'Design'].map((c) => `<option ${s.category === c ? 'selected' : ''}>${c}</option>`).join('')}</select></label></div><fieldset><legend style="font-size:13px">Which correction fixes the stated problem?</legend>${b.options.map((o, i) => `<label class="quiz-option"><input type="radio" name="correction" value="${i}" required ${s.correction === i ? 'checked' : ''}><span>${e(o)}</span></label>`).join('')}</fieldset><div class="button-row"><button type="submit" class="button">Check my attempt</button><button type="button" class="button secondary" id="debug-hint" ${s.debugAttempts ? '' : 'disabled'}>Get a hint</button><button type="button" class="button ghost" id="reveal-answer" ${s.debugAttempts ? '' : 'disabled'}>Reveal model answer</button></div><div id="debug-feedback" role="status" class="feedback">${s.debugFeedback ? e(s.debugFeedback) : ''}</div><div id="debug-hint-text" class="note" ${s.debugHintShown ? '' : 'hidden'}>${s.debugHintShown ? e(b.hint) : ''}</div><div id="model-answer" class="model-answer" ${s.debugRevealed ? '' : 'hidden'}><h3>Model answer</h3><p>Line ${b.line} · ${e(b.category)} error</p><code>${e(b.options[b.correct])}</code><p>${e(b.explanation)}</p></div></form>`;
+      )}</select></label><label class="field-label">Error category<select name="category" required><option value="">Choose a category</option>${['Syntax', 'Logic', 'Calculation', 'Boundary', 'Initialisation', 'Design'].map((c) => `<option ${s.category === c ? 'selected' : ''}>${c}</option>`).join('')}</select></label></div><fieldset><legend style="font-size:13px">Which correction fixes the stated problem?</legend>${b.options.map((o, i) => `<label class="quiz-option"><input type="radio" name="correction" value="${i}" required ${s.correction === i ? 'checked' : ''}><span>${e(o)}</span></label>`).join('')}</fieldset><div class="button-row"><button type="submit" class="button">Check my attempt</button><button type="button" class="button secondary" id="debug-hint" ${s.debugAttempts ? '' : 'disabled'}>Get a hint</button><button type="button" class="button ghost" id="reveal-answer" ${s.debugAttempts ? '' : 'disabled'}>Reveal model answer</button></div><div id="debug-feedback" role="status" class="feedback">${s.debugFeedback ? e(s.debugFeedback) : ''}</div><div id="debug-hint-text" class="note" ${s.debugHintShown ? '' : 'hidden'}>${s.debugHintShown ? e(b.hint) : ''}</div><div id="model-answer" class="model-answer" ${s.debugRevealed ? '' : 'hidden'}><h3>Model answer</h3><p>Line ${b.line}. ${e(b.category)} error</p><code>${e(b.options[b.correct])}</code><p>${e(b.explanation)}</p></div></form>`;
     $('#debug-form').onchange = () => {
       const fd = new FormData($('#debug-form'));
       s.line = fd.get('line') ? Number(fd.get('line')) : null;
@@ -1141,7 +1141,7 @@ function savedWorkPage() {
           title =
             'Databases: ' +
             lesson.title +
-            (savedTask ? ' · Task ' + (Number(savedTask) + 1) : '');
+            (savedTask ? '. Task ' + (Number(savedTask) + 1) : '');
           href = '#db-lesson/' + lesson.id + (savedTask ? '/task-' + savedTask : '');
         }
       } else if (

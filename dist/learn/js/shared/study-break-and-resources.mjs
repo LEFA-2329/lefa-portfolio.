@@ -1,4 +1,4 @@
-import { mountRefreshGame } from './refresh-games.mjs?v=40';
+import { mountRefreshGame } from './refresh-games.mjs?v=punctuation-42';
 // Page layouts: pages/study-break.html and pages/helpful-resources.html.
 import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=40';
 import { escapeHTML as escape } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=40';
@@ -125,7 +125,7 @@ export function helpfulResourcesPage({ view, course, title = '', returnTo = '#ho
       .filter((r) => r.topics.includes(select.value))
       .map(
         (r) =>
-          `<article class="panel"><p class="eyebrow">${escape(r.kind)} · ${escape(r.provider)}</p><h2><a href="${escape(r.url)}" target="_blank" rel="noopener noreferrer">${escape(r.title)} <span class="settings-sr-only">(opens in a new tab)</span></a></h2><p>${escape(r.description)}</p><p class="resource-note">${escape(r.note)}</p></article>`,
+          `<article class="panel"><p class="eyebrow">${escape(r.kind)}. ${escape(r.provider)}</p><h2><a href="${escape(r.url)}" target="_blank" rel="noopener noreferrer">${escape(r.title)} <span class="settings-sr-only">(opens in a new tab)</span></a></h2><p>${escape(r.description)}</p><p class="resource-note">${escape(r.note)}</p></article>`,
       )
       .join('');
   }
