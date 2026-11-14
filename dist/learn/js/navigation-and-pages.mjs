@@ -1,13 +1,17 @@
-import { renderHtmlPage } from '../../shared/render-html-page.mjs?v=37';
-import { builderPage } from './database/normalisation/normalisation-diagram-builder.mjs?v=37';
-import { normalisationPracticePage } from './database/normalisation/normalisation-question-page.mjs?v=37';
-import { databaseExamPage } from './database/database-exam-page.mjs?v=37';
+import {
+  studyBreakPage,
+  helpfulResourcesPage,
+} from './shared/study-break-and-resources.mjs?v=38';
+import { renderHtmlPage } from '../../shared/render-html-page.mjs?v=38';
+import { builderPage } from './database/normalisation/normalisation-diagram-builder.mjs?v=38';
+import { normalisationPracticePage } from './database/normalisation/normalisation-question-page.mjs?v=38';
+import { databaseExamPage } from './database/database-exam-page.mjs?v=38';
 import {
   progressPage,
   progressSummary,
   refreshLessonCompletion,
-} from './shared/learning-progress.mjs?v=37';
-import { exercises as sqlChallenges } from './database/sql/sql-practice-challenges.mjs?v=37';
+} from './shared/learning-progress.mjs?v=38';
+import { exercises as sqlChallenges } from './database/sql/sql-practice-challenges.mjs?v=38';
 import {
   databaseHome,
   databaseUnit,
@@ -16,32 +20,32 @@ import {
   databaseResources,
   dbUnits,
   dbLessons,
-} from './database/database-pages.mjs?v=37';
-import { sqlPage } from './database/sql/sql-workspace-page.mjs?v=37';
-import './shared/theme-settings.mjs?v=37';
-import { examPage } from './programming-logic/practice-exam-page.mjs?v=37';
-import { workStore } from './shared/saved-work-storage.mjs?v=37';
+} from './database/database-pages.mjs?v=38';
+import { sqlPage } from './database/sql/sql-workspace-page.mjs?v=38';
+import './shared/theme-settings.mjs?v=38';
+import { examPage } from './programming-logic/practice-exam-page.mjs?v=38';
+import { workStore } from './shared/saved-work-storage.mjs?v=38';
 import {
   cleanLesson,
   cleanTask,
   cleanDraft,
-} from './shared/saved-programming-answers.mjs?v=37';
-import { activities } from './programming-logic/content/interactive-activities.mjs?v=37';
+} from './shared/saved-programming-answers.mjs?v=38';
+import { activities } from './programming-logic/content/interactive-activities.mjs?v=38';
 import {
   activitiesPage,
   activityPage,
-} from './programming-logic/interactive-activities-page.mjs?v=37';
-import { interactiveTracePage } from './programming-logic/pseudocode-tracer-page.mjs?v=37';
-import { taskBank } from './programming-logic/content/practice-task-bank.mjs?v=37';
-import { units, lessons } from './programming-logic/content/lessons-and-quizzes.mjs?v=37';
-import { practice } from './programming-logic/content/lesson-practice.mjs?v=37';
+} from './programming-logic/interactive-activities-page.mjs?v=38';
+import { interactiveTracePage } from './programming-logic/pseudocode-tracer-page.mjs?v=38';
+import { taskBank } from './programming-logic/content/practice-task-bank.mjs?v=38';
+import { units, lessons } from './programming-logic/content/lessons-and-quizzes.mjs?v=38';
+import { practice } from './programming-logic/content/lesson-practice.mjs?v=38';
 import {
   parse,
   flowchart,
   hierarchy,
   classDiagram,
   escapeHTML as e,
-} from './programming-logic/pseudocode-parser-and-diagrams.mjs?v=37';
+} from './programming-logic/pseudocode-parser-and-diagrams.mjs?v=38';
 const $ = (s) => document.querySelector(s),
   view = $('#view');
 let activeModule = 'prld';
@@ -52,6 +56,15 @@ try {
     ? localStorage.getItem('studylab-module')
     : 'prld';
 } catch {}
+let lastStudyRoute = '#home';
+let lastStudyTitle = '';
+new MutationObserver(() => {
+  const page = location.hash.slice(1).split('/')[0];
+  if (!['study-break', 'helpful-resources'].includes(page)) {
+    lastStudyRoute = location.hash || '#home';
+    lastStudyTitle = view.querySelector('h1')?.textContent || '';
+  }
+}).observe(view, { childList: true, subtree: true });
 let carriedCode = null,
   carriedTraceCode = null;
 let pageCleanup = () => {};
@@ -82,9 +95,15 @@ function crumb(label) {
 }
 function sidebar(unit) {
   const page = location.hash.slice(1).split('/')[0] || 'home',
-    shared = ['saved-work', 'about', 'progress', 'normalisation', 'nf-builder'].includes(
-      page,
-    ),
+    shared = [
+      'saved-work',
+      'about',
+      'progress',
+      'normalisation',
+      'nf-builder',
+      'study-break',
+      'helpful-resources',
+    ].includes(page),
     advanced =
       page === 'db-advanced' ||
       (page === 'db-unit' && Number(location.hash.split('/')[1]) > 200) ||
@@ -1211,7 +1230,18 @@ function route() {
     ['prld', 'database', 'intermediate', 'advanced'].includes(id)
   )
     activeModule = id;
-  if (page === 'nf-builder') {
+  if (page === 'study-break') {
+    sidebar();
+    pageCleanup = studyBreakPage({ view, returnTo: lastStudyRoute });
+  } else if (page === 'helpful-resources') {
+    sidebar();
+    helpfulResourcesPage({
+      view,
+      course: activeModule,
+      title: lastStudyTitle,
+      returnTo: lastStudyRoute,
+    });
+  } else if (page === 'nf-builder') {
     if (activeModule === 'prld') activeModule = 'database';
     builderPage({ view, sidebar, id, level: task });
   } else if (page === 'normalisation') {

@@ -1,4 +1,4 @@
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=37';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=38';
 import {
   themes,
   defaults,
@@ -6,8 +6,8 @@ import {
   createPreferenceStore,
   resolvedTheme,
   SETTINGS_KEY,
-} from './display-preferences.mjs?v=37';
-import { escapeHTML as escape } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=37';
+} from './display-preferences.mjs?v=38';
+import { escapeHTML as escape } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=38';
 
 const launch = document.querySelector('#settings-open');
 const device = matchMedia('(prefers-color-scheme: dark)');
@@ -65,6 +65,22 @@ function openSettings() {
         )
         .join(''),
     });
+    function showCategory(category) {
+      for (const section of panel.querySelectorAll('.settings-section'))
+        section.hidden =
+          section.getAttribute('aria-labelledby') !== 'settings-' + category + '-title';
+      for (const button of panel.querySelectorAll('[data-settings-category]'))
+        button.setAttribute(
+          'aria-pressed',
+          String(button.dataset.settingsCategory === category),
+        );
+      panel.scrollTop = 0;
+    }
+    for (const button of panel.querySelectorAll('[data-settings-category]'))
+      button.addEventListener('click', () =>
+        showCategory(button.dataset.settingsCategory),
+      );
+    showCategory('themes');
     panel
       .querySelector('#settings-theme-collection')
       .addEventListener('change', (event) => {

@@ -1,7 +1,7 @@
-import { quizContext } from '../shared/quiz-code-examples.mjs?v=37';
-import { workStore } from '../shared/saved-work-storage.mjs?v=37';
-import { escapeHTML as e } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=37';
-import { databaseExamEngine } from './database-exam-logic.mjs?v=37';
+import { quizContext } from '../shared/quiz-code-examples.mjs?v=38';
+import { workStore } from '../shared/saved-work-storage.mjs?v=38';
+import { escapeHTML as e } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=38';
+import { databaseExamEngine } from './database-exam-logic.mjs?v=38';
 export function databaseExamPage({ view, crumb, sidebar, course = 'database' }) {
   const {
       units,

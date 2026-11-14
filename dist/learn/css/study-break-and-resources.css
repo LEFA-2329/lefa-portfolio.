@@ -1,0 +1,84 @@
+/* Study break and curated resource pages. Colours follow the selected student theme. */
+.settings-category-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 12px 0;
+}
+.settings-category-nav button {
+  flex: 1;
+  min-width: 70px;
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface-alt);
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+}
+.settings-category-nav button[aria-pressed='true'] {
+  background: var(--chosen-accent);
+  color: var(--accent-ink);
+}
+.settings-section[hidden] {
+  display: none;
+}
+.garden-board {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  max-width: 600px;
+  margin: 24px auto;
+}
+.garden-card {
+  min-height: 100px;
+  aspect-ratio: 1.2;
+  border: 2px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface-alt);
+  color: var(--ink);
+  font-size: 2.5rem;
+  cursor: pointer;
+}
+.garden-card:hover {
+  border-color: var(--ink);
+}
+.garden-card.matched {
+  border-color: var(--green);
+  background: var(--paper);
+}
+.garden-card:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+.resource-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 20px;
+  margin: 24px 0;
+}
+.resource-card-grid h2 {
+  font-size: 1.3em;
+}
+.resource-note {
+  font-size: 0.9em;
+  color: var(--muted);
+}
+#resource-topic {
+  max-width: 100%;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+}
+@media (max-width: 500px) {
+  .garden-board {
+    gap: 8px;
+  }
+  .garden-card {
+    min-height: 64px;
+    font-size: 1.8rem;
+  }
+}
