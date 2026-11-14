@@ -8,10 +8,14 @@ import {
   submitExam,
   remainingSeconds,
   examResult,
-} from '../dist/learn/js/prld/exam.mjs';
+} from '../dist/learn/js/programming-logic/practice-exam-logic.mjs';
 import { auditDeclarations } from '../scripts/slide-audit.mjs';
-import { createRunner } from '../dist/learn/js/prld/runner.mjs';
-import { parse, flowchart, hierarchy } from '../dist/learn/js/prld/engine.mjs';
+import { createRunner } from '../dist/learn/js/programming-logic/pseudocode-interpreter.mjs';
+import {
+  parse,
+  flowchart,
+  hierarchy,
+} from '../dist/learn/js/programming-logic/pseudocode-parser-and-diagrams.mjs';
 assert.equal(examBank.length, 110);
 for (let seed = 1; seed < 100; seed++) {
   const qs = examQuestions(seed);

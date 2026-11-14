@@ -1,7 +1,10 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
-import { parse, flowchart } from '../dist/learn/js/prld/engine.mjs';
+import {
+  parse,
+  flowchart,
+} from '../dist/learn/js/programming-logic/pseudocode-parser-and-diagrams.mjs';
 const content = JSON.parse(
   fs.readFileSync(new URL('../scripts/slide-lessons.json', import.meta.url)),
 );

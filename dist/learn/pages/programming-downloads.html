@@ -1,0 +1,58 @@
+<!-- Edit this page layout here. Dynamic placeholders are filled by resourcesPage(). -->
+<p class="eyebrow">LEARN ONLINE OR TAKE IT WITH YOU</p>
+<h1>Your study resources.</h1>
+<p class="lede">
+  Download editable Word practice packs, printable PDFs and a teaching PowerPoint for each
+  learning unit. Use the same exercise numbers to match questions with answers.
+</p>
+<section class="panel download-panel">
+  <h2>Practice question and answer packs</h2>
+  <p>
+    229 exercises: 110 quiz questions, 22 debugging challenges, 44 lesson tasks and 53
+    task-library exercises. Includes arrays, parallel arrays, IF/ELSE and SWITCH/CASE.
+  </p>
+  <form id="download-pack">
+    <div class="download-controls">
+      <label class="field-label"
+        >What would you like?<select id="pack-content">
+          <option value="questions">Questions only</option>
+          <option value="questions-and-answers">Questions and answers</option>
+          <option value="answers">Answers only</option>
+        </select></label
+      ><label class="field-label"
+        >File format<select id="pack-format">
+          <option value="pdf">PDF (.pdf)</option>
+          <option value="docx">Word (.docx)</option>
+        </select></label
+      ><a
+        id="pack-download"
+        class="button"
+        href="./downloads/logiclab-questions.pdf"
+        download
+        >Download questions PDF</a
+      >
+    </div>
+  </form>
+  <p class="note">
+    These are open revision downloads. Answer packs are available directly. If you want to
+    test yourself first, choose Questions only. Written solutions are examples and other
+    correct approaches may exist.
+  </p>
+</section>
+<div class="section-heading">
+  <h2>Learning unit slides</h2>
+  <p>Editable PowerPoint (.pptx)</p>
+</div>
+<p class="resource-intro">
+  The detailed decks cover all lesson theory in each unit, definitions before use,
+  declared variables, numbered pseudocode walkthroughs, step-by-step traces and worked
+  exercise solutions. Each unit also has a short 10-slide revision deck with key
+  definitions, worked examples, practice answers and common mistakes. Unit 2 includes
+  IF/ELSE and SWITCH/CASE. Unit 3 includes single and two-dimensional arrays as well as
+  parallel arrays.
+</p>
+<div class="slides-grid">{{dynamic_1}}</div>
+<div class="note">
+  PowerPoint files can be opened in PowerPoint or compatible presentation software.
+  Downloads work without an account. This is supplementary practice material.
+</div>

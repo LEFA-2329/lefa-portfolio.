@@ -5,12 +5,12 @@ import {
   datasets,
   setupScript,
   dialects,
-} from '../dist/learn/js/database/sql/sql-data.mjs';
+} from '../dist/learn/js/database/sql/demo-databases-and-examples.mjs';
 import {
   additionalDatasets,
   additionalExercises,
-} from '../dist/learn/js/database/sql/sql-demo-datasets.mjs';
-import { gradeChallenge } from '../dist/learn/js/database/sql/sql-grading.mjs';
+} from '../dist/learn/js/database/sql/five-extra-demo-databases.mjs';
+import { gradeChallenge } from '../dist/learn/js/database/sql/sql-answer-checker.mjs';
 const init = createRequire(import.meta.url)('../dist/learn/vendor/sqljs/sql-wasm.js');
 const SQL = await init({
   locateFile: () =>

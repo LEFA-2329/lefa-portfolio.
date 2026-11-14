@@ -1,19 +1,22 @@
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
-import { dbUnits, dbLessons } from '../dist/learn/js/database/content/database-data.mjs';
+import {
+  dbUnits,
+  dbLessons,
+} from '../dist/learn/js/database/content/introduction-lessons.mjs';
 import {
   datasets,
   dialects,
   sqlExamples,
   setupScript,
-} from '../dist/learn/js/database/sql/sql-data.mjs';
+} from '../dist/learn/js/database/sql/demo-databases-and-examples.mjs';
 import {
   statements,
   adaptStatement,
   executeBatch,
-} from '../dist/learn/js/database/sql/sql-core.mjs';
-import { exercises } from '../dist/learn/js/database/sql/sql-ui.mjs';
+} from '../dist/learn/js/database/sql/sql-statement-execution.mjs';
+import { exercises } from '../dist/learn/js/database/sql/sql-workspace-page.mjs';
 const require = createRequire(import.meta.url),
   init = require('../dist/learn/vendor/sqljs/sql-wasm.js');
 const SQL = await init({

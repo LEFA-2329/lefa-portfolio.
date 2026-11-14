@@ -1,10 +1,10 @@
 /* Keep this order: later feature/theme rules intentionally override earlier rules. */
-@import url('./css/base.css?v=27');
-@import url('./css/prld.css?v=27');
-@import url('./css/shared.css?v=27');
-@import url('./css/appearance.css?v=27');
-@import url('./css/database.css?v=27');
-@import url('./css/normalisation.css?v=27');
-@import url('./css/progress.css?v=27');
-@import url('./css/normalisation-builder.css?v=27');
-@import url('./css/quizzes.css?v=27');
+@import url('./css/page-layout.css?v=32');
+@import url('./css/programming-lessons.css?v=32');
+@import url('./css/shared-components.css?v=32');
+@import url('./css/theme-colours.css?v=32');
+@import url('./css/database-pages.css?v=32');
+@import url('./css/normalisation.css?v=32');
+@import url('./css/learning-progress.css?v=32');
+@import url('./css/normalisation-builder.css?v=32');
+@import url('./css/quizzes.css?v=32');

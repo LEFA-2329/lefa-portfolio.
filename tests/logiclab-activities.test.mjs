@@ -1,6 +1,9 @@
 import assert from 'node:assert/strict';
-import { activities, checkActivity } from '../dist/learn/js/prld/content/activities.mjs';
-import { createRunner } from '../dist/learn/js/prld/runner.mjs';
+import {
+  activities,
+  checkActivity,
+} from '../dist/learn/js/programming-logic/content/interactive-activities.mjs';
+import { createRunner } from '../dist/learn/js/programming-logic/pseudocode-interpreter.mjs';
 assert.equal(activities.length, 20);
 assert.equal(new Set(activities.map((a) => a.id)).size, 20);
 for (const unit of [1, 2, 3, 4, 5]) {

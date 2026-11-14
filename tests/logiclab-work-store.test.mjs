@@ -1,14 +1,14 @@
 import assert from 'node:assert/strict';
-import { createWorkStore } from '../dist/learn/js/shared/work-store.mjs';
+import { createWorkStore } from '../dist/learn/js/shared/saved-work-storage.mjs';
 import {
   cleanTask,
   cleanLesson,
   cleanActivity,
   cleanDraft,
-} from '../dist/learn/js/shared/work-state.mjs';
-import { lessons } from '../dist/learn/js/prld/content/data.mjs';
-import { practice } from '../dist/learn/js/prld/content/practice.mjs';
-import { activities } from '../dist/learn/js/prld/content/activities.mjs';
+} from '../dist/learn/js/shared/saved-programming-answers.mjs';
+import { lessons } from '../dist/learn/js/programming-logic/content/lessons-and-quizzes.mjs';
+import { practice } from '../dist/learn/js/programming-logic/content/lesson-practice.mjs';
+import { activities } from '../dist/learn/js/programming-logic/content/interactive-activities.mjs';
 function memory() {
   const data = new Map();
   return {

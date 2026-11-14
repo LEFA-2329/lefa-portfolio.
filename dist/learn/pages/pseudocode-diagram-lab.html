@@ -1,0 +1,161 @@
+<!-- Edit this page layout here. Dynamic placeholders are filled by labPage(). -->
+<div class="lab-header">
+  <p class="eyebrow">FROM ALGORITHM TO PICTURE</p>
+  <h1>See the logic take shape.</h1>
+  <p class="lede">
+    Convert the documented pseudocode syntax into a flowchart or a module call hierarchy.
+    Processing happens in your browser; no AI API is used.
+  </p>
+</div>
+<div class="lab-controls">
+  <label class="field-label"
+    >Load an example<select id="lab-example">
+      {{dynamic_1}}
+    </select></label
+  ><label class="field-label"
+    >Diagram type<select id="lab-type">
+      <option value="flow">Flowchart</option>
+      <option value="hierarchy">Module hierarchy</option>
+    </select></label
+  >
+</div>
+<div class="lab-grid">
+  <section class="panel">
+    <h2>Your pseudocode</h2>
+    <label class="field-label" for="pseudocode"
+      >Edit the algorithm<textarea
+        id="pseudocode"
+        class="editor"
+        spellcheck="false"
+        maxlength="100000"
+      >
+{{dynamic_2}}</textarea
+      >
+    </label>
+    <div class="button-row">
+      <button class="button" id="generate-chart">Generate diagram</button
+      ><button class="button secondary" id="trace-my-code">Trace this code</button>
+    </div>
+    <p class="status" id="lab-status" role="status"></p>
+    <label class="field-label"
+      >Flowchart section<select id="lab-module">
+        <option value="main">Main program</option>
+      </select></label
+    >
+  </section>
+  <section class="panel">
+    <h2>Your diagram</h2>
+    <div class="diagram-toolbar">
+      <button class="button secondary" id="download-svg" disabled>Download SVG</button
+      ><button class="button secondary" id="download-png" disabled>Download PNG</button
+      ><button class="button secondary" id="diagram-pdf" disabled>Print / PDF</button
+      ><button class="button secondary" id="fit-chart" disabled>Fit width</button>
+    </div>
+    <div id="lab-diagram" class="diagram">
+      <div class="diagram-placeholder">
+        <span>◇</span>
+        <p>Your diagram will appear here.<br />Choose an example and generate it.</p>
+      </div>
+    </div>
+  </section>
+</div>
+<details class="syntax panel">
+  <summary>Supported syntax and limits</summary>
+  <p>
+    The converter checks recognised statements and matching block boundaries. It does not
+    execute expressions, validate types or prove that an algorithm is correct. Keywords
+    are case-insensitive. Use one statement per line.
+  </p>
+  <div class="scroll-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Structure</th>
+          <th>Notation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Program</td>
+          <td><code>BEGIN</code> ... <code>END</code></td>
+        </tr>
+        <tr>
+          <td>Input and output</td>
+          <td><code>INPUT name</code> / <code>OUTPUT "Hello", name</code></td>
+        </tr>
+        <tr>
+          <td>Assignment and declaration</td>
+          <td>
+            <code>SET total = total + value</code> / <code>DECLARE total AS REAL</code>
+          </td>
+        </tr>
+        <tr>
+          <td>Selection</td>
+          <td>
+            <code>IF condition THEN</code> ... <code>ELSE</code> ... <code>ENDIF</code>.
+            Use ELSEIF condition THEN for additional branches, or nest IF inside ELSE.
+          </td>
+        </tr>
+        <tr>
+          <td>Counted loop</td>
+          <td>
+            <code>FOR i = 1 TO 5 STEP 1</code> ... <code>ENDFOR</code>. STEP must be a
+            nonzero integer; it defaults to 1.
+          </td>
+        </tr>
+        <tr>
+          <td>Conditional loops</td>
+          <td>
+            <code>WHILE condition DO</code> ... <code>ENDWHILE</code> /
+            <code>REPEAT</code> ... <code>UNTIL condition</code>
+          </td>
+        </tr>
+        <tr>
+          <td>CASE</td>
+          <td>
+            <code>CASE expression OF</code>, <code>WHEN value:</code>,
+            <code>OTHERWISE:</code>, <code>ENDCASE</code>. Displayed as equivalent chained
+            decisions.
+          </td>
+        </tr>
+        <tr>
+          <td>Methods</td>
+          <td>
+            <code>METHOD name(parameters)</code> ... <code>ENDMETHOD</code> ,
+            <code>MODULE name(parameters)</code> ... <code>ENDMODULE</code> or
+            <code>FUNCTION name(parameters) RETURNS REAL</code> ...
+            <code>ENDFUNCTION</code>. Define methods outside BEGIN/END.
+          </td>
+        </tr>
+        <tr>
+          <td>Calls and returns</td>
+          <td>
+            <code>CALL name(arguments)</code>. Hierarchy view also recognises defined
+            function names inside expressions. RETURN creates a terminal exit in a
+            flowchart. Select a method in the section selector to inspect its body.
+          </td>
+        </tr>
+        <tr>
+          <td>Comments</td>
+          <td>
+            Use <code>//</code> for whole-line or inline comments outside quoted strings.
+            Maximum 1,000 non-empty lines, 100,000 characters and 16 levels of nesting
+            protect browser responsiveness.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Also accepted: PRINT/DISPLAY, READ, START/STOP, END IF, ELSE IF, plain assignments
+    using = or arrows, FOR ... FROM ... TO, NEXT and WEND. There is no quota or payment
+    per diagram. Structured syntax and browser safety limits still apply.
+  </p>
+  <p>
+    Hierarchy charts show call relationships, including recursion; uncalled methods are
+    shown separately. Undefined calls are reported. SWITCH / CASE is accepted as an alias
+    for CASE ... OF, WHEN and OTHERWISE. Class syntax, overload resolution, BREAK and
+    CONTINUE are not supported in this release. Use the class diagrams in Unit 5 for
+    object-oriented examples.
+  </p>
+</details>

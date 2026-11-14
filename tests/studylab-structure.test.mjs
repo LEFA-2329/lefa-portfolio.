@@ -11,7 +11,7 @@ function files(dir) {
   );
 }
 const modules = [
-  path.join(root, 'app.mjs'),
+  path.join(root, 'studylab-start.mjs'),
   ...files(path.join(root, 'js')).filter((p) => /\.(mjs|js)$/.test(p)),
 ];
 let imports = 0;
@@ -40,20 +40,22 @@ const styles = [...master.matchAll(/@import url\(['"](.+?)['"]\)/g)].map(
   (m) => m[1].split('?')[0],
 );
 assert.deepEqual(styles, [
-  './css/base.css',
-  './css/prld.css',
-  './css/shared.css',
-  './css/appearance.css',
-  './css/database.css',
+  './css/page-layout.css',
+  './css/programming-lessons.css',
+  './css/shared-components.css',
+  './css/theme-colours.css',
+  './css/database-pages.css',
   './css/normalisation.css',
-  './css/progress.css',
+  './css/learning-progress.css',
   './css/normalisation-builder.css',
   './css/quizzes.css',
 ]);
 for (const file of styles) assert(existsSync(path.join(root, file)));
 assert(existsSync(path.join(root, 'vendor/sqljs/sql-wasm.wasm')));
 assert(
-  readFileSync(path.join(root, 'index.html'), 'utf8').includes('./app.mjs?v=studylab-31'),
+  readFileSync(path.join(root, 'index.html'), 'utf8').includes(
+    './studylab-start.mjs?v=studylab-32',
+  ),
 );
 console.log(
   `Passed: ${modules.length} application modules, ${imports} local module/worker imports, stable entry point, vendor assets and nine ordered CSS imports.`,

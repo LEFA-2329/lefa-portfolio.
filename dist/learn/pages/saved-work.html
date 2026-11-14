@@ -1,0 +1,37 @@
+<!-- Edit this page layout here. Dynamic placeholders are filled by savedWorkPage(). -->
+<p class="eyebrow">CONTINUE WHERE YOU LEFT OFF</p>
+<h1>Your saved work</h1>
+<p class="lede">
+  Drafts and question progress save on this browser profile. They are shared by anyone
+  using this same profile, and do not sync to another device. Private browsing, clearing
+  site data or browser storage limits can remove or prevent saving.
+</p>
+<p>
+  Tracer code is saved as a draft. Enter inputs and prepare a fresh run after reopening.
+  Runtime inputs and trace history are not saved.
+</p>
+<div class="panel">
+  <h2>Saved items</h2>
+  {{dynamic_1}}
+</div>
+<section class="panel saved-work-controls">
+  <h2>Clear saved work</h2>
+  <p>
+    This removes drafts, exercise answers, quiz progress and saved hints from this
+    browser. Completed-lesson marks are kept. Use My progress to reset completion marks
+    separately.
+  </p>
+  <button class="button secondary" id="clear-saved-work">Clear saved work</button>
+  <p id="clear-work-status" role="status"></p>
+</section>
+<dialog id="clear-work-dialog" aria-labelledby="clear-work-title">
+  <h2 id="clear-work-title">Remove all saved work?</h2>
+  <p>
+    This removes this site's saved drafts and question progress in the current browser
+    profile. Copy any work you want to keep first.
+  </p>
+  <div class="button-row">
+    <button class="button secondary" id="cancel-clear-work">Keep saved work</button
+    ><button class="button danger" id="confirm-clear-work">Remove saved work</button>
+  </div>
+</dialog>

@@ -1,6 +1,9 @@
 import assert from 'node:assert/strict';
-import { createRunner } from '../dist/learn/js/prld/runner.mjs';
-import { parse, flowchart } from '../dist/learn/js/prld/engine.mjs';
+import { createRunner } from '../dist/learn/js/programming-logic/pseudocode-interpreter.mjs';
+import {
+  parse,
+  flowchart,
+} from '../dist/learn/js/programming-logic/pseudocode-parser-and-diagrams.mjs';
 function run(code, inputs = []) {
   const r = createRunner(code);
   let next = 0;

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { createRunner } from '../dist/learn/js/prld/runner.mjs';
+import { createRunner } from '../dist/learn/js/programming-logic/pseudocode-interpreter.mjs';
 const decks = JSON.parse(
   fs.readFileSync(new URL('../scripts/revision-content.json', import.meta.url), 'utf8'),
 );
@@ -52,10 +52,20 @@ for (const deck of decks) {
   );
   assert(fs.statSync(file).size > 10000);
 }
-const app = fs.readFileSync(new URL('../dist/learn/js/app.mjs', import.meta.url), 'utf8');
+const app = fs.readFileSync(
+  new URL('../dist/learn/js/navigation-and-pages.mjs', import.meta.url),
+  'utf8',
+);
 assert(app.includes('logiclab-unit-${u.id}-revision.pptx'));
 assert(app.includes('logiclab-unit-${u.id}.pptx'));
-assert(app.includes('10-slide revision deck'));
+assert(
+  fs
+    .readFileSync(
+      new URL('../dist/learn/pages/programming-downloads.html', import.meta.url),
+      'utf8',
+    )
+    .includes('10-slide revision deck'),
+);
 console.log(
   'Passed: five 10-slide revision decks, worked numeric/loop/array examples, package presence and both detailed/revision links.',
 );

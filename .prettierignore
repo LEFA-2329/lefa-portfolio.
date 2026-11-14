@@ -3,3 +3,6 @@ dist/learn/vendor/
 dist/learn/downloads/
 node_modules/
 .openai/
+
+# Generated from the readable HTML page sources.
+dist/shared/compiled-html-pages.mjs

@@ -1,13 +1,13 @@
 import assert from 'node:assert/strict';
-import { databaseExamEngine } from '../dist/learn/js/database/db-exam.mjs';
+import { databaseExamEngine } from '../dist/learn/js/database/database-exam-logic.mjs';
 import {
   createCompletionStore,
   lessonProgress,
   courseProgress,
-} from '../dist/learn/js/shared/progress.mjs';
-import { createWorkStore } from '../dist/learn/js/shared/work-store.mjs';
-import { dbLessons } from '../dist/learn/js/database/content/database-data.mjs';
-import { lessons } from '../dist/learn/js/prld/content/data.mjs';
+} from '../dist/learn/js/shared/learning-progress.mjs';
+import { createWorkStore } from '../dist/learn/js/shared/saved-work-storage.mjs';
+import { dbLessons } from '../dist/learn/js/database/content/introduction-lessons.mjs';
+import { lessons } from '../dist/learn/js/programming-logic/content/lessons-and-quizzes.mjs';
 for (const course of ['database', 'intermediate']) {
   const e = databaseExamEngine(course),
     s = e.createExam(123, 30, 1000),

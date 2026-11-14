@@ -1,7 +1,10 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { taskBank } from '../dist/learn/js/prld/content/tasks.mjs';
-import { parse, flowchart } from '../dist/learn/js/prld/engine.mjs';
+import { taskBank } from '../dist/learn/js/programming-logic/content/practice-task-bank.mjs';
+import {
+  parse,
+  flowchart,
+} from '../dist/learn/js/programming-logic/pseudocode-parser-and-diagrams.mjs';
 assert.equal(taskBank.filter((t) => t.topic === 'Arrays').length, 6);
 assert.equal(taskBank.filter((t) => t.topic === 'IF / ELSE').length, 6);
 assert.equal(taskBank.filter((t) => t.topic === 'SWITCH / CASE').length, 6);

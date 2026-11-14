@@ -1,0 +1,119 @@
+<!-- Edit this page layout here. Dynamic placeholders are filled by databaseResources(). -->
+<p class="eyebrow">DATABASES . RESOURCES</p>
+<h1>Take your practice further.</h1>
+<p class="lede">
+  Download native demo setup scripts from the SQL workspace, or print a unit overview or
+  lesson as PDF.
+</p>
+<section class="panel">
+  <h2>Database study packs</h2>
+  <p>
+    Revision selections with matching question numbers. The full exercise bank remains
+    online.
+  </p>
+  {{dynamic_1}}
+</section>
+<section class="panel">
+  <h2>Native SQL Server verification</h2>
+  <p>
+    Native execution is pending. This build environment has no SQL Server instance. The
+    validation harness checks constraints, referential actions, transactions, OUTPUT,
+    indexes, views, procedures and runtime error handling when you run it in a disposable
+    SQL Server database.
+  </p>
+  <a
+    class="button secondary"
+    href="./downloads/databases/sqlserver-validation.sql"
+    download
+    >Download native validation script</a
+  >
+  <p>
+    Create and select a disposable user database named StudyLabNativeValidation in SSMS.
+    Review the script, run it, and keep its PASS output. It rejects other database
+    contexts and rolls back its fixture objects. This harness covers representative
+    behaviours; it does not certify every lesson example.
+  </p>
+</section>
+<div class="hub-grid">
+  <article class="panel hub-card">
+    <h2>Demo data and SQL scripts</h2>
+    <p>
+      Select Microsoft SQL Server, PostgreSQL or MySQL, then download the setup script and
+      your current query.
+    </p>
+    <a class="button" href="#sql">Open SQL downloads</a>
+  </article>
+  <article class="panel hub-card">
+    <h2>Unit overview sheets</h2>
+    <p>
+      Each overview includes outcomes, themes, study guidance and a printable summary.
+    </p>
+    <a class="button" href="#db">Choose a learning unit</a>
+  </article>
+</div>
+<section class="panel">
+  <h2>DATA6222 Intermediate examples</h2>
+  <p>
+    In SSMS, select a disposable user database and run the college setup first. Each
+    lesson labels its environment and prerequisites. Design notation downloads as text.
+    Native scripts have been reviewed but have not been executed on a SQL Server instance
+    here.
+  </p>
+  <a class="button secondary" href="./downloads/intermediate/college-setup.sql" download
+    >Download college setup for SQL Server</a
+  >{{dynamic_2}}
+</section>
+<section class="panel">
+  <h2>Advanced Database examples</h2>
+  <p>
+    Eleven lesson examples covering advanced databases plus Hadoop, HDFS, YARN, MapReduce
+    and Hive. SQL Server examples are labelled for SSMS. Hadoop shell commands, MapReduce
+    pseudocode, HiveQL and design notes download as text for their separate environments.
+    Native execution remains pending.
+  </p>
+  <ul>
+    {{dynamic_3}}
+  </ul>
+  <a class="button secondary" href="#db-advanced">Explore Advanced Database</a>
+</section>
+<section class="panel">
+  <h2>Official reference documentation</h2>
+  <ul>
+    <li>
+      <a
+        class="text-link"
+        href="https://learn.microsoft.com/sql/t-sql/queries/select-transact-sql/"
+        target="_blank"
+        rel="noopener"
+        >Microsoft SQL Server SELECT reference</a
+      >
+    </li>
+    <li>
+      <a
+        class="text-link"
+        href="https://www.postgresql.org/docs/current/sql-select.html"
+        target="_blank"
+        rel="noopener"
+        >PostgreSQL SELECT reference</a
+      >
+    </li>
+    <li>
+      <a
+        class="text-link"
+        href="https://dev.mysql.com/doc/refman/8.4/en/select.html"
+        target="_blank"
+        rel="noopener"
+        >MySQL SELECT reference</a
+      >
+    </li>
+    <li>
+      <a class="text-link" href="https://sql.js.org/" target="_blank" rel="noopener"
+        >sql.js: the local SQLite engine used in this workspace</a
+      >
+    </li>
+  </ul>
+  <p class="muted">
+    Database question sheets, model answers and revision PowerPoints are available above.
+    PRLD downloads remain in the PRLD module.
+  </p>
+</section>

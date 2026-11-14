@@ -1,12 +1,12 @@
 import assert from 'node:assert/strict';
-import { normalisationExamples } from '../dist/learn/js/database/normalisation/normalisation.mjs';
+import { normalisationExamples } from '../dist/learn/js/database/normalisation/normalisation-lessons-and-diagrams.mjs';
 import {
   gradeKeyAndDependencies,
   gradeDecomposition,
   losslessJoin,
   projectedDependencies,
-} from '../dist/learn/js/database/normalisation/normalisation-grading.mjs';
-import { cleanBuilder } from '../dist/learn/js/database/normalisation/normalisation-builder.mjs';
+} from '../dist/learn/js/database/normalisation/normalisation-answer-checker.mjs';
+import { cleanBuilder } from '../dist/learn/js/database/normalisation/normalisation-diagram-builder.mjs';
 const convert = (tables) =>
   tables.map((t, i) => ({
     id: 'x' + i,

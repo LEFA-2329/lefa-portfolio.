@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { createRunner } from '../dist/learn/js/prld/runner.mjs';
+import { createRunner } from '../dist/learn/js/programming-logic/pseudocode-interpreter.mjs';
 function execute(code, inputs = [], options) {
   const runner = createRunner(code, options),
     states = [runner.initial()];

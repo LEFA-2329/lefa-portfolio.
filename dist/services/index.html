@@ -1,6 +1,12 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Browser defence in depth. Inline JavaScript and remote scripts are blocked. -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self' 'sha256-GVIBelgYkoGxHvZUTZuwyi5GcFu0msxpRJpIbMDwpPE='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self'; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; media-src 'self'; upgrade-insecure-requests"
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Website &amp; Application Developer in Johannesburg | Lefa Malatji</title>
@@ -39,8 +45,8 @@
       content="Need a website or web application? Lefa Malatji builds business websites, school websites and database-backed systems in Johannesburg, South Africa."
     />
     <meta name="twitter:image" content="https://lefamalatji.co.za/lefa-malatji.jpeg" />
-    <link rel="stylesheet" href="./services.css?v=polish-3" />
-    <script defer src="./enquiry.js?v=packages-1"></script>
+    <link rel="stylesheet" href="./services-page.css?v=polish-3" />
+    <script defer src="./project-enquiry.js?v=packages-1"></script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",

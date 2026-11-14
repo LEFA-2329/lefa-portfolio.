@@ -4,9 +4,9 @@ import { fileURLToPath } from 'node:url';
 import {
   gradeChallenge,
   compareResults,
-} from '../dist/learn/js/database/sql/sql-grading.mjs';
-import { exercises } from '../dist/learn/js/database/sql/sql-challenges.mjs';
-import { intermediateLessons } from '../dist/learn/js/database/content/intermediate-data.mjs';
+} from '../dist/learn/js/database/sql/sql-answer-checker.mjs';
+import { exercises } from '../dist/learn/js/database/sql/sql-practice-challenges.mjs';
+import { intermediateLessons } from '../dist/learn/js/database/content/intermediate-lessons.mjs';
 const init = createRequire(import.meta.url)('../dist/learn/vendor/sqljs/sql-wasm.js');
 const SQL = await init({
   locateFile: () =>

@@ -5,11 +5,14 @@ import { existsSync, readFileSync } from 'node:fs';
 import {
   intermediateUnits as units,
   intermediateLessons as lessons,
-} from '../dist/learn/js/database/content/intermediate-data.mjs';
-import { dbLessons } from '../dist/learn/js/database/content/database-data.mjs';
-import { datasets, sqlExamples } from '../dist/learn/js/database/sql/sql-data.mjs';
-import { exercises } from '../dist/learn/js/database/sql/sql-ui.mjs';
-import { executeBatch } from '../dist/learn/js/database/sql/sql-core.mjs';
+} from '../dist/learn/js/database/content/intermediate-lessons.mjs';
+import { dbLessons } from '../dist/learn/js/database/content/introduction-lessons.mjs';
+import {
+  datasets,
+  sqlExamples,
+} from '../dist/learn/js/database/sql/demo-databases-and-examples.mjs';
+import { exercises } from '../dist/learn/js/database/sql/sql-workspace-page.mjs';
+import { executeBatch } from '../dist/learn/js/database/sql/sql-statement-execution.mjs';
 assert.deepEqual(
   units.map((u) => u.outcomes.length),
   [10, 14, 12, 9, 9, 13, 12, 15, 12],

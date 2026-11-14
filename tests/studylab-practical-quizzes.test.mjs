@@ -5,11 +5,11 @@ import { createHash } from 'node:crypto';
 import {
   intermediateLessons,
   intermediateLegacyQuizzes,
-} from '../dist/learn/js/database/content/intermediate-data.mjs';
-import { databaseExamEngine } from '../dist/learn/js/database/db-exam.mjs';
-import { cleanDatabaseLesson } from '../dist/learn/js/database/database-state.mjs';
-import { lessonProgress } from '../dist/learn/js/shared/progress.mjs';
-import { quizContext } from '../dist/learn/js/shared/quiz-context.mjs';
+} from '../dist/learn/js/database/content/intermediate-lessons.mjs';
+import { databaseExamEngine } from '../dist/learn/js/database/database-exam-logic.mjs';
+import { cleanDatabaseLesson } from '../dist/learn/js/database/saved-database-answers.mjs';
+import { lessonProgress } from '../dist/learn/js/shared/learning-progress.mjs';
+import { quizContext } from '../dist/learn/js/shared/quiz-code-examples.mjs';
 const qs = intermediateLessons.flatMap((l) => l.quizzes);
 assert.equal(qs.length, 81);
 assert.equal(new Set(qs.map((q) => q.question)).size, 81);

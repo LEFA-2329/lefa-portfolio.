@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { findTopics, topics } from '../dist/guide-core.mjs';
+import { findTopics, topics } from '../dist/portfolio/content/recruiter-answers.mjs';
 test('routes common recruiter questions', () => {
   for (const [q, key] of [
     ['What PostgreSQL experience do you have?', 'databases'],
@@ -36,7 +36,7 @@ test('all routes have prepared evidence and safe links', () => {
         );
     }
 });
-import { answerTopics } from '../dist/guide-core.mjs';
+import { answerTopics } from '../dist/portfolio/content/recruiter-answers.mjs';
 test('matches varied wording and common typos', () => {
   for (const [q, key] of [
     ['What has he built?', 'projects'],
@@ -56,7 +56,7 @@ test('supports follow-ups and honest unknown answers', () => {
   assert.deepEqual(answerTopics('What is the weather?'), []);
   assert.deepEqual(answerTopics('hello'), ['greeting']);
 });
-import { getResponse } from '../dist/guide-core.mjs';
+import { getResponse } from '../dist/portfolio/content/recruiter-answers.mjs';
 test('specific technology question identifies the documented project', () => {
   const r = getResponse('What did Lefa build with PHP?');
   assert.equal(r.context.project, 'store');

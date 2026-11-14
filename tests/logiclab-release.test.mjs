@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict';
-import { lessons } from '../dist/learn/js/prld/content/data.mjs';
-import { practice } from '../dist/learn/js/prld/content/practice.mjs';
+import { lessons } from '../dist/learn/js/programming-logic/content/lessons-and-quizzes.mjs';
+import { practice } from '../dist/learn/js/programming-logic/content/lesson-practice.mjs';
 import { auditDeclarations } from '../scripts/slide-audit.mjs';
-import { cleanLesson } from '../dist/learn/js/shared/work-state.mjs';
-import { createRunner } from '../dist/learn/js/prld/runner.mjs';
+import { cleanLesson } from '../dist/learn/js/shared/saved-programming-answers.mjs';
+import { createRunner } from '../dist/learn/js/programming-logic/pseudocode-interpreter.mjs';
 for (const l of lessons) {
   for (const code of [l.example, practice[l.id].worked.code]) auditDeclarations(code);
   assert(l.examplePrompt && l.exampleTrace.length >= 2, l.id);

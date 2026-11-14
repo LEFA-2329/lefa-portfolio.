@@ -1,0 +1,37 @@
+importScripts('../../../vendor/sqljs/sql-wasm.js');
+const ready = Promise.all([
+  initSqlJs({
+    locateFile: (file) =>
+      new URL('../../../vendor/sqljs/' + file, self.location.href).href,
+  }),
+  import('./sql-statement-execution.mjs?v=32'),
+  import('./demo-databases-and-examples.mjs?v=32'),
+  import('./sql-answer-checker.mjs?v=32'),
+]);
+let db;
+self.onmessage = async (event) => {
+  const { id, action, dataset, code, mode, taskId } = event.data;
+  try {
+    const [SQL, core, data, grading] = await ready;
+    if (action === 'grade') {
+      const report = grading.gradeChallenge(SQL, taskId, code, mode);
+      self.postMessage({ id, ok: true, report });
+      return;
+    }
+    if (action === 'init') {
+      if (!Object.hasOwn(data.datasets, dataset)) throw Error('Unknown demo dataset.');
+      db?.close();
+      db = new SQL.Database();
+      db.run('PRAGMA foreign_keys=ON; PRAGMA max_page_count=8192;');
+      db.run(data.datasets[dataset].sql);
+    }
+    if (!db) throw Error('Load a dataset first.');
+    const results = action === 'run' ? core.executeBatch(db, code, mode) : [];
+    const schema = db.exec(
+      "SELECT name, type, sql FROM sqlite_master WHERE type IN ('table','view','index') AND name NOT LIKE 'sqlite_%' ORDER BY type, name;",
+    );
+    self.postMessage({ id, ok: true, results, schema: schema[0]?.values || [] });
+  } catch (error) {
+    self.postMessage({ id, ok: false, error: error.message });
+  }
+};

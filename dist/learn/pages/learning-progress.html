@@ -1,0 +1,30 @@
+<!-- Edit this page layout here. Dynamic placeholders are filled by progressPage(). -->
+<p class="eyebrow">YOUR LEARNING RECORD</p>
+<h1>{{dynamic_1}} progress</h1>
+<p class="lede">
+  {{dynamic_2}} of {{dynamic_3}} lessons complete. {{dynamic_4}}/{{dynamic_5}} quiz
+  questions currently correct; {{dynamic_6}} checked.
+</p>
+<p>
+  These are your latest checked answers, not a mastery score. Completion is marked from
+  each lesson after its required checks. Saved progress is local to this browser profile.
+</p>
+<div class="button-row">{{dynamic_7}}</div>
+{{dynamic_8}}{{dynamic_9}}
+<section class="panel">
+  <h2>Reset completion marks</h2>
+  <p>
+    This resets completion marks for all learning modules, including older saved marks.
+    Quiz answers, drafts and exam attempts remain available.
+  </p>
+  <button class="button secondary" id="reset-completion">Reset completion marks</button>
+  <p id="progress-reset-status" role="status"></p>
+</section>
+<dialog id="progress-reset-dialog">
+  <h2>Reset all completion marks?</h2>
+  <p>Your saved answers and drafts will stay available.</p>
+  <div class="button-row">
+    <button class="button secondary" id="keep-completion">Keep marks</button
+    ><button class="button danger" id="confirm-reset-completion">Reset marks</button>
+  </div>
+</dialog>

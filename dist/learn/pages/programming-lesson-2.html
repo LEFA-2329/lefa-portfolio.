@@ -1,0 +1,27 @@
+<!-- Edit this page layout here. Dynamic placeholders are filled by lessonPage(). -->
+<div class="lesson-header">
+  <p class="eyebrow">UNIT 0{{dynamic_1}} / GUIDED LESSON</p>
+  <h1>{{dynamic_2}}</h1>
+  <p class="lede">Understand it. Try it. Explain why it works.</p>
+</div>
+<div class="lesson-tabs" role="tablist" aria-label="Lesson sections">{{dynamic_3}}</div>
+<div class="lesson-layout">
+  <section id="lesson-panel" class="panel" role="tabpanel"></section>
+  <aside
+    class="panel objectives"
+    style="position: static; height: auto; overflow: visible"
+  >
+    <h3>Learning goals</h3>
+    <ul>
+      {{dynamic_4}}
+    </ul>
+    <div class="sidebar-divider"></div>
+    <a class="button secondary" href="#unit/{{dynamic_5}}">Back to unit {{dynamic_6}}</a>
+  </aside>
+</div>
+<nav class="lesson-paging" aria-label="Lesson navigation">{{dynamic_7}}{{dynamic_8}}</nav>
+<div class="button-row">
+  <button id="print-lesson" class="button secondary">
+    Print / save this view as PDF
+  </button>
+</div>

@@ -3,8 +3,8 @@ import { existsSync, readFileSync } from 'node:fs';
 import {
   advancedUnits,
   advancedLessons,
-} from '../dist/learn/js/database/content/advanced-data.mjs';
-import { progressCourses } from '../dist/learn/js/shared/progress.mjs';
+} from '../dist/learn/js/database/content/advanced-lessons.mjs';
+import { progressCourses } from '../dist/learn/js/shared/learning-progress.mjs';
 assert.equal(advancedUnits.length, 9);
 assert.equal(advancedLessons.length, 11);
 assert.equal(new Set(advancedLessons.map((l) => l.id)).size, 11);

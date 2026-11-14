@@ -3,14 +3,14 @@ import {
   normalisationQuestions,
   normalisationSolution,
   cleanNormalisationWork,
-} from '../dist/learn/js/database/normalisation/normalisation-practice.mjs';
+} from '../dist/learn/js/database/normalisation/normalisation-question-page.mjs';
 import { readFileSync } from 'node:fs';
 import {
   normalisationExamples,
   dependencyDiagram,
   stageHTML,
   normalisationWalkthrough,
-} from '../dist/learn/js/database/normalisation/normalisation.mjs';
+} from '../dist/learn/js/database/normalisation/normalisation-lessons-and-diagrams.mjs';
 const project = (data, attributes) => [
   ...new Map(
     data.map((row) => {
@@ -160,7 +160,7 @@ assert.equal(
   normalisationExamples.employees.stages[2].tables.length,
 );
 assert(normalisationWalkthrough().includes('id="nf-example"'));
-for (const name of ['js/app.mjs', 'js/database/database-ui.mjs']) {
+for (const name of ['js/navigation-and-pages.mjs', 'js/database/database-pages.mjs']) {
   const source = readFileSync(new URL('../dist/learn/' + name, import.meta.url), 'utf8');
   assert(!source.includes('<span aria-hidden="true">→</span>'));
   assert(!source.includes('<span>→</span>'));

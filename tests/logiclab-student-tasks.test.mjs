@@ -1,6 +1,9 @@
 import assert from 'node:assert/strict';
-import { taskBank } from '../dist/learn/js/prld/content/tasks.mjs';
-import { parse, flowchart } from '../dist/learn/js/prld/engine.mjs';
+import { taskBank } from '../dist/learn/js/programming-logic/content/practice-task-bank.mjs';
+import {
+  parse,
+  flowchart,
+} from '../dist/learn/js/programming-logic/pseudocode-parser-and-diagrams.mjs';
 assert.equal(taskBank.length, 53);
 assert.equal(new Set(taskBank.map((t) => t.id)).size, 53);
 for (const t of taskBank) {

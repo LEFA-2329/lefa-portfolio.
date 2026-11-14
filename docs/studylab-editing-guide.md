@@ -1,111 +1,71 @@
-# Editing StudyLab
+# StudyLab editing guide
 
-StudyLab is a static app. Edit the files inside `dist/learn/` directly; there is no separate source copy or compilation step. The browser uses native JavaScript modules. The portfolio homepage and its assets remain in `dist/`.
+Start with [START-HERE.md](../START-HERE.md). Public routes stay at `/learn/`; this file reorganisation does not change lesson IDs or saved-work keys.
 
-## Start here
+## HTML and CSS
 
-| Folder or file                          | What belongs here                                                 |
-| --------------------------------------- | ----------------------------------------------------------------- |
-| `dist/learn/index.html`                 | The page shell, header and navigation containers                  |
-| `dist/learn/app.mjs`                    | Small browser entry point; loads the application shell            |
-| `dist/learn/js/app.mjs`                 | Routes, sidebar, saved-work page and PRLD lesson views            |
-| `dist/learn/js/shared/`                 | Browser storage, appearance, progress and shared quiz rendering   |
-| `dist/learn/js/prld/`                   | Pseudocode parser, diagrams, tracing, activities and PRLD exams   |
-| `dist/learn/js/prld/content/`           | PRLD units, lessons, quizzes, practice tasks and examples         |
-| `dist/learn/js/database/`               | Database lesson views, record validation and practice exams       |
-| `dist/learn/js/database/content/`       | Introduction/Intermediate lesson content and practical quizzes    |
-| `dist/learn/js/database/sql/`           | SQL datasets, examples, challenges, marking, UI and worker        |
-| `dist/learn/js/database/normalisation/` | Dependency scenarios, diagrams, builder and feedback              |
-| `dist/learn/css/`                       | Readable styles split by responsibility                           |
-| `dist/learn/downloads/`                 | Generated Word/PDF/PowerPoint files and downloadable SQL examples |
-| `dist/learn/vendor/`                    | Third-party SQL engine; do not edit or reformat                   |
-| `scripts/`                              | Optional generators for course exports, slides, packs and the CV  |
-| `tests/`                                | Behaviour checks, grouped by their filename prefixes              |
+`dist/learn/index.html` is the shell: header, module picker, navigation and main content host. The larger page layouts are now real HTML files under `dist/learn/pages/`.
 
-## Find the right file
+| Page                            | HTML source                                                        |
+| ------------------------------- | ------------------------------------------------------------------ |
+| Programming home                | `programming-home.html`                                            |
+| Programming lesson and unit     | `programming-lesson.html`, `programming-unit.html`                 |
+| Programming practice            | `programming-practice.html`                                        |
+| Code tools and diagram lab      | `code-tools.html`, `pseudocode-diagram-lab.html`                   |
+| Trace tool                      | `pseudocode-tracing.html`                                          |
+| Programming downloads           | `programming-downloads.html`                                       |
+| Database home, unit and lesson  | `database-home.html`, `database-unit.html`, `database-lesson.html` |
+| Database practice and downloads | `database-practice.html`, `database-downloads.html`                |
+| SQL editor page                 | `sql-workspace.html`                                               |
+| Saved work and progress         | `saved-work.html`, `learning-progress.html`                        |
+| About and privacy               | `about-and-privacy.html`                                           |
 
-| What you want to change                          | File relative to `dist/learn/`                                                                 |
-| ------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
-| PRLD lesson theory, worked examples or main quiz | `js/prld/content/data.mjs`                                                                     |
-| PRLD extra quizzes, debugging and lesson tasks   | `js/prld/content/practice.mjs`                                                                 |
-| PRLD standalone task library                     | `js/prld/content/tasks.mjs`                                                                    |
-| PRLD interactive activities                      | `js/prld/content/activities.mjs`                                                               |
-| Database Introduction units and lessons          | `js/database/content/database-data.mjs`                                                        |
-| Intermediate units, theory and lesson tasks      | `js/database/content/intermediate-data.mjs`                                                    |
-| Current Intermediate practical questions         | `js/database/content/intermediate-quizzes.mjs`                                                 |
-| Database quiz layout or lesson tabs              | `js/database/database-ui.mjs`                                                                  |
-| Database exam selection/scoring                  | `js/database/db-exam.mjs`                                                                      |
-| Database exam layout and timer controls          | `js/database/db-exam-ui.mjs`                                                                   |
-| SQL demo datasets and dialect setup              | `js/database/sql/sql-data.mjs`                                                                 |
-| SQL challenge definitions                        | `js/database/sql/sql-challenges.mjs`                                                           |
-| SQL result checking                              | `js/database/sql/sql-grading.mjs`                                                              |
-| Dependency-diagram scenarios                     | `js/database/normalisation/normalisation.mjs` and `normalisation-extra.mjs` in the same folder |
-| Diagram builder controls                         | `js/database/normalisation/normalisation-builder.mjs`                                          |
-| Normalisation feedback rules                     | `js/database/normalisation/normalisation-grading.mjs`                                          |
-| Colours, themes and current general layout       | `css/appearance.css`                                                                           |
-| SQL/database layout                              | `css/database.css`                                                                             |
-| Quiz snippets and spacing                        | `css/quizzes.css`                                                                              |
-| Dependency diagrams or builder styling           | `css/normalisation.css` and `css/normalisation-builder.css`                                    |
-| Progress styling                                 | `css/progress.css`                                                                             |
+Each file begins with a comment naming its page function. `{{dynamic_N}}` placeholders are filled by that function with existing escaped content or trusted application markup. Do not add script tags, inline event handlers or javascript links to templates. Behaviour belongs in the matching JavaScript module.
 
-## Preview and check an edit
+CSS files in `dist/learn/css/` have descriptive names: `page-layout.css`, `programming-lessons.css`, `database-pages.css`, `theme-colours.css`, `shared-components.css`, `learning-progress.css`, plus normalisation and quiz styles. `dist/learn/styles.css` preserves their cascade order.
 
-From the repository root:
+## Content and behaviour
 
-```bash
+| Change                                    | JavaScript file under `dist/learn/js/`                                                         |
+| ----------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| Navigation and page selection             | `navigation-and-pages.mjs`                                                                     |
+| Programming lessons and main quizzes      | `programming-logic/content/lessons-and-quizzes.mjs`                                            |
+| Lesson practice                           | `programming-logic/content/lesson-practice.mjs`                                                |
+| Standalone tasks                          | `programming-logic/content/practice-task-bank.mjs`                                             |
+| Interactive activities                    | `programming-logic/content/interactive-activities.mjs`                                         |
+| Pseudocode syntax and diagrams            | `programming-logic/pseudocode-parser-and-diagrams.mjs`                                         |
+| Pseudocode execution and tracer interface | `programming-logic/pseudocode-interpreter.mjs`, `pseudocode-tracer-page.mjs`                   |
+| Introduction lessons                      | `database/content/introduction-lessons.mjs`                                                    |
+| Intermediate lessons and quizzes          | `database/content/intermediate-lessons.mjs`, `intermediate-quiz-questions.mjs`                 |
+| Advanced and Hadoop lessons               | `database/content/advanced-lessons.mjs`, `hadoop-lessons.mjs`                                  |
+| Database page behaviour                   | `database/database-pages.mjs`                                                                  |
+| SQL data and examples                     | `database/sql/demo-databases-and-examples.mjs`                                                 |
+| Five additional demos                     | `database/sql/five-extra-demo-databases.mjs`                                                   |
+| SQL challenge questions                   | `database/sql/sql-practice-challenges.mjs`                                                     |
+| SQL marking                               | `database/sql/sql-answer-checker.mjs`                                                          |
+| SQL editor behaviour                      | `database/sql/sql-workspace-page.mjs`                                                          |
+| SQL background worker                     | `database/sql/sql-database-worker.js`                                                          |
+| Normalisation lessons and diagrams        | `database/normalisation/normalisation-lessons-and-diagrams.mjs`                                |
+| Extra dependency cases                    | `database/normalisation/additional-normalisation-cases.mjs`                                    |
+| Normalisation builder and checks          | `database/normalisation/normalisation-diagram-builder.mjs`, `normalisation-answer-checker.mjs` |
+| Saved browser work                        | `shared/saved-work-storage.mjs`                                                                |
+| Completed lessons and scores              | `shared/learning-progress.mjs`                                                                 |
+| Theme settings                            | `shared/theme-settings.mjs`                                                                    |
+
+The root loader is `dist/learn/studylab-start.mjs`. Keep it small. Imported paths are relative to their JavaScript file; links inside page HTML remain relative to the document URL `/learn/`.
+
+## Edit, build and verify
+
+```sh
 npm ci
-npm test
 npm run format
+npm run build
+npm test
 npm run format:check
-python -m http.server 8000 --directory dist
 ```
 
-Open `http://localhost:8000/learn/`. Use `python3` instead of `python` if your system requires it. Stop the server with Ctrl+C. Node.js is needed for tests and formatting; the public website still needs no Node server, account or API key.
+`npm run build` compiles the HTML source into a trusted module for fast synchronous page rendering. It does not evaluate JavaScript from templates. Commit that generated module together with your HTML changes. Formatting happens before building; if you format HTML again, rebuild again.
 
-For a small edit, run the relevant test first, for example:
+Keep existing lesson IDs and browser storage keys stable. When changing quiz options or their order, update the relevant quiz revision so old selections are not applied to different answers. Keep downloaded example files consistent with lesson examples. Generated PDF, Word and PowerPoint materials use the scripts under `scripts/`.
 
-```bash
-node --test tests/studylab-practical-quizzes.test.mjs
-```
-
-Run the complete `npm test` suite before pushing. Test imports and teaching-material exporters already point to the new folders. Do not copy modules back into the old flat folder.
-
-For the optional Python material generators, use their separate formatter:
-
-```bash
-python -m pip install -r requirements-dev.txt
-python -m black scripts
-python -m black --check scripts
-```
-
-`pyproject.toml` keeps Python formatting consistent. The Python scripts were checked to have the same syntax trees before and after this formatting pass.
-
-## Editing questions and preserving student work
-
-Keep lesson IDs, task IDs and browser-storage keys stable when changing wording. They link saved drafts and progress to the correct activity. A change to question identity or answer ordering needs a deliberate quiz revision/migration; otherwise an old saved answer may be marked against a different question.
-
-The Intermediate practical bank uses `S`, `D` and `P` helpers for case studies, debugging and prediction. In their source option arrays, the correct answer goes first; the helper rotates choices and records the resulting correct index. Do not manually set the displayed answer index. Portable prediction fixtures also record expected returned values and are tested automatically.
-
-Legacy Intermediate quizzes are retained inside `intermediate-data.mjs` only to restore older exam attempts. Edit `intermediate-quizzes.mjs` for the current bank. See `studylab-practical-intermediate-quizzes.md` for the migration design.
-
-## CSS and asset paths
-
-`styles.css` imports the nine CSS files in their original cascade order. That order is intentional: appearance and later feature rules override earlier defaults. Prefer the feature file listed above instead of appending unrelated rules to `styles.css`. This refactor did not consolidate or reorder visual overrides.
-
-HTML links to `./downloads/...` resolve from `index.html`. JavaScript imports and `new URL(..., import.meta.url)` resolve from their module file. The SQL worker lives in `js/database/sql/`; its vendor engine paths go up to `dist/learn/vendor/`. Keep these two kinds of relative path distinct.
-
-Use the existing version suffix convention when publishing changes to cached files. During this reorganisation the entry point and relocated modules use version 27. CSS imports are versioned too.
-
-## Deployment and generated files
-
-Push to `main` to run tests and deploy through `.github/workflows/deploy-pages.yml`. That workflow publishes `dist/`; no bundler or build output needs to be generated first. Confirm the deployment job succeeds before describing a change as live.
-
-Content edits do not automatically regenerate Word, PDF or PowerPoint downloads. The optional scripts have their own runtime dependencies and review requirements. Regenerate and review those deliverables separately when their content changes. Do not manually reformat vendor code or binary downloads.
-
-## Advanced Database extension
-
-Edit `dist/learn/js/database/content/advanced-data.mjs` for the Advanced units, lessons, quizzes and tasks. Unit IDs start at 201; lesson IDs start with `advanced-`. Matching example downloads live in `dist/learn/downloads/advanced/`. Update both the lesson example and download together. This extension has no institution-specific module code. Native SQL Server execution remains pending.
-
-The five additional SQL datasets live in `dist/learn/js/database/sql/sql-demo-datasets.mjs`. Each dataset keeps its schema, records, examples, challenges and additional grading fixture together. See `docs/studylab-five-datasets.md` for row counts and native testing steps.
-
-Hadoop Unit 9 is kept separately in `dist/learn/js/database/content/hadoop-data.mjs` and appended by `advanced-data.mjs`. Its three lessons use explicit environment labels; do not route Hadoop commands or HiveQL to the browser SQL engine. Matching text examples live under `dist/learn/downloads/advanced/advanced-9-*.txt`.
+Python generator formatting remains available with `python -m pip install -r requirements-dev.txt` and `python -m black scripts/*.py`. Native SQL Server and Hadoop validation is separate from browser checks and remains pending.

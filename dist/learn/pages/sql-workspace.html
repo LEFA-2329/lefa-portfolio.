@@ -1,0 +1,202 @@
+<!-- Edit this page layout here. Dynamic placeholders are filled by sqlPage(). -->
+<p class="breadcrumb">
+  <a href="#db">Databases</a><span>/</span><strong>SQL workspace</strong>
+</p>
+<p class="eyebrow">WRITE . RUN . EXPLORE</p>
+<h1>Your SQL practice space.</h1>
+<p class="lede">
+  Choose your dialect and a fictional dataset. Write a query, run it and inspect the
+  results.
+</p>
+<div class="sql-engine-note">
+  <strong>Browser practice engine: SQLite.</strong> SQL Server, PostgreSQL and MySQL are
+  compatibility modes for the documented teaching subset, not live server connections.
+  <button type="button" class="text-link" id="sql-show-limits">
+    See supported syntax and differences</button
+  >.
+</div>
+<div class="sql-toolbar">
+  <label class="field-label"
+    >SQL dialect<select id="sql-mode">
+      {{dynamic_1}}
+    </select></label
+  ><label class="field-label"
+    >Demo dataset<select id="sql-dataset">
+      {{dynamic_2}}
+    </select></label
+  ><button class="button secondary" id="sql-reset">Reset demo data</button>
+</div>
+<p class="muted sql-session-note">
+  Draft SQL saves separately for each challenge or sandbox dataset and dialect in this
+  browser. Table changes last only while this workspace stays open. A reload, module
+  change, reset, stop or timeout restores the demo.
+</p>
+<div class="sql-layout">
+  <section class="panel sql-main">
+    <div class="sql-example-picker">
+      <label class="field-label">Worked example<select id="sql-example"></select></label
+      ><button class="button secondary" id="sql-load">Load example</button>
+    </div>
+    <p id="sql-example-help" class="muted"></p>
+    <label class="field-label" for="sql-editor">SQL editor</label
+    ><textarea
+      id="sql-editor"
+      class="editor"
+      rows="13"
+      maxlength="30000"
+      spellcheck="false"
+      autocapitalize="off"
+      autocomplete="off"
+      autocorrect="off"
+    >
+{{dynamic_3}}</textarea
+    >
+    <div class="button-row">
+      <button class="button" id="sql-run" disabled>Run SQL</button
+      ><button class="button" id="sql-check" disabled>Check my answer</button
+      ><button class="button secondary" id="sql-stop" disabled>Stop query</button
+      ><button class="button secondary" id="sql-download-query">
+        Download query .sql
+      </button>
+    </div>
+    <p class="muted sql-shortcut">
+      Ctrl+Enter or ⌘+Enter runs your query. Up to 20 statements per run; results show up
+      to 500 rows per statement.
+    </p>
+    <p id="sql-status" role="status">Loading the local SQL engine...</p>
+    <p id="sql-grade-summary" class="feedback" role="status"></p>
+    <div id="sql-results" aria-live="polite"></div>
+  </section>
+  <aside
+    class="panel sql-schema"
+    style="position: static; height: auto; overflow: visible"
+  >
+    <h2>Explore the data</h2>
+    <p id="sql-data-description"></p>
+    <div id="sql-schema"></div>
+    <button class="button secondary" id="sql-download-data">
+      Download demo setup .sql
+    </button>
+    <p class="muted">
+      Use the setup script in an empty database in your chosen native DBMS. The scripts
+      use explicitly supplied IDs.
+    </p>
+  </aside>
+</div>
+<section class="panel sql-challenges">
+  <h2>Try a challenge</h2>
+  <label class="field-label"
+    >Choose a task<select id="sql-task">
+      <option value="">Choose a challenge...</option>
+      {{dynamic_4}}
+    </select></label
+  >
+  <div id="sql-task-panel">
+    <p class="muted">
+      Select a challenge, write SQL in the editor, then choose Check my answer for
+      feedback or run an attempt before revealing the worked answer.
+    </p>
+  </div>
+</section>
+<details class="panel sql-limits" id="sql-limits">
+  <summary>Supported syntax and dialect differences</summary>
+  <p>
+    All queries run locally using sql.js (SQLite compiled to WebAssembly). This is an
+    introductory SQL practice sandbox. It is not Microsoft SQL Server, PostgreSQL or
+    MySQL.
+  </p>
+  <ul>
+    <li>
+      Practise SELECT, WHERE, ORDER BY, DISTINCT, joins, subqueries, common-table
+      expressions, GROUP BY, HAVING, COUNT, SUM, AVG, MIN, MAX, ROUND, COALESCE, INSERT,
+      UPDATE, DELETE, basic CREATE/ALTER/DROP TABLE, views and indexes supported by
+      SQLite.
+    </li>
+    <li>
+      SQL Server mode adapts a whole-number TOP on one simple SELECT to a row limit, and
+      removes an unquoted dbo. prefix. SQL Server/MySQL DROP INDEX ... ON table is
+      adapted. PostgreSQL/MySQL use LIMIT. Literal strings and quoted names are not
+      rewritten.
+    </li>
+    <li>
+      Generated IDs (IDENTITY, SERIAL, AUTO_INCREMENT), server administration, stored
+      procedures, triggers, native date/string functions and transaction commands are not
+      implemented. Use explicit primary-key values and native tools for those features.
+    </li>
+    <li>
+      SQLite does not reproduce native DBMS type, precision, string-length, collation,
+      date, permission or optimiser behaviour. A query that runs here is not proof of
+      identical behaviour on a native server. Use portable GROUP BY lists; the sandbox
+      does not enforce every native grouping rule.
+    </li>
+    <li>
+      Each run is atomic: a failed batch is rolled back. Foreign keys are enabled. Results
+      are capped at 500 rows per statement, queries time out after 4 seconds, and database
+      pages are limited to about 32 MB. Stop/timeout reloads the demo. Avoid huge cross
+      joins and recursive queries.
+    </li>
+    <li>
+      Each tab has its own in-memory database. Saved drafts still share the browser
+      profile, so this is practice, not a private student account or secure assessment.
+    </li>
+  </ul>
+  <div class="scroll-table">
+    <table class="db-table">
+      <caption>
+        Native dialect reference (not all syntax runs in this browser)
+      </caption>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>SQL Server</th>
+          <th>PostgreSQL</th>
+          <th>MySQL</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>First five rows</th>
+          <td>SELECT TOP (5) ... ORDER BY ...</td>
+          <td>... ORDER BY ... LIMIT 5</td>
+          <td>... ORDER BY ... LIMIT 5</td>
+        </tr>
+        <tr>
+          <th>Generated key</th>
+          <td>INT IDENTITY(1,1)</td>
+          <td>INTEGER GENERATED BY DEFAULT AS IDENTITY</td>
+          <td>INT AUTO_INCREMENT</td>
+        </tr>
+        <tr>
+          <th>Identifier quoting</th>
+          <td>[StudentName]</td>
+          <td>"StudentName"</td>
+          <td>`StudentName`</td>
+        </tr>
+        <tr>
+          <th>String concatenation</th>
+          <td>CONCAT(a, b)</td>
+          <td>a || b</td>
+          <td>CONCAT(a, b)</td>
+        </tr>
+        <tr>
+          <th>Drop index</th>
+          <td>DROP INDEX idx ON table_name</td>
+          <td>DROP INDEX idx</td>
+          <td>DROP INDEX idx ON table_name</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a class="text-link" href="#db-resources">Official documentation and more resources</a>
+</details>
+<dialog id="sql-reset-dialog" aria-labelledby="sql-reset-title">
+  <h2 id="sql-reset-title">Reload the demo dataset?</h2>
+  <p id="sql-reset-message">
+    This removes changes made to the open practice database, including custom tables. Your
+    SQL draft is kept.
+  </p>
+  <div class="button-row">
+    <button class="button secondary" id="sql-reset-cancel">Keep working</button
+    ><button class="button" id="sql-reset-confirm">Load fresh demo</button>
+  </div>
+</dialog>

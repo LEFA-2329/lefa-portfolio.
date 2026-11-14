@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
-import { createRunner } from '../dist/learn/js/prld/runner.mjs';
-import { gridExamples } from '../dist/learn/js/prld/content/grid-examples.mjs';
+import { createRunner } from '../dist/learn/js/programming-logic/pseudocode-interpreter.mjs';
+import { gridExamples } from '../dist/learn/js/programming-logic/content/array-examples.mjs';
 function run(code, inputs = []) {
   const r = createRunner(code),
     states = [r.initial()];

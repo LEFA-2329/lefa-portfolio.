@@ -1,9 +1,12 @@
 import fs from 'node:fs';
-import { dbLessons, dbUnits } from '../dist/learn/js/database/content/database-data.mjs';
+import {
+  dbLessons,
+  dbUnits,
+} from '../dist/learn/js/database/content/introduction-lessons.mjs';
 import {
   intermediateLessons,
   intermediateUnits,
-} from '../dist/learn/js/database/content/intermediate-data.mjs';
+} from '../dist/learn/js/database/content/intermediate-lessons.mjs';
 const out = {
   database: {
     code: 'DATA6211',

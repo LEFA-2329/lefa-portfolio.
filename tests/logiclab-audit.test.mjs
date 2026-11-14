@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict';
-import { parse, hierarchy, flowchart } from '../dist/learn/js/prld/engine.mjs';
-import { createRunner } from '../dist/learn/js/prld/runner.mjs';
+import {
+  parse,
+  hierarchy,
+  flowchart,
+} from '../dist/learn/js/programming-logic/pseudocode-parser-and-diagrams.mjs';
+import { createRunner } from '../dist/learn/js/programming-logic/pseudocode-interpreter.mjs';
 function run(code) {
   const r = createRunner(code);
   for (let i = 0; i < 100; i++) {

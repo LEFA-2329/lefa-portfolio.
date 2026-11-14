@@ -1,3 +1,7 @@
+# Editing the website
+
+Start with [START-HERE.md](START-HERE.md) for the HTML, lesson files, portfolio stories and build commands. Security changes and limits are recorded in [security-and-maintenance.md](docs/security-and-maintenance.md).
+
 # Lefa's portfolio
 
 Personal portfolio for Lefa Malatji, showcasing software development, AI and NLP research, database systems and data analysis.
@@ -23,11 +27,11 @@ Open http://localhost:8000 in your browser.
 ## Files
 
 - `dist/index.html`: indented page structure and content
-- `dist/styles.css`: formatted styles and responsive layouts
-- `dist/script.js`: formatted project filters and case-study interactions
-- `dist/assistant.js`: guide panel, buttons, messages and follow-up state
-- `dist/assistant.css`: guide panel layout and mobile styles
-- `dist/guide-core.mjs`: verified facts, project answers and question matching
+- `dist/portfolio/styles/portfolio-layout.css`: formatted styles and responsive layouts
+- `dist/portfolio/scripts/portfolio-page.mjs`: formatted project filters and case-study interactions
+- `dist/portfolio/scripts/recruiter-guide.js`: guide panel, buttons, messages and follow-up state
+- `dist/portfolio/styles/recruiter-guide.css`: guide panel layout and mobile styles
+- `dist/portfolio/content/recruiter-answers.mjs`: verified facts, project answers and question matching
 - `tests/guide.test.mjs`: guide behaviour checks
 - `.editorconfig`: indentation and line-ending settings for editors
 - `.prettierrc.json`: HTML, CSS and JavaScript formatting rules
@@ -38,7 +42,7 @@ Open http://localhost:8000 in your browser.
 
 ## Update the portfolio
 
-Edit page content in `dist/index.html`, styles in `dist/styles.css`, or interactions in `dist/script.js` using Visual Studio Code, then preview locally. Replace the portrait or CV in `dist/` as needed. Commit and push your changes to keep this repository up to date.
+Edit page content in `dist/index.html`, styles in `dist/portfolio/styles/portfolio-layout.css`, or interactions in `dist/portfolio/scripts/portfolio-page.mjs` using Visual Studio Code, then preview locally. Replace the portrait or CV in `dist/` as needed. Commit and push your changes to keep this repository up to date.
 
 ## Automatic deployment
 
@@ -59,9 +63,9 @@ The workflow adjusts asset links in the deployment copy so the GitHub Pages proj
 
 The learning app now separates shared code, PRLD, database lessons, SQL and normalisation into feature folders. Its CSS is split into focused stylesheets. Start with the [StudyLab editing guide](docs/studylab-editing-guide.md) for a file-by-file map and safe editing steps.
 
-- `dist/learn/js/app.mjs`: application shell and routes
+- `dist/learn/js/navigation-and-pages.mjs`: application shell and routes
 - `dist/learn/js/shared/`: appearance, storage and progress
-- `dist/learn/js/prld/`: programming logic features and `content/`
+- `dist/learn/js/programming-logic/`: programming logic features and `content/`
 - `dist/learn/js/database/`: database features, `content/`, `sql/` and `normalisation/`
 - `dist/learn/css/`: styles grouped by responsibility
 - `tests/`: regression checks; `scripts/`: optional material generators
@@ -84,11 +88,11 @@ The website remains buildless: npm is a development convenience for formatting a
 | Change                                         | File                                                                           |
 | ---------------------------------------------- | ------------------------------------------------------------------------------ |
 | Introduction, project cards or contact buttons | `dist/index.html`                                                              |
-| Main layout, colours or responsive styles      | `dist/styles.css`                                                              |
-| Project filters and case-study dialogs         | `dist/script.js`                                                               |
-| Guide answers, projects or matching rules      | `dist/guide-core.mjs`                                                          |
-| Guide interactions and follow-up suggestions   | `dist/assistant.js`                                                            |
-| Guide appearance                               | `dist/assistant.css`                                                           |
+| Main layout, colours or responsive styles      | `dist/portfolio/styles/portfolio-layout.css`                                   |
+| Project filters and case-study dialogs         | `dist/portfolio/scripts/portfolio-page.mjs`                                    |
+| Guide answers, projects or matching rules      | `dist/portfolio/content/recruiter-answers.mjs`                                 |
+| Guide interactions and follow-up suggestions   | `dist/portfolio/scripts/recruiter-guide.js`                                    |
+| Guide appearance                               | `dist/portfolio/styles/recruiter-guide.css`                                    |
 | Downloadable CV                                | Replace `dist/Lefa-Malatji-CV.pdf` and update its version in `dist/index.html` |
 
 The guide runs locally in the visitor’s browser using prepared facts. No API key or AI billing is required.

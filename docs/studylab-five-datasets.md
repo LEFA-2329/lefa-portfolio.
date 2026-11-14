@@ -14,7 +14,7 @@ All records are fictional. These are teaching schemas, not complete production s
 
 Each new dataset includes three worked queries and three automatically marked challenges. The grader uses both the initial data and additional edge records to reject hardcoded answers. There are now 52 SQL examples and 47 challenges overall. Setup scripts download in the chosen SQL Server, PostgreSQL or MySQL mode with explicit IDs. Browser execution uses SQLite and does not certify native behaviour. Saved drafts reopen for all seven dataset IDs.
 
-Edit `dist/learn/js/database/sql/sql-demo-datasets.mjs` for the new schemas, seed records, examples, challenges and grader fixtures. Update row counts and tests whenever changing data.
+Edit `dist/learn/js/database/sql/five-extra-demo-databases.mjs` for the new schemas, seed records, examples, challenges and grader fixtures. Update row counts and tests whenever changing data.
 
 ## Native verification on LEFA\\SQLEXPRESS
 

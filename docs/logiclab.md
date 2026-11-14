@@ -6,9 +6,9 @@ Live path: `/learn/` on the existing portfolio GitHub Pages deployment.
 
 - `dist/learn/index.html`: application shell and accessible navigation.
 - `dist/learn/styles.css`: responsive workspace, lesson and diagram styling.
-- `dist/learn/js/prld/content/data.mjs`: five units and 22 original lessons, each with theory, quiz and structured debugging exercise.
-- `dist/learn/js/prld/engine.mjs`: supported pseudocode parser and SVG flowchart/hierarchy rendering.
-- `dist/learn/js/app.mjs`: hash routes, lesson checks, local progress, diagram exports and guided visual traces.
+- `dist/learn/js/programming-logic/content/lessons-and-quizzes.mjs`: five units and 22 original lessons, each with theory, quiz and structured debugging exercise.
+- `dist/learn/js/programming-logic/pseudocode-parser-and-diagrams.mjs`: supported pseudocode parser and SVG flowchart/hierarchy rendering.
+- `dist/learn/js/navigation-and-pages.mjs`: hash routes, lesson checks, local progress, diagram exports and guided visual traces.
 
 No build step, API key, database, account or paid AI service is required. ES modules must be served over HTTP, not opened via `file://`.
 

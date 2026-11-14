@@ -4,8 +4,11 @@ import {
   flowchart,
   hierarchy,
   classDiagram,
-} from '../dist/learn/js/prld/engine.mjs';
-import { lessons, units } from '../dist/learn/js/prld/content/data.mjs';
+} from '../dist/learn/js/programming-logic/pseudocode-parser-and-diagrams.mjs';
+import {
+  lessons,
+  units,
+} from '../dist/learn/js/programming-logic/content/lessons-and-quizzes.mjs';
 assert.equal(lessons.length, 22);
 assert.equal(units.length, 5);
 for (const l of lessons) {

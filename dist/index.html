@@ -1,6 +1,12 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Browser defence in depth. Inline JavaScript and remote scripts are blocked. -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self' 'sha256-DUKsRuxjkqVfhHtadUbidWT5lfmcw1TEeyd9ue204T0='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self'; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; media-src 'self'; upgrade-insecure-requests"
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta charset="utf-8" />
     <meta content="width=device-width,initial-scale=1" name="viewport" />
     <meta
@@ -8,10 +14,10 @@
       name="description"
     />
     <title>Lefa Malatji | Software Developer &amp; NLP Researcher</title>
-    <link href="./styles.css?v=polish-2" rel="stylesheet" />
+    <link href="./portfolio/styles/portfolio-layout.css?v=polish-2" rel="stylesheet" />
     <link href="/favicon.svg?v=2" rel="icon" type="image/svg+xml" />
     <link href="/favicon.ico?v=2" rel="icon" type="image/x-icon" />
-    <link rel="stylesheet" href="./assistant.css?v=3" />
+    <link rel="stylesheet" href="./portfolio/styles/recruiter-guide.css?v=3" />
     <link rel="canonical" href="https://lefamalatji.co.za/" />
     <meta name="author" content="Lefa Malatji" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
@@ -102,6 +108,7 @@
     </script>
   </head>
   <body>
+    <!-- Edit the portfolio sections in this file. Project stories: portfolio/project-stories/*.html. -->
     <!-- Header and navigation -->
     <header>
       <nav class="wrap">
@@ -253,8 +260,8 @@
           <article class="project" data-category="software">
             <figure class="project-screenshot">
               <img
-                src="./images/logiclab-project.jpg"
-                alt="Screenshot of the LogicLab learning dashboard"
+                src="./images/studylab-dashboard.jpg"
+                alt="Screenshot of the current StudyLab Advanced Database dashboard"
                 width="1000"
                 height="694"
                 loading="lazy"
@@ -263,30 +270,33 @@
             </figure>
             <div class="project-copy">
               <div class="eyebrow green">Live learning application . In development</div>
-              <h3>LogicLab</h3>
+              <h3>StudyLab</h3>
               <p class="small">
-                A Programming Logic and Design learning space that connects theory with
-                worked examples, quizzes, debugging challenges and hands-on pseudocode
-                practice.
+                A learning platform for Programming Logic and Design, introductory,
+                intermediate and advanced databases, including Hadoop and Big Data. Learn
+                through worked examples, quizzes, diagrams and hands-on practice.
               </p>
               <p class="small">
                 <strong>My contribution:</strong> Designed and built the learning
-                interface, exercises, diagram tools, step-by-step tracer and browser-based
-                draft saving.
+                interface, pseudocode tracer, dependency diagrams, SQL workspace with
+                seven fictional datasets, automatic answer checking and browser-based
+                progress.
               </p>
               <div class="chips">
-                <span>JavaScript</span><span>Pseudocode interpreter</span
-                ><span>Flowcharts</span><span>Learning resources</span>
+                <span>JavaScript modules</span><span>SQL practice</span
+                ><span>Normalisation diagrams</span><span>Hadoop lessons</span>
               </div>
-              <nav class="project-tools" aria-label="Explore LogicLab tools">
+              <nav class="project-tools" aria-label="Explore StudyLab tools">
                 <a href="./learn/#lesson/lesson-1">Lessons &amp; quizzes</a
                 ><a href="./learn/#trace">Pseudocode tracing</a
                 ><a href="./learn/#lab">Flowchart lab</a
-                ><a href="./learn/#resources">Downloads</a>
+                ><a href="./learn/#db-advanced">Advanced databases</a
+                ><a href="./learn/#db-unit/209">Hadoop</a
+                ><a href="./learn/#db-resources">Database downloads</a>
               </nav>
               <div class="project-actions">
-                <button class="text-btn" data-case="logiclab">Project case study</button
-                ><a class="text-btn" href="./learn/">Try LogicLab</a>
+                <button class="text-btn" data-case="studylab">Project case study</button
+                ><a class="text-btn" href="./learn/">Open StudyLab</a>
               </div>
             </div>
           </article>
@@ -734,7 +744,7 @@
       <button aria-label="Close project details" class="close">×</button>
       <div id="case-content"></div>
     </dialog>
-    <script defer src="./script.js?v=polish-2"></script>
+    <script type="module" src="./portfolio/scripts/portfolio-page.mjs?v=32"></script>
     <button
       id="assistant-launch"
       class="assistant-launch"
@@ -804,6 +814,6 @@
       <img id="photo-full" alt="" />
       <p id="photo-caption"></p>
     </dialog>
-    <script src="./assistant.js?v=5" defer></script>
+    <script src="./portfolio/scripts/recruiter-guide.js?v=5" defer></script>
   </body>
 </html>

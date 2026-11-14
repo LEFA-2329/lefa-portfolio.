@@ -1,7 +1,11 @@
 import assert from 'node:assert/strict';
-import { lessons } from '../dist/learn/js/prld/content/data.mjs';
-import { practice } from '../dist/learn/js/prld/content/practice.mjs';
-import { parse, flowchart, hierarchy } from '../dist/learn/js/prld/engine.mjs';
+import { lessons } from '../dist/learn/js/programming-logic/content/lessons-and-quizzes.mjs';
+import { practice } from '../dist/learn/js/programming-logic/content/lesson-practice.mjs';
+import {
+  parse,
+  flowchart,
+  hierarchy,
+} from '../dist/learn/js/programming-logic/pseudocode-parser-and-diagrams.mjs';
 assert.equal(lessons.length, 22);
 let count = 0,
   tasks = 0;
