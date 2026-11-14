@@ -1,27 +1,27 @@
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=33';
-import { advancedUnits, advancedLessons } from './content/advanced-lessons.mjs?v=33';
-import { quizContext } from '../shared/quiz-code-examples.mjs?v=33';
-import { cleanDatabaseLesson } from './saved-database-answers.mjs?v=33';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=34';
+import { advancedUnits, advancedLessons } from './content/advanced-lessons.mjs?v=34';
+import { quizContext } from '../shared/quiz-code-examples.mjs?v=34';
+import { cleanDatabaseLesson } from './saved-database-answers.mjs?v=34';
 import {
   progressSummary,
   refreshLessonCompletion,
-} from '../shared/learning-progress.mjs?v=33';
+} from '../shared/learning-progress.mjs?v=34';
 import {
   normalisationWalkthrough,
   bindNormalisation,
-} from './normalisation/normalisation-lessons-and-diagrams.mjs?v=33';
+} from './normalisation/normalisation-lessons-and-diagrams.mjs?v=34';
 import {
   dbUnits as introUnits,
   dbLessons as introLessons,
-} from './content/introduction-lessons.mjs?v=33';
+} from './content/introduction-lessons.mjs?v=34';
 import {
   intermediateUnits,
   intermediateLessons,
-} from './content/intermediate-lessons.mjs?v=33';
+} from './content/intermediate-lessons.mjs?v=34';
 const dbUnits = [...introUnits, ...intermediateUnits, ...advancedUnits],
   dbLessons = [...introLessons, ...intermediateLessons, ...advancedLessons];
-import { workStore } from '../shared/saved-work-storage.mjs?v=33';
-import { escapeHTML as e } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=33';
+import { workStore } from '../shared/saved-work-storage.mjs?v=34';
+import { escapeHTML as e } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=34';
 export { dbUnits, dbLessons };
 const code = (text) => `<pre><code>${e(text)}</code></pre>`;
 const link = (l) => `<a href="#db-lesson/${l.id}">${e(l.title)}</a>`;

@@ -55,7 +55,7 @@ for (const file of styles) assert(existsSync(path.join(root, file)));
 assert(existsSync(path.join(root, 'vendor/sqljs/sql-wasm.wasm')));
 assert(
   readFileSync(path.join(root, 'index.html'), 'utf8').includes(
-    './studylab-start.mjs?v=studylab-33',
+    './studylab-start.mjs?v=studylab-34',
   ),
 );
 console.log(

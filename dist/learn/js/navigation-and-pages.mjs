@@ -1,13 +1,13 @@
-import { renderHtmlPage } from '../../shared/render-html-page.mjs?v=33';
-import { builderPage } from './database/normalisation/normalisation-diagram-builder.mjs?v=33';
-import { normalisationPracticePage } from './database/normalisation/normalisation-question-page.mjs?v=33';
-import { databaseExamPage } from './database/database-exam-page.mjs?v=33';
+import { renderHtmlPage } from '../../shared/render-html-page.mjs?v=34';
+import { builderPage } from './database/normalisation/normalisation-diagram-builder.mjs?v=34';
+import { normalisationPracticePage } from './database/normalisation/normalisation-question-page.mjs?v=34';
+import { databaseExamPage } from './database/database-exam-page.mjs?v=34';
 import {
   progressPage,
   progressSummary,
   refreshLessonCompletion,
-} from './shared/learning-progress.mjs?v=33';
-import { exercises as sqlChallenges } from './database/sql/sql-practice-challenges.mjs?v=33';
+} from './shared/learning-progress.mjs?v=34';
+import { exercises as sqlChallenges } from './database/sql/sql-practice-challenges.mjs?v=34';
 import {
   databaseHome,
   databaseUnit,
@@ -16,32 +16,32 @@ import {
   databaseResources,
   dbUnits,
   dbLessons,
-} from './database/database-pages.mjs?v=33';
-import { sqlPage } from './database/sql/sql-workspace-page.mjs?v=33';
-import './shared/theme-settings.mjs?v=33';
-import { examPage } from './programming-logic/practice-exam-page.mjs?v=33';
-import { workStore } from './shared/saved-work-storage.mjs?v=33';
+} from './database/database-pages.mjs?v=34';
+import { sqlPage } from './database/sql/sql-workspace-page.mjs?v=34';
+import './shared/theme-settings.mjs?v=34';
+import { examPage } from './programming-logic/practice-exam-page.mjs?v=34';
+import { workStore } from './shared/saved-work-storage.mjs?v=34';
 import {
   cleanLesson,
   cleanTask,
   cleanDraft,
-} from './shared/saved-programming-answers.mjs?v=33';
-import { activities } from './programming-logic/content/interactive-activities.mjs?v=33';
+} from './shared/saved-programming-answers.mjs?v=34';
+import { activities } from './programming-logic/content/interactive-activities.mjs?v=34';
 import {
   activitiesPage,
   activityPage,
-} from './programming-logic/interactive-activities-page.mjs?v=33';
-import { interactiveTracePage } from './programming-logic/pseudocode-tracer-page.mjs?v=33';
-import { taskBank } from './programming-logic/content/practice-task-bank.mjs?v=33';
-import { units, lessons } from './programming-logic/content/lessons-and-quizzes.mjs?v=33';
-import { practice } from './programming-logic/content/lesson-practice.mjs?v=33';
+} from './programming-logic/interactive-activities-page.mjs?v=34';
+import { interactiveTracePage } from './programming-logic/pseudocode-tracer-page.mjs?v=34';
+import { taskBank } from './programming-logic/content/practice-task-bank.mjs?v=34';
+import { units, lessons } from './programming-logic/content/lessons-and-quizzes.mjs?v=34';
+import { practice } from './programming-logic/content/lesson-practice.mjs?v=34';
 import {
   parse,
   flowchart,
   hierarchy,
   classDiagram,
   escapeHTML as e,
-} from './programming-logic/pseudocode-parser-and-diagrams.mjs?v=33';
+} from './programming-logic/pseudocode-parser-and-diagrams.mjs?v=34';
 const $ = (s) => document.querySelector(s),
   view = $('#view');
 let activeModule = 'prld';

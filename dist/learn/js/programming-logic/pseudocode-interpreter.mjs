@@ -1,4 +1,4 @@
-import { parse } from './pseudocode-parser-and-diagrams.mjs?v=33';
+import { parse } from './pseudocode-parser-and-diagrams.mjs?v=34';
 const numberPattern = /^(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?/;
 const identifier = /^[A-Za-z_]\w*$/;
 const MAX_STRING = 2000;

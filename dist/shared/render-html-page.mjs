@@ -1,4 +1,4 @@
-import { htmlPages } from './compiled-html-pages.mjs?v=33';
+import { htmlPages } from './compiled-html-pages.mjs?v=34';
 
 // These templates are authored in this repository and compiled before publication.
 // Callers supply trusted markup or already escaped text; never pass raw user input.

@@ -1,4 +1,4 @@
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=33';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=34';
 import {
   themes,
   defaults,
@@ -6,14 +6,21 @@ import {
   createPreferenceStore,
   resolvedTheme,
   SETTINGS_KEY,
-} from './display-preferences.mjs?v=33';
-import { escapeHTML as escape } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=33';
+} from './display-preferences.mjs?v=34';
+import { escapeHTML as escape } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=34';
 
 const launch = document.querySelector('#settings-open');
 const device = matchMedia('(prefers-color-scheme: dark)');
 const store = createPreferenceStore();
 let preferences = store.read();
-let dialog;
+let panel;
+function closeSettings(restoreFocus = true) {
+  if (!panel || panel.hidden) return;
+  panel.hidden = true;
+  document.body.classList.remove('settings-open');
+  launch?.setAttribute('aria-expanded', 'false');
+  if (restoreFocus) launch?.focus();
+}
 
 function apply() {
   const root = document.documentElement;
@@ -22,19 +29,19 @@ function apply() {
   root.dataset.spacing = preferences.spacing;
   root.dataset.readingWidth = preferences.width;
   root.dataset.reduceMotion = String(preferences.reduceMotion);
-  if (!dialog) return;
-  for (const radio of dialog.querySelectorAll('[name="settings-theme"]'))
+  if (!panel?.childElementCount) return;
+  for (const radio of panel.querySelectorAll('[name="settings-theme"]'))
     radio.checked = radio.value === preferences.theme;
-  dialog.querySelector('#settings-text-size').value = preferences.textSize;
-  dialog.querySelector('#settings-spacing').value = preferences.spacing;
-  dialog.querySelector('#settings-width').value = preferences.width;
-  dialog.querySelector('#settings-reduce-motion').checked = preferences.reduceMotion;
+  panel.querySelector('#settings-text-size').value = preferences.textSize;
+  panel.querySelector('#settings-spacing').value = preferences.spacing;
+  panel.querySelector('#settings-width').value = preferences.width;
+  panel.querySelector('#settings-reduce-motion').checked = preferences.reduceMotion;
 }
 function status(
   message = 'Saved automatically. Your choices will be used on your next visit.',
 ) {
-  if (dialog)
-    dialog.querySelector('#settings-save-status').textContent =
+  if (panel?.childElementCount)
+    panel.querySelector('#settings-save-status').textContent =
       store.getIssue() || message;
 }
 function save(patch) {
@@ -43,11 +50,8 @@ function save(patch) {
   status();
 }
 function openSettings() {
-  if (!dialog) {
-    dialog = document.createElement('dialog');
-    dialog.className = 'settings-dialog';
-    dialog.setAttribute('aria-labelledby', 'settings-title');
-    dialog.innerHTML = renderHtmlPage('studylab/settings-panel', {
+  if (!panel.childElementCount) {
+    panel.innerHTML = renderHtmlPage('studylab/settings-panel', {
       dynamic_1: themes
         .map(
           (theme) =>
@@ -55,12 +59,10 @@ function openSettings() {
         )
         .join(''),
     });
-    document.body.append(dialog);
-    dialog
+    panel
       .querySelector('#settings-close')
-      .addEventListener('click', () => dialog.close());
-    dialog.addEventListener('close', () => launch.focus());
-    dialog
+      .addEventListener('click', () => closeSettings());
+    panel
       .querySelectorAll('[name="settings-theme"]')
       .forEach((radio) =>
         radio.addEventListener('change', () => save({ theme: radio.value })),
@@ -70,36 +72,58 @@ function openSettings() {
       ['settings-spacing', 'spacing'],
       ['settings-width', 'width'],
     ])
-      dialog
+      panel
         .querySelector('#' + id)
         .addEventListener('change', (event) => save({ [key]: event.target.value }));
-    dialog
+    panel
       .querySelector('#settings-reduce-motion')
       .addEventListener('change', (event) =>
         save({ reduceMotion: event.target.checked }),
       );
-    dialog.querySelector('#settings-reset').addEventListener('click', () => {
+    panel.querySelector('#settings-reset').addEventListener('click', () => {
       preferences = store.write(defaults);
       apply();
       status(
         'Display settings reset to Light and standard reading preferences. Learning progress is unchanged.',
       );
     });
-    dialog
+    panel
       .querySelectorAll('a')
-      .forEach((link) => link.addEventListener('click', () => dialog.close()));
+      .forEach((link) => link.addEventListener('click', () => closeSettings(false)));
   }
   const course = document.querySelector('#course-select')?.value;
-  dialog.querySelector('#settings-progress').href =
+  panel.querySelector('#settings-progress').href =
     '#progress/' +
     (['prld', 'database', 'intermediate', 'advanced'].includes(course) ? course : 'prld');
   apply();
   status('Your current settings are ready. Changes save automatically.');
-  dialog.showModal();
-  dialog.querySelector('#settings-close').focus();
+  panel.hidden = false;
+  document.body.classList.add('settings-open');
+  launch.setAttribute('aria-expanded', 'true');
+  panel.querySelector('#settings-close').focus();
 }
+// A non-modal region keeps the lesson page usable while preferences are changed.
+panel = document.createElement('aside');
+panel.id = 'student-settings-panel';
+panel.className = 'settings-panel';
+panel.setAttribute('aria-labelledby', 'settings-title');
+panel.setAttribute('role', 'region');
+panel.hidden = true;
+document.body.append(panel);
 apply();
-launch?.addEventListener('click', openSettings);
+launch?.addEventListener('click', () =>
+  panel.hidden ? openSettings() : closeSettings(),
+);
+window.addEventListener('keydown', (event) => {
+  if (
+    event.key === 'Escape' &&
+    !panel.hidden &&
+    !document.querySelector('dialog[open]')
+  ) {
+    event.preventDefault();
+    closeSettings();
+  }
+});
 device.addEventListener('change', () => {
   if (preferences.theme === 'system') apply();
 });

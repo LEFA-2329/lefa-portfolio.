@@ -95,50 +95,85 @@
   --code: #542e29;
   color-scheme: dark;
 }
-.settings-launch {
+/* A gear opens a non-modal dock. Lessons remain visible and interactive. */
+.settings-launch,
+.settings-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  padding: 0;
   border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 9px 16px;
-  min-height: 42px;
+  border-radius: 50%;
   background: var(--surface-alt);
   color: var(--ink);
-  font-weight: 700;
 }
-.settings-launch:hover {
+.settings-launch:hover,
+.settings-close:hover,
+.settings-launch[aria-expanded='true'] {
   background: var(--purple-light);
+  color: var(--purple);
+  border-color: var(--purple);
 }
-.settings-dialog {
-  width: min(860px, calc(100% - 28px));
-  max-width: 860px;
-  max-height: calc(100dvh - 40px);
-  padding: 28px;
-  border: 1px solid var(--line);
-  border-radius: 18px;
+.settings-panel {
+  position: fixed;
+  z-index: 60;
+  top: 80px;
+  right: 0;
+  bottom: 0;
+  width: 420px;
+  max-width: 100%;
+  padding: 0 22px 24px;
+  border: 0;
+  border-left: 1px solid var(--line);
   background: var(--surface);
   color: var(--ink);
-  overflow: auto;
+  overflow-y: auto;
   overscroll-behavior: contain;
-  box-shadow: 0 24px 100px #0006;
+  box-shadow: -14px 0 44px #0002;
   font-size: 16px;
   line-height: 1.6;
 }
-.settings-dialog::backdrop {
-  background: #13232cb3;
-  backdrop-filter: blur(3px);
+.settings-panel[hidden] {
+  display: none;
 }
-body:has(.settings-dialog[open]) {
-  overflow: hidden;
+@starting-style {
+  .settings-panel:not([hidden]) {
+    transform: translateX(36px);
+    opacity: 0;
+  }
+}
+.settings-panel:not([hidden]) {
+  transition:
+    transform 180ms ease,
+    opacity 180ms ease;
+}
+body.settings-open .app-shell {
+  width: calc(100% - 420px);
+  max-width: none;
+  margin-left: 0;
+  margin-right: 420px;
+}
+body.settings-open .course-lesson-links,
+body.settings-open .hub-grid {
+  grid-template-columns: minmax(0, 1fr);
 }
 .settings-heading {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 20px;
-  padding-bottom: 20px;
+  padding: 22px 0 18px;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--surface);
   border-bottom: 1px solid var(--line);
 }
 .settings-heading h2 {
-  font-size: 30px;
+  font-size: 25px;
   line-height: 1.2;
   margin: 5px 0 10px;
   letter-spacing: -0.6px;
@@ -153,7 +188,7 @@ body:has(.settings-dialog[open]) {
   color: var(--purple);
   font-weight: 700;
 }
-.settings-heading .button {
+.settings-heading .settings-close {
   flex-shrink: 0;
 }
 .settings-section {
@@ -171,7 +206,7 @@ body:has(.settings-dialog[open]) {
 }
 .theme-choice-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
   border: 0;
   padding: 0;
@@ -193,7 +228,7 @@ body:has(.settings-dialog[open]) {
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-height: 160px;
+  min-height: 150px;
   border: 2px solid var(--line);
   border-radius: 12px;
   padding: 11px;
@@ -234,7 +269,7 @@ body:has(.settings-dialog[open]) {
 }
 .settings-fields {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 16px;
   margin-top: 16px;
 }
@@ -269,9 +304,9 @@ body:has(.settings-dialog[open]) {
 }
 .settings-bottom {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 18px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
   padding-top: 20px;
 }
 .settings-bottom p {
@@ -383,36 +418,38 @@ main .editor {
     scroll-behavior: auto !important;
   }
 }
-@media (max-width: 650px) {
-  .theme-choice-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+@media (max-width: 1199px) {
+  body.settings-open .app-shell {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
   }
-  .settings-dialog {
-    padding: 18px;
-    max-height: calc(100dvh - 20px);
+  .settings-panel {
+    box-shadow: -14px 0 50px #0003;
+  }
+}
+@media (max-width: 760px) {
+  .settings-panel {
+    top: 72px;
+  }
+}
+@media (max-width: 650px) {
+  .settings-panel {
+    width: min(420px, calc(100% - 20px));
+    top: 72px;
+    padding: 0 18px 20px;
   }
   .settings-heading {
     gap: 12px;
   }
   .settings-heading h2 {
-    font-size: 25px;
-  }
-  .settings-fields {
-    grid-template-columns: 1fr;
-  }
-  .settings-bottom {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 4px;
+    font-size: 23px;
   }
   .portfolio-return {
     display: none;
   }
   .top-links {
     gap: 8px;
-  }
-  .settings-launch {
-    padding: 8px 11px;
   }
 }
 @media (max-width: 360px) {
