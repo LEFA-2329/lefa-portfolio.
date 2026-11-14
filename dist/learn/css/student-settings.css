@@ -457,3 +457,11 @@ main .editor {
     grid-template-columns: 1fr;
   }
 }
+
+/* Keep introductory headings readable when the desktop dock narrows the lesson. */
+body.settings-open .section-heading {
+  display: block;
+}
+body.settings-open .section-heading p {
+  margin-top: 8px;
+}
