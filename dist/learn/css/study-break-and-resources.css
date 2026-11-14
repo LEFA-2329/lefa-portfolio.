@@ -205,3 +205,45 @@
   outline: 3px solid var(--ink);
   outline-offset: 3px;
 }
+
+/* Collision stays red until a new round; a short visual buzz marks the impact. */
+.snake-board.snake-collision {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 4px #dc262655;
+  background: #fee2e2;
+  animation: snake-impact 320ms ease-out;
+}
+.snake-collision .snake-body {
+  background: #991b1b;
+  border-color: #fee2e2;
+}
+@keyframes snake-impact {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-4px);
+  }
+  40%,
+  80% {
+    transform: translateX(4px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .snake-board.snake-collision {
+    animation: none;
+  }
+}
+:root[data-reduce-motion='true'] .snake-board.snake-collision {
+  animation: none;
+}
+.sliding-board {
+  max-width: 440px;
+}
+.sliding-board button {
+  font-size: clamp(1.1rem, 4vw, 2rem);
+  min-width: 0;
+  padding: 4px;
+}

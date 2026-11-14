@@ -1,5 +1,5 @@
 // Layout: pages/refresh-games.html. Rules: refresh-game-rules.mjs.
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=39';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=40';
 import {
   createWordSearch,
   wordBetween,
@@ -10,7 +10,7 @@ import {
   computerMove,
   snakeStep,
   snakeFood,
-} from './refresh-game-rules.mjs?v=39';
+} from './refresh-game-rules.mjs?v=40';
 export function mountRefreshGame(host, game) {
   const info = {
     words: [
@@ -19,7 +19,7 @@ export function mountRefreshGame(host, game) {
     ],
     sliding: [
       'Sliding puzzle',
-      'Arrange tiles from 1 to 8, leaving the bottom-right space empty. Choose a tile next to the empty space to slide it. Every puzzle can be solved.',
+      'Choose a 3 × 3, 4 × 4 or 5 × 5 board. Arrange the numbered tiles in order, leaving the bottom-right space empty. Choose a tile next to the empty space to slide it. Every puzzle can be solved.',
     ],
     tic: [
       'Tic-tac-toe',
@@ -128,6 +128,20 @@ export function mountRefreshGame(host, game) {
     reset();
   } else if (game === 'sliding') {
     let tiles, moves;
+    const sizeLabel = document.createElement('label');
+    sizeLabel.textContent = 'Puzzle size ';
+    const sizeSelect = document.createElement('select');
+    sizeSelect.setAttribute('aria-label', 'Puzzle size');
+    for (const size of [3, 4, 5]) {
+      const option = document.createElement('option');
+      option.value = String(size);
+      option.textContent = `${size} × ${size} · ${size * size - 1} tiles`;
+      sizeSelect.append(option);
+    }
+    sizeLabel.append(sizeSelect);
+    controls.append(sizeLabel);
+    sizeSelect.addEventListener('change', reset);
+    let size = 3;
     board.className = 'sliding-board';
     function paint() {
       [...board.children].forEach((b, i) => {
@@ -135,7 +149,7 @@ export function mountRefreshGame(host, game) {
         b.setAttribute(
           'aria-label',
           tiles[i]
-            ? `Tile ${tiles[i]}, row ${Math.floor(i / 3) + 1}, column ${(i % 3) + 1}`
+            ? `Tile ${tiles[i]}, row ${Math.floor(i / size) + 1}, column ${(i % size) + 1}`
             : 'Empty space',
         );
         b.setAttribute('aria-disabled', String(!tiles[i]));
@@ -146,9 +160,11 @@ export function mountRefreshGame(host, game) {
         : `${moves} moves. Slide a tile beside the empty space.`;
     }
     function reset() {
-      tiles = createSlidingPuzzle();
+      size = Number(sizeSelect.value);
+      board.style.gridTemplateColumns = `repeat(${size}, minmax(0, 1fr))`;
+      tiles = createSlidingPuzzle(Math.random, size);
       moves = 0;
-      cells(9, (i) => {
+      cells(size * size, (i) => {
         if (puzzleSolved(tiles)) return;
         const next = moveTile(tiles, i);
         if (next !== tiles) {
@@ -247,6 +263,7 @@ export function mountRefreshGame(host, game) {
       paint();
     }
     function reset() {
+      board.classList.remove('snake-collision');
       clearInterval(timer);
       timer = null;
       state = {
@@ -271,6 +288,7 @@ export function mountRefreshGame(host, game) {
       direction = pending;
       state = snakeStep(state, direction);
       if (state.over) {
+        board.classList.add('snake-collision');
         pause(`Game over. Score ${state.score}. Choose New snake to try again.`);
         return;
       }

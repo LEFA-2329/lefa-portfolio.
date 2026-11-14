@@ -50,10 +50,11 @@ export function wordBetween(start, end, size = 10) {
   );
 }
 export function moveTile(board, index) {
+  const size = Math.sqrt(board.length);
   const blank = board.indexOf(0);
   if (
-    Math.abs(Math.floor(blank / 3) - Math.floor(index / 3)) +
-      Math.abs((blank % 3) - (index % 3)) !==
+    Math.abs(Math.floor(blank / size) - Math.floor(index / size)) +
+      Math.abs((blank % size) - (index % size)) !==
     1
   )
     return board;
@@ -61,11 +62,13 @@ export function moveTile(board, index) {
   [next[index], next[blank]] = [next[blank], next[index]];
   return next;
 }
-export const puzzleSolved = (board) => board.every((n, i) => n === (i + 1) % 9);
-export function createSlidingPuzzle(random = Math.random) {
-  let board = [1, 2, 3, 4, 5, 6, 7, 8, 0],
+export const puzzleSolved = (board) =>
+  board.every((n, i) => n === (i + 1) % board.length);
+export function createSlidingPuzzle(random = Math.random, size = 3) {
+  if (![3, 4, 5].includes(size)) size = 3;
+  let board = Array.from({ length: size * size }, (_, i) => (i + 1) % (size * size)),
     previous = -1;
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < size * size * 20; i++) {
     const choices = board
       .map((_, j) => j)
       .filter((j) => j !== previous && moveTile(board, j) !== board);
@@ -73,7 +76,7 @@ export function createSlidingPuzzle(random = Math.random) {
     board = moveTile(board, choices[Math.floor(random() * choices.length)]);
     previous = blank;
   }
-  return puzzleSolved(board) ? moveTile(board, 7) : board;
+  return puzzleSolved(board) ? moveTile(board, board.length - 2) : board;
 }
 export function ticResult(board) {
   for (const [a, b, c] of [

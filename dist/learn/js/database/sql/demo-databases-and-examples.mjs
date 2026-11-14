@@ -1,8 +1,8 @@
 import {
   additionalDatasets,
   additionalExamples,
-} from './five-extra-demo-databases.mjs?v=39';
-import { extraExamples } from './additional-sql-examples.mjs?v=39';
+} from './five-extra-demo-databases.mjs?v=40';
+import { extraExamples } from './additional-sql-examples.mjs?v=40';
 export const dialects = {
   sqlserver: 'Microsoft SQL Server',
   postgresql: 'PostgreSQL',

@@ -86,3 +86,31 @@ test('snake handles eating, walls, body collisions and moving into a vacating ta
   assert(!s.body.some((p) => p.x === food.x && p.y === food.y));
   assert.equal(snakeFood([{ x: 0, y: 0 }], 1), null);
 });
+
+test('all puzzle sizes generate solvable boards and allow only adjacent moves', () => {
+  for (const size of [3, 4, 5])
+    for (let n = 0; n < 20; n++) {
+      const board = createSlidingPuzzle(Math.random, size);
+      assert.equal(board.length, size * size);
+      assert(!puzzleSolved(board));
+      assert.equal(new Set(board).size, size * size);
+      const numbers = board.filter(Boolean);
+      let inversions = 0;
+      for (let i = 0; i < numbers.length; i++)
+        for (let j = i + 1; j < numbers.length; j++)
+          if (numbers[i] > numbers[j]) inversions++;
+      const blank = board.indexOf(0),
+        rowFromBottom = size - Math.floor(blank / size);
+      assert.equal(
+        size % 2 ? inversions % 2 : (inversions + rowFromBottom) % 2,
+        size % 2 ? 0 : 1,
+      );
+      for (let i = 0; i < board.length; i++) {
+        const adjacent =
+          Math.abs(Math.floor(i / size) - Math.floor(blank / size)) +
+            Math.abs((i % size) - (blank % size)) ===
+          1;
+        assert.equal(moveTile(board, i) !== board, adjacent);
+      }
+    }
+});

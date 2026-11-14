@@ -1,8 +1,8 @@
-import { mountRefreshGame } from './refresh-games.mjs?v=39';
+import { mountRefreshGame } from './refresh-games.mjs?v=40';
 // Page layouts: pages/study-break.html and pages/helpful-resources.html.
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=39';
-import { escapeHTML as escape } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=39';
-import { resources, recommendedTopic } from './study-resource-catalog.mjs?v=39';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=40';
+import { escapeHTML as escape } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=40';
+import { resources, recommendedTopic } from './study-resource-catalog.mjs?v=40';
 export function shuffledGarden(random = Math.random) {
   const cards = ['🌻', '🌿', '🌸', '🍀', '🌵', '🍄'].flatMap((symbol) => [
     symbol,

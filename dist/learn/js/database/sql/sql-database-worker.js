@@ -4,9 +4,9 @@ const ready = Promise.all([
     locateFile: (file) =>
       new URL('../../../vendor/sqljs/' + file, self.location.href).href,
   }),
-  import('./sql-statement-execution.mjs?v=39'),
-  import('./demo-databases-and-examples.mjs?v=39'),
-  import('./sql-answer-checker.mjs?v=39'),
+  import('./sql-statement-execution.mjs?v=40'),
+  import('./demo-databases-and-examples.mjs?v=40'),
+  import('./sql-answer-checker.mjs?v=40'),
 ]);
 let db;
 self.onmessage = async (event) => {
