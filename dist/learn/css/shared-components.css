@@ -380,3 +380,24 @@
   flex: 0 0 auto;
   margin-top: 5px;
 }
+
+/* Keep the supplied portrait framed consistently on mobile and desktop. */
+.brand .portrait-logo {
+  position: relative;
+  overflow: hidden;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.brand .portrait-logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 44% 20%;
+  transform: scale(1.8);
+  transform-origin: 44% 30%;
+}
