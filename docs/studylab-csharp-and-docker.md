@@ -49,3 +49,7 @@ Edit the source examples to change comments or boundaries. `step-by-step-code.mj
 ## Beginner guidance
 
 The editable csharp-beginner-guide.html appears on C# course and lesson pages. It explains setup, a separate runnable console example, common terms and a suggested web learning order. Unit-specific plain-English introductions live in beginnerGoals in csharp-and-docker-pages.mjs. Keep displayed punctuation to standard hyphens.
+
+## Project introductions and spacing
+
+Edit projectBriefs and lessonFocus in course-outline-and-lessons.mjs to describe the finished project, data storage and first successful check. csharp-project-brief.html displays this before the beginner guide, theory and code. The cs-lesson-layout rules in shared-components.css create section spacing; adjacent panels elsewhere in StudyLab also have a visible gap.

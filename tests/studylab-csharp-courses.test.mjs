@@ -95,3 +95,25 @@ test('beginner guidance provides a separate runnable starting example and standa
   assert.ok(!/[\u2013\u2014]/.test(guide));
   for (const unit of courseUnits) assert.ok(!/[\u2013\u2014]/.test(unit.sessions));
 });
+test('every lesson has a project description and focus before code', async () => {
+  const { projectBriefs, lessonFocus } = await import(
+    '../dist/learn/js/csharp/course-outline-and-lessons.mjs'
+  );
+  for (const lesson of courseLessons) {
+    assert.equal(projectBriefs[lesson.project].length, 4);
+    assert.ok(
+      projectBriefs[lesson.project].every(
+        (text) => text.length > 20 && !/[\u2013\u2014]/.test(text),
+      ),
+    );
+    assert.ok(lessonFocus[lesson.id]?.length > 20, lesson.id);
+  }
+  const shell = readFileSync(
+    new URL('../dist/learn/pages/csharp-lesson-shell.html', import.meta.url),
+    'utf8',
+  );
+  assert.ok(shell.indexOf('{{dynamic_12}}') < shell.indexOf('{{dynamic_11}}'));
+  assert.ok(
+    shell.indexOf('{{dynamic_12}}') < shell.indexOf('Build the code part by part'),
+  );
+});

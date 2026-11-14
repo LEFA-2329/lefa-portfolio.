@@ -1,4 +1,4 @@
-import { htmlPages } from './compiled-html-pages.mjs?v=beginner-csharp-48';
+import { htmlPages } from './compiled-html-pages.mjs?v=project-briefs-49';
 
 // These templates are authored in this repository and compiled before publication.
 // Callers supply trusted markup or already escaped text; never pass raw user input.

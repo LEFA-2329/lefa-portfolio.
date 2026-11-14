@@ -713,3 +713,159 @@ courseLessons.sort((a, b) => {
     (a.unit === 'csharp-2' ? apiOrder.indexOf(a.id) - apiOrder.indexOf(b.id) : 0)
   );
 });
+
+// Student-facing project briefs appear before setup and code.
+export const projectBriefs = {
+  '01-minimal-api': [
+    'A small student register API',
+    'Add a student, show students, change their details and remove a student. Requests send data to the API; this example has no form or webpage.',
+    'Student data is kept in memory and is lost when the app restarts.',
+    'Send a POST request, read the new student with GET, then try PUT and DELETE.',
+  ],
+  '02-controller-api': [
+    'A student register organised with a controller',
+    'Build the same four student actions in a StudentsController file. A small input object checks the name and age before changes are accepted.',
+    'Student data is kept in memory and is lost when the app restarts.',
+    'Create a valid student, then send an invalid age and compare the responses.',
+  ],
+  '03-ef-sqlite': [
+    'A student register that remembers its data',
+    'Build a student API that uses EF Core to read and write a SQLite database file.',
+    'Student data stays in a local database file after the API closes.',
+    'Add a student, restart the API, then use GET to check that the student is still there.',
+  ],
+  '04-ef-sqlserver': [
+    'A student register connected to SQL Server',
+    'Use EF Core to connect the API to SQL Server. C# objects represent student rows, and migrations create or change the tables.',
+    'Student data is stored in your configured SQL Server database.',
+    'Set the connection string, apply the migration, add a student and inspect the saved row.',
+  ],
+  '05-ado-sqlserver': [
+    'A student register that runs SQL commands',
+    'Build an API that sends parameterised SQL commands through ADO.NET. You write the SQL used to add, find, edit and remove rows.',
+    'Student data is stored in SQL Server. Run the supplied setup script first.',
+    'Create the table, send a student request and check the row in SQL Server.',
+  ],
+  '06-secure-api': [
+    'A student API with accounts and protected records',
+    'Register an account and log in. Each signed-in user works with their own students. The API also shows paging and checks whether a record has changed before saving an edit.',
+    'Accounts and student rows are stored in SQLite. Keep the access token for later requests.',
+    'Register, log in, copy the token into a request and create a student belonging to that account.',
+  ],
+  '07-mvc-client': [
+    'A student website with pages and forms',
+    'Build an MVC website that asks a separate student API to do the data work. Use pages to view students and forms to add, edit or delete them.',
+    'The API holds the student data; the website displays it. Run both projects.',
+    'Start the API on port 5100 and the website on port 5200, then add a student through the website.',
+  ],
+  '08-csharp-features': [
+    'A console playground for C# features',
+    'Run small experiments with objects, reusable helpers, lists and work that takes time. Each experiment prints results in the console.',
+    'These experiments use temporary values rather than a student database.',
+    'Run the console app, find the part for this lesson and compare its printed result with the explanation.',
+  ],
+  '09-desktop-data': [
+    'A desktop student register',
+    'Build a WPF window to add, show, edit and remove students. Compare database storage with exporting data as a JSON text file.',
+    'The example can use SQLite or SQL Server. JSON export creates a separate file.',
+    'Run the Windows desktop app, add a student, select the row and try editing it.',
+  ],
+  '10-wpf-mvvm': [
+    'A desktop student form with clear responsibilities',
+    'Build a WPF screen whose values and buttons connect to a ViewModel. The form checks input and refreshes when values change.',
+    'This example keeps its working student list in memory.',
+    'Type a name and age, watch whether the Add button is enabled, then add a student to the list.',
+  ],
+  '11-libraries-reflection': [
+    'A shared toolbox and a console app that uses it',
+    'Put reusable rules in a class library, then call them from a console project. Explore how C# can inspect types or create a small type at runtime.',
+    'The example prints results in the console; it does not use a database.',
+    'Build both projects together, run the console app and check the rule and reflection output.',
+  ],
+  '12-docker-school': [
+    'A student website, API and database running in containers',
+    'Package a .NET API and MVC website into images. Docker Compose starts them with SQL Server so the three services can work together.',
+    'SQL Server stores its files in a named Docker volume so they can survive container replacement.',
+    'Follow the setup steps, start the Compose stack, open the website and add a student.',
+  ],
+  '13-api-http-tests': [
+    'A console checker for the student API',
+    'Write a small program that sends real HTTP requests and checks the returned status and data. It reports PASS when an expected result matches.',
+    'The checker uses the separately running controller API and its in-memory student list.',
+    'Start the controller API first, then run this console project and inspect the PASS messages.',
+  ],
+  '14-openapi-swagger': [
+    'A student API with a browser-based testing page',
+    'Generate an OpenAPI document describing the endpoints. Swagger UI reads it and lets you send requests from a webpage during development.',
+    'This example uses an in-memory student store. Documentation is enabled in Development.',
+    'Run the API in Development, open /swagger and try creating and reading a student.',
+  ],
+};
+export const lessonFocus = {
+  'cs-lifetime':
+    'Watch when an object can be cleaned up and use using to close an owned resource promptly.',
+  'cs-language-tools':
+    'Try one operator, one custom error type and one extension method before combining them.',
+  'cs-linq':
+    'Filter a list with Where, choose fields with Select and compare the resulting values.',
+  'cs-processes':
+    'Inspect a running process and distinguish process information from older .NET Framework AppDomain concepts.',
+  'cs-threads':
+    'Compare shared counter updates and see why simultaneous changes need coordination.',
+  'cs-async':
+    'Follow an awaited task, cancellation and several tasks waited for together.',
+  'cs-web-foundations':
+    'Follow a request from its URL to a controller action and back as a response.',
+  'cs-crud-minimal':
+    'Learn one HTTP action at a time before adding more files or a database.',
+  'cs-crud-controllers':
+    'Find the route, input rules and response for each action inside the controller.',
+  'cs-openapi':
+    'Compare the OpenAPI description with the Swagger UI page that displays it.',
+  'cs-ef-sqlite': 'Connect C# student objects to rows in a small local SQLite file.',
+  'cs-sqlserver':
+    'Connect to your SQL Server instance and create tables with an EF Core migration.',
+  'cs-ado-api':
+    'Follow one SQL parameter from the incoming request into the database command.',
+  'cs-api-auth':
+    'Register, log in and use the returned token to call a protected endpoint.',
+  'cs-advanced-api':
+    'Try paging, ownership checks and an edit with an out-of-date version.',
+  'cs-mvc-client':
+    'Follow a form submission from the MVC website to the API and back to a page.',
+  'cs-api-testing':
+    'Check expected responses automatically instead of guessing whether a request worked.',
+  'cs-files-json': 'Write student data to a JSON file and read it back as a preview.',
+  'cs-desktop-ado':
+    'Use SQL commands from the desktop app to read and change student rows.',
+  'cs-desktop-ef':
+    'Use an EF Core context from the desktop app to save and load student objects.',
+  'cs-code-database-first':
+    'Compare creating a database from C# models with generating models from an existing database.',
+  'cs-mvvm':
+    'Locate the Model, View and ViewModel, then follow one binding between them.',
+  'cs-notifications-validation':
+    'Check an input value and notify the screen when a property changes.',
+  'cs-commands-mvc':
+    'Connect a WPF button to a command and compare that job with an MVC controller action.',
+  'cs-class-libraries':
+    'Move a reusable rule into a library and call it from another project.',
+  'cs-reflection':
+    'Inspect a type and call a member using information discovered while the program runs.',
+  'cs-dynamic-dlr':
+    'Compare ordinary type checking with an operation checked when the program runs.',
+  'cs-dynamic-assemblies': 'Create a tiny type in memory and inspect the result.',
+  'docker-containers':
+    'Identify the website, API and database as three separate services.',
+  'docker-dotnet-image':
+    'Build an image in stages so the final image contains what the app needs to run.',
+  'docker-cli':
+    'Build an image, start a container and inspect its status using commands.',
+  'docker-compose-stack': 'Read the Compose file and start the three services together.',
+  'docker-networking':
+    'Follow the website-to-API and API-to-database connections using service names.',
+  'docker-volumes':
+    'Find where the database files live and understand what happens when containers are replaced.',
+  'docker-monitor-scale':
+    'Inspect service logs and learn the limits of scaling services that publish fixed host ports.',
+};

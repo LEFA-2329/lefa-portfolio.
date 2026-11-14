@@ -1,15 +1,17 @@
-import { colourCode } from './code-syntax-colours.mjs?v=beginner-csharp-48';
+import { colourCode } from './code-syntax-colours.mjs?v=project-briefs-49';
 import {
   codeParts,
   orderedTeachingFiles,
-} from './step-by-step-code.mjs?v=beginner-csharp-48';
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=beginner-csharp-48';
+} from './step-by-step-code.mjs?v=project-briefs-49';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=project-briefs-49';
 import { escapeHTML as e } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=40';
 import {
   courseUnits,
   courseLessons,
-} from './course-outline-and-lessons.mjs?v=beginner-csharp-48';
-import { exampleFiles } from './complete-example-files.mjs?v=beginner-csharp-48';
+  projectBriefs,
+  lessonFocus,
+} from './course-outline-and-lessons.mjs?v=project-briefs-49';
+import { exampleFiles } from './complete-example-files.mjs?v=project-briefs-49';
 import { sourceZip } from './project-zip-download.mjs?v=csharp-44';
 const beginnerGoals = {
   'csharp-1':
@@ -113,6 +115,13 @@ export function newCoursePage({ view, page, id, course }) {
       dynamic_4: e(lesson.title),
       dynamic_5: e(lesson.outcomes.join(', ') + ' . ' + unit.sessions),
       dynamic_6: renderHtmlPage('studylab/' + lesson.page, {}),
+      dynamic_12: renderHtmlPage('studylab/csharp-project-brief', {
+        dynamic_1: e(projectBriefs[lesson.project][0]),
+        dynamic_2: e(projectBriefs[lesson.project][1]),
+        dynamic_3: e(lessonFocus[lesson.id]),
+        dynamic_4: e(projectBriefs[lesson.project][2]),
+        dynamic_5: e(projectBriefs[lesson.project][3]),
+      }),
       dynamic_11: course === 'csharp' ? beginnerGuide(lesson.unit) : '',
       dynamic_10: orderedTeachingFiles(files)
         .map(
