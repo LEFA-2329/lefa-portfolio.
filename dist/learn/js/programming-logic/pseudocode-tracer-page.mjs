@@ -1,8 +1,8 @@
-import { workStore } from '../shared/saved-work-storage.mjs?v=32';
-import { cleanDraft } from '../shared/saved-programming-answers.mjs?v=32';
-import { gridExamples } from './content/array-examples.mjs?v=32';
-import { createRunner, displayValue } from './pseudocode-interpreter.mjs?v=32';
-import { escapeHTML as e } from './pseudocode-parser-and-diagrams.mjs?v=32';
+import { workStore } from '../shared/saved-work-storage.mjs?v=33';
+import { cleanDraft } from '../shared/saved-programming-answers.mjs?v=33';
+import { gridExamples } from './content/array-examples.mjs?v=33';
+import { createRunner, displayValue } from './pseudocode-interpreter.mjs?v=33';
+import { escapeHTML as e } from './pseudocode-parser-and-diagrams.mjs?v=33';
 const examples = {
   'Add two numbers': {
     hint: 'NUM accepts whole numbers and decimals. Enter 4 and 6.5 when prompted; the output should be 10.5.',

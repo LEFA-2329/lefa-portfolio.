@@ -6,6 +6,8 @@ There are two websites in this repository. Work on StudyLab first, then the port
 | --------------------------------------------------------------------- | ------------------------------------------------------------ |
 | StudyLab header, module picker and navigation shell                   | `dist/learn/index.html`                                      |
 | StudyLab page HTML: home, lessons, SQL workspace, downloads, progress | `dist/learn/pages/`                                          |
+| Student settings panel                                                | `dist/learn/pages/settings-panel.html`                       |
+| Theme choices and saved display preferences                           | `dist/learn/js/shared/display-preferences.mjs`               |
 | StudyLab colours, spacing and appearance                              | `dist/learn/css/`                                            |
 | Programming lessons, quizzes and activities                           | `dist/learn/js/programming-logic/content/`                   |
 | Introduction, Intermediate, Advanced and Hadoop lesson content        | `dist/learn/js/database/content/`                            |

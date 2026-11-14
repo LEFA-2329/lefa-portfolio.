@@ -58,32 +58,7 @@ body {
 .top-links {
   gap: 16px;
 }
-.theme-label {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  font-size: 13px;
-}
-.theme-label select {
-  width: auto;
-  padding: 7px 10px;
-  min-height: 40px;
-  font-size: 14px;
-}
-.accent-label {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 13px;
-}
-.accent-label input {
-  width: 30px;
-  height: 30px;
-  border: 0;
-  padding: 2px;
-  background: transparent;
-  cursor: pointer;
-}
+
 .app-shell {
   grid-template-columns: 260px minmax(0, 1fr);
   max-width: 1600px;
@@ -501,22 +476,7 @@ summary:focus-visible {
   .top-links {
     gap: 10px;
   }
-  .theme-label {
-    font-size: 0;
-    gap: 0;
-  }
-  .theme-label select {
-    font-size: 13px;
-    max-width: 90px;
-  }
-  .accent-label {
-    font-size: 0;
-    gap: 0;
-  }
-  .accent-label input {
-    width: 25px;
-    height: 29px;
-  }
+
   #menu-toggle {
     display: block;
     border: 1px solid var(--line);

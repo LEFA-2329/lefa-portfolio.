@@ -19,8 +19,9 @@
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Crect width='60' height='60' rx='15' fill='%230f766e'/%3E%3Ctext x='12' y='42' font-size='34' fill='white'%3ES%3C/text%3E%3C/svg%3E"
     />
-    <link rel="stylesheet" href="./styles.css?v=32" />
-    <script type="module" src="./studylab-start.mjs?v=studylab-32"></script>
+    <script src="./js/shared/restore-theme-before-paint.js?v=33"></script>
+    <link rel="stylesheet" href="./styles.css?v=33" />
+    <script type="module" src="./studylab-start.mjs?v=studylab-33"></script>
   </head>
   <body>
     <!-- Main StudyLab HTML: header, module picker and navigation. Page layouts: pages/*.html. -->
@@ -32,20 +33,15 @@
       >
       <div class="top-links">
         <a class="portfolio-return" href="../">Lefa’s portfolio</a>
-        <label class="theme-label" for="theme-mode"
-          >Appearance<select id="theme-mode">
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
-            <option value="grey">Grey</option>
-            <option value="system">Device</option>
-          </select></label
-        ><label class="accent-label" title="Choose an accent colour"
-          >Colour<input
-            id="theme-accent"
-            type="color"
-            value="#2563eb"
-            aria-label="Accent colour" /></label
-        ><button id="menu-toggle" aria-expanded="false" aria-controls="sidebar">
+        <button
+          type="button"
+          id="settings-open"
+          class="settings-launch"
+          aria-haspopup="dialog"
+        >
+          Settings
+        </button>
+        <button id="menu-toggle" aria-expanded="false" aria-controls="sidebar">
           Topics
         </button>
       </div>

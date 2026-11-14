@@ -1,4 +1,4 @@
-import { practicalIntermediateQuizzes } from './intermediate-quiz-questions.mjs?v=32';
+import { practicalIntermediateQuizzes } from './intermediate-quiz-questions.mjs?v=33';
 // Original supplementary material aligned to the supplied DATA6222 outline.
 export const intermediateUnits = [
   {

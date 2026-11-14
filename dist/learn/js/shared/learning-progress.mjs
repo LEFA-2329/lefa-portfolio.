@@ -1,22 +1,22 @@
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=32';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=33';
 import {
   advancedUnits,
   advancedLessons,
-} from '../database/content/advanced-lessons.mjs?v=32';
-import { cleanDatabaseLesson } from '../database/saved-database-answers.mjs?v=32';
-import { workStore } from './saved-work-storage.mjs?v=32';
+} from '../database/content/advanced-lessons.mjs?v=33';
+import { cleanDatabaseLesson } from '../database/saved-database-answers.mjs?v=33';
+import { workStore } from './saved-work-storage.mjs?v=33';
 import {
   lessons as prldLessons,
   units as prldUnits,
-} from '../programming-logic/content/lessons-and-quizzes.mjs?v=32';
-import { practice } from '../programming-logic/content/lesson-practice.mjs?v=32';
-import { cleanLesson } from './saved-programming-answers.mjs?v=32';
-import { dbLessons, dbUnits } from '../database/content/introduction-lessons.mjs?v=32';
+} from '../programming-logic/content/lessons-and-quizzes.mjs?v=33';
+import { practice } from '../programming-logic/content/lesson-practice.mjs?v=33';
+import { cleanLesson } from './saved-programming-answers.mjs?v=33';
+import { dbLessons, dbUnits } from '../database/content/introduction-lessons.mjs?v=33';
 import {
   intermediateLessons,
   intermediateUnits,
-} from '../database/content/intermediate-lessons.mjs?v=32';
-import { escapeHTML as e } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=32';
+} from '../database/content/intermediate-lessons.mjs?v=33';
+import { escapeHTML as e } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=33';
 export const progressCourses = {
   advanced: {
     title: 'Advanced Database',

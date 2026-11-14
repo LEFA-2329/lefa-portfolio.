@@ -69,3 +69,7 @@ npm run format:check
 Keep existing lesson IDs and browser storage keys stable. When changing quiz options or their order, update the relevant quiz revision so old selections are not applied to different answers. Keep downloaded example files consistent with lesson examples. Generated PDF, Word and PowerPoint materials use the scripts under `scripts/`.
 
 Python generator formatting remains available with `python -m pip install -r requirements-dev.txt` and `python -m black scripts/*.py`. Native SQL Server and Hadoop validation is separate from browser checks and remains pending.
+
+## Student display settings
+
+Settings panel HTML: `dist/learn/pages/settings-panel.html`. Theme names, safe choices and storage: `dist/learn/js/shared/display-preferences.mjs`. Panel behaviour: `dist/learn/js/shared/theme-settings.mjs`. Palette and panel styles: `dist/learn/css/student-settings.css`. A small `restore-theme-before-paint.js` script restores validated choices before the page is painted. Keep its allowlists aligned with the model; tests cover them. Settings use `studylab-display-preferences-v1` and never clear lesson data.

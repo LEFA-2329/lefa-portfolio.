@@ -3,14 +3,14 @@ import {
   dependencyDiagram,
   bindDiagramFit,
   normalisationRules,
-} from './normalisation-lessons-and-diagrams.mjs?v=32';
+} from './normalisation-lessons-and-diagrams.mjs?v=33';
 import {
   analyseTable,
   gradeKeyAndDependencies,
   gradeDecomposition,
-} from './normalisation-answer-checker.mjs?v=32';
-import { escapeHTML as e } from '../../programming-logic/pseudocode-parser-and-diagrams.mjs?v=32';
-import { workStore } from '../../shared/saved-work-storage.mjs?v=32';
+} from './normalisation-answer-checker.mjs?v=33';
+import { escapeHTML as e } from '../../programming-logic/pseudocode-parser-and-diagrams.mjs?v=33';
+import { workStore } from '../../shared/saved-work-storage.mjs?v=33';
 const levels = ['guided', 'standard', 'challenge'];
 const newTable = (original, id = 't1') => ({
   id,

@@ -1,0 +1,84 @@
+<!-- Settings content. Behaviour: js/shared/theme-settings.mjs. Themes: display-preferences.mjs. -->
+<div class="settings-heading">
+  <div>
+    <p class="eyebrow">MAKE STUDYLAB YOURS</p>
+    <h2 id="settings-title">Your study space</h2>
+    <p>
+      Choose a look that feels comfortable. Your settings apply across every StudyLab
+      module.
+    </p>
+  </div>
+  <button
+    type="button"
+    class="button secondary"
+    id="settings-close"
+    aria-label="Close settings"
+  >
+    Close
+  </button>
+</div>
+<section class="settings-section" aria-labelledby="settings-themes-title">
+  <h3 id="settings-themes-title">Choose your theme</h3>
+  <p>Keep it light, or try a vintage palette inspired by cream, clay, slate and sage.</p>
+  <fieldset class="theme-choice-grid">
+    <legend class="settings-sr-only">StudyLab theme</legend>
+    {{dynamic_1}}
+  </fieldset>
+</section>
+<section class="settings-section" aria-labelledby="settings-reading-title">
+  <h3 id="settings-reading-title">Reading comfort</h3>
+  <div class="settings-fields">
+    <label for="settings-text-size"
+      >Text size<select id="settings-text-size">
+        <option value="standard">Standard</option>
+        <option value="large">Large</option>
+        <option value="larger">Extra large</option>
+      </select></label
+    >
+    <label for="settings-spacing"
+      >Reading spacing<select id="settings-spacing">
+        <option value="comfortable">Comfortable</option>
+        <option value="relaxed">Relaxed</option>
+        <option value="compact">Compact</option>
+      </select></label
+    >
+    <label for="settings-width"
+      >Page width<select id="settings-width">
+        <option value="standard">Standard</option>
+        <option value="focused">Focused reading</option>
+        <option value="wide">Wide workspace</option>
+      </select></label
+    >
+  </div>
+  <label class="settings-motion"
+    ><input id="settings-reduce-motion" type="checkbox" /> Reduce animations and smooth
+    scrolling</label
+  >
+</section>
+<section
+  class="settings-section settings-learning"
+  aria-labelledby="settings-learning-title"
+>
+  <h3 id="settings-learning-title">Your learning</h3>
+  <p>
+    Continue your work or review your progress. Changing display settings keeps your
+    answers and drafts.
+  </p>
+  <div class="button-row">
+    <a class="button secondary" id="settings-progress" href="#progress/prld"
+      >My progress</a
+    ><a class="button secondary" href="#saved-work">Saved work</a
+    ><a class="button secondary" href="../">Lefa’s portfolio</a>
+  </div>
+</section>
+<div class="settings-bottom">
+  <p id="settings-save-status" role="status"></p>
+  <button type="button" class="text-link" id="settings-reset">
+    Reset display settings
+  </button>
+</div>
+<p class="settings-storage-note">
+  Saved on this browser and device with no expiry date. Clearing site data, private
+  browsing or browser storage restrictions can remove or prevent saving. Device appearance
+  follows your device setting when selected.
+</p>
