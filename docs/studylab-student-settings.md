@@ -35,3 +35,9 @@ Added twelve palettes inspired by the second reference: Sunshine & Cobalt, Citru
 The Theme collection selector filters All, Colourful, Vintage and Classic. Light remains visible in every collection. Browsing a collection never changes the active theme. Existing theme IDs and the storage key remain stable.
 
 All 43 tests pass with contrast checks expanded to all 18 added palettes, plus pre-paint restoration and persistence checks for every theme choice. Browser checks selected all twelve new palettes, verified the collection counts, confirmed filtering does not alter the active theme, and restored Amethyst & Gold after reload. Bright reference swatches are used with adjusted readable text/background tokens rather than copied blindly into text colours. The stock reference image is not embedded in the application.
+
+## Reading and editor controls
+
+Reading comfort provides Small, Standard, Large and Extra large text, spacing and page width. Code editor controls independently set 14, 16 or 18 px text, wrapping or horizontal scrolling, and the display width of tab characters (2, 4 or 8 spaces). Tab still moves keyboard focus normally. These settings apply to SQL and pseudocode textareas, including editors opened after a preference changes. They do not rewrite drafts.
+
+Edit the controls in `dist/learn/pages/settings-panel.html`, validated defaults in `dist/learn/js/shared/display-preferences.mjs`, startup restoration in `restore-theme-before-paint.js`, and appearance in `dist/learn/css/student-settings.css`. Existing saved records receive the new defaults automatically. Reset display settings also restores editor preferences, leaving learning data intact.

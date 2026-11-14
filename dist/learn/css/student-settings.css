@@ -691,3 +691,36 @@ body.settings-open .section-heading p {
   background: var(--surface-alt);
   color: var(--ink);
 }
+
+/* Reading and code sizes are independent so long code stays comfortable. */
+:root[data-text-size='small'] {
+  --reading-scale: 0.875;
+}
+:root {
+  --editor-font-size: 14px;
+  --editor-tab-size: 4;
+}
+:root[data-editor-size='large'] {
+  --editor-font-size: 16px;
+}
+:root[data-editor-size='larger'] {
+  --editor-font-size: 18px;
+}
+:root[data-editor-tab-size='2'] {
+  --editor-tab-size: 2;
+}
+:root[data-editor-tab-size='8'] {
+  --editor-tab-size: 8;
+}
+main textarea.editor {
+  font-size: var(--editor-font-size);
+  line-height: 1.65;
+  tab-size: var(--editor-tab-size);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+:root[data-editor-wrap='scroll'] main textarea.editor {
+  white-space: pre;
+  overflow-wrap: normal;
+  overflow-x: auto;
+}

@@ -158,13 +158,19 @@ themes.splice(
 export const defaults = Object.freeze({
   theme: 'light',
   textSize: 'standard',
+  editorSize: 'standard',
+  editorWrap: 'wrap',
+  editorTabSize: '4',
   spacing: 'comfortable',
   width: 'standard',
   reduceMotion: false,
 });
 const choices = {
   theme: themes.map((t) => t.id),
-  textSize: ['standard', 'large', 'larger'],
+  textSize: ['small', 'standard', 'large', 'larger'],
+  editorSize: ['standard', 'large', 'larger'],
+  editorWrap: ['wrap', 'scroll'],
+  editorTabSize: ['4', '2', '8'],
   spacing: ['comfortable', 'relaxed', 'compact'],
   width: ['standard', 'focused', 'wide'],
 };

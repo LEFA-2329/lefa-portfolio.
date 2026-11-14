@@ -1,5 +1,5 @@
-import { workStore } from '../shared/saved-work-storage.mjs?v=36';
-import { escapeHTML as e } from './pseudocode-parser-and-diagrams.mjs?v=36';
+import { workStore } from '../shared/saved-work-storage.mjs?v=37';
+import { escapeHTML as e } from './pseudocode-parser-and-diagrams.mjs?v=37';
 import {
   createExam,
   cleanExam,
@@ -8,7 +8,7 @@ import {
   remainingSeconds,
   submitExam,
   examResult,
-} from './practice-exam-logic.mjs?v=36';
+} from './practice-exam-logic.mjs?v=37';
 export function examPage({ view, crumb, sidebar }) {
   let s = workStore.read('exam', null, cleanExam),
     timer = null,

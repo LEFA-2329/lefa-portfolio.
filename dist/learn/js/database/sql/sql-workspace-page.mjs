@@ -1,5 +1,5 @@
-import { renderHtmlPage } from '../../../../shared/render-html-page.mjs?v=36';
-import { exercises } from './sql-practice-challenges.mjs?v=36';
+import { renderHtmlPage } from '../../../../shared/render-html-page.mjs?v=37';
+import { exercises } from './sql-practice-challenges.mjs?v=37';
 export { exercises };
 const cleanDraft = (raw) => ({
   code: typeof raw?.code === 'string' ? raw.code.slice(0, 30000) : '',
@@ -9,9 +9,9 @@ import {
   dialects,
   sqlExamples,
   setupScript,
-} from './demo-databases-and-examples.mjs?v=36';
-import { workStore } from '../../shared/saved-work-storage.mjs?v=36';
-import { escapeHTML as e } from '../../programming-logic/pseudocode-parser-and-diagrams.mjs?v=36';
+} from './demo-databases-and-examples.mjs?v=37';
+import { workStore } from '../../shared/saved-work-storage.mjs?v=37';
+import { escapeHTML as e } from '../../programming-logic/pseudocode-parser-and-diagrams.mjs?v=37';
 function download(name, text) {
   const url = URL.createObjectURL(new Blob([text], { type: 'text/plain;charset=utf-8' }));
   const a = document.createElement('a');
@@ -201,7 +201,7 @@ export function sqlPage({ view, id, modeOverride, sidebar }) {
     restartNotice = notice;
     worker?.terminate();
     clearTimeout(timer);
-    worker = new Worker(new URL('./sql-database-worker.js?v=36', import.meta.url));
+    worker = new Worker(new URL('./sql-database-worker.js?v=37', import.meta.url));
     const current = worker;
     worker.onmessage = (event) => {
       if (disposed || current !== worker || event.data.id !== pending?.id) return;

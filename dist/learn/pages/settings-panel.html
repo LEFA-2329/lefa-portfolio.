@@ -49,6 +49,7 @@
   <div class="settings-fields">
     <label for="settings-text-size"
       >Text size<select id="settings-text-size">
+        <option value="small">Small</option>
         <option value="standard">Standard</option>
         <option value="large">Large</option>
         <option value="larger">Extra large</option>
@@ -73,6 +74,39 @@
     ><input id="settings-reduce-motion" type="checkbox" /> Reduce animations and smooth
     scrolling</label
   >
+</section>
+<section class="settings-section" aria-labelledby="settings-editor-title">
+  <h3 id="settings-editor-title">Code editor</h3>
+  <p>
+    Applies to SQL and pseudocode editors. These choices change how code looks, keeping
+    your code unchanged.
+  </p>
+  <div class="settings-fields">
+    <label for="settings-editor-size"
+      >Code text size<select id="settings-editor-size">
+        <option value="standard">Standard (14 px)</option>
+        <option value="large">Large (16 px)</option>
+        <option value="larger">Extra large (18 px)</option>
+      </select></label
+    >
+    <label for="settings-editor-wrap"
+      >Long lines<select id="settings-editor-wrap">
+        <option value="wrap">Wrap to editor width</option>
+        <option value="scroll">Scroll horizontally</option>
+      </select></label
+    >
+    <label for="settings-editor-tab-size"
+      >Tab display width<select id="settings-editor-tab-size">
+        <option value="2">2 spaces</option>
+        <option value="4">4 spaces</option>
+        <option value="8">8 spaces</option>
+      </select></label
+    >
+  </div>
+  <p>
+    Tab width controls existing tab characters. The Tab key continues to move between
+    controls.
+  </p>
 </section>
 <section
   class="settings-section settings-learning"

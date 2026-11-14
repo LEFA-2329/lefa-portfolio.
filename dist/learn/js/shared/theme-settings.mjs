@@ -1,4 +1,4 @@
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=36';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=37';
 import {
   themes,
   defaults,
@@ -6,8 +6,8 @@ import {
   createPreferenceStore,
   resolvedTheme,
   SETTINGS_KEY,
-} from './display-preferences.mjs?v=36';
-import { escapeHTML as escape } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=36';
+} from './display-preferences.mjs?v=37';
+import { escapeHTML as escape } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=37';
 
 const launch = document.querySelector('#settings-open');
 const device = matchMedia('(prefers-color-scheme: dark)');
@@ -26,6 +26,9 @@ function apply() {
   const root = document.documentElement;
   root.dataset.theme = resolvedTheme(preferences, device.matches);
   root.dataset.textSize = preferences.textSize;
+  root.dataset.editorSize = preferences.editorSize;
+  root.dataset.editorWrap = preferences.editorWrap;
+  root.dataset.editorTabSize = preferences.editorTabSize;
   root.dataset.spacing = preferences.spacing;
   root.dataset.readingWidth = preferences.width;
   root.dataset.reduceMotion = String(preferences.reduceMotion);
@@ -33,6 +36,9 @@ function apply() {
   for (const radio of panel.querySelectorAll('[name="settings-theme"]'))
     radio.checked = radio.value === preferences.theme;
   panel.querySelector('#settings-text-size').value = preferences.textSize;
+  panel.querySelector('#settings-editor-size').value = preferences.editorSize;
+  panel.querySelector('#settings-editor-wrap').value = preferences.editorWrap;
+  panel.querySelector('#settings-editor-tab-size').value = preferences.editorTabSize;
   panel.querySelector('#settings-spacing').value = preferences.spacing;
   panel.querySelector('#settings-width').value = preferences.width;
   panel.querySelector('#settings-reduce-motion').checked = preferences.reduceMotion;
@@ -80,6 +86,9 @@ function openSettings() {
       );
     for (const [id, key] of [
       ['settings-text-size', 'textSize'],
+      ['settings-editor-size', 'editorSize'],
+      ['settings-editor-wrap', 'editorWrap'],
+      ['settings-editor-tab-size', 'editorTabSize'],
       ['settings-spacing', 'spacing'],
       ['settings-width', 'width'],
     ])

@@ -26,7 +26,10 @@
       'grey',
       'system',
     ],
-    textSize: ['standard', 'large', 'larger'],
+    textSize: ['standard', 'small', 'large', 'larger'],
+    editorSize: ['standard', 'large', 'larger'],
+    editorWrap: ['wrap', 'scroll'],
+    editorTabSize: ['4', '2', '8'],
     spacing: ['comfortable', 'relaxed', 'compact'],
     width: ['standard', 'focused', 'wide'],
   };

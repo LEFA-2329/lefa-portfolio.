@@ -1,9 +1,9 @@
-import { dbUnits, dbLessons } from './content/introduction-lessons.mjs?v=36';
+import { dbUnits, dbLessons } from './content/introduction-lessons.mjs?v=37';
 import {
   intermediateUnits,
   intermediateLessons,
   intermediateLegacyQuizzes,
-} from './content/intermediate-lessons.mjs?v=36';
+} from './content/intermediate-lessons.mjs?v=37';
 const writtenBanks = {
   database: [
     {

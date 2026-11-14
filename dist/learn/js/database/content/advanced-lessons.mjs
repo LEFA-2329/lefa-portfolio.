@@ -1,4 +1,4 @@
-import { hadoopUnit, hadoopLessons } from './hadoop-lessons.mjs?v=36';
+import { hadoopUnit, hadoopLessons } from './hadoop-lessons.mjs?v=37';
 // Original extension material; no formal module code or prescribed outline is claimed.
 export const advancedUnits = [
   {

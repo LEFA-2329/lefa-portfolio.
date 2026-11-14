@@ -36,6 +36,10 @@ test('all display choices survive a fresh store instance without expiring or cha
   memory.setItem('logiclab-work-v1:lesson:test', 'unchanged');
   for (const theme of themes) {
     const wanted = {
+      ...defaults,
+      editorSize: 'larger',
+      editorWrap: 'scroll',
+      editorTabSize: '8',
       theme: theme.id,
       textSize: 'larger',
       spacing: 'relaxed',
@@ -88,6 +92,9 @@ test('pre-paint restoration agrees with full settings for every theme and fallba
       const settings = {
         ...defaults,
         theme: theme.id,
+        editorSize: 'larger',
+        editorWrap: 'scroll',
+        editorTabSize: '2',
         textSize: 'large',
         spacing: 'compact',
         width: 'wide',
@@ -101,6 +108,9 @@ test('pre-paint restoration agrees with full settings for every theme and fallba
         matchMedia: () => ({ matches: dark }),
       });
       assert.equal(dataset.theme, resolvedTheme(settings, dark));
+      assert.equal(dataset.editorSize, 'larger');
+      assert.equal(dataset.editorWrap, 'scroll');
+      assert.equal(dataset.editorTabSize, '2');
       assert.equal(dataset.textSize, 'large');
       assert.equal(dataset.readingWidth, 'wide');
       assert.equal(dataset.reduceMotion, 'true');
@@ -151,4 +161,25 @@ test('all palette core text and primary buttons have at least 4.5:1 contrast', (
       theme.id + ' button',
     );
   }
+});
+
+test('editor options persist and reject unsupported values independently', () => {
+  const memory = storage();
+  for (const editorSize of ['standard', 'large', 'larger'])
+    for (const editorWrap of ['wrap', 'scroll'])
+      for (const editorTabSize of ['2', '4', '8']) {
+        const expected = {
+          ...defaults,
+          textSize: 'small',
+          editorSize,
+          editorWrap,
+          editorTabSize,
+        };
+        createPreferenceStore(() => memory).write(expected);
+        assert.deepEqual(createPreferenceStore(() => memory).read(), expected);
+      }
+  assert.deepEqual(
+    cleanPreferences({ editorSize: '999', editorWrap: '<script>', editorTabSize: '-1' }),
+    defaults,
+  );
 });
