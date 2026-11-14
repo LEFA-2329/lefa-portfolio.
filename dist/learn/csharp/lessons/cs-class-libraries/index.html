@@ -1,0 +1,62 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-6GdkowqvS/Jwyb+sys2ww126ujJW+juRrtuJ4TGZICE='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>Build and configure reusable class libraries | StudyLab</title><meta name="description" content="Build and configure reusable class libraries. Move a reusable rule into a library and call it from another project."><meta name="robots" content="index,follow"><link rel="canonical" href="https://lefamalatji.co.za/learn/csharp/lessons/cs-class-libraries/"><meta property="og:type" content="website"><meta property="og:site_name" content="StudyLab"><meta property="og:title" content="Build and configure reusable class libraries | StudyLab"><meta property="og:description" content="Build and configure reusable class libraries. Move a reusable rule into a library and call it from another project."><meta property="og:url" content="https://lefamalatji.co.za/learn/csharp/lessons/cs-class-libraries/"><meta property="og:image" content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1"><script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Build and configure reusable class libraries","description":"Build and configure reusable class libraries. Move a reusable rule into a library and call it from another project.","url":"https://lefamalatji.co.za/learn/csharp/lessons/cs-class-libraries/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}</script></head><body><a class="skip" href="#content">Skip to content</a><header><a class="brand" href="/studylab/"><span class="portrait"><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42"></span>Study<span>Lab</span></a><a href="/learn/">Open learning app</a></header><main id="content"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/studylab/">StudyLab</a> / <a href="/learn/csharp/">C# lessons</a></nav><h1>Build and configure reusable class libraries</h1><p class="lede">Move a reusable rule into a library and call it from another project.</p><a class="button" href="/learn/#cs-lesson/cs-class-libraries">Open interactive lesson and complete code</a><section class="panel"><h2>What you are building</h2><h3>A shared toolbox and a console app that uses it</h3><p>Put reusable rules in a class library, then call them from a console project. Explore how C# can inspect types or create a small type at runtime.</p><p>The example prints results in the console; it does not use a database.</p><h3>Check the result</h3><p>Build both projects together, run the console app and check the rule and reflection output.</p></section><div class="theory">
+  <p>
+    A class library is a toolbox another application can reuse. It normally has no Main
+    method and produces a DLL rather than its own user interface.
+  </p>
+  <section>
+    <h2>How to test this example in Visual Studio</h2>
+    <p>
+      Download the project below, extract it into its own folder, then open
+      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+      Solution. For console projects choose Start Without Debugging. For API projects use
+      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
+      then run the command shown in the lesson. Do not paste all files into Program.cs:
+      use the exact file names displayed below.
+    </p>
+  </section>
+  <section>
+    <h2>Two projects, one shared rule</h2>
+    <p>
+      The root StudyLab.csproj is the console app. SharedRules/SharedRules.csproj is a
+      separate class library. ProjectReference links them. Open the root project in Visual
+      Studio; the reference should restore/build with it. The root excludes SharedRules
+      source from its own compilation so the same types are not compiled twice.
+    </p>
+    <pre><code>dotnet add StudyLab.csproj reference SharedRules/SharedRules.csproj</code></pre>
+    <p>
+      The supplied project already includes that reference. MarkRules.IsPass(70) returns
+      true. Keep dependencies and visibility minimal: public exposes a reusable contract,
+      internal hides implementation details.
+    </p>
+  </section>
+  <section>
+    <h2>When to share code</h2>
+    <p>
+      Good candidates include validation rules, calculations and domain models shared by
+      API, MVC and desktop applications. Avoid making a library depend on a specific
+      window or controller. Package versioning matters when distributing a library through
+      NuGet. Target a framework compatible with every consuming application; net10.0 does
+      not run in a .NET8 consumer just because both use C#.
+    </p>
+  </section>
+  <section>
+    <h2>Try it yourself</h2>
+    <details class="panel">
+      <summary>What is a practical benefit of one shared pass rule?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        Fix the rule in one place and test it once, then rebuild/update the consuming
+        applications.
+      </p>
+    </details>
+    <details class="panel">
+      <summary>Why not place database passwords inside the DLL?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        Compiled assemblies can be inspected. Secrets belong in runtime configuration with
+        controlled access.
+      </p>
+    </details>
+  </section>
+</div>
+<section class="panel"><h2>Predict and practise</h2><p>Can two apps call the same rule from one class library?</p><details><summary>Check your prediction</summary><p>Yes, when they reference a compatible library project or package.</p></details><h3>Make one change</h3><p>Find the project reference and call the supplied mark rule with another mark.</p><details><summary>Worked guidance</summary><p>The caller references SharedRules; the library contains the reusable rule.</p></details><h3>Try independently</h3><p>Add a reusable student rule to the library and call it from the console app.</p></section><section class="panel"><h2>Full code and downloads</h2><p>The interactive lesson contains the numbered code parts, commented complete files, project ZIP, practice tasks and quiz. Keep each project in its own folder in Visual Studio.</p><a class="button" href="/learn/#cs-lesson/cs-class-libraries">View code and download the project</a></section><section class="panel"><h2>Explore StudyLab subjects</h2><nav class="subject-links" aria-label="Related learning subjects"><a href="/learn/pseudocode/">Learn pseudocode and programming logic</a><a href="/learn/databases/">Learn databases and SQL</a><a href="/learn/csharp/">Learn C# step by step - PROG6212</a><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a><a href="/learn/docker/">Learn Docker for .NET applications</a><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a></nav></section></main><footer><p>StudyLab. Original learning materials by Lefa Malatji. Practice code in the environment stated in each lesson.</p><a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a></footer></body></html>

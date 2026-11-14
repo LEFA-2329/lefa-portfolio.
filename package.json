@@ -7,7 +7,7 @@
     "test": "node --test tests/*.test.mjs",
     "format": "prettier --write \"dist/**/*.{html,css,js,mjs}\" \"tests/**/*.mjs\" \"scripts/**/*.mjs\" \"*.md\" \"docs/**/*.md\" package.json",
     "format:check": "prettier --check \"dist/**/*.{html,css,js,mjs}\" \"tests/**/*.mjs\" \"scripts/**/*.mjs\" \"*.md\" \"docs/**/*.md\" package.json",
-    "build": "node scripts/build-csharp-examples.mjs && node scripts/build-html-pages.mjs"
+    "build": "node scripts/build-csharp-examples.mjs && node scripts/build-html-pages.mjs && node scripts/build-studylab-search-pages.mjs"
   },
   "devDependencies": {
     "prettier": "3.6.2"

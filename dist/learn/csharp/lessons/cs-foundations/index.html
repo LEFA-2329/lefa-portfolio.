@@ -1,0 +1,73 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-jP4btflYL/OH0gK6JjTLoYNFk+5JAgDJtpj6FYZaWB0='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>Start here: C# foundations and your first student register | StudyLab</title><meta name="description" content="Start here: C# foundations and your first student register. Practise variables, conditions, loops, methods, classes, objects and lists before using the advanced units."><meta name="robots" content="index,follow"><link rel="canonical" href="https://lefamalatji.co.za/learn/csharp/lessons/cs-foundations/"><meta property="og:type" content="website"><meta property="og:site_name" content="StudyLab"><meta property="og:title" content="Start here: C# foundations and your first student register | StudyLab"><meta property="og:description" content="Start here: C# foundations and your first student register. Practise variables, conditions, loops, methods, classes, objects and lists before using the advanced units."><meta property="og:url" content="https://lefamalatji.co.za/learn/csharp/lessons/cs-foundations/"><meta property="og:image" content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1"><script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Start here: C# foundations and your first student register","description":"Start here: C# foundations and your first student register. Practise variables, conditions, loops, methods, classes, objects and lists before using the advanced units.","url":"https://lefamalatji.co.za/learn/csharp/lessons/cs-foundations/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}</script></head><body><a class="skip" href="#content">Skip to content</a><header><a class="brand" href="/studylab/"><span class="portrait"><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42"></span>Study<span>Lab</span></a><a href="/learn/">Open learning app</a></header><main id="content"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/studylab/">StudyLab</a> / <a href="/learn/csharp/">C# lessons</a></nav><h1>Start here: C# foundations and your first student register</h1><p class="lede">Practise variables, conditions, loops, methods, classes, objects and lists before using the advanced units.</p><a class="button" href="/learn/#cs-lesson/cs-foundations">Open interactive lesson and complete code</a><section class="panel"><h2>What you are building</h2><h3>Your first console student register</h3><p>Store a name and mark, choose a pass message and print a list of marks. This is the starting point for the student register learning journey.</p><p>All values are temporary and live in memory while the console app runs.</p><h3>Check the result</h3><p>Run the program, compare the seven output lines, then change mark to 45 and predict the new messages.</p></section><div class="theory">
+  <section>
+    <h2>Start with a console student register</h2>
+    <p>
+      You are building a small program that remembers a student name and mark, decides
+      whether the mark is a pass and prints the result. It runs in a text window. Later
+      lessons turn the student idea into an API and a website. Those projects have their
+      own files; do not paste this console Program.cs into an API.
+    </p>
+  </section>
+  <section>
+    <h2>Set up and run</h2>
+    <ol>
+      <li>
+        Install Visual Studio with .NET 10 support. Download this lesson's project and
+        extract it.
+      </li>
+      <li>
+        Open StudyLab.csproj. Choose Build &gt; Build Solution, then Debug &gt; Start
+        Without Debugging.
+      </li>
+      <li>
+        For a terminal, open the folder containing StudyLab.csproj and run
+        <code>dotnet run</code>.
+      </li>
+    </ol>
+  </section>
+  <section>
+    <h2>Understand the pieces</h2>
+    <p>
+      A variable holds a value. A condition chooses which steps run. A loop repeats steps.
+      A method groups steps so you can use them again. A class describes data and
+      behaviour; an object is one instance of that class. A list holds several items.
+    </p>
+    <p>
+      Read <code>mark &gt;= 50</code> as "mark is at least 50". A single
+      <code>=</code> assigns a value; <code>==</code> compares values. Braces group steps.
+      A comment begins with <code>//</code> and explains the code to a person.
+    </p>
+  </section>
+  <section>
+    <h2>Expected output</h2>
+    <pre><code>Lefa: 65
+Pass
+Mark: 65
+Mark: 40
+Mark: 80
+Pass
+Student: Lefa, result: Pass</code></pre>
+    <p>
+      The first decision prints Pass. The loop prints all three list values. The reusable
+      method also returns Pass for 65.
+    </p>
+  </section>
+  <section>
+    <h2>Try it yourself</h2>
+    <details>
+      <summary>What changes if mark becomes 45?</summary>
+      <p>
+        The first line shows 45. The decision and method results become Try again. The
+        separate list still prints 65, 40 and 80.
+      </p>
+    </details>
+    <details>
+      <summary>How can the list contain a fourth mark?</summary>
+      <p>
+        Call <code>marks.Add(55);</code> before the foreach loop. The loop will print a
+        fourth line: Mark: 55.
+      </p>
+    </details>
+  </section>
+</div>
+<section class="panel"><h2>Predict and practise</h2><p>If mark is 45, will the program print Pass or Try again?</p><details><summary>Check your prediction</summary><p>Try again. The condition 45 &gt;= 50 is false. The list values do not change.</p></details><h3>Make one change</h3><p>Add 55 to the marks list before the loop.</p><details><summary>Worked guidance</summary><p>Insert marks.Add(55); before foreach. Expect one extra Mark: 55 line.</p></details><h3>Try independently</h3><p>Create a second Student with a different name and mark. Print its result using ResultFor.</p></section><section class="panel"><h2>Full code and downloads</h2><p>The interactive lesson contains the numbered code parts, commented complete files, project ZIP, practice tasks and quiz. Keep each project in its own folder in Visual Studio.</p><a class="button" href="/learn/#cs-lesson/cs-foundations">View code and download the project</a></section><section class="panel"><h2>Explore StudyLab subjects</h2><nav class="subject-links" aria-label="Related learning subjects"><a href="/learn/pseudocode/">Learn pseudocode and programming logic</a><a href="/learn/databases/">Learn databases and SQL</a><a href="/learn/csharp/">Learn C# step by step - PROG6212</a><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a><a href="/learn/docker/">Learn Docker for .NET applications</a><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a></nav></section></main><footer><p>StudyLab. Original learning materials by Lefa Malatji. Practice code in the environment stated in each lesson.</p><a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a></footer></body></html>

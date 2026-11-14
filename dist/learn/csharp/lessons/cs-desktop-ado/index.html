@@ -1,0 +1,67 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-K59HzWzSRjYO0Ui/fzXxI5ysX+n66puXGQgrmYyjuLI='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>Build desktop CRUD with ADO.NET | StudyLab</title><meta name="description" content="Build desktop CRUD with ADO.NET. Use SQL commands from the desktop app to read and change student rows."><meta name="robots" content="index,follow"><link rel="canonical" href="https://lefamalatji.co.za/learn/csharp/lessons/cs-desktop-ado/"><meta property="og:type" content="website"><meta property="og:site_name" content="StudyLab"><meta property="og:title" content="Build desktop CRUD with ADO.NET | StudyLab"><meta property="og:description" content="Build desktop CRUD with ADO.NET. Use SQL commands from the desktop app to read and change student rows."><meta property="og:url" content="https://lefamalatji.co.za/learn/csharp/lessons/cs-desktop-ado/"><meta property="og:image" content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1"><script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Build desktop CRUD with ADO.NET","description":"Build desktop CRUD with ADO.NET. Use SQL commands from the desktop app to read and change student rows.","url":"https://lefamalatji.co.za/learn/csharp/lessons/cs-desktop-ado/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}</script></head><body><a class="skip" href="#content">Skip to content</a><header><a class="brand" href="/studylab/"><span class="portrait"><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42"></span>Study<span>Lab</span></a><a href="/learn/">Open learning app</a></header><main id="content"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/studylab/">StudyLab</a> / <a href="/learn/csharp/">C# lessons</a></nav><h1>Build desktop CRUD with ADO.NET</h1><p class="lede">Use SQL commands from the desktop app to read and change student rows.</p><a class="button" href="/learn/#cs-lesson/cs-desktop-ado">Open interactive lesson and complete code</a><section class="panel"><h2>What you are building</h2><h3>A desktop student register</h3><p>Build a WPF window to add, show, edit and remove students. Compare database storage with exporting data as a JSON text file.</p><p>The example can use SQLite or SQL Server. JSON export creates a separate file.</p><h3>Check the result</h3><p>Run the Windows desktop app, add a student, select the row and try editing it.</p></section><div class="theory">
+  <p>
+    The WPF window collects input. ADO.NET sends SQL to SQL Server and returns the rows to
+    the list on the screen.
+  </p>
+  <section>
+    <h2>How to test this example in Visual Studio</h2>
+    <p>
+      Download the project below, extract it into its own folder, then open
+      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+      Solution. For console projects choose Start Without Debugging. For API projects use
+      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
+      then run the command shown in the lesson. Do not paste all files into Program.cs:
+      use the exact file names displayed below.
+    </p>
+  </section>
+  <section>
+    <h2>Prepare and run</h2>
+    <p>
+      This WPF project needs Windows and the .NET desktop development workload. First run
+      setup.sql from project 05-ado-sqlserver in SSMS. Change the local SQL connection if
+      your instance is different, or set STUDYLAB_SQL in the launching environment. Open
+      the desktop project and select ADO.NET SQL Server in the dropdown. Enter Name and
+      Age. Use Create, Read, Update selected and Delete selected.
+    </p>
+  </section>
+  <section>
+    <h2>Trace one button</h2>
+    <p>
+      Create validates the form, opens a SqlConnection, creates an INSERT SqlCommand, adds
+      typed parameters and calls ExecuteNonQuery. Read runs SELECT and loops over
+      SqlDataReader. Selecting a row copies its values into the text boxes. Update/Delete
+      use that selected ID. using closes connections/readers promptly. The simple
+      synchronous desktop handlers are intentionally small; a larger application should
+      use asynchronous I/O to keep the UI responsive.
+    </p>
+  </section>
+  <section>
+    <h2>Expected behaviour</h2>
+    <p>
+      Create Lefa,22 then Read: Lefa appears. Select it, change age to 23, choose Update
+      selected, then Read: age is 23 when selected again. Delete selected removes the row.
+      Invalid input displays a message. SQL errors are shown locally for this lab, not
+      sent to public clients.
+    </p>
+  </section>
+  <section>
+    <h2>Try it yourself</h2>
+    <details class="panel">
+      <summary>Click Update selected with no row selected.</summary>
+      <h3>Worked answer</h3>
+      <p>
+        Expected: Select a student. Do not invent an ID from a text box without validating
+        its relationship to the selected record.
+      </p>
+    </details>
+    <details class="panel">
+      <summary>Which parts change when moving this repository to an API?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        The SQL access rules remain similar. Replace WPF events with HTTP endpoints,
+        scoped services, async methods and safe response/error handling.
+      </p>
+    </details>
+  </section>
+</div>
+<section class="panel"><h2>Predict and practise</h2><p>Can a desktop app use parameterised SQL without EF Core?</p><details><summary>Check your prediction</summary><p>Yes. ADO.NET sends commands through a database connection.</p></details><h3>Make one change</h3><p>Choose the SQL Server storage option and follow one read operation.</p><details><summary>Worked guidance</summary><p>Run setup and configure the connection first. Trace the reader values into Student objects.</p></details><h3>Try independently</h3><p>Add a student in the desktop app and verify the row directly in SQL Server.</p></section><section class="panel"><h2>Full code and downloads</h2><p>The interactive lesson contains the numbered code parts, commented complete files, project ZIP, practice tasks and quiz. Keep each project in its own folder in Visual Studio.</p><a class="button" href="/learn/#cs-lesson/cs-desktop-ado">View code and download the project</a></section><section class="panel"><h2>Explore StudyLab subjects</h2><nav class="subject-links" aria-label="Related learning subjects"><a href="/learn/pseudocode/">Learn pseudocode and programming logic</a><a href="/learn/databases/">Learn databases and SQL</a><a href="/learn/csharp/">Learn C# step by step - PROG6212</a><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a><a href="/learn/docker/">Learn Docker for .NET applications</a><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a></nav></section></main><footer><p>StudyLab. Original learning materials by Lefa Malatji. Practice code in the environment stated in each lesson.</p><a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a></footer></body></html>

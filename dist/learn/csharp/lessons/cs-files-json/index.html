@@ -1,0 +1,66 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-QtlVLi3aZWBp6O8q0/UkZqhYvdS4Ilx1WPgQWYCGYT0='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>Desktop file I/O, text and JSON serialization | StudyLab</title><meta name="description" content="Desktop file I/O, text and JSON serialization. Write student data to a JSON file and read it back as a preview."><meta name="robots" content="index,follow"><link rel="canonical" href="https://lefamalatji.co.za/learn/csharp/lessons/cs-files-json/"><meta property="og:type" content="website"><meta property="og:site_name" content="StudyLab"><meta property="og:title" content="Desktop file I/O, text and JSON serialization | StudyLab"><meta property="og:description" content="Desktop file I/O, text and JSON serialization. Write student data to a JSON file and read it back as a preview."><meta property="og:url" content="https://lefamalatji.co.za/learn/csharp/lessons/cs-files-json/"><meta property="og:image" content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1"><script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Desktop file I/O, text and JSON serialization","description":"Desktop file I/O, text and JSON serialization. Write student data to a JSON file and read it back as a preview.","url":"https://lefamalatji.co.za/learn/csharp/lessons/cs-files-json/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}</script></head><body><a class="skip" href="#content">Skip to content</a><header><a class="brand" href="/studylab/"><span class="portrait"><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42"></span>Study<span>Lab</span></a><a href="/learn/">Open learning app</a></header><main id="content"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/studylab/">StudyLab</a> / <a href="/learn/csharp/">C# lessons</a></nav><h1>Desktop file I/O, text and JSON serialization</h1><p class="lede">Write student data to a JSON file and read it back as a preview.</p><a class="button" href="/learn/#cs-lesson/cs-files-json">Open interactive lesson and complete code</a><section class="panel"><h2>What you are building</h2><h3>A desktop student register</h3><p>Build a WPF window to add, show, edit and remove students. Compare database storage with exporting data as a JSON text file.</p><p>The example can use SQLite or SQL Server. JSON export creates a separate file.</p><h3>Check the result</h3><p>Run the Windows desktop app, add a student, select the row and try editing it.</p></section><div class="theory">
+  <p>
+    A file is a named box on disk. Serialization turns objects into a format you can save;
+    deserialization turns that saved text back into objects.
+  </p>
+  <section>
+    <h2>How to test this example in Visual Studio</h2>
+    <p>
+      Download the project below, extract it into its own folder, then open
+      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+      Solution. For console projects choose Start Without Debugging. For API projects use
+      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
+      then run the command shown in the lesson. Do not paste all files into Program.cs:
+      use the exact file names displayed below.
+    </p>
+  </section>
+  <section>
+    <h2>Create, read and manipulate files</h2>
+    <pre><code>string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), &quot;StudyLabData&quot;);
+Directory.CreateDirectory(folder);
+string file = Path.Combine(folder, &quot;notes.txt&quot;);
+File.WriteAllText(file, &quot;First note&quot;);
+File.AppendAllText(file, &quot;\nSecond note&quot;);
+string[] lines = File.ReadAllLines(file);</code></pre>
+    <p>
+      Path.Combine builds a path using the platform’s separators.
+      Directory.CreateDirectory is safe when the directory already exists. ReadAllText
+      reads one string; ReadAllLines reads an array. Use streams for very large files.
+      Check permission and missing-file errors. Do not build arbitrary file paths from
+      untrusted input.
+    </p>
+  </section>
+  <section>
+    <h2>Serialize student objects</h2>
+    <pre><code>File.WriteAllText(file, JsonSerializer.Serialize(students));
+var loaded = JsonSerializer.Deserialize&lt;List&lt;Student&gt;&gt;(File.ReadAllText(file)) ?? [];</code></pre>
+    <p>
+      System.Text.Json is included with .NET. The desktop sample exports into
+      students.json under LocalApplicationData/StudyLabData. Expected JSON is an array
+      with id, name and age properties (the exact property case depends on options). Read
+      JSON previews the file; it deliberately does not insert those IDs back into the
+      database. Do not use BinaryFormatter for new code.
+    </p>
+  </section>
+  <section>
+    <h2>Try it yourself</h2>
+    <details class="panel">
+      <summary>What happens when Read JSON is clicked before Export JSON?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        The guarded event handler shows a missing-file message. Export first or add a
+        File.Exists check with a friendly prompt.
+      </p>
+    </details>
+    <details class="panel">
+      <summary>Why does re-importing identity IDs need care?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        They can conflict with existing rows or database identity rules. Validate the
+        import and define an insert/update policy instead of blindly attaching the
+        objects.
+      </p>
+    </details>
+  </section>
+</div>
+<section class="panel"><h2>Predict and practise</h2><p>Does reading a JSON preview automatically insert rows into the database?</p><details><summary>Check your prediction</summary><p>No. Previewing the file and saving database rows are separate actions.</p></details><h3>Make one change</h3><p>Export the student list and open the JSON file as text.</p><details><summary>Worked guidance</summary><p>Find the serialization and file-write calls. Notice property names and values in the output.</p></details><h3>Try independently</h3><p>Export two students and explain how a missing or malformed file should be handled.</p></section><section class="panel"><h2>Full code and downloads</h2><p>The interactive lesson contains the numbered code parts, commented complete files, project ZIP, practice tasks and quiz. Keep each project in its own folder in Visual Studio.</p><a class="button" href="/learn/#cs-lesson/cs-files-json">View code and download the project</a></section><section class="panel"><h2>Explore StudyLab subjects</h2><nav class="subject-links" aria-label="Related learning subjects"><a href="/learn/pseudocode/">Learn pseudocode and programming logic</a><a href="/learn/databases/">Learn databases and SQL</a><a href="/learn/csharp/">Learn C# step by step - PROG6212</a><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a><a href="/learn/docker/">Learn Docker for .NET applications</a><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a></nav></section></main><footer><p>StudyLab. Original learning materials by Lefa Malatji. Practice code in the environment stated in each lesson.</p><a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a></footer></body></html>

@@ -1,0 +1,63 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-bMdsDghQa6IsCtyYeFG/vHSECELsC8aeB432EI5FvdE='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>Anonymous types and LINQ queries | StudyLab</title><meta name="description" content="Anonymous types and LINQ queries. Filter a list with Where, choose fields with Select and compare the resulting values."><meta name="robots" content="index,follow"><link rel="canonical" href="https://lefamalatji.co.za/learn/csharp/lessons/cs-linq/"><meta property="og:type" content="website"><meta property="og:site_name" content="StudyLab"><meta property="og:title" content="Anonymous types and LINQ queries | StudyLab"><meta property="og:description" content="Anonymous types and LINQ queries. Filter a list with Where, choose fields with Select and compare the resulting values."><meta property="og:url" content="https://lefamalatji.co.za/learn/csharp/lessons/cs-linq/"><meta property="og:image" content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1"><script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Anonymous types and LINQ queries","description":"Anonymous types and LINQ queries. Filter a list with Where, choose fields with Select and compare the resulting values.","url":"https://lefamalatji.co.za/learn/csharp/lessons/cs-linq/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}</script></head><body><a class="skip" href="#content">Skip to content</a><header><a class="brand" href="/studylab/"><span class="portrait"><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42"></span>Study<span>Lab</span></a><a href="/learn/">Open learning app</a></header><main id="content"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/studylab/">StudyLab</a> / <a href="/learn/csharp/">C# lessons</a></nav><h1>Anonymous types and LINQ queries</h1><p class="lede">Filter a list with Where, choose fields with Select and compare the resulting values.</p><a class="button" href="/learn/#cs-lesson/cs-linq">Open interactive lesson and complete code</a><section class="panel"><h2>What you are building</h2><h3>A console playground for C# features</h3><p>Run small experiments with objects, reusable helpers, lists and work that takes time. Each experiment prints results in the console.</p><p>These experiments use temporary values rather than a student database.</p><h3>Check the result</h3><p>Run the console app, find the part for this lesson and compare its printed result with the explanation.</p></section><div class="theory">
+  <p>
+    LINQ is a set of tools for asking questions about data. Imagine a tray of student
+    cards: keep the passing cards, sort them, then copy only the information you need.
+  </p>
+  <section>
+    <h2>How to test this example in Visual Studio</h2>
+    <p>
+      Download the project below, extract it into its own folder, then open
+      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+      Solution. For console projects choose Start Without Debugging. For API projects use
+      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
+      then run the command shown in the lesson. Do not paste all files into Program.cs:
+      use the exact file names displayed below.
+    </p>
+  </section>
+  <section>
+    <h2>Filter, sort, project and group</h2>
+    <pre><code>var passes = students.Where(s =&gt; s.Mark &gt;= 50)
+    .OrderBy(s =&gt; s.Name)
+    .Select(s =&gt; new { s.Name, s.Mark });
+foreach (var student in passes)
+    Console.WriteLine($&quot;Pass: {student.Name} {student.Mark}&quot;);
+var average = students.Average(s =&gt; s.Mark);
+var groups = students.GroupBy(s =&gt; s.Mark &gt;= 50);</code></pre>
+    <p>
+      Where filters; OrderBy sorts; Select projects into a small anonymous object.
+      Anonymous types have compiler-generated read-only properties and are useful inside a
+      method. Use named DTOs for API contracts. Expected passing rows: Lefa 80 and Mpho
+      90.
+    </p>
+  </section>
+  <section>
+    <h2>Deferred execution and database queries</h2>
+    <p>
+      Many LINQ operators describe a query without immediately running it. foreach,
+      ToList, Count and similar terminal operations execute it. A List uses
+      LINQ-to-Objects. An EF IQueryable can translate supported operations into SQL. Do
+      filtering and paging before ToListAsync to avoid loading the whole table. First
+      throws when no match exists; FirstOrDefault can return null. Check for null.
+    </p>
+  </section>
+  <section>
+    <h2>Try it yourself</h2>
+    <details class="panel">
+      <summary>Return only names for marks 80 and above.</summary>
+      <h3>Worked answer</h3>
+      <p>
+        students.Where(s =&gt; s.Mark &gt;= 80).Select(s =&gt; s.Name). Expected: Lefa,
+        Mpho.
+      </p>
+    </details>
+    <details class="panel">
+      <summary>Explain why ToList before Where can waste memory.</summary>
+      <h3>Worked answer</h3>
+      <p>
+        It loads every row before filtering. On a database query, filter first and
+        materialize the smaller result.
+      </p>
+    </details>
+  </section>
+</div>
+<section class="panel"><h2>Predict and practise</h2><p>Which keeps only matching items: Where or Select?</p><details><summary>Check your prediction</summary><p>Where filters. Select chooses or transforms the result for each item.</p></details><h3>Make one change</h3><p>Change a Where condition and write down which rows should remain.</p><details><summary>Worked guidance</summary><p>Trace each input item against the condition before running the query.</p></details><h3>Try independently</h3><p>Create a list of five student marks. Find passing marks, sort them and print them.</p></section><section class="panel"><h2>Full code and downloads</h2><p>The interactive lesson contains the numbered code parts, commented complete files, project ZIP, practice tasks and quiz. Keep each project in its own folder in Visual Studio.</p><a class="button" href="/learn/#cs-lesson/cs-linq">View code and download the project</a></section><section class="panel"><h2>Explore StudyLab subjects</h2><nav class="subject-links" aria-label="Related learning subjects"><a href="/learn/pseudocode/">Learn pseudocode and programming logic</a><a href="/learn/databases/">Learn databases and SQL</a><a href="/learn/csharp/">Learn C# step by step - PROG6212</a><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a><a href="/learn/docker/">Learn Docker for .NET applications</a><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a></nav></section></main><footer><p>StudyLab. Original learning materials by Lefa Malatji. Practice code in the environment stated in each lesson.</p><a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a></footer></body></html>

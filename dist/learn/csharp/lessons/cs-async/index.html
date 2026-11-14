@@ -1,0 +1,59 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-JarFaNnSEPt1r9SNfzuSUYkqx22e/2+b/ESdmjgIM/4='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>Async, await, cancellation and Task.WhenAll | StudyLab</title><meta name="description" content="Async, await, cancellation and Task.WhenAll. Follow an awaited task, cancellation and several tasks waited for together."><meta name="robots" content="index,follow"><link rel="canonical" href="https://lefamalatji.co.za/learn/csharp/lessons/cs-async/"><meta property="og:type" content="website"><meta property="og:site_name" content="StudyLab"><meta property="og:title" content="Async, await, cancellation and Task.WhenAll | StudyLab"><meta property="og:description" content="Async, await, cancellation and Task.WhenAll. Follow an awaited task, cancellation and several tasks waited for together."><meta property="og:url" content="https://lefamalatji.co.za/learn/csharp/lessons/cs-async/"><meta property="og:image" content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1"><script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Async, await, cancellation and Task.WhenAll","description":"Async, await, cancellation and Task.WhenAll. Follow an awaited task, cancellation and several tasks waited for together.","url":"https://lefamalatji.co.za/learn/csharp/lessons/cs-async/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}</script></head><body><a class="skip" href="#content">Skip to content</a><header><a class="brand" href="/studylab/"><span class="portrait"><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42"></span>Study<span>Lab</span></a><a href="/learn/">Open learning app</a></header><main id="content"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/studylab/">StudyLab</a> / <a href="/learn/csharp/">C# lessons</a></nav><h1>Async, await, cancellation and Task.WhenAll</h1><p class="lede">Follow an awaited task, cancellation and several tasks waited for together.</p><a class="button" href="/learn/#cs-lesson/cs-async">Open interactive lesson and complete code</a><section class="panel"><h2>What you are building</h2><h3>A console playground for C# features</h3><p>Run small experiments with objects, reusable helpers, lists and work that takes time. Each experiment prints results in the console.</p><p>These experiments use temporary values rather than a student database.</p><h3>Check the result</h3><p>Run the console app, find the part for this lesson and compare its printed result with the explanation.</p></section><div class="theory">
+  <p>
+    When you order food, you do not need to stand frozen at the counter. An asynchronous
+    method can wait for I/O and let the thread do other useful work.
+  </p>
+  <section>
+    <h2>How to test this example in Visual Studio</h2>
+    <p>
+      Download the project below, extract it into its own folder, then open
+      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+      Solution. For console projects choose Start Without Debugging. For API projects use
+      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
+      then run the command shown in the lesson. Do not paste all files into Program.cs:
+      use the exact file names displayed below.
+    </p>
+  </section>
+  <section>
+    <h2>Follow a Task</h2>
+    <pre><code>static async Task&lt;string&gt; LoadAsync(string name)
+{
+    await Task.Delay(20);
+    return name;
+}
+var values = await Task.WhenAll(LoadAsync(&quot;A&quot;), LoadAsync(&quot;B&quot;));
+Console.WriteLine(string.Join(&quot;,&quot;, values));</code></pre>
+    <p>
+      Expected: A,B. The operations overlap their waiting time. WhenAll returns results in
+      input order, not completion order. Use async Task for work and async Task&lt;T&gt;
+      for a result. async void is mainly for event handlers.
+    </p>
+  </section>
+  <section>
+    <h2>Cancellation and errors</h2>
+    <p>
+      Pass a CancellationToken into HTTP, database and delay methods. A cancelled task
+      usually throws OperationCanceledException at await. A task failure is rethrown at
+      await; handle it where you can recover. Avoid .Result or .Wait on a UI thread. Do
+      not hold a lock across await. For CPU work use a bounded amount of parallel work,
+      rather than launching unlimited tasks.
+    </p>
+  </section>
+  <section>
+    <h2>Try it yourself</h2>
+    <details class="panel">
+      <summary>Why use Task.Delay instead of Thread.Sleep in an async demo?</summary>
+      <h3>Worked answer</h3>
+      <p>Task.Delay yields while waiting. Thread.Sleep blocks the current thread.</p>
+    </details>
+    <details class="panel">
+      <summary>Rewrite two sequential downloads as overlapping I/O.</summary>
+      <h3>Worked answer</h3>
+      <p>
+        Create both tasks first, then await Task.WhenAll. Still limit concurrency for
+        large batches.
+      </p>
+    </details>
+  </section>
+</div>
+<section class="panel"><h2>Predict and practise</h2><p>Does await automatically start a new thread?</p><details><summary>Check your prediction</summary><p>No. It waits for an operation without blocking the current thread during the wait.</p></details><h3>Make one change</h3><p>Find the cancellation token and trace where it is passed.</p><details><summary>Worked guidance</summary><p>Cancellation must be requested and observed by the operation. async alone does not cancel work.</p></details><h3>Try independently</h3><p>Run two independent asynchronous waits together and handle a cancellation request.</p></section><section class="panel"><h2>Full code and downloads</h2><p>The interactive lesson contains the numbered code parts, commented complete files, project ZIP, practice tasks and quiz. Keep each project in its own folder in Visual Studio.</p><a class="button" href="/learn/#cs-lesson/cs-async">View code and download the project</a></section><section class="panel"><h2>Explore StudyLab subjects</h2><nav class="subject-links" aria-label="Related learning subjects"><a href="/learn/pseudocode/">Learn pseudocode and programming logic</a><a href="/learn/databases/">Learn databases and SQL</a><a href="/learn/csharp/">Learn C# step by step - PROG6212</a><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a><a href="/learn/docker/">Learn Docker for .NET applications</a><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a></nav></section></main><footer><p>StudyLab. Original learning materials by Lefa Malatji. Practice code in the environment stated in each lesson.</p><a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a></footer></body></html>

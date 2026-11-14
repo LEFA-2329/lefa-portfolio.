@@ -1,0 +1,70 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-dZPlo01qftwF1FMfx0GE08narMEyyrMwuUowSksIccM='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>Threads, parallel work and shared data | StudyLab</title><meta name="description" content="Threads, parallel work and shared data. Compare shared counter updates and see why simultaneous changes need coordination."><meta name="robots" content="index,follow"><link rel="canonical" href="https://lefamalatji.co.za/learn/csharp/lessons/cs-threads/"><meta property="og:type" content="website"><meta property="og:site_name" content="StudyLab"><meta property="og:title" content="Threads, parallel work and shared data | StudyLab"><meta property="og:description" content="Threads, parallel work and shared data. Compare shared counter updates and see why simultaneous changes need coordination."><meta property="og:url" content="https://lefamalatji.co.za/learn/csharp/lessons/cs-threads/"><meta property="og:image" content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1"><script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Threads, parallel work and shared data","description":"Threads, parallel work and shared data. Compare shared counter updates and see why simultaneous changes need coordination.","url":"https://lefamalatji.co.za/learn/csharp/lessons/cs-threads/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}</script></head><body><a class="skip" href="#content">Skip to content</a><header><a class="brand" href="/studylab/"><span class="portrait"><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42"></span>Study<span>Lab</span></a><a href="/learn/">Open learning app</a></header><main id="content"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/studylab/">StudyLab</a> / <a href="/learn/csharp/">C# lessons</a></nav><h1>Threads, parallel work and shared data</h1><p class="lede">Compare shared counter updates and see why simultaneous changes need coordination.</p><a class="button" href="/learn/#cs-lesson/cs-threads">Open interactive lesson and complete code</a><section class="panel"><h2>What you are building</h2><h3>A console playground for C# features</h3><p>Run small experiments with objects, reusable helpers, lists and work that takes time. Each experiment prints results in the console.</p><p>These experiments use temporary values rather than a student database.</p><h3>Check the result</h3><p>Run the console app, find the part for this lesson and compare its printed result with the explanation.</p></section><div class="theory">
+  <p>
+    One worker can do jobs in order. Several workers can work at the same time, but they
+    must not fight over the same notebook.
+  </p>
+  <section>
+    <h2>How to test this example in Visual Studio</h2>
+    <p>
+      Download the project below, extract it into its own folder, then open
+      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+      Solution. For console projects choose Start Without Debugging. For API projects use
+      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
+      then run the command shown in the lesson. Do not paste all files into Program.cs:
+      use the exact file names displayed below.
+    </p>
+  </section>
+  <section>
+    <h2>Make shared updates safe</h2>
+    <pre><code>int count = 0;
+Parallel.For(0, 1000, _ =&gt; Interlocked.Increment(ref count));
+Console.WriteLine($&quot;Safe count: {count}&quot;);
+var worker = new Thread(() =&gt; Console.WriteLine(&quot;Worker thread finished&quot;));
+worker.Start();
+worker.Join();</code></pre>
+    <p>
+      Expected count: 1000. count++ reads, adds and writes, so racing workers can lose
+      updates. Interlocked makes this small update atomic. lock protects a larger critical
+      section; keep locks short. Join waits for a thread to finish and blocks the caller.
+    </p>
+  </section>
+  <section>
+    <h2>Choose the right model</h2>
+    <ul>
+      <li>Multithreading: more than one thread can make progress.</li>
+      <li>
+        Parallelism: work executes at the same time, useful for sufficiently large CPU
+        calculations. Task.Run can offload CPU work from a desktop UI thread.
+      </li>
+      <li>
+        Asynchrony: do not block while waiting for I/O. It can use the same thread again
+        later; async does not always create a new thread.
+      </li>
+      <li>
+        WPF controls belong to their UI thread. Use Dispatcher for UI updates from another
+        thread. Never share a DbContext across parallel tasks; give independent work
+        separate scopes or contexts.
+      </li>
+    </ul>
+  </section>
+  <section>
+    <h2>Try it yourself</h2>
+    <details class="panel">
+      <summary>Why is a static List dangerous for simultaneous API writes?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        Concurrent mutation can corrupt assumptions. Use a real database, a properly
+        locked store, or a suitable concurrent collection for an in-memory demo.
+      </p>
+    </details>
+    <details class="panel">
+      <summary>When is Parallel.For a bad choice?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        For tiny jobs or waiting on network I/O, overhead or blocked workers can make it
+        slower.
+      </p>
+    </details>
+  </section>
+</div>
+<section class="panel"><h2>Predict and practise</h2><p>Is count++ safe when several threads update the same counter?</p><details><summary>Check your prediction</summary><p>Not by itself. Reading, adding and writing can overlap.</p></details><h3>Make one change</h3><p>Compare the example counter update with Interlocked.Increment.</p><details><summary>Worked guidance</summary><p>Interlocked performs the increment atomically. Run repeated experiments but do not treat one correct run as proof.</p></details><h3>Try independently</h3><p>Write a shared counter experiment and explain how you protect updates.</p></section><section class="panel"><h2>Full code and downloads</h2><p>The interactive lesson contains the numbered code parts, commented complete files, project ZIP, practice tasks and quiz. Keep each project in its own folder in Visual Studio.</p><a class="button" href="/learn/#cs-lesson/cs-threads">View code and download the project</a></section><section class="panel"><h2>Explore StudyLab subjects</h2><nav class="subject-links" aria-label="Related learning subjects"><a href="/learn/pseudocode/">Learn pseudocode and programming logic</a><a href="/learn/databases/">Learn databases and SQL</a><a href="/learn/csharp/">Learn C# step by step - PROG6212</a><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a><a href="/learn/docker/">Learn Docker for .NET applications</a><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a></nav></section></main><footer><p>StudyLab. Original learning materials by Lefa Malatji. Practice code in the environment stated in each lesson.</p><a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a></footer></body></html>

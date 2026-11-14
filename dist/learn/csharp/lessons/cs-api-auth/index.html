@@ -1,0 +1,93 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-EqQFrZI6Bsc+et+2XfRuxOVn8dlCUI95ayBGEYn9b7Y='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>Registration, login and bearer-token testing | StudyLab</title><meta name="description" content="Registration, login and bearer-token testing. Register, log in and use the returned token to call a protected endpoint."><meta name="robots" content="index,follow"><link rel="canonical" href="https://lefamalatji.co.za/learn/csharp/lessons/cs-api-auth/"><meta property="og:type" content="website"><meta property="og:site_name" content="StudyLab"><meta property="og:title" content="Registration, login and bearer-token testing | StudyLab"><meta property="og:description" content="Registration, login and bearer-token testing. Register, log in and use the returned token to call a protected endpoint."><meta property="og:url" content="https://lefamalatji.co.za/learn/csharp/lessons/cs-api-auth/"><meta property="og:image" content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1"><script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Registration, login and bearer-token testing","description":"Registration, login and bearer-token testing. Register, log in and use the returned token to call a protected endpoint.","url":"https://lefamalatji.co.za/learn/csharp/lessons/cs-api-auth/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}</script></head><body><a class="skip" href="#content">Skip to content</a><header><a class="brand" href="/studylab/"><span class="portrait"><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42"></span>Study<span>Lab</span></a><a href="/learn/">Open learning app</a></header><main id="content"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/studylab/">StudyLab</a> / <a href="/learn/csharp/">C# lessons</a></nav><h1>Registration, login and bearer-token testing</h1><p class="lede">Register, log in and use the returned token to call a protected endpoint.</p><a class="button" href="/learn/#cs-lesson/cs-api-auth">Open interactive lesson and complete code</a><section class="panel"><h2>What you are building</h2><h3>A student API with accounts and protected records</h3><p>Register an account and log in. Each signed-in user works with their own students. The API also shows paging and checks whether a record has changed before saving an edit.</p><p>Accounts and student rows are stored in SQLite. Keep the access token for later requests.</p><h3>Check the result</h3><p>Register, log in, copy the token into a request and create a student belonging to that account.</p></section><div class="theory">
+  <p>
+    Authentication asks “Who are you?” Authorisation asks “May you do this?” A password is
+    not a token and a token should not be treated like public text.
+  </p>
+  <section>
+    <h2>How to test this example in Visual Studio</h2>
+    <p>
+      Download the project below, extract it into its own folder, then open
+      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+      Solution. For console projects choose Start Without Debugging. For API projects use
+      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
+      then run the command shown in the lesson. Do not paste all files into Program.cs:
+      use the exact file names displayed below.
+    </p>
+  </section>
+  <section>
+    <h2>Follow the complete Identity flow</h2>
+    <p>
+      ASP.NET Core Identity stores hashed passwords and user records through
+      Microsoft.AspNetCore.Identity.EntityFrameworkCore. AddIdentityApiEndpoints registers
+      its API authentication services. AddEntityFrameworkStores connects Identity to
+      AppDb. MapIdentityApi under /auth maps registration, login and other account
+      endpoints. This example uses Identity’s opaque bearer tokens; they are not JWTs.
+    </p>
+    <pre><code>POST http://localhost:5100/auth/register
+Content-Type: application/json
+
+{&quot;email&quot;:&quot;student@example.com&quot;,&quot;password&quot;:&quot;ChooseYourOwn_Strong123!&quot;}
+
+POST http://localhost:5100/auth/login?useCookies=false
+Content-Type: application/json
+
+{&quot;email&quot;:&quot;student@example.com&quot;,&quot;password&quot;:&quot;ChooseYourOwn_Strong123!&quot;}</code></pre>
+  </section>
+  <section>
+    <h2>Use the response</h2>
+    <p>
+      Register returns 200 with no useful resource body when successful. Login returns
+      accessToken, refreshToken, tokenType and expiry information. Copy the actual
+      accessToken into the token variable in requests.http. Then send Authorization:
+      Bearer followed by the token when calling /api/students. Wrong credentials should
+      return 401. Never commit your real token. Use /auth/refresh with the refresh token
+      for the supported refresh flow.
+    </p>
+  </section>
+  <section>
+    <h2>Before a real deployment</h2>
+    <ul>
+      <li>
+        Serve authentication over HTTPS. Local HTTP in this lab is restricted to localhost
+        experiments.
+      </li>
+      <li>
+        Configure confirmed email, delivery, password-reset and account recovery before
+        relying on account verification. The sample does not send emails.
+      </li>
+      <li>
+        For a browser-first application consider secure HttpOnly cookies with CSRF
+        protection instead of storing bearer tokens in localStorage.
+      </li>
+      <li>
+        For enterprise SSO, third-party clients or JWT/OAuth requirements use a real
+        OpenID Connect/OAuth provider and validate issuer, audience, signature and
+        lifetime. Do not invent your own token format or password encryption.
+      </li>
+      <li>
+        401 means not authenticated; 403 means authenticated but lacking permission. Add
+        roles/policies for staff/admin functions, not a client-side role dropdown.
+      </li>
+    </ul>
+  </section>
+  <section>
+    <h2>Try it yourself</h2>
+    <details class="panel">
+      <summary>Can you decode this opaque token as a JWT?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        No. This Identity flow issues a proprietary protected token. Do not promise JWT
+        claims or third-party JWT interoperability.
+      </p>
+    </details>
+    <details class="panel">
+      <summary>How do you prove ownership isolation?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        Register two test accounts, create a row under the first, then try GET/PUT/DELETE
+        of that ID under the second. Expect no access to the first account’s row.
+      </p>
+    </details>
+  </section>
+</div>
+<section class="panel"><h2>Predict and practise</h2><p>Can a protected request work without a valid access token?</p><details><summary>Check your prediction</summary><p>It should be rejected. Registration creates an account; login provides the token used for access.</p></details><h3>Make one change</h3><p>Register, log in, then send a Bearer token with a protected request.</p><details><summary>Worked guidance</summary><p>Use the accessToken returned by login. These Identity tokens are opaque tokens, not JWTs.</p></details><h3>Try independently</h3><p>Create two accounts and verify one cannot read the other account&#39;s student by ID.</p></section><section class="panel"><h2>Full code and downloads</h2><p>The interactive lesson contains the numbered code parts, commented complete files, project ZIP, practice tasks and quiz. Keep each project in its own folder in Visual Studio.</p><a class="button" href="/learn/#cs-lesson/cs-api-auth">View code and download the project</a></section><section class="panel"><h2>Explore StudyLab subjects</h2><nav class="subject-links" aria-label="Related learning subjects"><a href="/learn/pseudocode/">Learn pseudocode and programming logic</a><a href="/learn/databases/">Learn databases and SQL</a><a href="/learn/csharp/">Learn C# step by step - PROG6212</a><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a><a href="/learn/docker/">Learn Docker for .NET applications</a><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a></nav></section></main><footer><p>StudyLab. Original learning materials by Lefa Malatji. Practice code in the environment stated in each lesson.</p><a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a></footer></body></html>

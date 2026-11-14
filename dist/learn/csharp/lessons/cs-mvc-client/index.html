@@ -1,0 +1,79 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-MndQ0/Yq+SdSgTRz90cOj7YzCEsPffEyPCSIhEnjnUk='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>Build a full MVC website that calls your API | StudyLab</title><meta name="description" content="Build a full MVC website that calls your API. Follow a form submission from the MVC website to the API and back to a page."><meta name="robots" content="index,follow"><link rel="canonical" href="https://lefamalatji.co.za/learn/csharp/lessons/cs-mvc-client/"><meta property="og:type" content="website"><meta property="og:site_name" content="StudyLab"><meta property="og:title" content="Build a full MVC website that calls your API | StudyLab"><meta property="og:description" content="Build a full MVC website that calls your API. Follow a form submission from the MVC website to the API and back to a page."><meta property="og:url" content="https://lefamalatji.co.za/learn/csharp/lessons/cs-mvc-client/"><meta property="og:image" content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1"><script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Build a full MVC website that calls your API","description":"Build a full MVC website that calls your API. Follow a form submission from the MVC website to the API and back to a page.","url":"https://lefamalatji.co.za/learn/csharp/lessons/cs-mvc-client/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}</script></head><body><a class="skip" href="#content">Skip to content</a><header><a class="brand" href="/studylab/"><span class="portrait"><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42"></span>Study<span>Lab</span></a><a href="/learn/">Open learning app</a></header><main id="content"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/studylab/">StudyLab</a> / <a href="/learn/csharp/">C# lessons</a></nav><h1>Build a full MVC website that calls your API</h1><p class="lede">Follow a form submission from the MVC website to the API and back to a page.</p><a class="button" href="/learn/#cs-lesson/cs-mvc-client">Open interactive lesson and complete code</a><section class="panel"><h2>What you are building</h2><h3>A student website with pages and forms</h3><p>Build an MVC website that asks a separate student API to do the data work. Use pages to view students and forms to add, edit or delete them.</p><p>The API holds the student data; the website displays it. Run both projects.</p><h3>Check the result</h3><p>Start the API on port 5100 and the website on port 5200, then add a student through the website.</p></section><div class="theory">
+  <p>
+    The website is the shop front. The API is the service counter. They can be separate
+    applications, even when both are written in C#.
+  </p>
+  <section>
+    <h2>How to test this example in Visual Studio</h2>
+    <p>
+      Download the project below, extract it into its own folder, then open
+      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+      Solution. For console projects choose Start Without Debugging. For API projects use
+      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
+      then run the command shown in the lesson. Do not paste all files into Program.cs:
+      use the exact file names displayed below.
+    </p>
+  </section>
+  <section>
+    <h2>Run two applications</h2>
+    <p>
+      Start project 02-controller-api on port 5100 first. Open this MVC project in another
+      Visual Studio window or terminal. Run it on port 5200. Its SchoolApi configuration
+      points to http://localhost:5100/.
+    </p>
+    <pre><code>dotnet run --urls http://localhost:5200</code></pre>
+    <p>
+      Open http://localhost:5200 in a browser. Add a student, change the fields and save,
+      then delete the student. The MVC server sends HTTP requests to the API; it does not
+      connect directly to the database.
+    </p>
+  </section>
+  <section>
+    <h2>Understand the files</h2>
+    <ul>
+      <li>
+        Program.cs registers AddControllersWithViews and a named HttpClient.
+        IHttpClientFactory manages client-handler lifetimes.
+      </li>
+      <li>
+        The MVC controller calls GetFromJsonAsync, PostAsJsonAsync, PutAsJsonAsync and
+        DeleteAsync. It chooses a Razor View or redirects after a form submission.
+      </li>
+      <li>
+        Index.cshtml uses @model List&lt;Student&gt; and Razor encoding to display data.
+        Each changing form includes an antiforgery token, and actions use
+        ValidateAntiForgeryToken.
+      </li>
+      <li>
+        The browser submits forms to the MVC server. This server-to-server API call does
+        not need CORS. Browser JavaScript calling a different-origin API does need a
+        deliberate CORS policy.
+      </li>
+      <li>
+        Expected result: a student form and a list of rows, each with Save changes and
+        Delete. An API outage must be handled in a polished app; a connection-refused
+        exception means start/check the API first.
+      </li>
+    </ul>
+  </section>
+  <section>
+    <h2>Try it yourself</h2>
+    <details class="panel">
+      <summary>Why must the two applications use different ports?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        Only one process can listen on the same address and port at once. The client’s
+        configured API base address must match the API’s actual port.
+      </p>
+    </details>
+    <details class="panel">
+      <summary>Would allowing every CORS origin secure this API?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        No. CORS controls which browser origins can read responses. Authentication and
+        authorisation still belong on the server.
+      </p>
+    </details>
+  </section>
+</div>
+<section class="panel"><h2>Predict and practise</h2><p>Does opening the website also automatically start the separate API?</p><details><summary>Check your prediction</summary><p>No. Both processes must be running with matching addresses.</p></details><h3>Make one change</h3><p>Start the API first, then the MVC website. Add a student through the form.</p><details><summary>Worked guidance</summary><p>Match the named HttpClient address to the running API port. The form posts to MVC, which calls the API.</p></details><h3>Try independently</h3><p>Edit and delete students through the website and explain which project stores the data.</p></section><section class="panel"><h2>Full code and downloads</h2><p>The interactive lesson contains the numbered code parts, commented complete files, project ZIP, practice tasks and quiz. Keep each project in its own folder in Visual Studio.</p><a class="button" href="/learn/#cs-lesson/cs-mvc-client">View code and download the project</a></section><section class="panel"><h2>Explore StudyLab subjects</h2><nav class="subject-links" aria-label="Related learning subjects"><a href="/learn/pseudocode/">Learn pseudocode and programming logic</a><a href="/learn/databases/">Learn databases and SQL</a><a href="/learn/csharp/">Learn C# step by step - PROG6212</a><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a><a href="/learn/docker/">Learn Docker for .NET applications</a><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a></nav></section></main><footer><p>StudyLab. Original learning materials by Lefa Malatji. Practice code in the environment stated in each lesson.</p><a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a></footer></body></html>

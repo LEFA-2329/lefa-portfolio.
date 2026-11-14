@@ -1,0 +1,81 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-6hjf3eWe32XKpxudHOY6DVOEWel2Pt4Z7IAVSvtKkJ4='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>Networking, environment variables and secrets | StudyLab</title><meta name="description" content="Networking, environment variables and secrets. Follow the website-to-API and API-to-database connections using service names."><meta name="robots" content="index,follow"><link rel="canonical" href="https://lefamalatji.co.za/learn/docker/lessons/docker-networking/"><meta property="og:type" content="website"><meta property="og:site_name" content="StudyLab"><meta property="og:title" content="Networking, environment variables and secrets | StudyLab"><meta property="og:description" content="Networking, environment variables and secrets. Follow the website-to-API and API-to-database connections using service names."><meta property="og:url" content="https://lefamalatji.co.za/learn/docker/lessons/docker-networking/"><meta property="og:image" content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1"><script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Networking, environment variables and secrets","description":"Networking, environment variables and secrets. Follow the website-to-API and API-to-database connections using service names.","url":"https://lefamalatji.co.za/learn/docker/lessons/docker-networking/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}</script></head><body><a class="skip" href="#content">Skip to content</a><header><a class="brand" href="/studylab/"><span class="portrait"><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42"></span>Study<span>Lab</span></a><a href="/learn/">Open learning app</a></header><main id="content"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/studylab/">StudyLab</a> / <a href="/learn/docker/">Docker lessons</a></nav><h1>Networking, environment variables and secrets</h1><p class="lede">Follow the website-to-API and API-to-database connections using service names.</p><a class="button" href="/learn/#cs-lesson/docker-networking">Open interactive lesson and complete code</a><section class="panel"><h2>What you are building</h2><h3>A student website, API and database running in containers</h3><p>Package a .NET API and MVC website into images. Docker Compose starts them with SQL Server so the three services can work together.</p><p>SQL Server stores its files in a named Docker volume so they can survive container replacement.</p><h3>Check the result</h3><p>Follow the setup steps, start the Compose stack, open the website and add a student.</p></section><div class="theory">
+  <p>
+    Containers have their own idea of localhost. Service names are the addresses they use
+    to talk to one another on the Compose network.
+  </p>
+  <section>
+    <h2>How to test this example in Visual Studio</h2>
+    <p>
+      Download the project below, extract it into its own folder, then open
+      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+      Solution. For console projects choose Start Without Debugging. For API projects use
+      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
+      then run the command shown in the lesson. Do not paste all files into Program.cs:
+      use the exact file names displayed below.
+    </p>
+  </section>
+  <section>
+    <h2>Prepare your computer</h2>
+    <p>
+      Install Docker Desktop with Linux containers enabled and the .NET10 SDK. For the
+      full SQL Server stack use supported x64 hardware with enough memory for SQL Server.
+      WPF does not run in the Linux ASP.NET image. Accept applicable vendor licences
+      yourself during installation. Run docker version and docker compose version in a
+      terminal; start Docker Desktop if the engine cannot be reached.
+    </p>
+  </section>
+  <section>
+    <h2>Map the addresses</h2>
+    <ul>
+      <li>Browser on your computer → localhost:5200 → website container port8080.</li>
+      <li>
+        Website server → http://api:8080/ → API container. This is server-to-server HTTP,
+        so browser CORS does not apply to that internal hop.
+      </li>
+      <li>
+        API → Server=db,1433 → SQL Server. The database port is not published to the host
+        in this sample.
+      </li>
+      <li>
+        ConnectionStrings__School maps to ConnectionStrings:School in ASP.NET
+        configuration. Environment variables can override appsettings.json.
+      </li>
+      <li>
+        The .env file helps Compose substitute values. It is not an encrypted vault.
+        Docker inspect/config output can reveal environment values. Use managed secrets
+        and a least-privilege database account for production.
+      </li>
+    </ul>
+  </section>
+  <section>
+    <h2>Common mistakes</h2>
+    <p>
+      LEFA\SQLEXPRESS is a Windows host instance name, not the address of the db
+      container. Host port5100 and container port8080 have different jobs. Bind practice
+      published ports to127.0.0.1 to avoid exposing the lab on every network interface.
+      Inside containers, use service names; outside, use the published localhost port.
+    </p>
+  </section>
+  <section>
+    <h2>Try it yourself</h2>
+    <details class="panel">
+      <summary>
+        Website cannot reach localhost:5100 from its container. Fix the URL.
+      </summary>
+      <h3>Worked answer</h3>
+      <p>
+        Set SchoolApi to http://api:8080/. The API is another container on the Compose
+        network.
+      </p>
+    </details>
+    <details class="panel">
+      <summary>Can a password be safe just because .env is hidden?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        No. It is plaintext. Keep it out of Git, logs and screenshots, and use proper
+        secret management for deployment.
+      </p>
+    </details>
+  </section>
+</div>
+<section class="panel"><h2>Full code and downloads</h2><p>The interactive lesson contains the numbered code parts, commented complete files, project ZIP, practice tasks and quiz. Keep each project in its own folder in Visual Studio.</p><a class="button" href="/learn/#cs-lesson/docker-networking">View code and download the project</a></section><section class="panel"><h2>Explore StudyLab subjects</h2><nav class="subject-links" aria-label="Related learning subjects"><a href="/learn/pseudocode/">Learn pseudocode and programming logic</a><a href="/learn/databases/">Learn databases and SQL</a><a href="/learn/csharp/">Learn C# step by step - PROG6212</a><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a><a href="/learn/docker/">Learn Docker for .NET applications</a><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a></nav></section></main><footer><p>StudyLab. Original learning materials by Lefa Malatji. Practice code in the environment stated in each lesson.</p><a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a></footer></body></html>

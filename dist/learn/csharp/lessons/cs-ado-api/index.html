@@ -1,0 +1,120 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-jo6oj0B/1klzfbL5DvMpBrVf9HD1UB8pUnLR2Y+I568='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>CRUD using ADO.NET without Entity Framework | StudyLab</title><meta name="description" content="CRUD using ADO.NET without Entity Framework. Follow one SQL parameter from the incoming request into the database command."><meta name="robots" content="index,follow"><link rel="canonical" href="https://lefamalatji.co.za/learn/csharp/lessons/cs-ado-api/"><meta property="og:type" content="website"><meta property="og:site_name" content="StudyLab"><meta property="og:title" content="CRUD using ADO.NET without Entity Framework | StudyLab"><meta property="og:description" content="CRUD using ADO.NET without Entity Framework. Follow one SQL parameter from the incoming request into the database command."><meta property="og:url" content="https://lefamalatji.co.za/learn/csharp/lessons/cs-ado-api/"><meta property="og:image" content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1"><script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"CRUD using ADO.NET without Entity Framework","description":"CRUD using ADO.NET without Entity Framework. Follow one SQL parameter from the incoming request into the database command.","url":"https://lefamalatji.co.za/learn/csharp/lessons/cs-ado-api/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}</script></head><body><a class="skip" href="#content">Skip to content</a><header><a class="brand" href="/studylab/"><span class="portrait"><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42"></span>Study<span>Lab</span></a><a href="/learn/">Open learning app</a></header><main id="content"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/studylab/">StudyLab</a> / <a href="/learn/csharp/">C# lessons</a></nav><h1>CRUD using ADO.NET without Entity Framework</h1><p class="lede">Follow one SQL parameter from the incoming request into the database command.</p><a class="button" href="/learn/#cs-lesson/cs-ado-api">Open interactive lesson and complete code</a><section class="panel"><h2>What you are building</h2><h3>A student register that runs SQL commands</h3><p>Build an API that sends parameterised SQL commands through ADO.NET. You write the SQL used to add, find, edit and remove rows.</p><p>Student data is stored in SQL Server. Run the supplied setup script first.</p><h3>Check the result</h3><p>Create the table, send a student request and check the row in SQL Server.</p></section><div class="theory">
+  <p>
+    ADO.NET is the more hands-on route. You write SQL, add typed parameters, open a
+    connection and read results yourself.
+  </p>
+  <section>
+    <h2>How to test this example in Visual Studio</h2>
+    <p>
+      Download the project below, extract it into its own folder, then open
+      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+      Solution. For console projects choose Start Without Debugging. For API projects use
+      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
+      then run the command shown in the lesson. Do not paste all files into Program.cs:
+      use the exact file names displayed below.
+    </p>
+  </section>
+  <section>
+    <h2>Install and create the right project</h2>
+    <ul>
+      <li>
+        Install Visual Studio with ASP.NET and web development and a .NET 10-compatible
+        SDK. For WPF also install .NET desktop development. Check Tools → Get Tools and
+        Features if templates are missing.
+      </li>
+      <li>
+        Create ASP.NET Core Empty for the Minimal API, or ASP.NET Core Web API with Use
+        controllers for a controller project. Select .NET 10. Alternatively open the
+        supplied .csproj to get exactly the lesson files.
+      </li>
+      <li>
+        Use a separate folder for every example. Delete the generated weather sample if it
+        conflicts with the supplied files. Restore NuGet packages before building.
+      </li>
+      <li>
+        In View → Terminal, cd into the folder containing StudyLab.csproj. For local API
+        testing run dotnet run --urls http://localhost:5100. Open requests.http and use
+        Send Request above each request. Use the actual port from the console if you
+        launch with a different profile.
+      </li>
+    </ul>
+  </section>
+  <section>
+    <h2>Your first request</h2>
+    <pre><code>GET http://localhost:5100/api/students</code></pre>
+    <p>
+      Initially expect 200 OK with []. A browser address bar can send GET, but cannot
+      conveniently send all CRUD methods. Use the .http editor, Postman, curl.exe or a
+      Swagger UI. The JSON object is a data packet, not an HTML page.
+    </p>
+  </section>
+  <section>
+    <h2>Prepare the database</h2>
+    <p>
+      Open setup.sql in SSMS connected to your local SQL Server. Run it once to create
+      StudyLabAdo and Students. GO is an SSMS batch separator, not a command to send
+      through SqlCommand. The schema already exists in this example, so EF migrations are
+      not used. Microsoft.Data.SqlClient supplies SqlConnection, SqlCommand and
+      SqlDataReader.
+    </p>
+  </section>
+  <section>
+    <h2>Understand the methods</h2>
+    <ul>
+      <li>
+        SqlConnection describes a connection; OpenAsync actually opens it. await using
+        disposes it after the operation. Connection pooling can reuse physical
+        connections.
+      </li>
+      <li>
+        SqlCommand holds the SQL and parameters. Parameters carry values separately from
+        SQL text. Never concatenate names or search input into a SQL statement.
+      </li>
+      <li>
+        ExecuteReaderAsync returns rows. ReadAsync moves to the next row; GetInt32 and
+        GetString read typed columns in SELECT order.
+      </li>
+      <li>
+        ExecuteScalarAsync returns one value, here the inserted identity from OUTPUT
+        INSERTED.Id. ExecuteNonQueryAsync returns affected-row information for
+        updates/deletes.
+      </li>
+      <li>
+        The full controller implements all five resource routes with cancellation and
+        validation. This is an alternative to EF, not an extra layer required by EF.
+      </li>
+    </ul>
+  </section>
+  <section>
+    <h2>Parameters and expected results</h2>
+    <pre><code>cmd.Parameters.Add(&quot;@name&quot;, SqlDbType.NVarChar, 80).Value = input.Name.Trim();
+cmd.Parameters.Add(&quot;@age&quot;, SqlDbType.Int).Value = input.Age;</code></pre>
+    <p>
+      A name containing an apostrophe should still save as text. The CRUD response
+      sequence is the same as the EF controller. If UPDATE affects zero rows, return 404
+      instead of pretending a change happened.
+    </p>
+  </section>
+  <section>
+    <h2>Try it yourself</h2>
+    <details class="panel">
+      <summary>Fix: "WHERE Name = '" + input + "'".</summary>
+      <h3>Worked answer</h3>
+      <p>
+        Use WHERE Name=@name and add an NVarChar parameter. Parameters are for values;
+        validate/allowlist any selectable column names separately.
+      </p>
+    </details>
+    <details class="panel">
+      <summary>
+        Why dispose a reader before reusing the connection for another command?
+      </summary>
+      <h3>Worked answer</h3>
+      <p>
+        An open reader can hold the connection busy. Finish reading and dispose it; do not
+        rely on a reader disappearing by itself.
+      </p>
+    </details>
+  </section>
+</div>
+<section class="panel"><h2>Predict and practise</h2><p>Should user text be joined into an SQL command string?</p><details><summary>Check your prediction</summary><p>No. Pass values as typed SQL parameters.</p></details><h3>Make one change</h3><p>Trace the Name parameter from input through the INSERT command.</p><details><summary>Worked guidance</summary><p>Find the parameter placeholder and the matching Parameters.Add call.</p></details><h3>Try independently</h3><p>Add and edit a student whose name contains an apostrophe. Check the stored name.</p></section><section class="panel"><h2>Full code and downloads</h2><p>The interactive lesson contains the numbered code parts, commented complete files, project ZIP, practice tasks and quiz. Keep each project in its own folder in Visual Studio.</p><a class="button" href="/learn/#cs-lesson/cs-ado-api">View code and download the project</a></section><section class="panel"><h2>Explore StudyLab subjects</h2><nav class="subject-links" aria-label="Related learning subjects"><a href="/learn/pseudocode/">Learn pseudocode and programming logic</a><a href="/learn/databases/">Learn databases and SQL</a><a href="/learn/csharp/">Learn C# step by step - PROG6212</a><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a><a href="/learn/docker/">Learn Docker for .NET applications</a><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a></nav></section></main><footer><p>StudyLab. Original learning materials by Lefa Malatji. Practice code in the environment stated in each lesson.</p><a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a></footer></body></html>

@@ -1,0 +1,68 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-NA9uyiwnP4ecTLmmJCdbI/H8beKyMlWfYtQWiq+WDXw='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>Custom commands and the MVC comparison | StudyLab</title><meta name="description" content="Custom commands and the MVC comparison. Connect a WPF button to a command and compare that job with an MVC controller action."><meta name="robots" content="index,follow"><link rel="canonical" href="https://lefamalatji.co.za/learn/csharp/lessons/cs-commands-mvc/"><meta property="og:type" content="website"><meta property="og:site_name" content="StudyLab"><meta property="og:title" content="Custom commands and the MVC comparison | StudyLab"><meta property="og:description" content="Custom commands and the MVC comparison. Connect a WPF button to a command and compare that job with an MVC controller action."><meta property="og:url" content="https://lefamalatji.co.za/learn/csharp/lessons/cs-commands-mvc/"><meta property="og:image" content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1"><script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Custom commands and the MVC comparison","description":"Custom commands and the MVC comparison. Connect a WPF button to a command and compare that job with an MVC controller action.","url":"https://lefamalatji.co.za/learn/csharp/lessons/cs-commands-mvc/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}</script></head><body><a class="skip" href="#content">Skip to content</a><header><a class="brand" href="/studylab/"><span class="portrait"><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42"></span>Study<span>Lab</span></a><a href="/learn/">Open learning app</a></header><main id="content"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/studylab/">StudyLab</a> / <a href="/learn/csharp/">C# lessons</a></nav><h1>Custom commands and the MVC comparison</h1><p class="lede">Connect a WPF button to a command and compare that job with an MVC controller action.</p><a class="button" href="/learn/#cs-lesson/cs-commands-mvc">Open interactive lesson and complete code</a><section class="panel"><h2>What you are building</h2><h3>A desktop student form with clear responsibilities</h3><p>Build a WPF screen whose values and buttons connect to a ViewModel. The form checks input and refreshes when values change.</p><p>This example keeps its working student list in memory.</p><h3>Check the result</h3><p>Type a name and age, watch whether the Add button is enabled, then add a student to the list.</p></section><div class="theory">
+  <p>
+    A command is a reusable button action with a second question: “Am I allowed to run
+    right now?”
+  </p>
+  <section>
+    <h2>How to test this example in Visual Studio</h2>
+    <p>
+      Download the project below, extract it into its own folder, then open
+      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+      Solution. For console projects choose Start Without Debugging. For API projects use
+      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
+      then run the command shown in the lesson. Do not paste all files into Program.cs:
+      use the exact file names displayed below.
+    </p>
+  </section>
+  <section>
+    <h2>ICommand parts</h2>
+    <p>
+      Execute performs the action. CanExecute decides whether the action is enabled.
+      CanExecuteChanged tells the UI to ask again. RelayCommand wraps an Action and
+      Func&lt;bool&gt; so the ViewModel does not need a new class for every action.
+    </p>
+    <pre><code>AddCommand = new RelayCommand(AddStudent, CanAddStudent);
+// When Name or AgeText changes:
+AddCommand.Refresh();</code></pre>
+  </section>
+  <section>
+    <h2>Build the MVC equivalent</h2>
+    <p>
+      For the web requirement, open project 07-mvc-client from Unit2. Run API02 on5100 and
+      MVC07 on5200. In MVC the controller receives a new HTTP request and returns
+      HTML/redirects. In WPF a ViewModel stays alive with the window and notifications
+      refresh bindings. MVC forms use antiforgery protection; WPF commands do not use web
+      antiforgery tokens. Both must validate data and keep reusable business rules out of
+      presentation markup.
+    </p>
+  </section>
+  <section>
+    <h2>Make an improvement</h2>
+    <p>
+      Add a Clear command that empties Name and AgeText. It should be enabled when either
+      has text. Add a SelectedStudent property and a Delete command enabled only when a
+      list item is selected. In the web version, Delete is a POST form that then asks the
+      API to DELETE the resource.
+    </p>
+  </section>
+  <section>
+    <h2>Try it yourself</h2>
+    <details class="panel">
+      <summary>Why call CanExecuteChanged after editing Name?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        The button needs to recalculate whether it can run. Without notification, enabled
+        state can become stale.
+      </p>
+    </details>
+    <details class="panel">
+      <summary>Can a WPF command return a Razor View?</summary>
+      <h3>Worked answer</h3>
+      <p>
+        That would mix UI models. A WPF command changes ViewModel state; an MVC action can
+        return a Razor View.
+      </p>
+    </details>
+  </section>
+</div>
+<section class="panel"><h2>Predict and practise</h2><p>Does CanExecute decide whether a WPF command is currently allowed?</p><details><summary>Check your prediction</summary><p>Yes. WPF asks it to determine whether the command can run.</p></details><h3>Make one change</h3><p>Trace the Add button Command binding to AddCommand and CanExecute.</p><details><summary>Worked guidance</summary><p>RelayCommand wraps the action and its availability check. MVC instead uses HTTP controller actions.</p></details><h3>Try independently</h3><p>Add a Clear action that resets the form and explain when it should be enabled.</p></section><section class="panel"><h2>Full code and downloads</h2><p>The interactive lesson contains the numbered code parts, commented complete files, project ZIP, practice tasks and quiz. Keep each project in its own folder in Visual Studio.</p><a class="button" href="/learn/#cs-lesson/cs-commands-mvc">View code and download the project</a></section><section class="panel"><h2>Explore StudyLab subjects</h2><nav class="subject-links" aria-label="Related learning subjects"><a href="/learn/pseudocode/">Learn pseudocode and programming logic</a><a href="/learn/databases/">Learn databases and SQL</a><a href="/learn/csharp/">Learn C# step by step - PROG6212</a><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a><a href="/learn/docker/">Learn Docker for .NET applications</a><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a></nav></section></main><footer><p>StudyLab. Original learning materials by Lefa Malatji. Practice code in the environment stated in each lesson.</p><a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a></footer></body></html>

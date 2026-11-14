@@ -1,0 +1,48 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-lCiZCNyQEGE86ur2PWnj7YO/okTsgheAweoDpfNtJmY='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>OpenAPI and Swagger UI: a complete working project | StudyLab</title><meta name="description" content="OpenAPI and Swagger UI: a complete working project. Compare the OpenAPI description with the Swagger UI page that displays it."><meta name="robots" content="index,follow"><link rel="canonical" href="https://lefamalatji.co.za/learn/csharp/lessons/cs-openapi/"><meta property="og:type" content="website"><meta property="og:site_name" content="StudyLab"><meta property="og:title" content="OpenAPI and Swagger UI: a complete working project | StudyLab"><meta property="og:description" content="OpenAPI and Swagger UI: a complete working project. Compare the OpenAPI description with the Swagger UI page that displays it."><meta property="og:url" content="https://lefamalatji.co.za/learn/csharp/lessons/cs-openapi/"><meta property="og:image" content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1"><script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"OpenAPI and Swagger UI: a complete working project","description":"OpenAPI and Swagger UI: a complete working project. Compare the OpenAPI description with the Swagger UI page that displays it.","url":"https://lefamalatji.co.za/learn/csharp/lessons/cs-openapi/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}</script></head><body><a class="skip" href="#content">Skip to content</a><header><a class="brand" href="/studylab/"><span class="portrait"><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42"></span>Study<span>Lab</span></a><a href="/learn/">Open learning app</a></header><main id="content"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/studylab/">StudyLab</a> / <a href="/learn/csharp/">C# lessons</a></nav><h1>OpenAPI and Swagger UI: a complete working project</h1><p class="lede">Compare the OpenAPI description with the Swagger UI page that displays it.</p><a class="button" href="/learn/#cs-lesson/cs-openapi">Open interactive lesson and complete code</a><section class="panel"><h2>What you are building</h2><h3>A student API with a browser-based testing page</h3><p>Generate an OpenAPI document describing the endpoints. Swagger UI reads it and lets you send requests from a webpage during development.</p><p>This example uses an in-memory student store. Documentation is enabled in Development.</p><h3>Check the result</h3><p>Run the API in Development, open /swagger and try creating and reading a student.</p></section><div class="theory">
+  <p>
+    OpenAPI is a machine-readable map of your API. Swagger UI draws a test page from that
+    map. They are separate tools.
+  </p>
+  <h2>Open and run the complete example</h2>
+  <p>
+    Download the ZIP below and open StudyLab.csproj in Visual Studio. Restore its
+    packages. The project includes Microsoft.AspNetCore.OpenApi for generating the
+    document and Swashbuckle.AspNetCore.SwaggerUI for displaying it.
+  </p>
+  <p>In Visual Studio’s PowerShell terminal, inside the project folder:</p>
+  <pre><code>$env:ASPNETCORE_ENVIRONMENT="Development"
+dotnet run --urls http://localhost:5100</code></pre>
+  <p>
+    Open http://localhost:5100/openapi/v1.json to see the document. Open
+    http://localhost:5100/swagger to see the test UI. Expand POST /api/students, choose
+    Try it out, paste {"name":"Lefa","age":22}, then Execute. Expected: 201 Created. Use
+    GET to read it, PUT to edit, DELETE to remove it, then GET again for404.
+  </p>
+  <h2>Read Program.cs</h2>
+  <p>
+    AddOpenApi registers the generator. MapOpenApi exposes the document route.
+    UseSwaggerUI points the viewer at that route. MapControllers maps the actual API
+    operations. This combination does not need AddSwaggerGen. If /swagger gives404, check
+    the environment, installed UI package, port and Program.cs; the built-in .NET10
+    template alone does not promise a Swagger UI.
+  </p>
+  <h2>Try it yourself</h2>
+  <details class="panel">
+    <summary>
+      Why should the document and UI routes be restricted in a deployed service?
+    </summary>
+    <p>
+      They can reveal the API surface and permit convenient requests. Expose them only
+      deliberately, with suitable access control. Hiding documentation is not a substitute
+      for securing endpoints.
+    </p>
+  </details>
+  <details class="panel">
+    <summary>What should happen when you post an age of2?</summary>
+    <p>
+      The controller’s validation should return400. An attractive UI does not replace
+      server-side validation.
+    </p>
+  </details>
+</div>
+<section class="panel"><h2>Predict and practise</h2><p>Are the OpenAPI JSON document and Swagger UI the same thing?</p><details><summary>Check your prediction</summary><p>No. The document describes the API. Swagger UI displays it and provides request controls.</p></details><h3>Make one change</h3><p>Open /swagger in Development and send a GET request.</p><details><summary>Worked guidance</summary><p>The viewer reads /openapi/v1.json. Check both addresses if endpoints are missing.</p></details><h3>Try independently</h3><p>Create and read a student through Swagger UI, then explain the response status.</p></section><section class="panel"><h2>Full code and downloads</h2><p>The interactive lesson contains the numbered code parts, commented complete files, project ZIP, practice tasks and quiz. Keep each project in its own folder in Visual Studio.</p><a class="button" href="/learn/#cs-lesson/cs-openapi">View code and download the project</a></section><section class="panel"><h2>Explore StudyLab subjects</h2><nav class="subject-links" aria-label="Related learning subjects"><a href="/learn/pseudocode/">Learn pseudocode and programming logic</a><a href="/learn/databases/">Learn databases and SQL</a><a href="/learn/csharp/">Learn C# step by step - PROG6212</a><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a><a href="/learn/docker/">Learn Docker for .NET applications</a><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a></nav></section></main><footer><p>StudyLab. Original learning materials by Lefa Malatji. Practice code in the environment stated in each lesson.</p><a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a></footer></body></html>
