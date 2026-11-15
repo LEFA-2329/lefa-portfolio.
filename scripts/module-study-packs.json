@@ -1,0 +1,38 @@
+[
+  {
+    "slug": "prld5121",
+    "title": "Programming Logic . PRLD5121",
+    "description": "Trace, write and debug pseudocode.",
+    "route": "resources"
+  },
+  {
+    "slug": "data6211",
+    "title": "Databases . DATA6211",
+    "description": "Keys, relationships, normalisation and basic SQL.",
+    "route": "db-resources"
+  },
+  {
+    "slug": "data6222",
+    "title": "Database Intermediate . DATA6222",
+    "description": "Joins, constraints, procedures and transactions.",
+    "route": "dbi-resources"
+  },
+  {
+    "slug": "advanced-database",
+    "title": "Advanced Database",
+    "description": "Query design, concurrency, distributed data and Hadoop.",
+    "route": "advanced-resources"
+  },
+  {
+    "slug": "prog6212",
+    "title": "C# . PROG6212",
+    "description": "Object lifetime, LINQ, APIs, data access and MVVM.",
+    "route": "csharp-resources"
+  },
+  {
+    "slug": "docker",
+    "title": "Docker",
+    "description": "Images, containers, Compose, networks and persistent data.",
+    "route": "docker-resources"
+  }
+]

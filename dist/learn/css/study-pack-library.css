@@ -1,0 +1,111 @@
+/* Resource library: inherit the student's saved StudyLab theme. */
+.pack-intro {
+  padding: 32px 0 44px;
+  max-width: 760px;
+}
+.pack-eyebrow,
+.pack-number {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--purple);
+}
+.pack-intro .lede {
+  font-size: clamp(1.65rem, 4vw, 2.5rem);
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 18px 0;
+}
+.pack-section {
+  scroll-margin-top: 24px;
+}
+.pack-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  margin: 28px 0 48px;
+}
+.pack-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 26px;
+  border: 1px solid var(--line, #ccd5e0);
+  border-radius: 18px;
+  background: var(--panel, var(--paper));
+  box-shadow: 0 5px 20px #14283e08;
+}
+.pack-card h3 {
+  font-size: 1.35rem;
+  line-height: 1.35;
+  margin: 16px 0 8px;
+}
+.pack-card p {
+  margin: 0 0 16px;
+}
+.pack-card ul {
+  padding-left: 20px;
+  font-size: 0.9rem;
+  margin: 0 0 24px;
+}
+.pack-downloads {
+  margin-top: auto;
+}
+.pack-downloads .button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+}
+.pack-format {
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+.pack-secondary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 14px;
+  font-size: 0.85rem;
+}
+.pack-card:focus-within {
+  outline: 2px solid var(--purple);
+  outline-offset: 3px;
+}
+@media (max-width: 1000px) {
+  .pack-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 620px) {
+  .pack-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .pack-card {
+    padding: 22px;
+  }
+  .pack-intro {
+    padding: 20px 0 30px;
+  }
+}
+@media print {
+  header,
+  footer,
+  .pack-downloads {
+    display: none;
+  }
+  .pack-grid {
+    display: block;
+  }
+  .pack-card {
+    break-inside: avoid;
+    box-shadow: none;
+    margin-bottom: 20px;
+  }
+}
