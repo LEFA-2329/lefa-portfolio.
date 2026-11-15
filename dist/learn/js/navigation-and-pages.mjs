@@ -1,10 +1,10 @@
-import { progressBackupPage } from './shared/progress-backup-page.mjs?v=backup-54';
+import { progressBackupPage } from './shared/progress-backup-page.mjs?v=backup-55';
 import {
   newCourseSidebar,
   newCoursePage,
   courseForLesson,
   courseName,
-} from './csharp/csharp-and-docker-pages.mjs?v=backup-54';
+} from './csharp/csharp-and-docker-pages.mjs?v=backup-55';
 import {
   courseLessons as csharpLessons,
   courseUnits as csharpUnits,
@@ -13,7 +13,7 @@ import {
   studyBreakPage,
   helpfulResourcesPage,
 } from './shared/study-break-and-resources.mjs?v=csharp-44';
-import { renderHtmlPage } from '../../shared/render-html-page.mjs?v=backup-54';
+import { renderHtmlPage } from '../../shared/render-html-page.mjs?v=backup-55';
 import { builderPage } from './database/normalisation/normalisation-diagram-builder.mjs?v=40';
 import { normalisationPracticePage } from './database/normalisation/normalisation-question-page.mjs?v=40';
 import { databaseExamPage } from './database/database-exam-page.mjs?v=40';
@@ -21,7 +21,7 @@ import {
   progressPage,
   progressSummary,
   refreshLessonCompletion,
-} from './shared/learning-progress.mjs?v=backup-54';
+} from './shared/learning-progress.mjs?v=backup-55';
 import { exercises as sqlChallenges } from './database/sql/sql-practice-challenges.mjs?v=40';
 import {
   databaseHome,
@@ -31,9 +31,9 @@ import {
   databaseResources,
   dbUnits,
   dbLessons,
-} from './database/database-pages.mjs?v=backup-54';
+} from './database/database-pages.mjs?v=backup-55';
 import { sqlPage } from './database/sql/sql-workspace-page.mjs?v=csharp-44';
-import './shared/theme-settings.mjs?v=backup-54';
+import './shared/theme-settings.mjs?v=backup-55';
 import { examPage } from './programming-logic/practice-exam-page.mjs?v=csharp-44';
 import { workStore } from './shared/saved-work-storage.mjs?v=40';
 import {
