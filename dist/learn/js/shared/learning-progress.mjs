@@ -1,4 +1,4 @@
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=structure-57';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=breadcrumb-58';
 import {
   advancedUnits,
   advancedLessons,

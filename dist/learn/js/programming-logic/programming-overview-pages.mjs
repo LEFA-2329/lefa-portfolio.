@@ -1,7 +1,7 @@
 // Programming home, practice hub, tools hub and public downloads.
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=structure-57';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=breadcrumb-58';
 import { units, lessons } from './content/lessons-and-quizzes.mjs?v=40';
-import { progressSummary } from '../shared/learning-progress.mjs?v=structure-57';
+import { progressSummary } from '../shared/learning-progress.mjs?v=breadcrumb-58';
 import { escapeHTML as e } from './pseudocode-parser-and-diagrams.mjs?v=40';
 export function createProgrammingOverviewPages({ view, crumb, sidebar }) {
   const $ = (selector) => view.querySelector(selector);

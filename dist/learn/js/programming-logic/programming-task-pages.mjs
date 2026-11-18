@@ -2,7 +2,7 @@
 import { taskBank } from './content/practice-task-bank.mjs?v=40';
 import { workStore } from '../shared/saved-work-storage.mjs?v=40';
 import { cleanTask } from '../shared/saved-programming-answers.mjs?v=40';
-import { codeBlock } from '../shared/render-code-block.mjs?v=structure-57';
+import { codeBlock } from '../shared/render-code-block.mjs?v=breadcrumb-58';
 import { escapeHTML as e } from './pseudocode-parser-and-diagrams.mjs?v=40';
 export function createProgrammingTaskPages({ view, crumb, sidebar, openDiagram }) {
   const $ = (selector) => view.querySelector(selector);

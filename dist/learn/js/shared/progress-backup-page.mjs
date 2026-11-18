@@ -1,4 +1,4 @@
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=structure-57';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=breadcrumb-58';
 import { escapeHTML as e } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=40';
 import {
   makeBackup,
@@ -7,7 +7,7 @@ import {
   planRestore,
   applyRestore,
   MAX_BACKUP_BYTES,
-} from './progress-backup.mjs?v=structure-57';
+} from './progress-backup.mjs?v=breadcrumb-58';
 function download(backup, prefix = 'studylab-progress') {
   const date = new Date(),
     day = [

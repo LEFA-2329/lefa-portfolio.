@@ -2,9 +2,9 @@
 import {
   newCourseSidebar,
   courseForLesson,
-} from '../csharp/csharp-and-docker-pages.mjs?v=structure-57';
+} from '../csharp/csharp-and-docker-pages.mjs?v=breadcrumb-58';
 import { courseLessons as csharpLessons } from '../csharp/course-outline-and-lessons.mjs?v=csharp-44';
-import { dbUnits, dbLessons } from '../database/database-pages.mjs?v=structure-57';
+import { dbUnits, dbLessons } from '../database/database-pages.mjs?v=breadcrumb-58';
 import {
   units,
   lessons,

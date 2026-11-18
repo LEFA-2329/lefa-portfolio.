@@ -1,7 +1,7 @@
 // Saved-work listing and explicit clear-all interaction.
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=structure-57';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=breadcrumb-58';
 import { workStore } from './saved-work-storage.mjs?v=40';
-import { dbLessons } from '../database/database-pages.mjs?v=structure-57';
+import { dbLessons } from '../database/database-pages.mjs?v=breadcrumb-58';
 import { exercises as sqlChallenges } from '../database/sql/sql-practice-challenges.mjs?v=40';
 import { taskBank } from '../programming-logic/content/practice-task-bank.mjs?v=40';
 import { lessons } from '../programming-logic/content/lessons-and-quizzes.mjs?v=40';

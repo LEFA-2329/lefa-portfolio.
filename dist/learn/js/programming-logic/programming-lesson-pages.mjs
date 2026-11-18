@@ -1,11 +1,11 @@
 // Programming lesson lifecycle, tabs, quizzes and independent attempts.
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=structure-57';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=breadcrumb-58';
 import { units, lessons } from './content/lessons-and-quizzes.mjs?v=40';
 import { practice } from './content/lesson-practice.mjs?v=40';
 import { workStore } from '../shared/saved-work-storage.mjs?v=40';
 import { cleanLesson } from '../shared/saved-programming-answers.mjs?v=40';
-import { refreshLessonCompletion } from '../shared/learning-progress.mjs?v=structure-57';
-import { codeBlock } from '../shared/render-code-block.mjs?v=structure-57';
+import { refreshLessonCompletion } from '../shared/learning-progress.mjs?v=breadcrumb-58';
+import { codeBlock } from '../shared/render-code-block.mjs?v=breadcrumb-58';
 import {
   parse,
   flowchart,
@@ -75,8 +75,8 @@ export function createProgrammingLessonPages({ view, crumb, sidebar, openDiagram
       );
     activeTab = states.get(id).tab;
     view.innerHTML =
-      crumb(renderHtmlPage('studylab/programming-lesson', { dynamic_1: l.unit })) +
-      renderHtmlPage('studylab/programming-lesson-2', {
+      crumb('PRLD5121 / Unit ' + l.unit) +
+      renderHtmlPage('studylab/programming-lesson', {
         dynamic_1: l.unit,
         dynamic_2: e(l.title),
         dynamic_3: [
