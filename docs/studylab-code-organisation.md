@@ -10,3 +10,7 @@ Released 13 November 2026. This change reorganises and formats existing code so 
 - Added `studylab-editing-guide.md` and updated the README with the current file map and common editing tasks. Historical release documents point to the new module locations.
 
 Validation: all 32 tests passed, formatting checks passed, module/worker/CSS path checks passed, and the database pack content exporter ran successfully. Browser checks verified SQL worker initialisation and execution (20 students), normalisation checking, saved Intermediate quiz records, PRLD quiz checking and the portfolio homepage. The public release is also checked after deployment.
+
+## Feature separation on 18 November 2026
+
+Moved the pseudocode diagram editor, its examples, guided trace UI, fixed trace data and local download helper into five named feature modules. The navigation module retains route dispatch and cross-page code handoffs. Diagram state now belongs to the diagram page invocation. Guided trace layout is an editable HTML template. No saved IDs, route names or storage keys changed. See `EDITING-STUDYLAB.md` for the current editing map and `npm run dev` for local preview.

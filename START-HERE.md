@@ -1,5 +1,7 @@
 # Start here: editing Lefa’s website
 
+For the current file map and examples, open [Editing StudyLab](EDITING-STUDYLAB.md).
+
 There are two websites in this repository. Work on StudyLab first, then the portfolio.
 
 | What you want to edit                                                 | Open this file or folder                                     |

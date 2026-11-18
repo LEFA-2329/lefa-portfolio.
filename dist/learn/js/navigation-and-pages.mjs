@@ -1,10 +1,12 @@
-import { progressBackupPage } from './shared/progress-backup-page.mjs?v=backup-55';
+import { diagramLabPage } from './programming-logic/pseudocode-diagram-page.mjs?v=organised-56';
+import { guidedTracePage } from './programming-logic/guided-trace-page.mjs?v=organised-56';
+import { progressBackupPage } from './shared/progress-backup-page.mjs?v=organised-56';
 import {
   newCourseSidebar,
   newCoursePage,
   courseForLesson,
   courseName,
-} from './csharp/csharp-and-docker-pages.mjs?v=backup-55';
+} from './csharp/csharp-and-docker-pages.mjs?v=organised-56';
 import {
   courseLessons as csharpLessons,
   courseUnits as csharpUnits,
@@ -13,7 +15,7 @@ import {
   studyBreakPage,
   helpfulResourcesPage,
 } from './shared/study-break-and-resources.mjs?v=csharp-44';
-import { renderHtmlPage } from '../../shared/render-html-page.mjs?v=backup-55';
+import { renderHtmlPage } from '../../shared/render-html-page.mjs?v=organised-56';
 import { builderPage } from './database/normalisation/normalisation-diagram-builder.mjs?v=40';
 import { normalisationPracticePage } from './database/normalisation/normalisation-question-page.mjs?v=40';
 import { databaseExamPage } from './database/database-exam-page.mjs?v=40';
@@ -21,7 +23,7 @@ import {
   progressPage,
   progressSummary,
   refreshLessonCompletion,
-} from './shared/learning-progress.mjs?v=backup-55';
+} from './shared/learning-progress.mjs?v=organised-56';
 import { exercises as sqlChallenges } from './database/sql/sql-practice-challenges.mjs?v=40';
 import {
   databaseHome,
@@ -31,16 +33,12 @@ import {
   databaseResources,
   dbUnits,
   dbLessons,
-} from './database/database-pages.mjs?v=backup-55';
+} from './database/database-pages.mjs?v=organised-56';
 import { sqlPage } from './database/sql/sql-workspace-page.mjs?v=csharp-44';
-import './shared/theme-settings.mjs?v=backup-55';
+import './shared/theme-settings.mjs?v=organised-56';
 import { examPage } from './programming-logic/practice-exam-page.mjs?v=csharp-44';
 import { workStore } from './shared/saved-work-storage.mjs?v=40';
-import {
-  cleanLesson,
-  cleanTask,
-  cleanDraft,
-} from './shared/saved-programming-answers.mjs?v=40';
+import { cleanLesson, cleanTask } from './shared/saved-programming-answers.mjs?v=40';
 import { activities } from './programming-logic/content/interactive-activities.mjs?v=40';
 import {
   activitiesPage,
@@ -617,316 +615,19 @@ function renderLessonTab() {
     };
   }
 }
-const samples = {
-  'Pass or revise':
-    'BEGIN\n  DECLARE mark AS NUM\n  INPUT mark\n  IF mark >= 50 THEN\n    OUTPUT "Pass"\n  ELSE\n    OUTPUT "Revise and try again"\n  ENDIF\nEND',
-  'Counted loop':
-    'BEGIN\n  DECLARE total AS NUM\n  DECLARE value AS NUM\n  DECLARE i AS INTEGER\n  SET total = 0\n  FOR i = 1 TO 3\n    INPUT value\n    SET total = total + value\n  ENDFOR\n  OUTPUT total\nEND',
-  'Sentinel input':
-    'BEGIN\n  DECLARE value AS NUM\n  INPUT value\n  WHILE value <> -1 DO\n    OUTPUT value\n    INPUT value\n  ENDWHILE\nEND',
-  'Post-test loop':
-    'BEGIN\n  DECLARE age AS INTEGER\n  REPEAT\n    INPUT age\n  UNTIL age >= 0\n  OUTPUT age\nEND',
-  'CASE menu':
-    'BEGIN\n  DECLARE choice AS INTEGER\n  INPUT choice\n  CASE choice OF\n    WHEN 1:\n      OUTPUT "Add"\n    WHEN 2:\n      OUTPUT "Edit"\n    OTHERWISE:\n      OUTPUT "Unknown choice"\n  ENDCASE\nEND',
-  'Module hierarchy':
-    'METHOD doubleValue(value AS NUM) RETURNS NUM\n  RETURN value * 2\nENDMETHOD\nMETHOD showResult(result AS NUM)\n  OUTPUT result\nENDMETHOD\nBEGIN\n  DECLARE value AS NUM\n  DECLARE result AS NUM\n  INPUT value\n  SET result = doubleValue(value)\n  CALL showResult(result)\nEND',
-};
-let currentSVG = '',
-  lastAst = null;
-function downloadBlob(bytes, type, name) {
-  const url = URL.createObjectURL(new Blob([bytes], { type }));
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = name;
-  document.body.append(a);
-  a.click();
-  a.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 30000);
-}
-// Pseudocode diagrams and tracing
+// Keep cross-page handoff here; the diagram feature owns its local UI state.
 function labPage() {
-  const savedDraft = workStore.read('diagram', null, (raw) => cleanDraft(raw));
-  const importingCode = carriedCode !== null;
-  view.innerHTML =
-    crumb('Diagram lab') +
-    renderHtmlPage('studylab/pseudocode-diagram-lab', {
-      dynamic_1: Object.keys(samples)
-        .map((s) => `<option>${e(s)}</option>`)
-        .join(''),
-      dynamic_2: e(carriedCode ?? savedDraft?.code ?? samples['Pass or revise']),
-    });
-  sidebar();
-  const editor = $('#pseudocode'),
-    type = $('#lab-type'),
-    module = $('#lab-module'),
-    status = $('#lab-status');
-  currentSVG = '';
-  lastAst = null;
-  if (!importingCode && savedDraft) type.value = savedDraft.type;
-  module.disabled = type.value === 'hierarchy';
-  carriedCode = null;
-  function persistLab() {
-    workStore.write('diagram', { code: editor.value, type: type.value });
-  }
-  if (importingCode) persistLab();
-  function invalidate() {
-    currentSVG = '';
-    lastAst = null;
-    ['download-svg', 'download-png', 'diagram-pdf', 'fit-chart'].forEach(
-      (id) => ($('#' + id).disabled = true),
-    );
-    $('#lab-diagram').innerHTML =
-      '<div class="diagram-placeholder"><span>◇</span><p>Your code has changed. Generate a fresh diagram.</p></div>';
-    status.textContent = '';
-  }
-  function draw() {
-    try {
-      lastAst = parse(editor.value);
-      const selected = module.value;
-      module.innerHTML =
-        '<option value="main">Main program</option>' +
-        lastAst.modules
-          .map((m) => `<option value="${e(m.name)}">${e(m.name)}</option>`)
-          .join('');
-      if ([...module.options].some((o) => o.value === selected)) module.value = selected;
-      let notice = '';
-      if (type.value === 'hierarchy') {
-        const result = hierarchy(lastAst);
-        currentSVG = result.svg;
-        if (result.missing.length)
-          notice =
-            ' Undefined calls: ' +
-            result.missing.join(', ') +
-            '. These are shown without a definition.';
-      } else currentSVG = flowchart(lastAst, module.value);
-      $('#lab-diagram').innerHTML = currentSVG;
-      $('#lab-diagram').classList.remove('fit');
-      $('#fit-chart').textContent = 'Fit width';
-      status.textContent = 'Diagram generated from the supported syntax.' + notice;
-      module.disabled = type.value === 'hierarchy';
-      ['download-svg', 'download-png', 'diagram-pdf', 'fit-chart'].forEach(
-        (id) => ($('#' + id).disabled = false),
-      );
-    } catch (err) {
-      currentSVG = '';
-      $('#lab-diagram').innerHTML =
-        '<div class="diagram-placeholder"><span>!</span><p>Check the editor feedback, correct the code and try again.</p></div>';
-      status.textContent = err.message;
-      ['download-svg', 'download-png', 'diagram-pdf', 'fit-chart'].forEach(
-        (id) => ($('#' + id).disabled = true),
-      );
-    }
-  }
-  $('#lab-example').onchange = (event) => {
-    editor.value = samples[event.target.value];
-    type.value = event.target.value === 'Module hierarchy' ? 'hierarchy' : 'flow';
-    module.value = 'main';
-    invalidate();
-    persistLab();
-  };
-  editor.oninput = () => {
-    invalidate();
-    persistLab();
-  };
-  type.onchange = () => {
-    module.disabled = type.value === 'hierarchy';
-    invalidate();
-    persistLab();
-  };
-  $('#generate-chart').onclick = draw;
-  $('#trace-my-code').onclick = () => {
-    carriedTraceCode = editor.value;
-    location.hash = 'trace';
-  };
-  module.onchange = draw;
-  $('#download-svg').onclick = () => {
-    if (currentSVG) downloadBlob(currentSVG, 'image/svg+xml', 'StudyLab-diagram.svg');
-  };
-  $('#fit-chart').onclick = () => {
-    const fit = $('#lab-diagram').classList.toggle('fit');
-    $('#fit-chart').textContent = fit ? 'Actual size' : 'Fit width';
-  };
-  $('#download-png').onclick = async () => {
-    if (!currentSVG) return;
-    const button = $('#download-png');
-    button.disabled = true;
-    try {
-      const svg = currentSVG;
-      const img = new Image(),
-        url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
-      try {
-        await new Promise((res, rej) => {
-          img.onload = res;
-          img.onerror = rej;
-          img.src = url;
-        });
-        const scale = Math.min(
-          2,
-          6000 / img.width,
-          10000 / img.height,
-          Math.sqrt(18000000 / (img.width * img.height)),
-        );
-        const canvas = document.createElement('canvas');
-        canvas.width = Math.round(img.width * scale);
-        canvas.height = Math.round(img.height * scale);
-        const ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#fff';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        const blob = await new Promise((r) => canvas.toBlob(r, 'image/png'));
-        if (!blob) throw Error();
-        downloadBlob(blob, 'image/png', 'StudyLab-diagram.png');
-        status.textContent = 'PNG prepared. Check your downloads.';
-      } finally {
-        URL.revokeObjectURL(url);
-      }
-    } catch {
-      status.textContent = 'PNG could not be created. Try the SVG download instead.';
-    } finally {
-      button.disabled = !currentSVG;
-    }
-  };
-  $('#diagram-pdf').onclick = () => {
-    if (!currentSVG) return;
-    document.body.classList.add('print-diagram');
-    window.print();
-  };
-  window.onafterprint = () => document.body.classList.remove('print-diagram');
-}
-function traceData(kind) {
-  if (kind === 'sum') {
-    let states = [
-      {
-        line: 1,
-        vars: { total: 0, i: '-' },
-        output: '',
-        note: 'Initialise total before the loop.',
-      },
-    ];
-    let total = 0;
-    for (let i = 1; i <= 3; i++) {
-      states.push({
-        line: 2,
-        vars: { total, i },
-        output: '',
-        note: `The loop condition is true for i = ${i}.`,
-      });
-      total += i;
-      states.push({
-        line: 3,
-        vars: { total, i },
-        output: '',
-        note: `Add ${i} to the running total.`,
-      });
-    }
-    states.push(
-      {
-        line: 2,
-        vars: { total, i: 4 },
-        output: '',
-        note: 'i is now 4. The upper bound is 3, so the loop ends.',
-      },
-      {
-        line: 5,
-        vars: { total, i: 4 },
-        output: String(total),
-        note: 'Display the final total after the loop.',
-      },
-    );
-    return {
-      code: 'SET total = 0\nFOR i = 1 TO 3\n  SET total = total + i\nENDFOR\nOUTPUT total',
-      states,
-    };
-  }
-  if (kind === 'search') {
-    const a = [8, 3, 11, 5],
-      states = [
-        {
-          line: 1,
-          vars: { i: 0, foundAt: -1 },
-          array: a,
-          compare: [],
-          output: '',
-          note: 'Search for 11. Initialise the result to -1.',
-        },
-      ];
-    for (let i = 0; i < a.length; i++) {
-      states.push({
-        line: 3,
-        vars: { i, foundAt: i > 2 ? 2 : -1 },
-        array: a,
-        compare: [i],
-        output: '',
-        note: `Compare values[${i}] (${a[i]}) with 11.`,
-      });
-      if (a[i] === 11)
-        states.push({
-          line: 4,
-          vars: { i, foundAt: i },
-          array: a,
-          compare: [i],
-          output: '',
-          note: 'A match is found at index 2. Store its position.',
-        });
-    }
-    states.push({
-      line: 7,
-      vars: { i: 4, foundAt: 2 },
-      array: a,
-      compare: [],
-      output: '2',
-      note: 'The full traversal is complete. Display the match position.',
-    });
-    return {
-      code: 'SET foundAt = -1\nFOR i = 0 TO 3\n  IF values[i] = 11 THEN\n    SET foundAt = i\n  ENDIF\nENDFOR\nOUTPUT foundAt',
-      states,
-    };
-  }
-  const a = [5, 2, 4, 1],
-    states = [
-      {
-        line: 1,
-        vars: { pass: 0, j: '-' },
-        array: [...a],
-        compare: [],
-        output: '',
-        note: 'Start with four unsorted values.',
-      },
-    ];
-  for (let p = 0; p < a.length - 1; p++)
-    for (let j = 0; j < a.length - 1 - p; j++) {
-      states.push({
-        line: 3,
-        vars: { pass: p, j },
-        array: [...a],
-        compare: [j, j + 1],
-        output: '',
-        note: `Compare adjacent values ${a[j]} and ${a[j + 1]}.`,
-      });
-      if (a[j] > a[j + 1]) {
-        [a[j], a[j + 1]] = [a[j + 1], a[j]];
-        states.push({
-          line: 6,
-          vars: { pass: p, j },
-          array: [...a],
-          compare: [j, j + 1],
-          output: '',
-          note: 'Swap the pair using a temporary value.',
-        });
-      }
-    }
-  states.push({
-    line: 10,
-    vars: { pass: 3, j: '-' },
-    array: [...a],
-    compare: [],
-    output: a.join(', '),
-    note: 'The array is now sorted in ascending order.',
+  diagramLabPage({
+    view,
+    crumb,
+    sidebar,
+    initialCode: carriedCode,
+    openTrace: (code) => {
+      carriedTraceCode = code;
+      location.hash = 'trace';
+    },
   });
-  return {
-    code: 'FOR pass = 0 TO 2\n  FOR j = 0 TO 2 - pass\n    IF values[j] > values[j + 1] THEN\n      SET temp = values[j]\n      SET values[j] = values[j + 1]\n      SET values[j + 1] = temp\n    ENDIF\n  ENDFOR\nENDFOR\nOUTPUT values',
-    states,
-  };
+  carriedCode = null;
 }
 function tracePage() {
   interactiveTracePage({
@@ -940,64 +641,6 @@ function tracePage() {
     },
   });
   carriedTraceCode = null;
-}
-function guidedTracePage() {
-  view.innerHTML =
-    crumb('Visual step-through') +
-    `<p class="eyebrow">WATCH THE PROGRAM STATE</p><h1>Slow it down. See every change.</h1><p class="lede">These guided traces use fixed examples. They do not execute arbitrary pasted pseudocode.</p><label class="field-label" style="max-width:400px">Choose an algorithm<select id="trace-example"><option value="sum">A loop and a running total</option><option value="search">Linear search in an array</option><option value="sort">Bubble sort, one comparison at a time</option></select></label><div id="trace-view"></div>`;
-  sidebar();
-  let step = 0,
-    data = traceData('sum');
-  function render() {
-    const s = data.states[step];
-    $('#trace-view').innerHTML =
-      `<div class="trace-grid"><section class="panel"><h2>The algorithm</h2><pre><code>${data.code
-        .split('\n')
-        .map(
-          (line, i) =>
-            `<span class="line-code ${i + 1 === s.line ? 'trace-current' : ''}"><span class="ln">${i + 1}</span>${e(line)}</span>`,
-        )
-        .join(
-          '',
-        )}</code></pre><div class="button-row"><button class="button secondary" id="trace-prev" ${step === 0 ? 'disabled' : ''}>Previous step</button><button class="button" id="trace-next" ${step === data.states.length - 1 ? 'disabled' : ''}>Next step</button><button class="button secondary" id="trace-reset">Restart</button></div><p class="status" role="status">Step ${step + 1} of ${data.states.length}</p></section><section class="panel"><h2>Current state</h2><div class="trace-variables">${Object.entries(
-        s.vars,
-      )
-        .map(
-          ([key, value]) =>
-            `<div class="variable"><span>${e(key)}</span><strong>${e(value)}</strong></div>`,
-        )
-        .join(
-          '',
-        )}</div>${s.array ? `<div class="array-cells">${s.array.map((v, i) => `<div class="array-cell ${s.compare.includes(i) ? 'compare' : ''}"><small style="font-size:9px;display:block;color:#87909c">[${i}]</small>${v}</div>`).join('')}</div>` : ''}<p class="trace-description" role="status">${e(s.note)}</p><h3 style="font-size:12px">Output</h3><div class="trace-output">${e(s.output || 'No output yet')}</div><h3 style="font-size:12px;margin-top:25px">Trace history</h3><div class="scroll-table"><table class="trace-history"><thead><tr><th>Step</th><th>Line</th><th>Variables</th></tr></thead><tbody>${data.states
-        .slice(0, step + 1)
-        .map(
-          (t, i) =>
-            `<tr><td>${i + 1}</td><td>${t.line}</td><td>${e(
-              Object.entries(t.vars)
-                .map(([k, v]) => k + ' = ' + v)
-                .join(', '),
-            )}</td></tr>`,
-        )
-        .join('')}</tbody></table></div></section></div>`;
-    $('#trace-prev').onclick = () => {
-      step--;
-      render();
-    };
-    $('#trace-next').onclick = () => {
-      step++;
-      render();
-    };
-    $('#trace-reset').onclick = () => {
-      step = 0;
-      render();
-    };
-  }
-  $('#trace-example').onchange = (event) => {
-    data = traceData(event.target.value);
-    step = 0;
-    render();
-  };
-  render();
 }
 const libraryWork = new Map();
 let taskFilters = { query: '', topic: 'All topics', level: 'All levels' };
@@ -1315,7 +958,7 @@ function route() {
   else if (page === 'task') taskPage(id);
   else if (page === 'lab') labPage();
   else if (page === 'trace') tracePage();
-  else if (page === 'trace-guided') guidedTracePage();
+  else if (page === 'trace-guided') guidedTracePage({ view, crumb, sidebar });
   else if (page === 'backup') pageCleanup = progressBackupPage({ view, sidebar });
   else if (page === 'saved-work') savedWorkPage();
   else if (page === 'about') about();
