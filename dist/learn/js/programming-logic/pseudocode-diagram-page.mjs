@@ -1,9 +1,9 @@
 // Diagram lab: rendering, saved draft, generation and downloads belong here.
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=organised-56';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=structure-57';
 import { workStore } from '../shared/saved-work-storage.mjs?v=40';
 import { cleanDraft } from '../shared/saved-programming-answers.mjs?v=40';
-import { downloadFile } from '../shared/download-file.mjs?v=organised-56';
-import { diagramExamples as samples } from './content/diagram-examples.mjs?v=organised-56';
+import { downloadFile } from '../shared/download-file.mjs?v=structure-57';
+import { diagramExamples as samples } from './content/diagram-examples.mjs?v=structure-57';
 import {
   parse,
   flowchart,

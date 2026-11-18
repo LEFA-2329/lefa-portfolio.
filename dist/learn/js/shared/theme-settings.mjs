@@ -1,4 +1,4 @@
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=organised-56';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=structure-57';
 import {
   themes,
   defaults,

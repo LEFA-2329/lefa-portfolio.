@@ -160,7 +160,11 @@ assert.equal(
   normalisationExamples.employees.stages[2].tables.length,
 );
 assert(normalisationWalkthrough().includes('id="nf-example"'));
-for (const name of ['js/navigation-and-pages.mjs', 'js/database/database-pages.mjs']) {
+for (const name of [
+  'js/navigation-and-pages.mjs',
+  'js/programming-logic/programming-lesson-pages.mjs',
+  'js/database/database-pages.mjs',
+]) {
   const source = readFileSync(new URL('../dist/learn/' + name, import.meta.url), 'utf8');
   assert(!source.includes('<span aria-hidden="true">→</span>'));
   assert(!source.includes('<span>→</span>'));

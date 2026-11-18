@@ -29,3 +29,16 @@ test('every editable diagram example still generates its intended diagram', () =
     assert.ok(!svg.includes('<script'), name);
   }
 });
+
+// Both lesson and task controllers use this renderer for student-visible code.
+import { codeBlock } from '../dist/learn/js/shared/render-code-block.mjs';
+test('shared code markup escapes input in plain and numbered displays', () => {
+  const input = '<img src=x onerror=alert(1)>\n<script>alert(1)</script>';
+  for (const numbered of [false, true]) {
+    const result = codeBlock(input, numbered);
+    assert.ok(!result.includes('<img'));
+    assert.ok(!result.includes('<script'));
+    assert.ok(result.includes('&lt;img'));
+    if (numbered) assert.equal((result.match(/class="ln"/g) || []).length, 2);
+  }
+});

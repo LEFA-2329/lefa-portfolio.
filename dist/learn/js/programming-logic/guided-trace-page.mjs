@@ -1,6 +1,6 @@
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=organised-56';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=structure-57';
 // Guided trace page: selection and step-by-step state rendering.
-import { guidedTraceData } from './content/guided-trace-examples.mjs?v=organised-56';
+import { guidedTraceData } from './content/guided-trace-examples.mjs?v=structure-57';
 import { escapeHTML as e } from './pseudocode-parser-and-diagrams.mjs?v=40';
 export function guidedTracePage({ view, crumb, sidebar }) {
   const $ = (selector) => view.querySelector(selector);

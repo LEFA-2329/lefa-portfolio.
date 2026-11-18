@@ -14,3 +14,7 @@ Validation: all 32 tests passed, formatting checks passed, module/worker/CSS pat
 ## Feature separation on 18 November 2026
 
 Moved the pseudocode diagram editor, its examples, guided trace UI, fixed trace data and local download helper into five named feature modules. The navigation module retains route dispatch and cross-page code handoffs. Diagram state now belongs to the diagram page invocation. Guided trace layout is an editable HTML template. No saved IDs, route names or storage keys changed. See `EDITING-STUDYLAB.md` for the current editing map and `npm run dev` for local preview.
+
+## Controller boundaries on 18 November 2026
+
+Separated programming lesson state/tabs/checks, task library state/filters/attempts, overview/download pages, the saved-work catalogue and sidebar navigation from the composition root. Shared code rendering escapes input through one named helper. The main navigation file now composes controllers and dispatches routes; the editing guide maps each responsibility to its file. Existing routes and browser-storage keys are retained.

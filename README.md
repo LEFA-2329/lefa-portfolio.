@@ -63,7 +63,8 @@ The workflow adjusts asset links in the deployment copy so the GitHub Pages proj
 
 The learning app now separates shared code, PRLD, database lessons, SQL and normalisation into feature folders. Its CSS is split into focused stylesheets. Start with the [StudyLab editing guide](docs/studylab-editing-guide.md) for a file-by-file map and safe editing steps.
 
-- `dist/learn/js/navigation-and-pages.mjs`: application shell and routes
+- `dist/learn/js/navigation-and-pages.mjs`: startup, routes and feature composition
+- `dist/learn/js/application/`: sidebar navigation and topic filtering
 - `dist/learn/js/shared/`: appearance, storage and progress
 - `dist/learn/js/programming-logic/`: programming logic features and `content/`
 - `dist/learn/js/database/`: database features, `content/`, `sql/` and `normalisation/`

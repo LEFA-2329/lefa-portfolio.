@@ -33,8 +33,23 @@ Open this repository folder in VS Code. The application is a static website: HTM
 
 The private premium documents are separate from this public repository. Do not copy them into public download folders when editing free resources.
 
+## Feature controllers
+
+| Responsibility                                                   | File                                                             |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------- |
+| Application startup, route dispatch and feature composition      | `dist/learn/js/navigation-and-pages.mjs`                         |
+| Sidebar, active module and topic filtering                       | `dist/learn/js/application/navigation-sidebar.mjs`               |
+| Programming unit pages, lesson tabs, quizzes and lesson attempts | `dist/learn/js/programming-logic/programming-lesson-pages.mjs`   |
+| Task search, filters, model answers and saved task attempts      | `dist/learn/js/programming-logic/programming-task-pages.mjs`     |
+| Programming home, practice/tools hubs and downloads              | `dist/learn/js/programming-logic/programming-overview-pages.mjs` |
+| Saved-work catalogue and clear-work dialog                       | `dist/learn/js/shared/saved-work-page.mjs`                       |
+| Escaped, optionally numbered code markup                         | `dist/learn/js/shared/render-code-block.mjs`                     |
+
+Each controller receives its page container and navigation callbacks explicitly. Lesson and task state live in separate controller instances rather than in the router. `openDiagram(code)` hands code to the diagram feature through the application shell. Keep these boundaries when adding a feature.
+
 ## Folder responsibilities
 
+- `dist/learn/js/application`: shared navigation for the application shell.
 - `dist/learn/pages`: editable HTML templates.
 - `dist/learn/css`: styles grouped by feature.
 - `dist/learn/js/programming-logic`, `database`, `csharp`: each subject's pages and content.

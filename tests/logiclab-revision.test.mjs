@@ -53,7 +53,10 @@ for (const deck of decks) {
   assert(fs.statSync(file).size > 10000);
 }
 const app = fs.readFileSync(
-  new URL('../dist/learn/js/navigation-and-pages.mjs', import.meta.url),
+  new URL(
+    '../dist/learn/js/programming-logic/programming-overview-pages.mjs',
+    import.meta.url,
+  ),
   'utf8',
 );
 assert(app.includes('logiclab-unit-${u.id}-revision.pptx'));
