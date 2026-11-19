@@ -1,56 +1,84 @@
-"""Build free, editable module revision bundles. Run before the search page build."""
+"""Build named public PDF resources and their download catalogue.
+
+Edit scripts/study-packs/teaching-chapters.json for explanations and
+free-revision-questions.json for the short practice set. PowerPoint decks
+are editable published resources maintained separately in downloads/modules.
+Premium exams, question banks and private project bundles are not copied here.
+"""
 from pathlib import Path
-import zipfile,json
-root=Path(__file__).resolve().parents[1]
-base=root/'dist/learn/downloads'
-modules=[
-('prld5121','Programming Logic . PRLD5121','Trace, write and debug pseudocode.','resources',[
-('Trace total = 0; FOR i = 1 TO 4; total = total + i; END FOR. Give each new total.','1, 3, 6, 10. The loop adds the current counter to the running total.'),
-('Write pseudocode to count marks of at least 50 in [45, 70, 50, 30].','count = 0\nFOR EACH mark IN marks\n  IF mark >= 50 THEN\n    count = count + 1\n  END IF\nEND FOR\nOUTPUT count // 2 passes'),
-('Fix a WHILE loop that tests n < 5 but never changes n. Start n at 1.','Add n = n + 1 inside the loop. The values processed are 1, 2, 3 and 4. Without the update the loop never ends.'),
-('Write a returning method that receives length and width.','FUNCTION Area(length, width)\n  RETURN length * width\nEND FUNCTION\nOUTPUT Area(3, 4) // 12'),
-('Design a Student class with a name and marks. Explain encapsulation.','Keep name and marks private. Provide methods to update marks after checking they are between 0 and 100. Encapsulation keeps the data and its rules together.')]),
-('data6211','Databases . DATA6211','Keys, relationships, normalisation and basic SQL.','db-resources',[
-('Student(StudentID, Name, CourseID) and Course(CourseID, Title): identify primary and foreign keys.','StudentID is the Student primary key. CourseID is the Course primary key and a foreign key in Student. This design assumes each student has one course.'),
-('Write SQL to return student names in alphabetical order.','SELECT Name FROM Student ORDER BY Name ASC;\nORDER BY controls display order; storage order is not guaranteed.'),
-('A student can take many courses and a course has many students. Redesign the schema.','Student(StudentID PK, Name); Course(CourseID PK, Title); Enrolment(StudentID PK/FK, CourseID PK/FK). The two foreign keys form a composite primary key.'),
-('Normalise R(StudentID, CourseID, StudentName, CourseTitle, Mark), key (StudentID, CourseID). State the dependencies.','StudentID determines StudentName; CourseID determines CourseTitle; the complete key determines Mark. Remove partial dependencies into Student and Course. Enrolment(StudentID, CourseID, Mark) keeps the mark. With only these dependencies, all three tables are in 3NF.'),
-('Explain why a comma-separated list of course IDs in one cell is unsuitable.','The cell holds several course values, making individual courses hard to validate or join. Store one enrolment per row. 1NF requires one value per attribute in the intended domain, without repeating groups.')]),
-('data6222','Database Intermediate . DATA6222','Joins, constraints, procedures and transactions.','dbi-resources',[
-('Return every student with any matching enrolment using Student(StudentID, Name) and Enrolment(StudentID, CourseID).','SELECT s.StudentID, s.Name, e.CourseID\nFROM Student AS s LEFT JOIN Enrolment AS e\nON e.StudentID = s.StudentID;\nAn unmatched student has NULL in CourseID.'),
-('Write a SQL Server constraint limiting Mark to 0 through 100. Explain NULL.','ALTER TABLE Enrolment ADD CONSTRAINT CK_Enrolment_Mark CHECK (Mark BETWEEN 0 AND 100);\nCHECK alone permits NULL because the expression is unknown. Use NOT NULL as well when a mark is required.'),
-('Write a parameterised SQL Server procedure to select one student.','CREATE PROCEDURE dbo.GetStudent @StudentID int\nAS\nBEGIN\n  SET NOCOUNT ON; -- Suppress row count messages\n  SELECT StudentID, Name FROM dbo.Student WHERE StudentID = @StudentID;\nEND;\nExecute separately: EXEC dbo.GetStudent @StudentID = 1;'),
-('A transfer subtracts money from one account and adds it to another. What must happen if the second update fails?','Both updates belong in one transaction. Roll back both on failure. Commit only when both succeed. Validate amounts and available balance, and handle concurrent updates.'),
-('When could a nonclustered index help? State one cost.','An index on a frequently filtered StudentID may reduce scanning. It uses storage and adds work to inserts, updates and deletes. Inspect the execution plan and realistic data before choosing it.')]),
-('advanced-database','Advanced Database','Query design, concurrency, distributed data and Hadoop.','advanced-resources',[
-('Two users read stock 1 and each sells one item. Explain the bug and a safer update.','Both may believe stock is available. Use an atomic conditional update: UPDATE Product SET Stock = Stock - 1 WHERE ProductID = @id AND Stock > 0; check that exactly one row changed. Group related operations in a transaction.'),
-('A query filters on CustomerID but scans a large Orders table. How would you investigate?','Inspect the actual execution plan, row estimates, reads, statistics and parameter values. Consider an index beginning with CustomerID. Compare timings and write costs on representative data.'),
-('Explain Hadoop HDFS and MapReduce with a word-count task.','HDFS stores file blocks across machines with replication. Map emits (word, 1). Shuffle groups matching words. Reduce sums each group. A word occurring three times produces (word, 3).'),
-('Does a successful backup prove a database can be recovered?','No. Restore it into an isolated environment and validate data and application access. Test recovery time and the acceptable amount of lost work. Protect and retain backups separately.'),
-('Compare partitioning and replication.','Partitioning divides data, for example by date, to distribute storage or work. Replication keeps copies to support availability or reads. A distributed system can use both; copies can lag and require consistency decisions.')]),
-('prog6212','C# . PROG6212','Object lifetime, LINQ, APIs, data access and MVVM.','csharp-resources',[
-('Build a console program that prints the passing marks in [40, 75, 50]. Predict the output.','using System;\nusing System.Linq;\nint[] marks = { 40, 75, 50 }; // Sample marks\nvar passes = marks.Where(mark => mark >= 50); // Keep passes\nConsole.WriteLine(string.Join(", ", passes)); // 75, 50\nCreate a Console App in Visual Studio, replace Program.cs, then run.'),
-('Why should a file stream be disposed? Show the pattern.','using var reader = new System.IO.StreamReader("notes.txt"); // Open file\nstring text = reader.ReadToEnd(); // Read text\nConsole.WriteLine(text);\nCreate notes.txt in the working directory first. using releases the file handle when the scope ends, including when an exception occurs. Garbage collection is not a substitute for prompt disposal.'),
-('Plan CRUD endpoints for a Student API. Include status codes.','GET /students returns 200 with a list; GET /students/1 returns 200 or 404; POST /students validates input and returns 201 with a Location; PUT /students/1 returns 204 or 404; DELETE /students/1 returns 204 or 404. Invalid input returns 400. Use DTOs and check permissions.'),
-('An EF Core update changes a tracked student name. What saves it?','Load the student, check for null, assign student.Name, then await db.SaveChangesAsync(). Register the DbContext and provider first. Keep connection secrets outside source files and use migrations to manage schema changes.'),
-('In WPF MVVM, why does changing a property sometimes not update the screen?','The view model must notify binding listeners, usually through INotifyPropertyChanged. Raise PropertyChanged for the property after assigning its backing field. Set DataContext and check the binding path. Commands handle actions without putting business rules in view code.')]),
-('docker','Docker','Images, containers, Compose, networks and persistent data.','docker-resources',[
-('Explain an image and a container using a school API.','An image is the packaged API and its runtime. A container is a running instance of that image. Several containers can run from one image.'),
-('Write commands to build an image and run it on host port 8080.','docker build -t school-api .\ndocker run --rm -p 8080:8080 school-api\nRun in the folder containing the Dockerfile. The API must listen on container port 8080 and all container interfaces.'),
-('Why use a multi-stage Dockerfile for .NET?','Compile and publish in an SDK stage, then copy published files into an ASP.NET runtime stage. This keeps compilers out of the final image and usually reduces its size. Match SDK/runtime major versions to the project.'),
-('Inside an API container, does localhost reach a separate database container?','No. localhost means the API container itself. In Compose use the database service name, for example db, and its container port. Both services must share a network. Readiness is separate from startup order.'),
-('How do you keep database data and inspect a failing Compose service?','Mount a named volume at the database data directory. Run docker compose logs SERVICE and docker compose ps. Use docker compose down to stop the stack. Adding -v removes named volumes and can delete practice data. Keep passwords in a local ignored environment file or secrets manager.')])]
-out=base/'modules';out.mkdir(exist_ok=True)
-for slug,title,desc,route,items in modules:
- q=f'# {title}\n\nFree focused revision pack. Suggested time: 45 minutes.\n\n{desc}\n\nAttempt every question before opening the answers. These are supplementary exercises, not a complete syllabus or an official exam.\n\n'
- a=f'# {title} - worked answers\n\nCompare your reasoning, not only the final result. Code fragments assume the schema and environment in each question. Test SQL Server, WPF and Docker examples in their native tools.\n\n'
- for i,(question,answer) in enumerate(items,1):
-  q+=f'## Question {i}\n\n{question}\n\n'
-  a+=f'## Answer {i}\n\n{answer}\n\n'
- (out/f'{slug}-questions.md').write_text(q)
- (out/f'{slug}-answers.md').write_text(a)
- with zipfile.ZipFile(out/f'{slug}-study-pack.zip','w',zipfile.ZIP_DEFLATED) as z:
-  z.writestr('Questions.md',q);z.writestr('Worked-answers.md',a)
-  z.writestr('Read-me.txt','Start with Questions.md. Open the files in any text editor. Compare Worked-answers.md afterwards. Continue with the free lessons at https://lefamalatji.co.za/learn/ .\n')
-(root/'scripts/module-study-packs.json').write_text(json.dumps([dict(slug=s,title=t,description=d,route=r) for s,t,d,r,_ in modules],indent=2)+'\n')
-print('Built six free question and answer packs.')
+from xml.sax.saxutils import escape
+import json,zipfile,textwrap
+from reportlab.platypus import SimpleDocTemplate,Paragraph,Spacer,PageBreak,Image,Preformatted,KeepTogether
+from reportlab.lib.styles import getSampleStyleSheet,ParagraphStyle
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.utils import ImageReader
+ROOT=Path(__file__).resolve().parents[1]
+OUT=ROOT/'dist/learn/downloads/modules';OUT.mkdir(exist_ok=True)
+DATA=ROOT/'scripts/study-packs'
+MODULES=json.loads((DATA/'free-revision-questions.json').read_text())
+CHAPTERS=json.loads((DATA/'teaching-chapters.json').read_text())
+S=getSampleStyleSheet()
+for name in ['Normal','BodyText','Heading1','Heading2','Heading3','Title']:
+ S[name].fontName='Helvetica' if name in ['Normal','BodyText'] else 'Helvetica-Bold';S[name].textColor=colors.HexColor('#172943')
+for heading in ['Heading1','Heading2','Heading3']:S[heading].keepWithNext=True
+S['BodyText'].fontSize=11;S['BodyText'].leading=16;S['BodyText'].spaceAfter=10
+S['Title'].fontSize=28;S['Title'].leading=34;S['Title'].spaceAfter=22
+S['Heading1'].fontSize=21;S['Heading1'].leading=27;S['Heading1'].spaceAfter=15
+S['Heading2'].fontSize=15;S['Heading2'].leading=21;S['Heading2'].spaceBefore=14;S['Heading2'].spaceAfter=9
+S.add(ParagraphStyle(name='StudyCode',fontName='Courier',fontSize=9,leading=12,textColor=colors.HexColor('#2356a9'),spaceAfter=12))
+S.add(ParagraphStyle(name='SmallNote',fontName='Helvetica',fontSize=9,leading=13,textColor=colors.HexColor('#52637a'),spaceAfter=9))
+def p(text,style='BodyText'):return Paragraph(escape(str(text)).replace('\n','<br/>'),S[style])
+def code(text):
+ lines=[]
+ for line in text.splitlines():lines.extend(textwrap.wrap(line,82,replace_whitespace=False,drop_whitespace=False,subsequent_indent='  ') or [''])
+ return Preformatted('\n'.join(lines),S['StudyCode'])
+def footer(c,d):
+ c.saveState();c.setFont('Helvetica',8);c.setFillColor(colors.HexColor('#52637a'));c.drawString(46,28,'StudyLab . Free revision . Original material by Lefa Malatji');c.drawRightString(A4[0]-46,28,str(d.page));c.restoreState()
+def pdf(filename,story,title):
+ d=SimpleDocTemplate(str(OUT/filename),pagesize=A4,leftMargin=46,rightMargin=46,topMargin=45,bottomMargin=48,title=title,author='Lefa Malatji . StudyLab',invariant=1);d.build(story,onFirstPage=footer,onLaterPages=footer)
+ return d.page
+catalog=[]
+for slug,title,description,route,questions in MODULES:
+ key=next(k for k in CHAPTERS if k.lower()==slug);chapters=CHAPTERS[key]
+ prefix=key
+ guide=f'{prefix}-Study-Guide.pdf';qp=f'{prefix}-Practice-Questions.pdf';ap=f'{prefix}-Worked-Answers.pdf';ppt=f'{prefix}-Illustrated-Revision.pptx';slides=f'{prefix}-Revision-Slides.pdf'
+ intro=[p(title,'Title'),p('Illustrated study guide','Heading1'),p(description),p('Read the explanations first, trace each worked example, then try the check questions. Use the separate practice sheet before opening its worked answers. This is original supplementary revision, not an official exam or a guarantee of a pass.'),p('Learning route','Heading2')]
+ for j,ch in enumerate(chapters,1):intro.append(p(f'{j}. {ch["title"]}'))
+ intro+=[p('Study in sessions','Heading2'),p('Allow one focused session per chapter. Explain the diagram aloud, work through the example and test a boundary case. After all five chapters, attempt the five practice questions and record which topics need another pass.'),PageBreak()]
+ story=intro
+ for j,ch in enumerate(chapters,1):
+  story+=[p(f'Chapter {j}. {ch["title"]}','Heading1'),p(ch['intro']),p(ch['why'])]
+  img=ROOT/'dist/learn/images/study-packs'/ch['illustration'];w,h=ImageReader(str(img)).getSize();scale=min(500/w,170/h)
+  story+=[Image(str(img),width=w*scale,height=h*scale),Spacer(1,10),p('Read the labelled relationships. This visual model supports the explanation; apply the exact business rules or code shown in the worked example.','SmallNote'),p('Step by step','Heading2')]
+  story.extend(p(f'{i+1}. {step}') for i,step in enumerate(ch['steps']))
+  story+=[p('Worked example','Heading2'),p(ch['example']),code(ch['code']),p('Check your understanding','Heading2'),p(ch['check']),p('Explained answer','Heading3'),p(ch['answer'])]
+ story+=[PageBreak(),p('Revision checklist','Heading1')]
+ for ch in chapters:story+=[p(ch['title'],'Heading2'),p('Can you explain this without reading the example? '+ch['check'])]
+ story+=[p('Before running code','Heading2'),p('Code excerpts illustrate the named operation and may require the surrounding project, schema, declarations or inputs described in the question. Use local practice tools. SQL Server, Windows WPF and Docker need their native environments. The C# school API discussed in StudyLab stores students in memory unless a lesson explicitly adds persistence.'),p('Continue learning','Heading2'),p('Use the matching free StudyLab lessons, practical tools, existing downloads and practice exams at https://lefamalatji.co.za/learn/. Review the requirements from your lecturer alongside this guide.')]
+ pages=pdf(guide,story,title+' Study Guide')
+ q=[p(title,'Title'),p('Practice questions','Heading1'),p('Try all five tasks independently. Show your reasoning, code or diagram and at least one test case where appropriate. Some tasks request explanations or design rather than code. Suggested time: 45-60 minutes. Use the separately named worked answers only after attempting the sheet.')]
+ for i,(question,_) in enumerate(questions,1):
+  q+=[p(f'Question {i}','Heading2'),p(question),Spacer(1,45)]
+ qpages=pdf(qp,q,title+' Practice Questions')
+ a=[p(title,'Title'),p('Worked answers','Heading1'),p('Compare the reasoning and the result with your own attempt. Other correct approaches can be valid. Code fragments assume the environment and schema named in each question; they are not all standalone programs.')]
+ for i,(question,answer) in enumerate(questions,1):
+  a+=[p(f'Answer {i}','Heading2'),p(question,'SmallNote')]
+  # Code-like answers retain line breaks and indentation; prose remains readable text.
+  if '\n' in answer:a.append(code(answer))
+  else:a.append(p(answer))
+  a.append(p('Review: explain why this answer satisfies the question, then change one input or assumption and predict what changes.','SmallNote'))
+ apages=pdf(ap,a,title+' Worked Answers')
+ for filename in [ppt,slides]:
+  if not (OUT/filename).exists():raise FileNotFoundError(f'Missing maintained presentation: {filename}. Add its reviewed PowerPoint and PDF copy before building the public catalogue.')
+ import zipfile as zf
+ with zf.ZipFile(OUT/ppt) as z:slide_count=len([n for n in z.namelist() if n.startswith('ppt/slides/slide') and n.endswith('.xml')])
+ resources=[dict(file=guide,label='Study guide',format='PDF',detail=f'{pages} pages . 5 illustrated chapters'),dict(file=qp,label='Practice questions',format='PDF',detail=f'{qpages} page'+('' if qpages == 1 else 's')+' . 5 written and practical tasks'),dict(file=ap,label='Worked answers',format='PDF',detail=f'{apages} pages . Explained solutions'),dict(file=ppt,label='Illustrated revision',format='PPTX',detail=f'{slide_count} editable slides'),dict(file=slides,label='Slides for printing',format='PDF',detail=f'{slide_count} slides')]
+ for res in resources:res['bytes']=(OUT/res['file']).stat().st_size
+ zipname=f'{prefix}-Complete-Free-Revision.zip'
+ with zipfile.ZipFile(OUT/zipname,'w',zipfile.ZIP_DEFLATED) as z:
+  for res in resources:
+   info=zipfile.ZipInfo(res['file'],(2026,1,1,0,0,0));info.compress_type=zipfile.ZIP_DEFLATED;z.writestr(info,(OUT/res['file']).read_bytes())
+ catalog.append(dict(slug=slug,title=title,description=description,topics=[c['title'] for c in chapters],resources=resources,archive=zipname,archiveBytes=(OUT/zipname).stat().st_size))
+(ROOT/'scripts/module-study-packs.json').write_text(json.dumps(catalog,indent=2)+'\n')
+print('Built 18 named PDFs and six revision bundles; catalogued six maintained PowerPoints and slide PDFs.')

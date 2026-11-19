@@ -109,3 +109,107 @@
     margin-bottom: 20px;
   }
 }
+/* Named learning files are the primary action; the ZIP is optional. */
+.pack-module-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 36px;
+}
+.pack-module-nav a {
+  border: 1px solid var(--line, #cbd7e8);
+  border-radius: 24px;
+  padding: 7px 15px;
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+.pack-card {
+  scroll-margin-top: 24px;
+  overflow: hidden;
+}
+.pack-cover {
+  display: block;
+  width: calc(100% + 52px);
+  max-width: none;
+  height: auto;
+  aspect-ratio: 16/9;
+  object-fit: contain;
+  margin: -26px -26px 24px;
+}
+.pack-topics {
+  font-size: 0.9rem;
+  margin: 4px 0 24px;
+}
+.pack-topics summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--purple);
+}
+.pack-topics ol {
+  padding-left: 22px;
+  margin-top: 12px;
+}
+.pack-topics li {
+  margin-bottom: 8px;
+}
+.pack-files {
+  display: grid;
+  gap: 12px;
+  margin-top: auto;
+  margin-bottom: 24px;
+}
+.pack-file {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  border-top: 1px solid var(--line, #d3deec);
+  padding-top: 14px;
+  text-decoration: none;
+  min-width: 0;
+}
+.pack-file strong {
+  display: block;
+  font-size: 1rem;
+}
+.pack-file-name {
+  display: block;
+  overflow-wrap: anywhere;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  margin: 3px 0;
+}
+.pack-file small,
+.pack-downloads > small {
+  display: block;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--muted, var(--ink));
+}
+.pack-file-format {
+  font-size: 0.65rem;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+  padding: 4px 6px;
+  background: var(--paper);
+  border: 1px solid var(--line, #ccd6e5);
+  border-radius: 5px;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.pack-file:hover strong {
+  text-decoration: underline;
+}
+.pack-file:focus-visible,
+.pack-module-nav a:focus-visible {
+  outline: 3px solid var(--purple);
+  outline-offset: 4px;
+}
+.pack-downloads > small {
+  margin-top: 10px;
+}
+@media (max-width: 620px) {
+  .pack-cover {
+    width: calc(100% + 44px);
+    margin: -22px -22px 22px;
+  }
+}

@@ -1,0 +1,1401 @@
+{
+  "PRLD5121": [
+    {
+      "title": "Planning a program before writing it",
+      "intro": "An algorithm is an ordered set of steps for solving a problem. Pseudocode describes those steps using readable statements without committing to one programming language. Start with the problem, then identify the input, the processing rules and the output. A variable is a named place for a value. A useful name such as totalCost explains its purpose better than x. A trace table records how values change and helps you check your thinking before using a computer.",
+      "why": "Imagine selling notebooks. The input is quantity, the price is R18.50, and the output is the amount to pay. Multiplication is only part of the solution: a negative quantity should not become a negative bill. Write the input rules first. Distinguish the whole-number quantity from the money result. In a real program, the text entered by a user also needs to be converted safely.",
+      "steps": [
+        "State the inputs and their valid ranges.",
+        "Write a normal example and a rejected example.",
+        "Name variables for the values you need.",
+        "Write processing steps in their execution order.",
+        "Trace the steps, checking output as well as intermediate values."
+      ],
+      "example": "For quantity 3, totalCost = 3 * 18.50 = R55.50. For quantity -2, display Invalid quantity and do not calculate a bill. The test is useful because it checks the branch where the main calculation must not run.",
+      "code": "READ quantity\nIF quantity < 0 OR quantity MOD 1 <> 0 THEN\n  OUTPUT \"Invalid quantity\"\nELSE\n  totalCost = quantity * 18.50\n  OUTPUT totalCost\nEND IF",
+      "check": "What are the input, processing and output for calculating a rectangle area? Include one input rule.",
+      "answer": "Input length and width; require positive numeric values. Multiply length by width. Output the area with square units. Decide explicitly whether a zero-size rectangle is permitted.",
+      "nodes": [
+        "Read quantity",
+        "Valid whole quantity?",
+        "Calculate total",
+        "Display total",
+        "Display error"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          "Yes"
+        ],
+        [
+          2,
+          3,
+          ""
+        ],
+        [
+          1,
+          4,
+          "No"
+        ]
+      ],
+      "illustration": "prld5121-1.png"
+    },
+    {
+      "title": "Selection and boundary testing",
+      "intro": "Selection chooses which statements run. An IF condition evaluates to true or false. An ELSE branch handles the alternative. For several categories, condition order matters: once an ELSE IF branch matches, later branches are skipped. A boundary is a value where the expected category changes. Testing near boundaries often reveals errors that a convenient middle value does not expose.",
+      "why": "For marks, first reject values outside 0-100. Then check the highest category, such as distinction from 75 upward. The next check can be mark >= 50 because the earlier branch already removed distinctions. This is simpler than repeating every upper limit. Boolean AND requires both conditions, while OR accepts at least one. NOT reverses a Boolean value. Parentheses make combined business rules easier to read.",
+      "steps": [
+        "Write categories as non-overlapping ranges.",
+        "Reject invalid values before assigning a category.",
+        "Order overlapping threshold tests carefully.",
+        "Test just below, at and just above each boundary.",
+        "Check that every accepted input reaches exactly one category."
+      ],
+      "example": "With distinction at 75, a mark of 74 is Pass and 75 is Distinction. Testing only 80 would not reveal a mistaken > 75 condition. The full boundary set includes -1, 0, 49, 50, 74, 75, 100 and 101.",
+      "code": "IF mark < 0 OR mark > 100 THEN\n  OUTPUT \"Invalid\"\nELSE IF mark >= 75 THEN\n  OUTPUT \"Distinction\"\nELSE IF mark >= 50 THEN\n  OUTPUT \"Pass\"\nELSE\n  OUTPUT \"Fail\"\nEND IF",
+      "check": "Why is checking mark >= 50 before mark >= 75 wrong in this ELSE IF chain?",
+      "answer": "Every mark of at least 75 also satisfies >= 50, so it enters Pass before the distinction check can run. Reorder the thresholds or make the ranges explicitly disjoint.",
+      "nodes": [
+        "Input mark",
+        "Valid range?",
+        "At least 75?",
+        "At least 50?",
+        "Result"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          "Yes"
+        ],
+        [
+          2,
+          4,
+          "Yes: distinction"
+        ],
+        [
+          2,
+          3,
+          "No"
+        ],
+        [
+          3,
+          4,
+          "Pass or fail"
+        ]
+      ],
+      "illustration": "prld5121-2.png"
+    },
+    {
+      "title": "Loops and tracing",
+      "intro": "A loop repeats a block of statements. A FOR loop is convenient when the repetition range is known. A WHILE loop checks a condition before each iteration and is useful when the number of inputs is not known in advance. An accumulator builds a total. A counter records how many values satisfy a rule. Initialise both before the loop, then update them in the correct branch.",
+      "why": "A sentinel is a special input that ends processing. If -1 ends mark input, it must not contribute to the total or count. A WHILE loop also needs a way for its condition to change. Reading the next mark at the bottom prevents the program from repeatedly processing the same input. An empty-input case matters because calculating an average with count zero is invalid.",
+      "steps": [
+        "Initialise total and count.",
+        "Read the first value before the condition.",
+        "Process only accepted values.",
+        "Read the next value inside the loop.",
+        "After termination, guard count before dividing."
+      ],
+      "example": "Input 60, 120, 80, -1. The value 120 is rejected. After 60, total=60 and count=1. After 80, total=140 and count=2. -1 stops the loop. Average=70. If -1 arrives first, display No marks.",
+      "code": "WHILE mark <> -1\n  IF mark >= 0 AND mark <= 100 THEN\n    total = total + mark\n    count = count + 1\n  END IF\n  READ mark\nEND WHILE",
+      "check": "What goes wrong if READ mark is missing inside the WHILE loop?",
+      "answer": "The loop condition and processed value never change. For a starting value other than -1, it repeatedly processes the same input and may never terminate.",
+      "nodes": [
+        "Initialise and read",
+        "Sentinel received?",
+        "Validate and count",
+        "Read next mark",
+        "Compute guarded average"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          "No"
+        ],
+        [
+          2,
+          3,
+          ""
+        ],
+        [
+          3,
+          1,
+          "Repeat"
+        ],
+        [
+          1,
+          4,
+          "Yes"
+        ]
+      ],
+      "illustration": "prld5121-3.png"
+    },
+    {
+      "title": "Arrays and systematic searching",
+      "intro": "An array stores several related values under one name. An index identifies a position. This pack uses zero-based indexing, so a four-element array has indexes 0, 1, 2 and 3. The last valid index is LENGTH(values)-1. A linear search inspects elements in order. For a first-match requirement, return immediately when a match appears; return -1 only after the entire scan finds no match.",
+      "why": "Parallel arrays connect values by position: names[i] belongs to marks[i]. Their lengths must match, and sorting only one array breaks that relationship. A two-dimensional array adds a row and column index. Nested loops visit each cell. Reset a row total inside the outer loop, but initialise the grand total before both loops. These placement decisions determine which earlier work is retained.",
+      "steps": [
+        "Write the valid index range.",
+        "State whether you need the first, last or every match.",
+        "Test the empty array before accessing element zero.",
+        "Keep related arrays aligned.",
+        "Use a trace to verify the loop bounds and result."
+      ],
+      "example": "For [4,12,7,12], searching for 12 returns index 1. Searching for 99 returns -1 after four comparisons. An empty array returns -1 with no element access. For a maximum search, using > preserves the first maximum; >= replaces it with later ties.",
+      "code": "FUNCTION FindFirst(values, target)\n  FOR i = 0 TO LENGTH(values) - 1\n    IF values[i] = target THEN\n      RETURN i\n    END IF\n  END FOR\n  RETURN -1\nEND FUNCTION",
+      "check": "Why does returning -1 inside the loop usually make this search incorrect?",
+      "answer": "The first nonmatching element would end the search, so later elements would never be inspected. A missing result is justified only after all candidate elements have been checked.",
+      "nodes": [
+        "Start index 0",
+        "More elements?",
+        "Current value matches?",
+        "Return found index",
+        "Advance or return -1"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          "Yes"
+        ],
+        [
+          2,
+          3,
+          "Yes"
+        ],
+        [
+          2,
+          4,
+          "No"
+        ],
+        [
+          4,
+          1,
+          "Advance"
+        ]
+      ],
+      "illustration": "prld5121-4.png"
+    },
+    {
+      "title": "Methods and object responsibilities",
+      "intro": "A method gives a reusable operation a name. Parameters supply inputs. A returning method sends a result back to its caller; displaying a value on screen is a separate action. A class groups state and operations that belong together. An object is one instance of that class. Encapsulation protects state by exposing operations that enforce its rules instead of allowing uncontrolled assignments.",
+      "why": "A BankAccount can own its balance and a Deposit operation. The operation validates the amount before changing the balance. This keeps the rule in one place. A caller asks the object to deposit rather than directly writing its fields. A class should have a clear responsibility. Overloading can provide the same operation name for different parameter lists, but it should not hide unrelated behaviour behind similar names.",
+      "steps": [
+        "Identify the data that must stay valid.",
+        "Make that state private.",
+        "Provide small operations with clear input rules.",
+        "Return useful results such as success or a calculated value.",
+        "Test both accepted and rejected calls, including the final state."
+      ],
+      "example": "An account begins with balance 0. Deposit(20) returns true and changes balance to 20. Deposit(-5) returns false and leaves balance at 20. The rejected call must not accidentally change the state before reporting failure.",
+      "code": "METHOD Deposit(amount)\n  IF amount <= 0 THEN\n    RETURN false\n  END IF\n  balance = balance + amount\n  RETURN true\nEND METHOD",
+      "check": "How is a method returning Area(3,4) different from a method that only prints 12?",
+      "answer": "The returning method supplies 12 to the caller, which can store it, compare it or use it in another calculation. A method that only prints displays output but does not necessarily return a usable result.",
+      "nodes": [
+        "Caller requests deposit",
+        "Account validates",
+        "Invalid: no change",
+        "Valid: update balance",
+        "Return outcome"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          "Reject"
+        ],
+        [
+          1,
+          3,
+          "Accept"
+        ],
+        [
+          2,
+          4,
+          ""
+        ],
+        [
+          3,
+          4,
+          ""
+        ]
+      ],
+      "illustration": "prld5121-5.png"
+    }
+  ],
+  "DATA6211": [
+    {
+      "title": "Turning a scenario into a relational model",
+      "intro": "A database model describes which facts a system keeps and how those facts relate. An entity is a kind of thing, such as a Student or Course. An attribute describes one fact about it. A row represents one occurrence. A primary key identifies a row. Begin with the business rules, not with a long list of table columns. Ask what one row means and whether the same thing can occur more than once.",
+      "why": "A student can enrol in several courses, and a course can have several students. A single CourseID column in Students would allow only one course. Repeating Course1, Course2 and Course3 puts a limit on the design and makes queries harder. Introduce an Enrolment relation instead. It connects one student to one course and stores facts such as the mark for that relationship. If repeated attempts are allowed, the key must distinguish them.",
+      "steps": [
+        "Underline the important things in the scenario.",
+        "Separate descriptions from identifiers.",
+        "Write the minimum and maximum participation rules.",
+        "Resolve a many-to-many relationship with a link table.",
+        "State the meaning and key of each row."
+      ],
+      "example": "Students(StudentID,Name,City), Courses(CourseID,Title,Fee), Enrolments(StudentID,CourseID,Mark). With one attempt per course, the Enrolments primary key is the pair. StudentID and CourseID also serve as foreign keys. Student 5 may exist without an enrolment because registration is optional in this model.",
+      "code": "Students: StudentID PK, Name, City\nCourses: CourseID PK, Title, Fee\nEnrolments: StudentID PK/FK, CourseID PK/FK, Mark",
+      "check": "Where should the mark be stored, and why?",
+      "answer": "In Enrolments, because it describes a particular student taking a particular course. A mark in Students would imply one mark for every course, while a mark in Courses would imply one mark for every student.",
+      "nodes": [
+        "Student",
+        "Enrolment",
+        "Course"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          "1 to many"
+        ],
+        [
+          2,
+          1,
+          "1 to many"
+        ]
+      ],
+      "illustration": "data6211-1.png"
+    },
+    {
+      "title": "Keys and integrity rules",
+      "intro": "A candidate key is a minimal set of attributes that uniquely identifies a row under the business rules. The chosen candidate key becomes the primary key. A composite key contains more than one attribute. A foreign key requires a child value to match an allowed referenced key, subject to nullability rules. Keys should come from the meaning of the data, not simply from values that happen to be different in a small example.",
+      "why": "Names can repeat and change, so Name is usually unsuitable as a student identifier. StudentID is a better chosen identifier when the system keeps it unique. The pair (StudentID,CourseID) prevents duplicate enrolments under the one-attempt assumption. A foreign key prevents an enrolment for student 99 when no such student exists. Other constraints express different rules: NOT NULL requires a value, CHECK tests an allowed condition and DEFAULT supplies an omitted value.",
+      "steps": [
+        "Choose stable identifiers.",
+        "Decide which values may be missing.",
+        "Add uniqueness and relationship rules.",
+        "Use precise data types, including decimal for fees.",
+        "Test invalid rows as well as valid ones."
+      ],
+      "example": "Enrolment (1,10,80) is valid in the college dataset. Another row with key (1,10) fails the composite primary key. A row (99,10,50) fails the student foreign key. Mark 101 fails the range check. A NULL mark is allowed here because it means not recorded yet, rather than a score of zero.",
+      "code": "PRIMARY KEY (StudentID, CourseID)\nFOREIGN KEY (StudentID) REFERENCES Students(StudentID)\nCHECK (Mark BETWEEN 0 AND 100)",
+      "check": "Does CHECK(Mark BETWEEN 0 AND 100) by itself require a mark?",
+      "answer": "No. With ordinary SQL constraint semantics, NULL makes the test unknown rather than false. Add NOT NULL if a recorded value is required. Keep NULL when the business rule allows an unrecorded mark.",
+      "nodes": [
+        "New enrolment",
+        "Key unique?",
+        "Parents exist?",
+        "Mark allowed?",
+        "Accept or reject"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          "Yes"
+        ],
+        [
+          2,
+          3,
+          "Yes"
+        ],
+        [
+          3,
+          4,
+          "Check result"
+        ]
+      ],
+      "illustration": "data6211-2.png"
+    },
+    {
+      "title": "Normalisation from 1NF to 3NF",
+      "intro": "Normalisation separates facts so that each fact has a suitable home. A functional dependency means that a determinant fixes the value of another attribute. If StudentID determines Name, two rows describing the same student cannot legitimately give different names in this model. A dependency diagram shows the determinant and the attributes it determines. The direction of the arrow expresses dependence, not the movement of data through a program.",
+      "why": "1NF requires one value per attribute in its intended domain and no repeating groups. 2NF adds the rule that non-prime attributes must not depend on a proper subset of a candidate key. With a composite student-course key, Name depends only on StudentID and Title only on CourseID, so both are partial dependencies. After separating those tables, check transitive dependencies: if StudentID determines DeptID and DeptID determines DeptName, the department name belongs in a Department relation.",
+      "steps": [
+        "Confirm the row meaning and all candidate keys.",
+        "Write the stated functional dependencies.",
+        "Draw the composite key as one determinant.",
+        "Move partial dependencies to reach 2NF.",
+        "Move remaining non-key transitive facts to reach 3NF and retain foreign keys."
+      ],
+      "example": "R(StudentID,CourseID,Name,DeptID,DeptName,Title,Mark) has key (StudentID,CourseID). In 2NF create Students(StudentID,Name,DeptID,DeptName), Courses(CourseID,Title), Results(StudentID,CourseID,Mark). For 3NF add Departments(DeptID,DeptName) and remove DeptName from Students. Mark stays with the complete result key.",
+      "code": "1NF: original atomic student-course rows\n2NF: Students + Courses + Results\n3NF: Students + Departments + Courses + Results",
+      "check": "Why must DeptID stay in Students after DeptName moves out?",
+      "answer": "It is the foreign key preserving which department each student belongs to. Removing both department attributes would lose the relationship. The full 3NF rule also accounts for prime attributes: for non-trivial X determines A, X is a superkey or A is prime.",
+      "nodes": [
+        "Atomic relation in 1NF",
+        "Find partial dependencies",
+        "Relations in 2NF",
+        "Find transitive dependency",
+        "Relations in 3NF"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          "Split by determinant"
+        ],
+        [
+          2,
+          3,
+          ""
+        ],
+        [
+          3,
+          4,
+          "Retain foreign keys"
+        ]
+      ],
+      "illustration": "data6211-3.png"
+    },
+    {
+      "title": "Reading SQL results accurately",
+      "intro": "SELECT chooses output columns, FROM identifies the source and WHERE filters individual rows. ORDER BY specifies display order. A table does not have a guaranteed natural result order. Use a stable tie-breaker such as StudentID when names may repeat. SQL comparisons with NULL produce unknown, so use IS NULL or IS NOT NULL to ask about missing values.",
+      "why": "A query should answer a precise question. For students in Polokwane, filter City and return the identifiers and names needed. Avoid SELECT * when the output contract should be clear. Combine conditions with AND and OR, using parentheses when the intended grouping may be unclear. Treat strings as values, not SQL syntax. Applications should bind external input using parameters instead of concatenating it into SQL text.",
+      "steps": [
+        "State the desired output columns.",
+        "Choose the correct source relation.",
+        "Write the row filter.",
+        "Decide how missing values should behave.",
+        "Specify order and compare with expected rows."
+      ],
+      "example": "The college query below returns Bo (2) and Eli (5). It does not return an enrolment count because that information is not in Students. A query asking for unrecorded marks belongs on Enrolments and uses WHERE Mark IS NULL; the expected pair is student 2, course 30.",
+      "code": "SELECT StudentID, Name\nFROM Students\nWHERE City = 'Polokwane'\nORDER BY StudentID;",
+      "check": "Why does WHERE Mark = NULL fail to find missing marks?",
+      "answer": "NULL represents an unknown or absent value. Ordinary equality does not establish that two unknown values are equal. IS NULL is the intended predicate for testing missingness.",
+      "nodes": [
+        "FROM chooses rows",
+        "WHERE filters rows",
+        "SELECT chooses columns",
+        "ORDER BY arranges output"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          ""
+        ],
+        [
+          2,
+          3,
+          "Conceptual reading order"
+        ]
+      ],
+      "illustration": "data6211-4.png"
+    },
+    {
+      "title": "Grouping data and handling missing marks",
+      "intro": "Aggregate functions summarise several rows. COUNT(*) counts rows, while COUNT(column) counts non-NULL values in that column. SUM, AVG, MIN and MAX generally ignore NULL inputs. GROUP BY creates a group for each distinct combination of the grouped attributes. WHERE filters before grouping; HAVING filters groups after aggregate values are available.",
+      "why": "Course 30 has two enrolments but only one recorded mark, 70. Its enrolment count is 2, its recorded-mark count is 1 and its average recorded mark is 70. Treating an unknown mark as zero would answer a different question. In SQL Server, casting integer marks to decimal before AVG preserves fractional results. A grouped query on Enrolments alone cannot show a course with no enrolments; that requires a report starting from Courses and an outer join.",
+      "steps": [
+        "Choose what one group represents.",
+        "Distinguish row count from recorded-value count.",
+        "Apply pre-group filters using WHERE.",
+        "Filter aggregate results with HAVING.",
+        "Check missing groups and NULL averages explicitly."
+      ],
+      "example": "The query below returns course 10 average 70, course 20 average 50 and course 30 average 70. Course 40 is absent because there are no enrolment rows to form a group. This absence is different from a group whose average is NULL.",
+      "code": "SELECT CourseID, COUNT(*) AS Enrolled,\n       COUNT(Mark) AS Recorded,\n       AVG(CAST(Mark AS decimal(10,2))) AS MeanMark\nFROM Enrolments\nGROUP BY CourseID\nORDER BY CourseID;",
+      "check": "Which clause keeps only course groups containing at least two enrolments?",
+      "answer": "Use HAVING COUNT(*) >= 2 after GROUP BY CourseID. WHERE cannot filter on a group count that has not yet been formed.",
+      "nodes": [
+        "Enrolment rows",
+        "Group by CourseID",
+        "Count rows and marks",
+        "Average known marks",
+        "Filter groups with HAVING"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          ""
+        ],
+        [
+          2,
+          3,
+          ""
+        ],
+        [
+          3,
+          4,
+          ""
+        ]
+      ],
+      "illustration": "data6211-5.png"
+    }
+  ],
+  "DATA6222": [
+    {
+      "title": "Choosing and debugging joins",
+      "intro": "A join combines related rows using a matching rule. INNER JOIN keeps matches. LEFT JOIN keeps every left-side row and supplies NULL child columns when no match exists. RIGHT JOIN is the reversed preserved-side form; rewriting with LEFT JOIN often makes it easier to read. FULL OUTER JOIN preserves unmatched rows from both sides in engines that support it. CROSS JOIN deliberately forms all combinations.",
+      "why": "Always identify the relationship keys before writing ON. StudentID and CourseID are different identifiers even when some numeric values overlap. For a report including students with no enrolments, begin with Students and left join Enrolments. Count a non-NULL child key, because COUNT(*) counts the preserved outer row too. A child filter in WHERE can discard unmatched parents; put a match restriction in ON when the report must retain them.",
+      "steps": [
+        "Choose which rows must survive without matches.",
+        "Follow foreign keys to the matching parent key.",
+        "Place matching restrictions in ON.",
+        "Group by stable parent identifiers.",
+        "Check unmatched parents and duplicate child rows."
+      ],
+      "example": "To show every course with passing enrolments only, left join on CourseID and add e.Mark >= 50 inside ON. Count e.StudentID. Expected counts are SQL 3, C# 1, Docker 1 and Networks 0. Placing the same mark condition in WHERE removes Networks entirely.",
+      "code": "SELECT c.CourseID, COUNT(e.StudentID) AS Passes\nFROM Courses c LEFT JOIN Enrolments e\n ON e.CourseID=c.CourseID AND e.Mark>=50\nGROUP BY c.CourseID ORDER BY c.CourseID;",
+      "check": "Why can joining on a nonunique name multiply report rows?",
+      "answer": "Every matching combination is returned. If two parent rows share the same name, one child can match both. Join to a declared unique relationship key rather than assuming descriptive names are unique.",
+      "nodes": [
+        "Courses preserved",
+        "Match course key",
+        "Match passing marks",
+        "Count child key",
+        "Include zero-pass course"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          "ON predicate"
+        ],
+        [
+          2,
+          3,
+          ""
+        ],
+        [
+          3,
+          4,
+          ""
+        ]
+      ],
+      "illustration": "data6222-1.png"
+    },
+    {
+      "title": "Schema changes and constraint design",
+      "intro": "A schema change affects the structure and rules of stored data. CREATE builds an object, ALTER changes it and DROP removes it. Before changing a populated table, consider existing rows and dependent queries. A migration is a planned, reviewable sequence of changes rather than an improvised edit. Naming constraints makes later error diagnosis and deliberate removal easier.",
+      "why": "Adding an optional Email column is straightforward, but making it required needs a backfill plan. Adding a default is not the same as repairing every existing value, and an explicit NULL does not generally become the default. Foreign-key actions express business choices: CASCADE deletes children, NO ACTION prevents invalid references, SET NULL needs nullable child fields and SET DEFAULT still needs a valid referenced default value. Use destructive actions only when their business meaning is clear.",
+      "steps": [
+        "Inspect the current schema and data.",
+        "Plan existing-row treatment and dependent code changes.",
+        "Add named constraints and appropriate nullability.",
+        "Test successful and rejected operations.",
+        "Apply and verify in a separate practice database before a real migration."
+      ],
+      "example": "Add Email nvarchar(200) NULL in SQL Server. Backfill verified addresses, then check remaining NULLs before ALTER COLUMN ... NOT NULL. If email must be unique, separately check duplicate values and the intended policy for missing addresses. Never invent personal details merely to satisfy a constraint.",
+      "code": "ALTER TABLE dbo.Students\nADD Email nvarchar(200) NULL;\n\n-- Later, only after checking/backfilling real values:\nALTER TABLE dbo.Students\nALTER COLUMN Email nvarchar(200) NOT NULL;",
+      "check": "Can a SET DEFAULT foreign-key action create a reference to a missing default parent?",
+      "answer": "No. The assigned value must still satisfy referential integrity. Plan a valid parent row and a meaningful default if that action is genuinely appropriate.",
+      "nodes": [
+        "Inspect existing rows",
+        "Plan migration",
+        "Apply schema change",
+        "Test valid and invalid writes",
+        "Verify dependencies"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          ""
+        ],
+        [
+          2,
+          3,
+          ""
+        ],
+        [
+          3,
+          4,
+          ""
+        ]
+      ],
+      "illustration": "data6222-2.png"
+    },
+    {
+      "title": "Subqueries views and indexes",
+      "intro": "A subquery supplies a value or row set to another query. A correlated subquery refers to a row from the outer query. NOT EXISTS is a useful way to ask whether a matching child is absent. A normal view stores a query definition and provides a named interface to selected data. An index is an access structure that may reduce work for certain queries, but it costs storage and write maintenance.",
+      "why": "Choose query forms for correctness first. Equivalent joins and subqueries may be transformed into similar execution plans, so one is not universally faster. For indexes, leading key order matters: a primary key on (StudentID,CourseID) is not the same access path as an index beginning CourseID. Small teaching tables may still be scanned because scanning seven rows is inexpensive. A view also does not guarantee row order; the caller needs ORDER BY.",
+      "steps": [
+        "Write a correct query with explicit NULL behaviour.",
+        "Consider a view when a reusable query contract helps.",
+        "Identify frequent filters and output columns.",
+        "Propose an index matching the workload.",
+        "Compare actual plans, reads and write costs on realistic data."
+      ],
+      "example": "NOT EXISTS finds course 40 because no Enrolments row has CourseID 40. A course-based reporting workload may benefit from a SQL Server index on Enrolments(CourseID) INCLUDE(Mark). Test it; do not assume the syntax alone proves improvement.",
+      "code": "SELECT c.CourseID, c.Title\nFROM Courses c\nWHERE NOT EXISTS (\n SELECT 1 FROM Enrolments e\n WHERE e.CourseID=c.CourseID\n);",
+      "check": "Why can NOT IN be surprising when its subquery contains NULL?",
+      "answer": "Comparisons involving that NULL can make the overall predicate unknown, so rows you expected to retain may disappear. Inspect nullability and intended semantics, or use a correctly correlated NOT EXISTS.",
+      "nodes": [
+        "Correct report query",
+        "Optional reusable view",
+        "Candidate index",
+        "Actual execution plan",
+        "Measure and compare"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          ""
+        ],
+        [
+          2,
+          3,
+          ""
+        ],
+        [
+          3,
+          4,
+          ""
+        ]
+      ],
+      "illustration": "data6222-3.png"
+    },
+    {
+      "title": "Scripts batches and transaction errors",
+      "intro": "A SQL Server script can contain several batches. GO is a separator understood by supporting clients such as SSMS; it is not a T-SQL statement sent to the database engine. Local variables normally last for one batch. BEGIN and END group statements for control flow. CASE produces a value in an expression, whereas IF chooses which statements execute. Understanding these boundaries prevents confusing scope errors.",
+      "why": "A transaction groups related writes so that they can commit or roll back as a unit. A TRY/CATCH wrapper can respond to many execution errors, but not every kind of failure is caught at the same level. XACT_STATE reports whether there is no active transaction, a committable one or an uncommittable one. A general teaching failure path rolls back any active transaction and rethrows the error. State whether the routine owns the transaction; nested transaction handling needs additional design.",
+      "steps": [
+        "Declare variables in the batch that uses them.",
+        "Begin the transaction at the correct business boundary.",
+        "Commit only after all required operations succeed.",
+        "In CATCH, inspect transaction state and roll back when required.",
+        "Rethrow or report the error without pretending the operation succeeded."
+      ],
+      "example": "The standalone example changes one fee and commits. If an execution error occurs before commit, CATCH rolls back an active transaction and THROW preserves the error. SET XACT_ABORT ON affects many runtime-error cases, but it does not remove the need for deliberate handling.",
+      "code": "SET XACT_ABORT ON;\nBEGIN TRY\n BEGIN TRANSACTION;\n UPDATE dbo.Courses SET Fee=550 WHERE CourseID=10;\n COMMIT TRANSACTION;\nEND TRY\nBEGIN CATCH\n IF XACT_STATE()<>0 ROLLBACK TRANSACTION;\n THROW;\nEND CATCH;",
+      "check": "What happens if GO separates DECLARE @Minimum int=50 from a later SELECT using @Minimum?",
+      "answer": "The SELECT is in a new batch where that local variable is not declared. Keep the declaration and the dependent statements in the same batch.",
+      "nodes": [
+        "Start transaction",
+        "Perform required writes",
+        "All succeed?",
+        "Commit",
+        "Rollback and rethrow"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          ""
+        ],
+        [
+          2,
+          3,
+          "Yes"
+        ],
+        [
+          2,
+          4,
+          "Error"
+        ]
+      ],
+      "illustration": "data6222-4.png"
+    },
+    {
+      "title": "Stored procedures as explicit contracts",
+      "intro": "A stored procedure is a named database routine invoked with a documented set of inputs and outputs. Parameters let callers supply values without constructing SQL through string concatenation. A default parameter value allows the caller to omit that argument. Result sets return rows. OUTPUT parameters return individual values. RETURN usually communicates an integer status rather than replacing normal result data.",
+      "why": "Design a procedure contract before writing its body: accepted values, missing-row behaviour, result columns and errors. SET NOCOUNT ON suppresses extra affected-row messages, which can simplify some client interactions. Place CREATE PROCEDURE in its own SQL Server batch. Give validation errors useful messages without exposing secrets. When using OUTPUT parameters, the caller must also specify OUTPUT to receive the assigned value.",
+      "steps": [
+        "Name the routine and specify parameter types.",
+        "Validate inputs and define missing-row behaviour.",
+        "Write a parameterised query or safe state change.",
+        "Specify result sets, output parameters or status deliberately.",
+        "Test default, explicit, invalid and missing identifiers."
+      ],
+      "example": "GetCourseMarks defaults to course 10. Calling it with no argument returns marks for students 1, 2 and 4. Passing @CourseID=20 returns students 1 and 3. An empty result for an absent course is one possible contract; throwing a not-found error is another, but the choice must be clear to callers.",
+      "code": "CREATE PROCEDURE dbo.GetCourseMarks\n @CourseID int=10\nAS\nBEGIN\n SET NOCOUNT ON;\n SELECT StudentID,Mark FROM dbo.Enrolments\n WHERE CourseID=@CourseID ORDER BY StudentID;\nEND;",
+      "check": "Why is a parameterised procedure not automatically secure if it concatenates that parameter into dynamic SQL inside the body?",
+      "answer": "The dangerous SQL construction merely moved into the procedure. Bind parameters in dynamic statements too, and validate any unavoidable identifier choices against an allowlist.",
+      "nodes": [
+        "Caller supplies inputs",
+        "Procedure validates",
+        "Query or change data",
+        "Return defined results",
+        "Caller handles outcome"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          ""
+        ],
+        [
+          2,
+          3,
+          ""
+        ],
+        [
+          3,
+          4,
+          ""
+        ]
+      ],
+      "illustration": "data6222-5.png"
+    }
+  ],
+  "Advanced-Database": [
+    {
+      "title": "Performance begins with evidence",
+      "intro": "A slow query is a symptom, not a diagnosis. Start by checking whether it returns the correct result, then measure what work the engine performs. An execution plan shows access and processing choices. Estimated rows express what the optimiser expected; actual rows show what happened during execution. Large differences can point to stale statistics, skew, implicit conversions or parameter-sensitive behaviour.",
+      "why": "An index can reduce reads when its key order matches useful filters. Included columns can cover selected output without becoming search keys. Additional indexes also increase storage and the work required for writes. Repeatedly adding indexes to a tiny example table does not teach real tuning. Use representative data sizes and parameter values, and compare measurements under similar conditions.",
+      "steps": [
+        "Capture the query, parameter types and required results.",
+        "Inspect the actual plan and row estimates.",
+        "Measure reads, elapsed time and relevant waits or spills.",
+        "Change one likely cause at a time.",
+        "Verify equivalent output and compare read and write costs."
+      ],
+      "example": "A report filtering YEAR(OrderDate)=2026 applies a function to the column. Rewrite it as a half-open date range. For frequent CustomerID equality plus date ranges, consider an index beginning CustomerID,OrderDate with Total included. The chosen plan still depends on selectivity and statistics.",
+      "code": "WHERE CustomerID=@CustomerID\n  AND OrderDate >= '20260101'\n  AND OrderDate < '20270101'",
+      "check": "Why use an exclusive 2027 boundary rather than <= 2026-12-31 for a datetime column?",
+      "answer": "The exclusive next-year boundary includes all times and supported fractional seconds on the last day of 2026. A midnight-only final date can accidentally exclude later times that day.",
+      "nodes": [
+        "Correctness baseline",
+        "Actual plan",
+        "Measured bottleneck",
+        "One targeted change",
+        "Compare results and cost"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          ""
+        ],
+        [
+          2,
+          3,
+          ""
+        ],
+        [
+          3,
+          4,
+          ""
+        ]
+      ],
+      "illustration": "advanced-database-1.png"
+    },
+    {
+      "title": "Concurrency and reliable transactions",
+      "intro": "Concurrent requests can interfere even when each request looks correct alone. A lost update occurs when one write overwrites a change made after an earlier read. An atomic conditional update keeps the test and change together. A transaction groups related state changes. Isolation defines which interactions are permitted or prevented, with engine-specific implementation details such as locking and row versioning.",
+      "why": "For stock reservation, do not read stock 1 in two requests and let both decide that a purchase is safe. Subtract only where enough stock remains and check the affected-row count. If creating the order must succeed with the reservation, group those database operations appropriately. Retries need an idempotency design so repeating one request does not create a second order or decrement stock twice. External payment cannot simply be assumed part of the local database transaction.",
+      "steps": [
+        "Identify the invariant, such as Stock >= 0.",
+        "Combine the test and update when possible.",
+        "Group dependent database writes into a transaction.",
+        "Detect stale versions or failed conditional updates.",
+        "Test competing requests and safe retries."
+      ],
+      "example": "At Stock=1, two conditional decrements compete. One changes one row and leaves Stock=0. The other changes zero rows. The application must inspect that outcome instead of assuming that a command completing without an exception means a purchase succeeded.",
+      "code": "UPDATE Product SET Stock=Stock-1\nWHERE ProductID=@ProductID AND Stock>=1;\n-- Check the affected-row count immediately.",
+      "check": "Why should a deadlock retry repeat the whole transaction rather than only the last statement?",
+      "answer": "The database may have rolled back the victim transaction as a unit. Retrying only its final statement omits earlier required changes. Use bounded retries and protect external effects against duplication.",
+      "nodes": [
+        "Request with unique key",
+        "Conditional reservation",
+        "Create order in transaction",
+        "Commit",
+        "Safe repeat returns same outcome"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          "One row changed"
+        ],
+        [
+          2,
+          3,
+          ""
+        ],
+        [
+          3,
+          4,
+          ""
+        ]
+      ],
+      "illustration": "advanced-database-2.png"
+    },
+    {
+      "title": "Recovery goals and restore evidence",
+      "intro": "A backup is useful only if the required data can be restored when needed. Recovery Point Objective, or RPO, states the acceptable amount of lost history. Recovery Time Objective, or RTO, states the acceptable outage duration. These are requirements to test, not properties guaranteed by selecting a backup menu option. A recovery plan includes access to protected copies, compatible backup chains and the infrastructure needed to restore.",
+      "why": "A full backup gives a database baseline. A differential depends on its appropriate base. Transaction-log backups under a supporting recovery model can extend the recovery sequence. Losing a required part of the chain can prevent the desired recovery. Replication helps availability, but it does not automatically protect against every deletion, corruption or compromised account. Keep independent recovery controls and test them away from the live system.",
+      "steps": [
+        "Write numerical RPO and RTO targets.",
+        "Choose a compatible backup and retention strategy.",
+        "Protect copies independently of the live database.",
+        "Restore in an isolated environment and validate the application.",
+        "Measure lost history and total recovery time, then fix gaps."
+      ],
+      "example": "If RPO is 15 minutes and RTO is two hours, a successful drill must recover to an acceptable point no more than 15 minutes behind the relevant failure point and complete service restoration within two hours. Record the actual recovered transaction and elapsed time rather than just Backup succeeded.",
+      "code": "Full baseline + compatible differential if used\n+ required uninterrupted log sequence\n= a planned recovery path, subject to recovery model and tests",
+      "check": "Does a nightly full backup alone establish a 15-minute RPO?",
+      "answer": "No. It can leave almost a day of history at risk without another suitable recovery mechanism. Choose and test a strategy that meets the actual target.",
+      "nodes": [
+        "Define RPO and RTO",
+        "Protect backup chain",
+        "Restore separately",
+        "Validate recovered data",
+        "Measure and improve"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          ""
+        ],
+        [
+          2,
+          3,
+          ""
+        ],
+        [
+          3,
+          4,
+          ""
+        ]
+      ],
+      "illustration": "advanced-database-3.png"
+    },
+    {
+      "title": "Choosing data models and analytical grain",
+      "intro": "A data model should fit the questions and integrity rules of its workload. A document store can group flexible product descriptions for document-oriented reads. Relational tables suit many cross-entity constraints and joins. Partitioning divides data ownership or work; replication keeps copies. Neither removes the need for consistency decisions. Technology names alone do not determine performance or correctness.",
+      "why": "For analytics, define fact-table grain before listing measures. One sales line and one daily store total are different grains and should not be mixed casually. Dimensions describe facts, such as date, product and store. Historical category reporting may require keeping product versions rather than overwriting the current description. An import pipeline also needs a stable source identity so rerunning a batch does not duplicate revenue.",
+      "steps": [
+        "Describe the main reads, writes and integrity rules.",
+        "Choose a model that serves those operations.",
+        "For a warehouse, state exactly what one fact row means.",
+        "Preserve history when the report requires historical descriptions.",
+        "Make data loading repeat-safe and reconcile counts and sums."
+      ],
+      "example": "For a sales-line grain, FactSales might contain DateKey,ProductKey,StoreKey,Quantity and LineRevenue. Product category history can use versioned dimension rows with effective dates. A source-system/sale-line key prevents duplicate imports. Validate missing dimension references and overlapping version ranges.",
+      "code": "Fact grain: one completed sale line\nDimensions: Date, Product version, Store\nMeasures: Quantity, LineRevenue\nLoad identity: SourceSystem + SourceSaleLineID",
+      "check": "Why is a new random destination ID on every import insufficient for repeat-safe loading?",
+      "answer": "It identifies each imported copy but does not identify that two copies came from the same source event. Preserve and constrain a stable source identity to recognise a rerun.",
+      "nodes": [
+        "Source event identity",
+        "Stage and validate",
+        "Resolve dimension version",
+        "Write fact once",
+        "Reconcile totals"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          ""
+        ],
+        [
+          2,
+          3,
+          ""
+        ],
+        [
+          3,
+          4,
+          ""
+        ]
+      ],
+      "illustration": "advanced-database-4.png"
+    },
+    {
+      "title": "Hadoop and the MapReduce idea",
+      "intro": "Hadoop separates distributed storage and resource management from a particular processing job. HDFS stores file blocks across DataNodes while the NameNode manages filesystem metadata and block-location information. Replication provides copies for some failure scenarios. Modern YARN manages cluster resources and application scheduling; it is not the block store. MapReduce processes key-value pairs through map, shuffle/group and reduce stages.",
+      "why": "For word count, each mapper emits (word,1). Shuffle groups equal words, and reducers add each group. An optional combiner can reduce local data volume for a suitable associative and commutative operation such as sum. Correctness must not require the combiner to run. Distributed task recovery may rerun attempts, so uncontrolled external side effects are risky. A local simulator helps check the algorithm but does not establish that a real cluster is configured or healthy.",
+      "steps": [
+        "Define the input records and emitted key-value pairs.",
+        "Trace the mapper output.",
+        "Group equal keys through shuffle.",
+        "Reduce each group to the required result.",
+        "Decide whether the workload justifies distributed overhead."
+      ],
+      "example": "For data data cloud and cloud sql, map emits five pairs. Shuffle produces data:[1,1], cloud:[1,1], sql:[1]. Reduce returns data:2, cloud:2, sql:1. A 20 KB file alone normally does not justify a distributed cluster when a small local program can answer the same question.",
+      "code": "input: data data cloud / cloud sql\nmap: (data,1),(data,1),(cloud,1),(cloud,1),(sql,1)\nshuffle: data:[1,1], cloud:[1,1], sql:[1]\nreduce: data:2, cloud:2, sql:1",
+      "check": "Why is HDFS replication not a complete backup strategy?",
+      "answer": "Copies support availability for some hardware failures, but an authorised deletion or other logical damage can still affect the dataset. Independent recovery arrangements are needed for those threats.",
+      "nodes": [
+        "Input records",
+        "Map pairs",
+        "Shuffle by key",
+        "Reduce groups",
+        "Output counts"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          ""
+        ],
+        [
+          2,
+          3,
+          ""
+        ],
+        [
+          3,
+          4,
+          ""
+        ]
+      ],
+      "illustration": "advanced-database-5.png"
+    }
+  ],
+  "PROG6212": [
+    {
+      "title": "C sharp foundations and object lifetime",
+      "intro": "C# uses declared types to describe the values a program works with. A string stores text, an int stores whole numbers and a bool represents true or false. Reading from a console gives text, so converting to a mark is a separate step. TryParse reports whether conversion succeeded without using an exception as the ordinary invalid-input path. Validation then checks the business range.",
+      "why": "Objects can also own resources such as file handles or database connections. Garbage collection reclaims unreachable managed memory when the runtime decides. IDisposable provides deterministic resource cleanup, often through using. These are related but different responsibilities. A using declaration releases the resource at the end of its scope even when an exception exits that scope. A missing file or denied path still needs appropriate handling at the application boundary.",
+      "steps": [
+        "Identify input text and the desired type.",
+        "Convert safely, then validate the range.",
+        "Create objects only with valid state.",
+        "Use using for owned disposable resources.",
+        "Test normal, invalid and exceptional outcomes separately."
+      ],
+      "example": "Input abc fails conversion; -1 converts but fails the mark rule; 50 passes both. For a file, create notes.txt in the working directory before opening it. Reading a file successfully does not remove the need to dispose the stream.",
+      "code": "int.TryParse(input, out int mark); // Conversion only\nusing var reader = new StreamReader(\"notes.txt\");\nstring text = reader.ReadToEnd(); // Read, then dispose at scope end",
+      "check": "Why is calling GC.Collect not a normal way to close a file you have finished using?",
+      "answer": "The program should release the owned resource promptly through Dispose/using. Forcing collection is not a suitable substitute for deterministic resource ownership and cleanup.",
+      "nodes": [
+        "Read text",
+        "Convert and validate",
+        "Use owned resource",
+        "Leave scope",
+        "Dispose resource"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          ""
+        ],
+        [
+          2,
+          3,
+          ""
+        ],
+        [
+          3,
+          4,
+          ""
+        ]
+      ],
+      "illustration": "prog6212-1.png"
+    },
+    {
+      "title": "Advanced features LINQ and asynchronous work",
+      "intro": "Advanced syntax is useful when it makes a specific operation clearer. An extension method is a static method that can be called with instance-like syntax. An anonymous type is a compiler-generated local data shape. An overloaded operator should preserve an unsurprising meaning for its operands. LINQ expresses filtering and projection over sequences or provider-translated queries. Know whether a query has executed before predicting its result.",
+      "why": "Where filters elements; Select creates a projected result for each element. LINQ to Objects queries are often deferred, so changes before enumeration can affect results. ToList materialises a result at that point. Async methods express operations that can complete later. Awaiting natural asynchronous I/O normally avoids blocking a thread while waiting. Parallel computation and asynchronous waiting are different ideas. Pass cancellation tokens to operations that support them, and avoid blocking a UI with .Result or .Wait.",
+      "steps": [
+        "Choose a feature for a concrete readability benefit.",
+        "Predict filter and projection results with small data.",
+        "Identify the enumeration or materialisation point.",
+        "Use natural async APIs for I/O.",
+        "Propagate cancellation and handle errors at the right boundary."
+      ],
+      "example": "If marks starts [40,70], a deferred Where(m >= 50) enumerated after adding 90 returns 70 and 90. If ToList ran before the add, the saved list contains only 70. Await Task.Delay waits for a timer; it does not spend a CPU core calculating for the entire delay.",
+      "code": "var passes = marks.Where(m => m >= 50).ToList();\nvar labels = passes.Select(m => $\"Pass: {m}\");\nawait Task.Delay(500, token); // A cancellable simulated wait",
+      "check": "When is Task.Run more appropriate than wrapping every database call in it?",
+      "answer": "It can move CPU-bound work away from a responsive UI thread. For database I/O, prefer the provider asynchronous API. Task.Run does not make computation free or replace proper cancellation and error handling.",
+      "nodes": [
+        "Source values",
+        "Where filters",
+        "Select projects",
+        "ToList materialises",
+        "Caller consumes result"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          ""
+        ],
+        [
+          2,
+          3,
+          ""
+        ],
+        [
+          3,
+          4,
+          ""
+        ]
+      ],
+      "illustration": "prog6212-2.png"
+    },
+    {
+      "title": "Building a REST API in understandable steps",
+      "intro": "A REST-style web API exposes resource operations through HTTP. The client sends a method, path, headers and sometimes a body. ASP.NET Core routes that request to endpoint code, which validates input, performs the operation and returns a status and response. Start by describing the resource and its rules. A Student may need a generated identifier, required name and age within an accepted range.",
+      "why": "GET reads, POST creates, PUT applies the documented update representation and DELETE removes. A create response commonly uses 201 and a Location identifying the new resource. Return 400 for invalid input and 404 for an absent requested resource under the chosen contract. A DTO defines the accepted or returned data shape so clients cannot assign arbitrary persistence fields. Authentication establishes identity; authorisation decides whether that identity may perform the requested operation.",
+      "steps": [
+        "Write the resource and validation rules.",
+        "Define routes, request bodies and expected statuses.",
+        "Implement and test GET before adding state changes.",
+        "Add POST, PUT and DELETE with validation and missing-row handling.",
+        "Test successful, invalid and unauthorised requests as appropriate."
+      ],
+      "example": "The supplied school API stores students in memory. POST /students creates Ada and returns 201 with /students/{id}. GET retrieves the generated id. PUT can return 204 on success, 400 for invalid data or 404 when absent. The lab has no authentication and is for local practice; it must not be presented as a production-secured service.",
+      "code": "GET    /students\nGET    /students/{id}\nPOST   /students\nPUT    /students/{id}\nDELETE /students/{id}",
+      "check": "Why is a successful 201 response insufficient if its Location cannot retrieve the created student?",
+      "answer": "The response contract points the client to a resource that should exist and be readable through its documented route. Persist or create the resource first and generate a route that resolves to it.",
+      "nodes": [
+        "HTTP request",
+        "Route endpoint",
+        "Validate and authorise",
+        "Store or retrieve",
+        "HTTP response"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          ""
+        ],
+        [
+          2,
+          3,
+          ""
+        ],
+        [
+          3,
+          4,
+          ""
+        ]
+      ],
+      "illustration": "prog6212-3.png"
+    },
+    {
+      "title": "Files ADO NET and Entity Framework Core",
+      "intro": "Persistence keeps data beyond one process lifetime. A local JSON file is useful for small controlled exercises, but concurrent access, interrupted writes and schema changes need deliberate handling. ADO.NET gives explicit connection, command and reader operations. Entity Framework Core maps a model to database operations through a provider. It reduces repetitive code but does not remove the need to understand the database schema, constraints and transaction boundaries.",
+      "why": "With ADO.NET, open a configured connection, create a parameterised command, bind typed values, execute and dispose owned resources. With EF Core, register the context/provider, query entities, apply allowed changes and call SaveChangesAsync. A scoped context is a unit-of-work object, not a global thread-safe shared cache. Code-first migrations evolve a model-managed schema; database-first scaffolding begins from an existing schema. Review generated changes before applying them.",
+      "steps": [
+        "Choose the storage approach for the requirement.",
+        "Keep credentials outside code.",
+        "Bind values through parameters or safe provider APIs.",
+        "Handle absent records and validation before writing.",
+        "Test using the actual relational provider for SQL/constraint behaviour."
+      ],
+      "example": "A tracked student name change is not saved merely because the property changed. After checking for a missing row and assigning a validated name, call SaveChangesAsync. EF InMemory tests do not prove SQL constraints or translation work in SQL Server; run relational integration tests too.",
+      "code": "var student = await db.Students.FindAsync(id);\nif (student is null) return Results.NotFound();\nstudent.Name = validatedName; // Allow only intended fields\nawait db.SaveChangesAsync(token);",
+      "check": "What must be supplied before the EF fragment can run?",
+      "answer": "A project with a matching EF Core provider package, a registered configured DbContext, a Student entity/model, an actual schema, and a method scope providing id, token and validatedName. The snippet is not a complete application by itself.",
+      "nodes": [
+        "Validated DTO",
+        "Mapped entity",
+        "Scoped DbContext",
+        "Provider and database",
+        "Saved outcome"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          ""
+        ],
+        [
+          2,
+          3,
+          ""
+        ],
+        [
+          3,
+          4,
+          ""
+        ]
+      ],
+      "illustration": "prog6212-4.png"
+    },
+    {
+      "title": "MVVM reusable libraries and runtime metadata",
+      "intro": "WPF is a Windows desktop UI framework. MVVM separates a View, a ViewModel and the underlying model/services. The View displays bindings. The ViewModel provides presentation state and commands, with notifications when values change. INotifyPropertyChanged helps the UI refresh after a property update. Validation can use INotifyDataErrorInfo, while ICommand exposes an action and whether it is currently available.",
+      "why": "A Save command should validate again even when its button is disabled for invalid input. During asynchronous work, represent busy state, avoid repeated saves and clear that state in finally. Reusable domain rules can live in a class library. Reflection reads runtime metadata; attributes are metadata whose meaning depends on code that inspects them. dynamic delays selected binding checks until runtime. AssemblyLoadContext supports managed assembly loading/unloading, but it is not a security sandbox for untrusted plugins.",
+      "steps": [
+        "Set a clear ViewModel as DataContext.",
+        "Notify bound-property and validation changes.",
+        "Expose commands with consistent CanExecute rules.",
+        "Delegate persistence to injected services or libraries.",
+        "Use reflection/dynamic only when their runtime flexibility is actually needed."
+      ],
+      "example": "If Name changes silently in a backing field, a bound TextBox may not refresh. Raise PropertyChanged(nameof(Name)) after a real change. When validation or busy state changes, also notify command availability. Test blank names, boundary ages, repeated clicks and save failures on Windows.",
+      "code": "if (_name != value)\n{\n    _name = value;\n    PropertyChanged?.Invoke(this,\n        new PropertyChangedEventArgs(nameof(Name)));\n}",
+      "check": "Does adding a custom attribute automatically execute validation?",
+      "answer": "No. An attribute is metadata. Some framework or your own code must inspect and act on it. Choose a documented validation mechanism rather than expecting a marker alone to enforce a rule.",
+      "nodes": [
+        "WPF View",
+        "ViewModel properties and commands",
+        "Validation and notifications",
+        "Domain service library",
+        "Persistence or external work"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          "Bindings"
+        ],
+        [
+          1,
+          2,
+          "State changes"
+        ],
+        [
+          1,
+          3,
+          "Calls service"
+        ],
+        [
+          3,
+          4,
+          ""
+        ]
+      ],
+      "illustration": "prog6212-5.png"
+    }
+  ],
+  "Docker": [
+    {
+      "title": "Containers images and host boundaries",
+      "intro": "An image is a packaged filesystem and configuration used to create containers. A container is a running or stopped instance created from an image, with its own writable layer. Linux containers share the host kernel through isolation mechanisms; a virtual machine normally has its own guest kernel. Docker Desktop can use a Linux VM underneath containers on another host operating system. Keep these layers distinct when explaining portability and isolation.",
+      "why": "Building one image and running it twice creates two instances. A file written inside one ordinary writable layer does not automatically appear in the other or become part of the original image. A stopped container is also different from a removed container. Persistent data needs an explicit storage plan. Containers are useful packaging and execution units, but they do not automatically provide authentication, backups, secure configuration or resource budgets.",
+      "steps": [
+        "Identify what is packaged in the image.",
+        "Create containers from a known image.",
+        "Separate process state from durable data.",
+        "Understand which kernel and host environment is required.",
+        "Inspect lifecycle and resource behaviour rather than assuming isolation solves everything."
+      ],
+      "example": "If two API containers are created from the same image, each may have a different in-memory student list. Restarting a process can lose that list, and replacing the container can lose its ordinary filesystem changes. Store shared application data in an appropriate persistent service.",
+      "code": "docker build -t studylab-api .\ndocker run --rm -p 127.0.0.1:5100:8080 studylab-api",
+      "check": "How many images and containers are needed to run three instances of the same API build?",
+      "answer": "One image can create three containers. The containers are separate instances, not three independently rebuilt images. Tags and image references still need deliberate version management.",
+      "nodes": [
+        "Host operating system",
+        "Container engine",
+        "API container A",
+        "API container B",
+        "Shared external storage"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          ""
+        ],
+        [
+          1,
+          3,
+          ""
+        ],
+        [
+          2,
+          4,
+          "Explicit connection"
+        ],
+        [
+          3,
+          4,
+          "Explicit connection"
+        ]
+      ],
+      "illustration": "docker-1.png"
+    },
+    {
+      "title": "Reading a multi stage Dockerfile",
+      "intro": "A Dockerfile describes image-building steps. The build context is the set of files made available to the build, often the current directory represented by the final dot in docker build. COPY uses files from that context. A .dockerignore excludes unnecessary or sensitive inputs. A multi-stage .NET build uses an SDK stage to compile/publish and a runtime stage to run only the published application.",
+      "why": "Copying project and package inputs before frequently changing source can improve restore-layer reuse. Include all actual restore inputs, especially in multi-project solutions. The runtime image must contain the frameworks the app needs, such as ASP.NET Core. EXPOSE documents a container port; it does not publish the port to the host. Exec-form ENTRYPOINT launches the intended process without an unnecessary shell layer.",
+      "steps": [
+        "Choose matching supported SDK/runtime major versions.",
+        "Copy restore inputs, then restore.",
+        "Copy source and publish Release output.",
+        "Copy only the required published files into the final stage.",
+        "Set the listening port, suitable user and entrypoint, then test the image."
+      ],
+      "example": "The supplied Dockerfile publishes StudyLab.Api.dll into /out and copies it into an ASP.NET runtime image. The app listens on container port 8080. A host port is supplied later by docker run or Compose. The sample is a single-project layout; referenced projects need corresponding restore inputs.",
+      "code": "FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build\n# Restore and publish in the build stage\nFROM mcr.microsoft.com/dotnet/aspnet:10.0\nCOPY --from=build /out /app\nWORKDIR /app\nENTRYPOINT [\"dotnet\", \"StudyLab.Api.dll\"]",
+      "check": "Why should a real .env file be excluded from both Git and the build context?",
+      "answer": "Git exclusion protects source publication, while .dockerignore prevents accidental inclusion in image-building inputs. Neither mechanism encrypts the file or replaces appropriate secret handling.",
+      "nodes": [
+        "Project and package inputs",
+        "SDK restore",
+        "Compile and publish",
+        "Runtime image",
+        "Run application"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          ""
+        ],
+        [
+          2,
+          3,
+          "Copy output only"
+        ],
+        [
+          3,
+          4,
+          ""
+        ]
+      ],
+      "illustration": "docker-2.png"
+    },
+    {
+      "title": "Ports networks and configuration",
+      "intro": "Container and host ports are different sides of a mapping. In 5100:8080, a host-side request to 5100 reaches port 8080 inside the selected container. The app still needs to listen on the expected container interface and port. Publishing to 127.0.0.1 restricts this local practice endpoint to the host rather than all interfaces. Inside a container, localhost points to that same container.",
+      "why": "Compose service names provide useful network addresses between services on a shared network. An API reaching a PostgreSQL service named db normally uses db:5432, not the host-published port and not localhost. Container IP addresses can change after recreation, so avoid hardcoding them. Compose variable interpolation from .env is also distinct from explicitly setting a container process environment variable. Keep the actual secret file out of published materials.",
+      "steps": [
+        "State whether the caller is on the host or in another container.",
+        "Use the correct address and port for that caller.",
+        "Check the app listening configuration.",
+        "Use service DNS names on shared Compose networks.",
+        "Inspect resolved configuration carefully because it may contain secrets."
+      ],
+      "example": "Your browser on the host uses http://localhost:5100. An API container would use db:5432 to reach the separate database container. The supplied API does not actually make that database call, so verify DB access with an appropriate client rather than treating a healthy API response as proof of integration.",
+      "code": "ports:\n  - \"127.0.0.1:5100:8080\"\n# Inside the Compose network: db:5432\n# From the host browser: localhost:5100",
+      "check": "Why does changing only a host port mapping not fix an API connection string that uses localhost for a separate container?",
+      "answer": "The name still points inside the API container. Correct the connection hostname to the database service name and use its container port on the shared network.",
+      "nodes": [
+        "Host browser port 5100",
+        "Published mapping",
+        "API port 8080",
+        "Compose network",
+        "Database service db port 5432"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          ""
+        ],
+        [
+          2,
+          3,
+          "If integrated"
+        ],
+        [
+          3,
+          4,
+          ""
+        ]
+      ],
+      "illustration": "docker-3.png"
+    },
+    {
+      "title": "Readiness persistence and safe cleanup",
+      "intro": "Started is not the same as ready. A database process may exist before it accepts the connections an application needs. Short-form depends_on orders startup but does not by itself guarantee readiness. A suitable healthcheck with a service_healthy dependency can coordinate initial readiness; applications still need bounded handling of transient dependency failures after startup.",
+      "why": "A volume stores data independently of a normal container writable layer. The mount path must match the chosen database image version. For the supplied PostgreSQL 17 lab it is /var/lib/postgresql/data. Normal docker compose down retains the declared named volume, while adding -v intentionally removes relevant project volumes. A retained volume is not a complete backup: deleted or corrupted logical data can still be present in that same volume. Test independent restore procedures.",
+      "steps": [
+        "Use a probe that checks the dependency capability you need.",
+        "Set health-based startup dependency when appropriate.",
+        "Attach a named volume to the correct data directory.",
+        "Write a test record and verify it after recreation.",
+        "Separate stopping containers from deliberately removing data."
+      ],
+      "example": "The lab creates a small persistence_test table with one row. Stop using down, then up again. The database row should remain in the named volume. The API students reset because this API stores them in memory. These two outcomes teach different storage boundaries.",
+      "code": "docker compose up --build -d\ndocker compose ps\ndocker compose logs api\ndocker compose down\n# Adding -v would intentionally remove project volume data.",
+      "check": "Does pg_isready prove that every application query and permission works?",
+      "answer": "No. It checks its documented readiness condition. Authentication, schema, permissions and real application queries need their own integration tests.",
+      "nodes": [
+        "Start database",
+        "Readiness check",
+        "Start dependent service",
+        "Write persistent record",
+        "Recreate and verify"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          "Healthy"
+        ],
+        [
+          2,
+          3,
+          ""
+        ],
+        [
+          3,
+          4,
+          "Named volume"
+        ]
+      ],
+      "illustration": "docker-4.png"
+    },
+    {
+      "title": "Troubleshooting and release decisions",
+      "intro": "When a container exits, preserve evidence before deleting and rebuilding everything. Inspect service status, logs and exit information. Check the entry DLL, runtime major version, architecture, file permissions, environment and listener. A restart policy repeats startup; it does not repair missing configuration. A known-good previous image can help recovery only when its code and schema are still compatible.",
+      "why": "Scaling also requires a system design. Three containers cannot normally bind the same fixed host address and port. A reverse proxy or suitable dynamic port setup handles request routing. Shared state must live outside independent in-memory replicas when clients need one consistent dataset. Use least-privilege database access and coordinated migrations rather than racing each replica. Logs, metrics, resource limits, TLS, authentication and backup drills belong to production planning, not to an assumption that containerisation supplied them.",
+      "steps": [
+        "Collect logs and state before cleanup.",
+        "Verify runtime, entrypoint, configuration and ports.",
+        "Reproduce the smallest failing step.",
+        "Protect persistent data while repairing the application.",
+        "Re-test the complete path and document release/rollback conditions."
+      ],
+      "example": "If the database is healthy but the API exits because StudyLab.Api.dll is missing, removing the database volume cannot repair the missing file. Fix the build/publish/copy/entrypoint path. Then verify health and student routes. For scaling, remove fixed per-replica host-port conflicts and introduce explicit routing and persistent state.",
+      "code": "docker compose ps\ndocker compose logs api\ndocker inspect <container-name>\n# Review evidence before changing the image or deleting data.",
+      "check": "Why is one-host Compose scaling not evidence of resilience across several machines?",
+      "answer": "All replicas can still depend on one host and its resources. Multi-host placement, failure handling, storage and routing require a suitable deployment design and tests.",
+      "nodes": [
+        "Observe failure",
+        "Inspect logs and config",
+        "Repair one cause",
+        "Verify routes and data",
+        "Record release evidence"
+      ],
+      "edges": [
+        [
+          0,
+          1,
+          ""
+        ],
+        [
+          1,
+          2,
+          ""
+        ],
+        [
+          2,
+          3,
+          ""
+        ],
+        [
+          3,
+          4,
+          ""
+        ]
+      ],
+      "illustration": "docker-5.png"
+    }
+  ]
+}

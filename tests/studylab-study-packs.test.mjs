@@ -43,3 +43,35 @@ print('Dataset edge cases and constraints verified')`;
   });
   assert.equal(r.status, 0, r.stderr);
 });
+
+test('each module provides named PDF and PowerPoint resources with working downloads', () => {
+  const catalogue = JSON.parse(
+    readFileSync(new URL('../scripts/module-study-packs.json', import.meta.url), 'utf8'),
+  );
+  const page = readFileSync(
+    new URL('../dist/learn/study-packs/index.html', import.meta.url),
+    'utf8',
+  );
+  assert.equal(catalogue.length, 6);
+  assert.ok(!page.includes('Editable Markdown'));
+  assert.ok(!/href="[^"]+\.(?:md|txt)"/.test(page));
+  for (const module of catalogue) {
+    assert.equal(module.topics.length, 5);
+    assert.equal(module.resources.length, 5);
+    assert.equal(module.resources.filter((r) => r.format === 'PPTX').length, 1);
+    assert.equal(module.resources.filter((r) => r.format === 'PDF').length, 4);
+    for (const resource of module.resources) {
+      const bytes = readFileSync(
+        new URL('../dist/learn/downloads/modules/' + resource.file, import.meta.url),
+      );
+      assert.equal(bytes.length, resource.bytes);
+      assert.equal(
+        bytes.subarray(0, resource.format === 'PDF' ? 5 : 2).toString(),
+        resource.format === 'PDF' ? '%PDF-' : 'PK',
+      );
+      assert.ok(page.includes('/learn/downloads/modules/' + resource.file));
+      assert.ok(page.includes(resource.file));
+    }
+    assert.ok(page.includes(module.archive));
+  }
+});
