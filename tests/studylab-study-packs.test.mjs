@@ -56,10 +56,13 @@ test('each module provides named PDF and PowerPoint resources with working downl
   assert.ok(!page.includes('Editable Markdown'));
   assert.ok(!/href="[^"]+\.(?:md|txt)"/.test(page));
   for (const module of catalogue) {
-    assert.equal(module.topics.length, 5);
-    assert.equal(module.resources.length, 5);
+    assert.equal(module.topics.length, module.slug === 'prld5121' ? 6 : 5);
+    assert.equal(module.resources.length, module.slug === 'prld5121' ? 11 : 5);
     assert.equal(module.resources.filter((r) => r.format === 'PPTX').length, 1);
-    assert.equal(module.resources.filter((r) => r.format === 'PDF').length, 4);
+    assert.equal(
+      module.resources.filter((r) => r.format === 'PDF').length,
+      module.slug === 'prld5121' ? 7 : 4,
+    );
     for (const resource of module.resources) {
       const bytes = readFileSync(
         new URL('../dist/learn/downloads/modules/' + resource.file, import.meta.url),

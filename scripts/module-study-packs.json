@@ -2,53 +2,96 @@
   {
     "slug": "prld5121",
     "title": "Programming Logic . PRLD5121",
-    "description": "Trace, write and debug pseudocode.",
+    "description": "Full current StudyLab course: foundations, decisions, loops, arrays, methods and object-oriented design.",
     "topics": [
-      "Planning a program before writing it",
-      "Selection and boundary testing",
-      "Loops and tracing",
-      "Arrays and systematic searching",
-      "Methods and object responsibilities"
+      "Programming foundations",
+      "Decisions and loops",
+      "Arrays and algorithms",
+      "Methods and modules",
+      "Object-oriented design",
+      "SWITCH, two dimensional arrays and integrated project"
     ],
     "resources": [
       {
         "file": "PRLD5121-Study-Guide.pdf",
-        "label": "Study guide",
+        "label": "Complete course study guide",
         "format": "PDF",
-        "detail": "8 pages . 5 illustrated chapters",
-        "bytes": 354495
+        "detail": "64 pages . 22 core chapters and 3 extensions",
+        "bytes": 297599
       },
       {
         "file": "PRLD5121-Practice-Questions.pdf",
-        "label": "Practice questions",
+        "label": "Practice workbook",
         "format": "PDF",
-        "detail": "1 page . 5 written and practical tasks",
-        "bytes": 2476
+        "detail": "14 pages . 78 written and practical tasks",
+        "bytes": 23066
       },
       {
         "file": "PRLD5121-Worked-Answers.pdf",
-        "label": "Worked answers",
+        "label": "Worked answers and checklists",
         "format": "PDF",
-        "detail": "2 pages . Explained solutions",
-        "bytes": 3875
+        "detail": "34 pages . All 78 workbook solutions",
+        "bytes": 53399
       },
       {
         "file": "PRLD5121-Illustrated-Revision.pptx",
         "label": "Illustrated revision",
         "format": "PPTX",
-        "detail": "24 editable slides",
-        "bytes": 448489
+        "detail": "66 editable slides",
+        "bytes": 475831
       },
       {
         "file": "PRLD5121-Revision-Slides.pdf",
         "label": "Slides for printing",
         "format": "PDF",
-        "detail": "24 slides",
-        "bytes": 515026
+        "detail": "66 slides",
+        "bytes": 520803
+      },
+      {
+        "file": "PRLD5121-Mixed-Practice-Papers.pdf",
+        "label": "Mixed practice papers A and B",
+        "format": "PDF",
+        "detail": "2 pages . Two 100 mark papers",
+        "bytes": 5067
+      },
+      {
+        "file": "PRLD5121-Mixed-Practice-Marking-Guide.pdf",
+        "label": "Practice paper marking guide",
+        "format": "PDF",
+        "detail": "5 pages . Worked answers and allocations",
+        "bytes": 10764
+      },
+      {
+        "file": "PRLD5121-Quick-Reference.pdf",
+        "label": "Pseudocode quick reference",
+        "format": "PDF",
+        "detail": "2 pages . Notation and common mistakes",
+        "bytes": 4016
+      },
+      {
+        "file": "PRLD5121-Study-Guide.docx",
+        "label": "Editable study guide",
+        "format": "DOCX",
+        "detail": "Word document . Edit or print",
+        "bytes": 268910
+      },
+      {
+        "file": "PRLD5121-Practice-Questions.docx",
+        "label": "Editable practice workbook",
+        "format": "DOCX",
+        "detail": "Word document . Edit or print",
+        "bytes": 43245
+      },
+      {
+        "file": "PRLD5121-Worked-Answers.docx",
+        "label": "Editable worked answers",
+        "format": "DOCX",
+        "detail": "Word document . Edit or print",
+        "bytes": 51811
       }
     ],
     "archive": "PRLD5121-Complete-Free-Revision.zip",
-    "archiveBytes": 1117891
+    "archiveBytes": 1388454
   },
   {
     "slug": "data6211",

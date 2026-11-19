@@ -21,3 +21,6 @@ dist/learn/docker/
 dist/learn/hadoop/
 
 dist/learn/study-packs/
+
+# Generated PRLD5121 companion study route.
+dist/learn/prld5121/

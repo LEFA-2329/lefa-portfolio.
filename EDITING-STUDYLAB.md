@@ -28,7 +28,7 @@ Open this repository folder in VS Code. The application is a static website: HTM
 | Progress backup HTML                         | `dist/learn/pages/progress-backup.html`                                 |
 | Backup validation and merge rules            | `dist/learn/js/shared/progress-backup.mjs`                              |
 | Public Study Packs page                      | `scripts/build-studylab-search-pages.mjs`                               |
-| Free module study-pack questions             | `scripts/build-module-study-packs.py`                                   |
+| Free module study-pack questions             | `scripts/study-packs/`                                                  |
 | Navigation and page handoffs                 | `dist/learn/js/navigation-and-pages.mjs`                                |
 
 The private premium documents are separate from this public repository. Do not copy them into public download folders when editing free resources.
@@ -77,3 +77,5 @@ For example, to add a diagram dropdown example, edit `diagram-examples.mjs`. To 
 Use named exports and descriptive feature filenames. Keep editable learning data in `content/` and browser event handling in a page module. Pass page dependencies explicitly, as the diagram and guided trace pages do; avoid new global variables. Keep transient UI state inside the feature that owns it. Share a helper only when it has a clear reusable responsibility.
 
 Keep saved lesson IDs, storage keys, page element IDs, template placeholders and route names stable unless their consumers and migrations are updated together. Continue escaping student input before adding it to HTML. Follow existing cleanup and storage-error handling patterns. Preserve the stylesheet import order because it affects the cascade.
+
+For the expanded PRLD5121 guide, workbook, papers and Word copies, use [PRLD5121 content coverage](docs/prld5121-content-coverage.md).

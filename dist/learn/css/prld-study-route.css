@@ -1,0 +1,24 @@
+/* The shared code surface is navy in every saved page theme. */
+.prld-keyword {
+  color: #9ec6ff;
+  font-weight: 700;
+}
+.prld-string {
+  color: #ffd098;
+}
+.prld-comment {
+  color: #abddb7;
+  font-style: italic;
+}
+:target {
+  scroll-margin-top: 2rem;
+}
+.prld-diagram {
+  display: block;
+  width: 100%;
+  max-height: 440px;
+  object-fit: contain;
+  background: #fff;
+  padding: 16px;
+  border-radius: 8px;
+}

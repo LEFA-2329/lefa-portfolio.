@@ -1,0 +1,111 @@
+[
+  {
+    "id": "switch",
+    "title": "SWITCH and menu choices",
+    "unit": 2,
+    "outcomes": [
+      "Choose a suitable multi-way selection structure",
+      "Handle an unknown menu choice"
+    ],
+    "sections": [
+      {
+        "heading": "One choice several exact values",
+        "text": "Multi-way selection compares one expression with listed exact values. The idea is often called SWITCH. StudyLab writes CASE choice OF, followed by WHEN 1:, WHEN 2: and OTHERWISE:, then ENDCASE. Use it for exact choices such as menu options. IF is usually clearer for ranges. OTHERWISE handles a choice with no matching WHEN. One matching branch runs without falling into the next branch. Other languages use different syntax."
+      },
+      {
+        "heading": "Before the code",
+        "text": "Build a tiny menu that displays a course fee. The student enters 1 or 2. Any other integer displays Unknown choice. This example assumes the input has already been converted to an integer. Input conversion and selection are separate responsibilities."
+      }
+    ],
+    "examplePrompt": "Input 1 for a R500 SQL course or 2 for a R600 Docker course.",
+    "example": "BEGIN\n  DECLARE choice AS INTEGER\n  INPUT choice\n  CASE choice OF\n    WHEN 1:\n      OUTPUT 500\n    WHEN 2:\n      OUTPUT 600\n    OTHERWISE:\n      OUTPUT \"Unknown choice\"\n  ENDCASE\nEND",
+    "exampleTrace": [
+      "choice=2 matches WHEN 2: and displays 600.",
+      "The first branch and OTHERWISE do not run.",
+      "choice=3 matches no listed value and displays Unknown choice."
+    ],
+    "question": "Add WHEN 3: for a R700 C# course and explain why OTHERWISE must remain. Test 3 and 0.",
+    "answer": "Insert WHEN 3: followed by OUTPUT 700 before OTHERWISE:. Choice 3 displays 700. Choice 0 displays Unknown choice. OTHERWISE is still needed because unlisted choices remain possible.",
+    "rubric": [
+      "Read integer choice",
+      "Three distinct WHEN values",
+      "Correct fee mapping",
+      "OTHERWISE remains",
+      "Tests 3 and 0"
+    ]
+  },
+  {
+    "id": "two-dimensional-arrays",
+    "title": "Two dimensional arrays and row totals",
+    "unit": 3,
+    "outcomes": [
+      "Read and trace a row and column index",
+      "Calculate row totals with nested loops"
+    ],
+    "sections": [
+      {
+        "heading": "A table of related values",
+        "text": "A two dimensional array uses two indexes, such as marks[row][column]. The first selects a row and the second selects a column. For two students taking three tests there are 2 * 3 = 6 elements. Zero based row indexes are 0..1 and column indexes are 0..2. A row total must restart at zero for each new student."
+      },
+      {
+        "heading": "Before the code",
+        "text": "Build a report with one total per student. Student 0 has 50,60,70 and student 1 has 80,40,60. The example assigns all six values before reading them. StudyLab uses separate brackets for each dimension: DECLARE marks[2][3] AS REAL and marks[row][column]. You can test this matrix example in the browser tracer."
+      }
+    ],
+    "examplePrompt": "Find each student's total over three tests. Keep the column count separate from the row count.",
+    "example": "BEGIN\n  DECLARE marks[2][3] AS REAL\n  DECLARE row AS INTEGER\n  DECLARE column AS INTEGER\n  DECLARE rowTotal AS REAL\n  SET marks[0][0] = 50\n  SET marks[0][1] = 60\n  SET marks[0][2] = 70\n  SET marks[1][0] = 80\n  SET marks[1][1] = 40\n  SET marks[1][2] = 60\n  FOR row = 0 TO 1\n    SET rowTotal = 0 // Restart for this row\n    FOR column = 0 TO 2\n      SET rowTotal = rowTotal + marks[row][column]\n    ENDFOR\n    OUTPUT row, rowTotal\n  ENDFOR\nEND",
+    "exampleTrace": [
+      "Row 0 visits columns 0,1,2 and totals 50,110,180.",
+      "Row 1 starts again at 0 and totals 80,120,180.",
+      "Output pairs are (0,180) and (1,180). The inner body runs six times."
+    ],
+    "question": "Modify the report to display row averages and a total for each column. Give all expected results for the shown data.",
+    "answer": "Display rowTotal/3.0 after each row loop: 60 and 60. For column totals put the column loop outside a row loop, reset columnTotal before scanning its two rows and accumulate marks[row][column]. Column totals are 130,100,130. Bounds stay rows 0..1 and columns 0..2.",
+    "rubric": [
+      "Correct row averages",
+      "Separate column total",
+      "Reset once per column",
+      "Correct bounds",
+      "130,100,130"
+    ]
+  },
+  {
+    "id": "integration",
+    "title": "Integrated student marks project",
+    "unit": 5,
+    "outcomes": [
+      "Combine input validation arrays methods and selection",
+      "Plan an independent test set and explain a class design"
+    ],
+    "sections": [
+      {
+        "heading": "What you are building",
+        "text": "Build a marks report for three students. Keep a name and a valid mark for each student. Show each name, mark and result; calculate the class average; find the top student. Use parallel arrays first, then describe how a Student class could keep each name and mark together. The main goal is to make data flow and rules visible."
+      },
+      {
+        "heading": "Build the project in parts",
+        "text": "Part 1 declares and fills the arrays. Part 2 validates marks from 0 to 100. Part 3 counts passes using mark >= 50. Part 4 calculates the average after all three inputs. Part 5 tracks the best index and prints its matching name. A separate extension moves classification into a returning method. Only read a variable after assigning it."
+      },
+      {
+        "heading": "Testing the whole report",
+        "text": "Use Ada=50, Bo=49 and Cy=75. Expected average is 58, two students pass and Cy is top. Test all zeros, all hundreds and equal top marks. This design keeps the first top student by using > rather than >=. Reject a negative mark and 101, then enter a replacement. The program accepts exactly three valid records, even if it must ask again."
+      }
+    ],
+    "examplePrompt": "The complete main program below combines the parts. Numeric input conversion is assumed; range validation is explicit. Define names and marks before the main report loop.",
+    "example": "BEGIN\n  DECLARE names[3] AS STRING\n  DECLARE marks[3] AS REAL\n  DECLARE i AS INTEGER\n  DECLARE total AS REAL\n  DECLARE passed AS INTEGER\n  DECLARE bestIndex AS INTEGER\n  SET total = 0\n  SET passed = 0\n  SET bestIndex = 0\n\n  FOR i = 0 TO 2\n    INPUT names[i]\n    INPUT marks[i]\n    WHILE marks[i] < 0 OR marks[i] > 100 DO\n      OUTPUT \"Enter a mark from 0 to 100\"\n      INPUT marks[i]\n    ENDWHILE\n    SET total = total + marks[i]\n    IF marks[i] >= 50 THEN\n      SET passed = passed + 1\n      OUTPUT names[i], marks[i], \"Pass\"\n    ELSE\n      OUTPUT names[i], marks[i], \"Revise\"\n    ENDIF\n    IF marks[i] > marks[bestIndex] THEN\n      SET bestIndex = i\n    ENDIF\n  ENDFOR\n\n  OUTPUT \"Average\", total / 3.0\n  OUTPUT \"Passed\", passed\n  OUTPUT \"Top\", names[bestIndex], marks[bestIndex]\nEND",
+    "exampleTrace": [
+      "After Ada: total=50,passed=1,bestIndex=0.",
+      "After Bo: total=99,passed=1,bestIndex=0.",
+      "After Cy: total=174,passed=2,bestIndex=2. Average=58."
+    ],
+    "question": "Refactor the classification into Result(mark) returning a STRING. Give the complete method and the calling statement. Then propose private fields and methods for a Student class.",
+    "answer": "METHOD Result(mark AS REAL) RETURNS STRING; IF mark >= 50 THEN RETURN \"Pass\" ELSE RETURN \"Revise\" ENDIF; ENDMETHOD. Place it outside Main. In the report call OUTPUT names[i],marks[i],Result(marks[i]). Precondition: mark already validated. Student has private name STRING and mark REAL; a constructor checks the mark range, GetName returns the name and Result returns the classification. Keep the main report responsible for aggregation across students.",
+    "rubric": [
+      "Typed returning method",
+      "Both branches return",
+      "Call supplies current mark",
+      "Class fields and constructor",
+      "Separation of object and class totals"
+    ]
+  }
+]

@@ -40,6 +40,11 @@ def pdf(filename,story,title):
  return d.page
 catalog=[]
 for slug,title,description,route,questions in MODULES:
+ if slug == "prld5121":
+  import importlib.util
+  spec=importlib.util.spec_from_file_location("prld_resources", ROOT/"scripts/build-prld-resources.py")
+  prld=importlib.util.module_from_spec(spec);spec.loader.exec_module(prld)
+  catalog.append(prld.build());continue
  key=next(k for k in CHAPTERS if k.lower()==slug);chapters=CHAPTERS[key]
  prefix=key
  guide=f'{prefix}-Study-Guide.pdf';qp=f'{prefix}-Practice-Questions.pdf';ap=f'{prefix}-Worked-Answers.pdf';ppt=f'{prefix}-Illustrated-Revision.pptx';slides=f'{prefix}-Revision-Slides.pdf'
@@ -81,4 +86,4 @@ for slug,title,description,route,questions in MODULES:
    info=zipfile.ZipInfo(res['file'],(2026,1,1,0,0,0));info.compress_type=zipfile.ZIP_DEFLATED;z.writestr(info,(OUT/res['file']).read_bytes())
  catalog.append(dict(slug=slug,title=title,description=description,topics=[c['title'] for c in chapters],resources=resources,archive=zipname,archiveBytes=(OUT/zipname).stat().st_size))
 (ROOT/'scripts/module-study-packs.json').write_text(json.dumps(catalog,indent=2)+'\n')
-print('Built 18 named PDFs and six revision bundles; catalogued six maintained PowerPoints and slide PDFs.')
+print('Built named module PDFs and six revision bundles; catalogued six maintained PowerPoints and slide PDFs.')
