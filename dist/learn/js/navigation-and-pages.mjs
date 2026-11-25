@@ -1,6 +1,6 @@
 // Application composition root. Feature modules own their page state and events.
-import { renderWedePage } from './web-development/web-development-pages.mjs?v=wede-66';
-import { createNavigationSidebar } from './application/navigation-sidebar.mjs?v=wede-66';
+import { renderWedePage } from './web-development/web-development-pages.mjs?v=wede-67';
+import { createNavigationSidebar } from './application/navigation-sidebar.mjs?v=wede-67';
 import { createProgrammingLessonPages } from './programming-logic/programming-lesson-pages.mjs?v=breadcrumb-58';
 import { createProgrammingTaskPages } from './programming-logic/programming-task-pages.mjs?v=breadcrumb-58';
 import { createProgrammingOverviewPages } from './programming-logic/programming-overview-pages.mjs?v=breadcrumb-58';
