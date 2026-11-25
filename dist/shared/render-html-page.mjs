@@ -1,4 +1,4 @@
-import { htmlPages } from './compiled-html-pages.mjs?v=breadcrumb-58';
+import { htmlPages } from './compiled-html-pages.mjs?v=wede-59';
 
 // These templates are authored in this repository and compiled before publication.
 // Callers supply trusted markup or already escaped text; never pass raw user input.

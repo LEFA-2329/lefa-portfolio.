@@ -3,7 +3,8 @@ import {
   advancedUnits,
   advancedLessons,
 } from '../database/content/advanced-lessons.mjs?v=punctuation-43';
-import { cleanDatabaseLesson } from '../database/saved-database-answers.mjs?v=40';
+import { cleanQuizLesson } from './quiz-lesson-state.mjs';
+import { wedeLessons, wedeUnits } from '../web-development/content/course.mjs';
 import { workStore } from './saved-work-storage.mjs?v=40';
 import {
   lessons as prldLessons,
@@ -18,6 +19,7 @@ import {
 } from '../database/content/intermediate-lessons.mjs?v=40';
 import { escapeHTML as e } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=40';
 export const progressCourses = {
+  wede: { title: 'WEDE5020 Web Development', lessons: wedeLessons, units: wedeUnits },
   advanced: {
     title: 'Advanced Database',
     lessons: advancedLessons,
@@ -134,8 +136,10 @@ export function lessonProgress(
     debugReady = !!s.bugPassed;
     debugAttempted = !!s.debugAttempts;
   } else {
-    const s = store.read('database:' + lesson.id, {}, (raw) =>
-      cleanDatabaseLesson(raw, lesson),
+    const s = store.read(
+      (course === 'wede' ? 'wede:' : 'database:') + lesson.id,
+      {},
+      (raw) => cleanQuizLesson(raw, lesson),
     );
     total = lesson.quizzes.length;
     for (let i = 0; i < total; i++) {
@@ -241,7 +245,7 @@ export function progressPage({ view, sidebar, course = 'prld' }) {
       dynamic_9: p.units
         .map((u) => {
           const ls = p.items.filter((l) => l.unit === u.id);
-          return `<section class="course-unit"><h2>Unit ${u.number || u.id}: ${e(u.title)}</h2><p>${ls.filter((l) => l.completed).length}/${ls.length} lessons complete${ls.some((l) => l.needsRevision) ? '. Some topics need revision.' : '.'}</p><div class="progress-lessons">${ls.map((l) => `<article><div><h3><a href="#${course === 'prld' ? 'lesson' : 'db-lesson'}/${l.id}">${e(l.title)}</a></h3><p>Quiz ${l.correct}/${l.total}; ${l.attempted} checked. ${course === 'prld' ? 'Debugging ' + (l.debugReady ? 'passed' : 'not passed') + '.' : ''}</p></div><strong class="progress-state">${l.status}</strong></article>`).join('')}</div></section>`;
+          return `<section class="course-unit"><h2>Unit ${u.number || u.id}: ${e(u.title)}</h2><p>${ls.filter((l) => l.completed).length}/${ls.length} lessons complete${ls.some((l) => l.needsRevision) ? '. Some topics need revision.' : '.'}</p><div class="progress-lessons">${ls.map((l) => `<article><div><h3><a href="#${course === 'prld' ? 'lesson' : course === 'wede' ? 'wede-lesson' : 'db-lesson'}/${l.id}">${e(l.title)}</a></h3><p>Quiz ${l.correct}/${l.total}; ${l.attempted} checked. ${course === 'prld' ? 'Debugging ' + (l.debugReady ? 'passed' : 'not passed') + '.' : ''}</p></div><strong class="progress-state">${l.status}</strong></article>`).join('')}</div></section>`;
         })
         .join(''),
     });

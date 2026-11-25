@@ -1,9 +1,10 @@
 // Application composition root. Feature modules own their page state and events.
-import { createNavigationSidebar } from './application/navigation-sidebar.mjs?v=breadcrumb-58';
+import { renderWedePage } from './web-development/web-development-pages.mjs';
+import { createNavigationSidebar } from './application/navigation-sidebar.mjs?v=wede-59';
 import { createProgrammingLessonPages } from './programming-logic/programming-lesson-pages.mjs?v=breadcrumb-58';
 import { createProgrammingTaskPages } from './programming-logic/programming-task-pages.mjs?v=breadcrumb-58';
 import { createProgrammingOverviewPages } from './programming-logic/programming-overview-pages.mjs?v=breadcrumb-58';
-import { savedWorkPage } from './shared/saved-work-page.mjs?v=breadcrumb-58';
+import { savedWorkPage } from './shared/saved-work-page.mjs?v=wede-59';
 import { diagramLabPage } from './programming-logic/pseudocode-diagram-page.mjs?v=breadcrumb-58';
 import { guidedTracePage } from './programming-logic/guided-trace-page.mjs?v=breadcrumb-58';
 import { progressBackupPage } from './shared/progress-backup-page.mjs?v=breadcrumb-58';
@@ -19,12 +20,12 @@ import {
 import {
   studyBreakPage,
   helpfulResourcesPage,
-} from './shared/study-break-and-resources.mjs?v=csharp-44';
-import { renderHtmlPage } from '../../shared/render-html-page.mjs?v=breadcrumb-58';
+} from './shared/study-break-and-resources.mjs?v=wede-59';
+import { renderHtmlPage } from '../../shared/render-html-page.mjs?v=wede-59';
 import { builderPage } from './database/normalisation/normalisation-diagram-builder.mjs?v=40';
 import { normalisationPracticePage } from './database/normalisation/normalisation-question-page.mjs?v=40';
 import { databaseExamPage } from './database/database-exam-page.mjs?v=40';
-import { progressPage } from './shared/learning-progress.mjs?v=breadcrumb-58';
+import { progressPage } from './shared/learning-progress.mjs?v=wede-59';
 import {
   databaseHome,
   databaseUnit,
@@ -48,9 +49,14 @@ const $ = (s) => document.querySelector(s),
   view = $('#view');
 let activeModule = 'prld';
 try {
-  activeModule = ['database', 'intermediate', 'advanced', 'csharp', 'docker'].includes(
-    localStorage.getItem('studylab-module'),
-  )
+  activeModule = [
+    'database',
+    'intermediate',
+    'advanced',
+    'csharp',
+    'docker',
+    'wede',
+  ].includes(localStorage.getItem('studylab-module'))
     ? localStorage.getItem('studylab-module')
     : 'prld';
 } catch {}
@@ -77,7 +83,7 @@ workStore.subscribe((status) => {
       : 'Your drafts save automatically in this browser.');
 });
 function crumb(label) {
-  return `<p class="breadcrumb"><a href="#home">Learning space</a><span>/</span><strong>${e(label)}</strong></p>`;
+  return `<p class="breadcrumb"><a href="${activeModule === 'wede' ? '#wede' : '#home'}">Learning space</a><span>/</span><strong>${e(label)}</strong></p>`;
 }
 const openDiagram = (code) => {
   carriedCode = code;
@@ -145,10 +151,15 @@ function route() {
   const [page, id, task] = location.hash.slice(1).split('/');
   if (
     page === 'progress' &&
-    ['prld', 'database', 'intermediate', 'advanced'].includes(id)
+    ['prld', 'database', 'intermediate', 'advanced', 'wede'].includes(id)
   )
     activeModule = id;
-  if (page?.startsWith('cs')) {
+  const webRoute = page === 'wede' || page?.startsWith('wede-');
+  if (webRoute) {
+    activeModule = 'wede';
+    sidebar();
+    renderWedePage({ view, page, id, section: task });
+  } else if (page?.startsWith('cs')) {
     if (page === 'cs-lesson')
       activeModule = courseForLesson(csharpLessons.find((l) => l.id === id));
     else if (page === 'cs-unit')
@@ -262,7 +273,11 @@ function route() {
                                                         ? 'Practice tasks'
                                                         : page === 'task'
                                                           ? 'Practice task'
-                                                          : 'Programming Logic and Design') +
+                                                          : webRoute
+                                                            ? view.querySelector('h1')
+                                                                ?.textContent ||
+                                                              'Web Development'
+                                                            : 'Programming Logic and Design') +
     ' | StudyLab';
   const report = $('#report-content');
   if (report) {
@@ -294,16 +309,18 @@ route();
 $('#course-select').onchange = (event) => {
   $('#lesson-search').value = '';
   location.hash =
-    event.target.value === 'csharp'
-      ? 'cs/csharp'
-      : event.target.value === 'docker'
-        ? 'cs/docker'
-        : event.target.value === 'advanced'
-          ? 'db-advanced'
-          : event.target.value === 'intermediate'
-            ? 'db-intermediate'
-            : event.target.value === 'database'
-              ? 'db'
-              : 'home';
+    event.target.value === 'wede'
+      ? 'wede'
+      : event.target.value === 'csharp'
+        ? 'cs/csharp'
+        : event.target.value === 'docker'
+          ? 'cs/docker'
+          : event.target.value === 'advanced'
+            ? 'db-advanced'
+            : event.target.value === 'intermediate'
+              ? 'db-intermediate'
+              : event.target.value === 'database'
+                ? 'db'
+                : 'home';
 };
 $('#lesson-search').addEventListener('input', filterTopics);

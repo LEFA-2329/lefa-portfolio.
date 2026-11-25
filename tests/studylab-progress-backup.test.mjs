@@ -9,6 +9,13 @@ import {
   MAX_BACKUP_BYTES,
 } from '../dist/learn/js/shared/progress-backup.mjs';
 import { defaults, SETTINGS_KEY } from '../dist/learn/js/shared/display-preferences.mjs';
+import { wedeLessons } from '../dist/learn/js/web-development/content/course.mjs';
+import { createWorkStore } from '../dist/learn/js/shared/saved-work-storage.mjs';
+import {
+  courseProgress,
+  createCompletionStore,
+  lessonProgress,
+} from '../dist/learn/js/shared/learning-progress.mjs';
 const C = 'studylab-completion-v1',
   CS = 'studylab-csharp-learning-v1',
   P = 'logiclab-work-v1:';
@@ -93,6 +100,38 @@ test('export includes all learning families, migrates legacy completions and exc
   applyRestore(planRestore(parseBackup(JSON.stringify(b)), restored), restored);
   assert.equal(parsed(restored, P + 'sql:free').payload.code, 'SELECT 1;');
   assert.equal(s.getItem('authToken'), 'private');
+});
+test('WEDE restores a practical draft, checked quiz choices and independent course completion', () => {
+  const storage = new Storage();
+  const workStore = createWorkStore(() => storage);
+  const completion = createCompletionStore(() => storage);
+  const lesson = wedeLessons[0];
+  const key = 'wede:' + lesson.id;
+  const answers = {
+    choices: lesson.quizzes.map((q) => q.answer),
+    checked: [true, false],
+    draft: 'Keep visitor information on a permanent page.',
+  };
+  workStore.write(key, answers);
+  assert.equal(lessonProgress(lesson, 'wede', workStore, completion).ready, false);
+  workStore.write(key, { ...answers, checked: [true, true] });
+  assert.equal(lessonProgress(lesson, 'wede', workStore, completion).ready, true);
+  completion.set(lesson.id, true);
+
+  const restored = new Storage();
+  const backup = parseBackup(JSON.stringify(makeBackup(storage)));
+  applyRestore(planRestore(backup, restored), restored);
+  const restoredWork = createWorkStore(() => restored);
+  const restoredCompletions = createCompletionStore(() => restored);
+  const progress = courseProgress('wede', restoredWork, restoredCompletions);
+  assert.equal(restoredWork.read(key, {}).draft, answers.draft);
+  assert.equal(progress.completed, 1);
+  assert.equal(progress.correct, 2);
+  assert.equal(progress.quizTotal, 36);
+  assert.equal(
+    courseProgress('database', restoredWork, restoredCompletions).completed,
+    0,
+  );
 });
 test('merge preserves whole current drafts by default and lets the user choose each conflict', () => {
   const s = new Storage({

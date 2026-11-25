@@ -52,11 +52,25 @@ test('each module provides named PDF and PowerPoint resources with working downl
     new URL('../dist/learn/study-packs/index.html', import.meta.url),
     'utf8',
   );
-  assert.equal(catalogue.length, 6);
+  assert.deepEqual(
+    new Set(catalogue.map((m) => m.slug)),
+    new Set([
+      'prld5121',
+      'data6211',
+      'data6222',
+      'advanced-database',
+      'prog6212',
+      'docker',
+      'wede5020',
+    ]),
+  );
   assert.ok(!page.includes('Editable Markdown'));
   assert.ok(!/href="[^"]+\.(?:md|txt)"/.test(page));
   for (const module of catalogue) {
-    assert.equal(module.topics.length, module.slug === 'prld5121' ? 6 : 5);
+    assert.equal(
+      module.topics.length,
+      module.slug === 'prld5121' ? 6 : module.slug === 'wede5020' ? 7 : 5,
+    );
     assert.equal(module.resources.length, module.slug === 'prld5121' ? 11 : 5);
     assert.equal(module.resources.filter((r) => r.format === 'PPTX').length, 1);
     assert.equal(

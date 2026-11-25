@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Try a repair enquiry in this local web development exercise.">
+    <title>Ask about an item | Campus Repair Café</title>
+    <link rel="stylesheet" href="../css/site.css">
+    <script defer src="../js/enquiry.js"></script>
+  </head>
+  <body>
+    <header>
+      <p class="brand">Campus Repair Café</p>
+      <nav aria-label="Main navigation">
+        <a href="../index.html">Home</a>
+        <a href="visit.html">Plan a visit</a>
+        <a href="enquiry.html" aria-current="page">Ask about an item</a>
+      </nav>
+    </header>
+    <main>
+      <h1>Ask about an item</h1>
+      <p>This practice form checks your answers in your browser. Use fictional details.</p>
+      <form id="enquiry">
+        <label for="email">Contact email</label>
+        <input id="email" name="email" type="email" placeholder="student@example.org" required>
+        <label for="item">What would you like to repair?</label>
+        <textarea id="item" name="item" required rows="4" aria-describedby="item-help"></textarea>
+        <small id="item-help">Describe the item in at least five characters.</small>
+        <button type="submit" id="check" disabled>Check my enquiry</button>
+      </form>
+      <noscript><p>Enable JavaScript to try the local form check.</p></noscript>
+      <p id="status" role="status"></p>
+    </main>
+    <footer>Fictional workshop for WEDE5020 practice.</footer>
+  </body>
+</html>

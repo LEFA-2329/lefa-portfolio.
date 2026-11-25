@@ -1,0 +1,68 @@
+.wede-lesson > .panel,
+.wede-tool-layout > .panel {
+  margin-block: 1.3rem;
+}
+.wede-lesson summary {
+  cursor: pointer;
+  font-weight: 650;
+  padding-block: 0.75rem;
+}
+.wede-lesson details + label {
+  margin-top: 1rem;
+}
+.wede-lesson pre,
+.wede-tool-layout pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.wede-lesson .db-quiz fieldset {
+  min-width: 0;
+}
+.wede-tool-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  gap: 1.2rem;
+  align-items: start;
+}
+.wede-tool-layout > * {
+  min-width: 0;
+}
+.wede-tool-layout input[type='range'] {
+  width: min(78%, 19rem);
+  vertical-align: middle;
+  accent-color: var(--purple);
+}
+.wede-tool-layout output {
+  margin-inline-start: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+.wede-box-stage {
+  max-width: 100%;
+  overflow-x: auto;
+  background: var(--surface-alt);
+  border: 1px dashed var(--line);
+}
+.wede-box-card {
+  border-style: solid;
+  border-color: var(--ink);
+  color: var(--ink);
+  background: var(--surface-alt);
+}
+.wede-box-card span {
+  display: block;
+  padding-block: 0.55rem;
+  text-align: center;
+  background: var(--paper);
+}
+.wede-files li {
+  margin-block: 0.8rem;
+}
+.wede-files a {
+  font-weight: 650;
+}
+@media (max-width: 760px) {
+  .wede-tool-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+}

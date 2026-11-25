@@ -9,6 +9,7 @@ const read = (path) => readFileSync(new URL(path, root), 'utf8');
 const paths = [
   'studylab/',
   'learn/study-packs/',
+  'learn/wede5020/',
   ...searchTopics.map((t) => 'learn/' + t.slug + '/'),
   ...courseLessons.map(
     (l) => `learn/${l.unit.startsWith('docker-') ? 'docker' : 'csharp'}/lessons/${l.id}/`,

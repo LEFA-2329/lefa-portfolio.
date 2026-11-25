@@ -10,6 +10,7 @@ import {
   lessons,
 } from '../programming-logic/content/lessons-and-quizzes.mjs?v=40';
 import { escapeHTML as e } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=40';
+import { wedeSidebar } from '../web-development/web-development-pages.mjs';
 export function createNavigationSidebar({
   getActiveModule,
   setActiveModule,
@@ -19,6 +20,26 @@ export function createNavigationSidebar({
   function sidebar(unit) {
     let activeModule = getActiveModule();
     const [newPage, newId] = location.hash.slice(1).split('/');
+    const webRoute = newPage === 'wede' || newPage?.startsWith('wede-');
+    const sharedWebRoute =
+      activeModule === 'wede' &&
+      [
+        'study-break',
+        'helpful-resources',
+        'saved-work',
+        'about',
+        'backup',
+        'progress',
+      ].includes(newPage);
+    if (webRoute || sharedWebRoute) {
+      setActiveModule('wede');
+      try {
+        localStorage.setItem('studylab-module', 'wede');
+      } catch {}
+      wedeSidebar({ page: newPage, id: newId });
+      filterTopics();
+      return;
+    }
     const isNewCourse =
       newPage?.startsWith('cs') ||
       (['study-break', 'helpful-resources', 'saved-work', 'about', 'backup'].includes(

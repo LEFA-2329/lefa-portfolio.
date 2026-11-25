@@ -7,6 +7,7 @@ import { taskBank } from '../programming-logic/content/practice-task-bank.mjs?v=
 import { lessons } from '../programming-logic/content/lessons-and-quizzes.mjs?v=40';
 import { activities } from '../programming-logic/content/interactive-activities.mjs?v=40';
 import { escapeHTML as e } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=40';
+import { wedeLessons } from '../web-development/content/course.mjs';
 export function savedWorkPage({ view, crumb, sidebar }) {
   const $ = (selector) => view.querySelector(selector);
   const seenSQL = new Set();
@@ -29,6 +30,12 @@ export function savedWorkPage({ view, crumb, sidebar }) {
       } else if (item.key === 'exam') {
         title = 'PRLD5121 practice exam';
         href = '#exams';
+      } else if (item.key.startsWith('wede:')) {
+        const lesson = wedeLessons.find((lesson) => lesson.id === item.key.slice(5));
+        if (lesson) {
+          title = 'Web Development · ' + lesson.title;
+          href = '#wede-lesson/' + lesson.id;
+        }
       } else if (item.key.startsWith('database:')) {
         const lesson = dbLessons.find(
           (l) => l.id === item.key.slice(9).split(':task-')[0],

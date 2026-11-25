@@ -85,5 +85,7 @@ for slug,title,description,route,questions in MODULES:
   for res in resources:
    info=zipfile.ZipInfo(res['file'],(2026,1,1,0,0,0));info.compress_type=zipfile.ZIP_DEFLATED;z.writestr(info,(OUT/res['file']).read_bytes())
  catalog.append(dict(slug=slug,title=title,description=description,topics=[c['title'] for c in chapters],resources=resources,archive=zipname,archiveBytes=(OUT/zipname).stat().st_size))
+from build_wede_resources import build as build_wede_resources
+catalog.append(build_wede_resources())
 (ROOT/'scripts/module-study-packs.json').write_text(json.dumps(catalog,indent=2)+'\n')
-print('Built named module PDFs and six revision bundles; catalogued six maintained PowerPoints and slide PDFs.')
+print('Built named module PDFs, revision bundles and the study-pack catalogue.')

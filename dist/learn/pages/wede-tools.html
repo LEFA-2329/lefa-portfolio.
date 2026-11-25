@@ -1,0 +1,50 @@
+<p class="breadcrumb">
+  <a href="#wede">Web Development</a><span>/</span><strong>Code tools</strong>
+</p>
+<h1>CSS box model lab</h1>
+<p class="lede">
+  A repair-session card declares a width. Predict the space it occupies, then change the
+  sizing rule and test your answer.
+</p>
+<div class="wede-tool-layout">
+  <section class="panel">
+    <h2>Card styles</h2>
+    <label class="field-label" for="wede-sizing">Sizing rule</label
+    ><select id="wede-sizing">
+      <option>border-box</option>
+      <option>content-box</option>
+    </select>
+    <label class="field-label" for="wede-width">Declared width in pixels</label
+    ><input id="wede-width" type="range" min="160" max="280" value="240" /><output
+      for="wede-width"
+    ></output>
+    <label class="field-label" for="wede-padding">Padding on each side in pixels</label
+    ><input id="wede-padding" type="range" min="0" max="32" value="16" /><output
+      for="wede-padding"
+    ></output>
+    <label class="field-label" for="wede-border">Border on each side in pixels</label
+    ><input id="wede-border" type="range" min="0" max="8" value="2" /><output
+      for="wede-border"
+    ></output>
+    <label class="field-label" for="wede-margin">Margin on each side in pixels</label
+    ><input id="wede-margin" type="range" min="0" max="24" value="8" /><output
+      for="wede-margin"
+    ></output>
+  </section>
+  <section class="panel">
+    <h2>Your card</h2>
+    <div
+      class="wede-box-stage"
+      tabindex="0"
+      role="region"
+      aria-label="Card at actual CSS pixel width"
+    >
+      <div class="wede-box-card"><span>Saturday repairs</span></div>
+    </div>
+    <p id="wede-measurements" aria-live="polite"></p>
+    <pre><code id="wede-css"></code></pre>
+    <a class="text-link" href="#wede-lesson/wede-css-layout"
+      >Review the box model lesson</a
+    >
+  </section>
+</div>

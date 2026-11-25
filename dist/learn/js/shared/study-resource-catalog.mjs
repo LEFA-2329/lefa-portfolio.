@@ -1,6 +1,25 @@
 // Curated links checked November 2026. Edit these records to add learning resources.
 export const resources = [
   {
+    topics: ['web'],
+    kind: 'Learning guide',
+    provider: 'MDN Web Docs',
+    title: 'Build and style a responsive web page',
+    url: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design',
+    description:
+      'See how flexible layouts, the viewport and media queries work together.',
+    note: 'Try the examples as you work through Unit 5.',
+  },
+  {
+    topics: ['web'],
+    kind: 'Validation tool',
+    provider: 'W3C',
+    title: 'Nu HTML Checker',
+    url: 'https://validator.w3.org/nu/',
+    description: 'Validate a page by address, upload or direct input.',
+    note: 'Correct the first reported structural error, then check again.',
+  },
+  {
     topics: ['csharp'],
     kind: 'Official tutorial',
     provider: 'Microsoft Learn',
@@ -161,6 +180,7 @@ export const resources = [
   },
 ];
 export function recommendedTopic(course, title = '') {
+  if (course === 'wede') return 'web';
   if (course === 'csharp') return 'csharp';
   if (course === 'docker') return 'docker';
   if (/hadoop|mapreduce|hdfs|big data/i.test(title)) return 'hadoop';

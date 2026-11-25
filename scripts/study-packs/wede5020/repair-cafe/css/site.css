@@ -1,0 +1,29 @@
+* { box-sizing: border-box; }
+body { margin: 0 auto; max-width: 64rem; padding: 1rem; color: #18382e; background: #fbfdfb; font: 1rem/1.55 system-ui, sans-serif; }
+header, footer { border-block-end: 1px solid #b4c7be; padding-block: 1rem; }
+footer { margin-top: 2rem; border-block-start: 1px solid #b4c7be; border-block-end: none; }
+.brand { font-weight: 750; }
+nav { display: flex; flex-wrap: wrap; gap: .6rem 1.4rem; }
+a { color: #165a4a; }
+a[aria-current] { font-weight: 750; text-decoration-thickness: .18em; }
+a:hover { text-decoration-thickness: .16em; }
+:focus-visible { outline: 3px solid #a74a08; outline-offset: 3px; }
+main { padding-block: 1rem; }
+h1, h2 { line-height: 1.2; }
+.sessions { display: grid; gap: 1rem; grid-template-columns: 1fr; }
+.card { padding: 1rem; border: 2px solid #517d67; background: #edf6ec; }
+.card h2 { margin-top: 0; }
+caption { text-align: left; font-weight: 700; }
+table { border-collapse: collapse; }
+th, td { text-align: left; border: 1px solid #94a99b; padding: .55rem; }
+iframe { width: 100%; max-width: 38rem; height: 13rem; border: 1px solid #94a99b; }
+.directions h1 { font-size: 1.3rem; }
+.directions main { padding: 0; }
+form { display: grid; gap: .5rem; max-width: 34rem; }
+label { font-weight: 650; }
+input, textarea, button { font: inherit; padding: .55rem; }
+button { justify-self: start; background: #165a4a; border: 0; color: white; padding-inline: 1rem; cursor: pointer; }
+@media (min-width: 640px) {
+  .sessions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body { padding-inline: 2.5rem; }
+}

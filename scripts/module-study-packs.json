@@ -347,5 +347,58 @@
     ],
     "archive": "Docker-Complete-Free-Revision.zip",
     "archiveBytes": 1041672
+  },
+  {
+    "slug": "wede5020",
+    "title": "Web Development (Introduction) \u00b7 WEDE5020",
+    "description": "Plan, build, style and publish a campus repair caf\u00e9 website.",
+    "topics": [
+      "Introduction to web development",
+      "Website files and Visual Studio Code",
+      "Introduction to HTML",
+      "Styling websites with CSS",
+      "Responsive web design",
+      "Building functionality into websites",
+      "SEO, publishing and maintenance"
+    ],
+    "resources": [
+      {
+        "file": "WEDE5020-Study-Guide.pdf",
+        "label": "Study guide",
+        "format": "PDF",
+        "detail": "19 pages \u00b7 18 worked lessons",
+        "bytes": 37307
+      },
+      {
+        "file": "WEDE5020-Practice-Questions.pdf",
+        "label": "Practice workbook",
+        "format": "PDF",
+        "detail": "7 pages \u00b7 18 practical tasks",
+        "bytes": 12720
+      },
+      {
+        "file": "WEDE5020-Worked-Answers.pdf",
+        "label": "Worked answers",
+        "format": "PDF",
+        "detail": "7 pages \u00b7 Model answers and project checkpoints",
+        "bytes": 13491
+      },
+      {
+        "file": "WEDE5020-Revision.pptx",
+        "label": "Editable revision slides",
+        "format": "PPTX",
+        "detail": "12 slides \u00b7 Examples across seven units",
+        "bytes": 61982
+      },
+      {
+        "file": "WEDE5020-Revision-Slides.pdf",
+        "label": "Slides for printing",
+        "format": "PDF",
+        "detail": "12 slides",
+        "bytes": 149060
+      }
+    ],
+    "archive": "WEDE5020-Complete-Free-Revision.zip",
+    "archiveBytes": 203114
   }
 ]

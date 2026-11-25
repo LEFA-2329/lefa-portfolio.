@@ -4,32 +4,34 @@ Open this repository folder in VS Code. The application is a static website: HTM
 
 ## Find the right file
 
-| Change                                       | Source to edit                                                          |
-| -------------------------------------------- | ----------------------------------------------------------------------- |
-| Logo, header, module selector, sidebar shell | `dist/learn/index.html`                                                 |
-| Page headings, sections, buttons and layout  | `dist/learn/pages/`                                                     |
-| Colours and themes                           | `dist/learn/css/theme-colours.css`                                      |
-| Overall layout and responsive rules          | `dist/learn/css/page-layout.css`                                        |
-| Settings layout                              | `dist/learn/pages/settings-panel.html`                                  |
-| Settings behaviour and persistence           | `dist/learn/js/shared/theme-settings.mjs` and `display-preferences.mjs` |
-| Programming lessons and quizzes              | `dist/learn/js/programming-logic/content/lessons-and-quizzes.mjs`       |
-| Diagram editor HTML                          | `dist/learn/pages/pseudocode-diagram-lab.html`                          |
-| Diagram editor behaviour                     | `dist/learn/js/programming-logic/pseudocode-diagram-page.mjs`           |
-| Diagram dropdown examples                    | `dist/learn/js/programming-logic/content/diagram-examples.mjs`          |
-| Pseudocode syntax and generated diagrams     | `dist/learn/js/programming-logic/pseudocode-parser-and-diagrams.mjs`    |
-| Guided trace page HTML                       | `dist/learn/pages/guided-pseudocode-trace.html`                         |
-| Guided trace controls and rendering          | `dist/learn/js/programming-logic/guided-trace-page.mjs`                 |
-| Guided trace algorithms and state examples   | `dist/learn/js/programming-logic/content/guided-trace-examples.mjs`     |
-| Database lessons                             | `dist/learn/js/database/content/`                                       |
-| SQL editor, marking and demo datasets        | `dist/learn/js/database/sql/`                                           |
-| Normalisation tools and cases                | `dist/learn/js/database/normalisation/`                                 |
-| C# and Docker course outline                 | `dist/learn/js/csharp/course-outline-and-lessons.mjs`                   |
-| C# teaching guides                           | `dist/learn/js/csharp/learning-path-and-guides.mjs`                     |
-| Progress backup HTML                         | `dist/learn/pages/progress-backup.html`                                 |
-| Backup validation and merge rules            | `dist/learn/js/shared/progress-backup.mjs`                              |
-| Public Study Packs page                      | `scripts/build-studylab-search-pages.mjs`                               |
-| Free module study-pack questions             | `scripts/study-packs/`                                                  |
-| Navigation and page handoffs                 | `dist/learn/js/navigation-and-pages.mjs`                                |
+| Change                                               | Source to edit                                                          |
+| ---------------------------------------------------- | ----------------------------------------------------------------------- |
+| Logo, header, module selector, sidebar shell         | `dist/learn/index.html`                                                 |
+| Page headings, sections, buttons and layout          | `dist/learn/pages/`                                                     |
+| Colours and themes                                   | `dist/learn/css/theme-colours.css`                                      |
+| Overall layout and responsive rules                  | `dist/learn/css/page-layout.css`                                        |
+| Settings layout                                      | `dist/learn/pages/settings-panel.html`                                  |
+| Settings behaviour and persistence                   | `dist/learn/js/shared/theme-settings.mjs` and `display-preferences.mjs` |
+| Programming lessons and quizzes                      | `dist/learn/js/programming-logic/content/lessons-and-quizzes.mjs`       |
+| Diagram editor HTML                                  | `dist/learn/pages/pseudocode-diagram-lab.html`                          |
+| Diagram editor behaviour                             | `dist/learn/js/programming-logic/pseudocode-diagram-page.mjs`           |
+| Diagram dropdown examples                            | `dist/learn/js/programming-logic/content/diagram-examples.mjs`          |
+| Pseudocode syntax and generated diagrams             | `dist/learn/js/programming-logic/pseudocode-parser-and-diagrams.mjs`    |
+| Guided trace page HTML                               | `dist/learn/pages/guided-pseudocode-trace.html`                         |
+| Guided trace controls and rendering                  | `dist/learn/js/programming-logic/guided-trace-page.mjs`                 |
+| Guided trace algorithms and state examples           | `dist/learn/js/programming-logic/content/guided-trace-examples.mjs`     |
+| Database lessons                                     | `dist/learn/js/database/content/`                                       |
+| SQL editor, marking and demo datasets                | `dist/learn/js/database/sql/`                                           |
+| Normalisation tools and cases                        | `dist/learn/js/database/normalisation/`                                 |
+| C# and Docker course outline                         | `dist/learn/js/csharp/course-outline-and-lessons.mjs`                   |
+| WEDE5020 units, lessons, quizzes and practical tasks | `dist/learn/js/web-development/content/course.mjs`                      |
+| WEDE5020 page behaviour and box model tool           | `dist/learn/js/web-development/web-development-pages.mjs`               |
+| C# teaching guides                                   | `dist/learn/js/csharp/learning-path-and-guides.mjs`                     |
+| Progress backup HTML                                 | `dist/learn/pages/progress-backup.html`                                 |
+| Backup validation and merge rules                    | `dist/learn/js/shared/progress-backup.mjs`                              |
+| Public Study Packs page                              | `scripts/build-studylab-search-pages.mjs`                               |
+| Free module study-pack questions                     | `scripts/study-packs/`                                                  |
+| Navigation and page handoffs                         | `dist/learn/js/navigation-and-pages.mjs`                                |
 
 The private premium documents are separate from this public repository. Do not copy them into public download folders when editing free resources.
 

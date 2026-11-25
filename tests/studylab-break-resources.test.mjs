@@ -14,10 +14,13 @@ test('every supported resource topic has curated HTTPS links and dialect guidanc
     'cvw.cac.cornell.edu',
     'hadoop.apache.org',
     'docs.docker.com',
+    'developer.mozilla.org',
+    'validator.w3.org',
   ];
   for (const topic of [
     'programming',
     'algorithms',
+    'web',
     'sql',
     'design',
     'joins',
