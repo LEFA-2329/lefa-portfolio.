@@ -1,13 +1,14 @@
+import { tutorials } from './content/tutorials.mjs';
 import { wedeUnits, wedeLessons } from './content/course.mjs';
 import { escapeHTML as e } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=40';
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=wede-59';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=wede-60';
 import { codeBlock } from '../shared/render-code-block.mjs';
 import { cleanQuizLesson } from '../shared/quiz-lesson-state.mjs';
 import { workStore } from '../shared/saved-work-storage.mjs?v=40';
 import {
   progressSummary,
   refreshLessonCompletion,
-} from '../shared/learning-progress.mjs?v=wede-59';
+} from '../shared/learning-progress.mjs?v=wede-60';
 
 const lessonsFor = (unit) => wedeLessons.filter((lesson) => lesson.unit === unit);
 const lessonHref = (lesson) => '#wede-lesson/' + lesson.id;
@@ -23,6 +24,10 @@ const resourceFiles = [
 ];
 
 export const webReferences = [
+  ['W3Schools · HTML tutorial', 'https://www.w3schools.com/html/'],
+  ['W3Schools · CSS tutorial', 'https://www.w3schools.com/css/'],
+  ['W3Schools · JavaScript tutorial', 'https://www.w3schools.com/js/'],
+  ['W3Schools · Practice exercises', 'https://www.w3schools.com/exercises/'],
   [
     'MDN · HTML syntax',
     'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Basic_HTML_syntax',
@@ -133,6 +138,14 @@ export function wedeSidebar({ page, id }) {
 }
 
 function renderLesson(view, lesson, section) {
+  const [explanation, drill, drillAnswer, challenge, challengeAnswer] =
+    tutorials[lesson.slug];
+  const selectedSection = ['practice', 'quiz'].includes(section) ? section : 'learn';
+  const tabs = [
+    ['learn', 'Learn', ''],
+    ['practice', 'Practice', '/practice'],
+    ['quiz', 'Quiz', '/quiz'],
+  ];
   const key = 'wede:' + lesson.id;
   const state = workStore.read(key, cleanQuizLesson({}, lesson), (value) =>
     cleanQuizLesson(value, lesson),
@@ -189,7 +202,26 @@ function renderLesson(view, lesson, section) {
       )
       .join(''),
     dynamic_12: buttons,
+    dynamic_13: e(explanation),
+    dynamic_14: [
+      [drill, drillAnswer],
+      [challenge, challengeAnswer],
+    ]
+      .map(
+        ([prompt, answer], index) =>
+          `<h3>${index === 0 ? 'Quick exercise' : 'Apply it'}</h3><p>${e(prompt)}</p><details><summary>Show worked answer</summary><p>${e(answer)}</p></details>`,
+      )
+      .join(''),
+    dynamic_15: tabs
+      .map(
+        ([id, label, suffix]) =>
+          `<a class="button secondary" href="${lessonHref(lesson) + suffix}"${selectedSection === id ? ' aria-current="page"' : ''}>${label}</a>`,
+      )
+      .join(''),
   });
+  for (const panel of view.querySelectorAll('[data-wede-section]')) {
+    panel.hidden = panel.dataset.wedeSection !== selectedSection;
+  }
   const draft = view.querySelector('#wede-draft');
   draft.value = state.draft;
   draft.oninput = () => {

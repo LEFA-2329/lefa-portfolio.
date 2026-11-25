@@ -1,10 +1,10 @@
 // Application composition root. Feature modules own their page state and events.
-import { renderWedePage } from './web-development/web-development-pages.mjs';
-import { createNavigationSidebar } from './application/navigation-sidebar.mjs?v=wede-59';
+import { renderWedePage } from './web-development/web-development-pages.mjs?v=wede-60';
+import { createNavigationSidebar } from './application/navigation-sidebar.mjs?v=wede-60';
 import { createProgrammingLessonPages } from './programming-logic/programming-lesson-pages.mjs?v=breadcrumb-58';
 import { createProgrammingTaskPages } from './programming-logic/programming-task-pages.mjs?v=breadcrumb-58';
 import { createProgrammingOverviewPages } from './programming-logic/programming-overview-pages.mjs?v=breadcrumb-58';
-import { savedWorkPage } from './shared/saved-work-page.mjs?v=wede-59';
+import { savedWorkPage } from './shared/saved-work-page.mjs?v=wede-60';
 import { diagramLabPage } from './programming-logic/pseudocode-diagram-page.mjs?v=breadcrumb-58';
 import { guidedTracePage } from './programming-logic/guided-trace-page.mjs?v=breadcrumb-58';
 import { progressBackupPage } from './shared/progress-backup-page.mjs?v=breadcrumb-58';
@@ -20,12 +20,12 @@ import {
 import {
   studyBreakPage,
   helpfulResourcesPage,
-} from './shared/study-break-and-resources.mjs?v=wede-59';
-import { renderHtmlPage } from '../../shared/render-html-page.mjs?v=wede-59';
+} from './shared/study-break-and-resources.mjs?v=wede-60';
+import { renderHtmlPage } from '../../shared/render-html-page.mjs?v=wede-60';
 import { builderPage } from './database/normalisation/normalisation-diagram-builder.mjs?v=40';
 import { normalisationPracticePage } from './database/normalisation/normalisation-question-page.mjs?v=40';
 import { databaseExamPage } from './database/database-exam-page.mjs?v=40';
-import { progressPage } from './shared/learning-progress.mjs?v=wede-59';
+import { progressPage } from './shared/learning-progress.mjs?v=wede-60';
 import {
   databaseHome,
   databaseUnit,

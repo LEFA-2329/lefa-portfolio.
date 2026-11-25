@@ -367,21 +367,21 @@
         "label": "Study guide",
         "format": "PDF",
         "detail": "19 pages \u00b7 18 worked lessons",
-        "bytes": 37307
+        "bytes": 40508
       },
       {
         "file": "WEDE5020-Practice-Questions.pdf",
         "label": "Practice workbook",
         "format": "PDF",
-        "detail": "7 pages \u00b7 18 practical tasks",
-        "bytes": 12720
+        "detail": "7 pages \u00b7 54 exercises",
+        "bytes": 15167
       },
       {
         "file": "WEDE5020-Worked-Answers.pdf",
         "label": "Worked answers",
         "format": "PDF",
-        "detail": "7 pages \u00b7 Model answers and project checkpoints",
-        "bytes": 13491
+        "detail": "8 pages \u00b7 Model answers and project checkpoints",
+        "bytes": 19413
       },
       {
         "file": "WEDE5020-Revision.pptx",
@@ -399,6 +399,6 @@
       }
     ],
     "archive": "WEDE5020-Complete-Free-Revision.zip",
-    "archiveBytes": 203114
+    "archiveBytes": 212282
   }
 ]

@@ -4,14 +4,19 @@
 </p>
 <p class="eyebrow">WEDE5020 · Unit {{dynamic_1}} · {{dynamic_2}}</p>
 <h1>{{dynamic_3}}</h1>
+<nav class="button-row" aria-label="Lesson sections">{{dynamic_15}}</nav>
 <div class="wede-lesson">
-  <section class="panel theory">{{dynamic_4}}</section>
-  <section class="panel">
+  <section class="panel theory" data-wede-section="learn">
+    {{dynamic_4}}
+    <h2>Key concepts</h2>
+    <p>{{dynamic_13}}</p>
+  </section>
+  <section class="panel" data-wede-section="learn">
     <h2>{{dynamic_5}}</h2>
     {{dynamic_6}}
     <p>{{dynamic_7}}</p>
   </section>
-  <section class="panel" id="wede-task">
+  <section class="panel" id="wede-task" data-wede-section="practice">
     <h2>Try it yourself</h2>
     <p>{{dynamic_8}}</p>
     <details>
@@ -25,10 +30,18 @@
       {{dynamic_10}}
     </details>
   </section>
-  <section class="panel">
+  <section class="panel" data-wede-section="practice">
+    <h2>More exercises</h2>
+    {{dynamic_14}}
+  </section>
+  <section class="panel" data-wede-section="quiz">
     <h2>Check your understanding</h2>
     {{dynamic_11}}
   </section>
-  <section class="panel lesson-completion" id="lesson-completion"></section>
+  <section
+    class="panel lesson-completion"
+    id="lesson-completion"
+    data-wede-section="quiz"
+  ></section>
   <nav class="lesson-paging" aria-label="Lesson navigation">{{dynamic_12}}</nav>
 </div>

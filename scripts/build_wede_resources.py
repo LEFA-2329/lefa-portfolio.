@@ -76,6 +76,7 @@ def lesson_guide(units):
             page = [para(f"UNIT {unit['id']}   /   {lesson['outcomes']}", 'label'), para(lesson['title'], 'title')]
             for heading, body in lesson['sections']:
                 page.extend([para(heading, 'sub'), para(body)])
+            page.extend([para('Key concepts', 'sub'), para(lesson['tutorial'][0])])
             page.extend([para(lesson['example'], 'sub'), code(lesson['code']), para(lesson['result']),
                          para('Practise', 'sub'), para(lesson['task'])])
             pages.append(page)
@@ -97,6 +98,10 @@ def practice_pages(units, answers):
                 page.append(code(model) if '\n' in model else para(model))
             else:
                 page.extend([para('Hint: ' + lesson['hint'], 'note'), Spacer(1, 12)])
+            for exercise, answer in zip(lesson['tutorial'][1::2], lesson['tutorial'][2::2]):
+                page.append(para(exercise))
+                if answers:
+                    page.append(para(answer, 'note'))
         page.extend([para('Project checkpoint', 'sub'), para(unit['checkpoint'])])
         pages.append(page)
     return pages
@@ -110,7 +115,7 @@ def archive(destination, entries):
             bundle.writestr(info, path.read_bytes())
 
 def build():
-    query = "import {wedeUnits} from './dist/learn/js/web-development/content/course.mjs'; console.log(JSON.stringify(wedeUnits));"
+    query = "import {wedeUnits} from './dist/learn/js/web-development/content/course.mjs'; import {tutorials} from './dist/learn/js/web-development/content/tutorials.mjs'; console.log(JSON.stringify(wedeUnits.map(unit => ({...unit, lessons: unit.lessons.map(lesson => ({...lesson, tutorial: tutorials[lesson.slug]}))}))));"
     units = json.loads(subprocess.check_output(['node', '--input-type=module', '-e', query], cwd=ROOT))
     lessons = sum(len(unit['lessons']) for unit in units)
     resources = []
@@ -119,7 +124,7 @@ def build():
 
     for filename, label, pages, detail in [
         ('WEDE5020-Study-Guide.pdf', 'Study guide', lesson_guide(units), f'{lessons} worked lessons'),
-        ('WEDE5020-Practice-Questions.pdf', 'Practice workbook', practice_pages(units, False), f'{lessons} practical tasks'),
+        ('WEDE5020-Practice-Questions.pdf', 'Practice workbook', practice_pages(units, False), f'{lessons * 3} exercises'),
         ('WEDE5020-Worked-Answers.pdf', 'Worked answers', practice_pages(units, True), 'Model answers and project checkpoints'),
     ]:
         count = write_pdf(filename, 'WEDE5020 ' + label, pages)
