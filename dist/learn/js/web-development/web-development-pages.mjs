@@ -103,8 +103,69 @@ const resourceFiles = [
   ['Complete revision pack', 'WEDE5020-Complete-Free-Revision.zip'],
 ];
 
+const companionPages = {
+  'wede-github-guide': { path: '/learn/github/', title: 'GitHub terminal walkthrough' },
+  'wede-portfolio': { path: '/learn/wede-portfolio/', title: 'Portfolio project' },
+  'wede-debugging': { path: '/learn/wede-debugging/', title: 'Debugging Lab' },
+};
+
+function companionLink(href, currentPage) {
+  if (href.startsWith('#')) return '#' + currentPage + '/' + href.slice(1);
+  if (href.startsWith('/learn/#')) return href.slice('/learn/'.length);
+  for (const [route, resource] of Object.entries(companionPages)) {
+    if (href === resource.path) return '#' + route;
+    if (href.startsWith(resource.path + '#')) {
+      return '#' + route + '/' + href.slice(resource.path.length + 1);
+    }
+  }
+  return href;
+}
+
+function renderCompanionPage(view, page, section) {
+  const resource = companionPages[page];
+  const controller = new AbortController();
+  view.innerHTML = `<h1>${resource.title}</h1><p role="status">Loading lesson material…</p>`;
+  fetch(resource.path, { signal: controller.signal })
+    .then(async (response) => {
+      if (!response.ok) throw new Error('Unable to load lesson material');
+      const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
+      const content = doc.querySelector('main');
+      if (!content?.querySelector('h1')) throw new Error('Lesson material is missing');
+      if (controller.signal.aborted) return;
+      content.querySelector('nav.breadcrumb')?.remove();
+      for (const link of content.querySelectorAll('a[href]')) {
+        link.setAttribute('href', companionLink(link.getAttribute('href'), page));
+      }
+      for (const table of content.querySelectorAll('table')) {
+        const wrapper = document.createElement('div');
+        wrapper.style.overflowX = 'auto';
+        table.before(wrapper);
+        wrapper.append(table);
+      }
+      const crumb = document.createElement('p');
+      crumb.className = 'breadcrumb';
+      crumb.innerHTML = '<a href="#wede">Web Development</a><span>/</span><strong>' + resource.title + '</strong>';
+      view.replaceChildren(crumb, ...content.childNodes);
+      const heading = view.querySelector('h1');
+      document.title = heading.textContent + ' | StudyLab';
+      if (section) {
+        const target = [...view.querySelectorAll('[id]')].find((item) => item.id === section);
+        if (target) {
+          target.tabIndex = -1;
+          target.focus();
+          target.scrollIntoView();
+        }
+      }
+    })
+    .catch(() => {
+      if (controller.signal.aborted) return;
+      view.innerHTML = `<h1>${resource.title}</h1><p>The lesson could not load here. <a href="${resource.path}?standalone">Open the standalone page</a>.</p>`;
+    });
+  return () => controller.abort();
+}
+
 export const webReferences = [
-  ['GitHub step by step', '/learn/github/'],
+  ['GitHub terminal walkthrough', '#wede-github-guide'],
   ['W3Schools . HTML tutorial', 'https://www.w3schools.com/html/'],
   ['MDN . CSS reference', 'https://developer.mozilla.org/en-US/docs/Web/CSS/Reference'],
   ['W3Schools . CSS tutorial', 'https://www.w3schools.com/css/'],
@@ -217,6 +278,24 @@ export function wedeSidebar({ page, id }) {
       );
     })
     .join('');
+  const resources = document.createElement('details');
+  resources.className = 'topic-group';
+  resources.open = Object.hasOwn(companionPages, page);
+  const summary = document.createElement('summary');
+  summary.textContent = 'Project and practice';
+  resources.append(summary);
+  for (const [route, resource] of Object.entries(companionPages)) {
+    const link = document.createElement('a');
+    link.className = 'topic-link';
+    link.href = '#' + route;
+    link.textContent = resource.title;
+    if (route === page) {
+      link.classList.add('active');
+      link.setAttribute('aria-current', 'page');
+    }
+    resources.append(link);
+  }
+  document.querySelector('#unit-nav').append(resources);
 }
 
 function renderLesson(view, lesson, section) {
@@ -429,6 +508,7 @@ function renderBoxLab(view) {
 }
 
 export function renderWedePage({ view, page, id, section }) {
+  if (Object.hasOwn(companionPages, page)) return renderCompanionPage(view, page, id);
   if (page === 'wede-lesson') {
     const lesson = wedeLessons.find((l) => l.id === id);
     if (lesson) {
@@ -500,7 +580,7 @@ export function renderWedePage({ view, page, id, section }) {
               `<a class="button secondary" href="#wede-lesson/wede-${slug}">${label}</a>`,
           )
           .join('') +
-        '<a class="button secondary" href="#wede-lesson/wede-github">GitHub chapter</a><a class="button secondary" href="/learn/wede-portfolio/">Portfolio project</a><a class="button secondary" href="/learn/wede-debugging/">Debugging Lab</a></nav>',
+        '<a class="button secondary" href="#wede-lesson/wede-github">GitHub chapter</a><a class="button secondary" href="#wede-portfolio">Portfolio project</a><a class="button secondary" href="#wede-debugging">Debugging Lab</a></nav>',
       dynamic_2: wedeUnits.map((u) => unitCard(u)).join(''),
     });
     return;

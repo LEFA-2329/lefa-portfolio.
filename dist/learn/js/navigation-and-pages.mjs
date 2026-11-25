@@ -1,6 +1,6 @@
 // Application composition root. Feature modules own their page state and events.
-import { renderWedePage } from './web-development/web-development-pages.mjs?v=wede-68';
-import { createNavigationSidebar } from './application/navigation-sidebar.mjs?v=wede-68';
+import { renderWedePage } from './web-development/web-development-pages.mjs?v=wede-69';
+import { createNavigationSidebar } from './application/navigation-sidebar.mjs?v=wede-69';
 import { createProgrammingLessonPages } from './programming-logic/programming-lesson-pages.mjs?v=breadcrumb-58';
 import { createProgrammingTaskPages } from './programming-logic/programming-task-pages.mjs?v=breadcrumb-58';
 import { createProgrammingOverviewPages } from './programming-logic/programming-overview-pages.mjs?v=breadcrumb-58';
@@ -158,7 +158,7 @@ function route() {
   if (webRoute) {
     activeModule = 'wede';
     sidebar();
-    renderWedePage({ view, page, id, section: task });
+    pageCleanup = renderWedePage({ view, page, id, section: task }) || (() => {});
   } else if (page?.startsWith('cs')) {
     if (page === 'cs-lesson')
       activeModule = courseForLesson(csharpLessons.find((l) => l.id === id));
