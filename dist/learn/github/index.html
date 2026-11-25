@@ -25,6 +25,7 @@
         a static site with GitHub Pages.
       </p>
       <nav class="subject-links" aria-label="GitHub lessons">
+        <a href="#terminal">VS Code terminal</a>
         <a href="#repository">1. Repositories</a>
         <a href="#commits">2. Commits</a>
         <a href="#remote">3. Push and pull</a>
@@ -32,6 +33,116 @@
         <a href="#pages">5. GitHub Pages</a>
         <a href="#practice">6. Project and troubleshooting</a>
       </nav>
+      <section class="panel" id="terminal">
+        <h2>Use GitHub from the VS Code terminal</h2>
+        <p>
+          In Visual Studio Code, open <strong>Terminal &gt; New Terminal</strong>. The
+          integrated terminal runs shell commands. The Source Control panel shows the same
+          repository changes visually.
+        </p>
+        <h3>Check your tools and sign in</h3>
+        <pre><code>git --version
+gh --version</code></pre>
+        <p>
+          Install Git if the first command is unavailable. GitHub CLI, called
+          <code>gh</code>, is optional. If you install it, reopen VS Code and run these
+          commands. Choose GitHub.com, HTTPS and browser authentication when prompted.
+        </p>
+        <pre><code>gh auth login
+gh auth status</code></pre>
+        <p>
+          With Git Credential Manager, you can instead sign in through the browser prompt
+          on your first push. Keep passwords, tokens, and private configuration out of the
+          repository.
+        </p>
+        <h3>Clone an existing GitHub repository</h3>
+        <p>
+          Open the parent folder in the terminal and substitute your actual account name.
+          After cloning, open the <code>repair-cafe</code> folder using
+          <strong>File &gt; Open Folder</strong>, then open a new terminal there. Run
+          <code>git status</code> to confirm you are in the repository.
+        </p>
+        <pre><code>git clone https://github.com/YOUR-USERNAME/repair-cafe.git
+cd repair-cafe
+git status
+git remote -v</code></pre>
+        <h3>Publish a website folder you already have</h3>
+        <p>
+          Use this route for a folder that has no Git history. Open it in VS Code and
+          create an empty repository on GitHub for this route. Before staging, review your
+          files, add a <code>.gitignore</code> for local files such as
+          <code>.env</code> and <code>node_modules/</code>, and use fictional data for the
+          class project.
+        </p>
+        <pre><code>git init -b main
+git status --short
+git add index.html
+git diff --staged
+git commit -m "Add the home page"
+git remote add origin https://github.com/YOUR-USERNAME/repair-cafe.git
+git push -u origin main</code></pre>
+        <p>
+          Stage any stylesheet, scripts and other assets your home page uses, commit them
+          and push again before publishing to Pages. If Git asks for an author, follow the
+          identity setup in the Commits lesson.
+        </p>
+        <h3>Work on your next change</h3>
+        <pre><code>git switch main
+git pull --ff-only
+git switch -c update-hours
+# Edit and save index.html in VS Code first.
+git status
+git diff
+git add index.html
+git commit -m "Update opening hours"
+git push -u origin update-hours
+gh pr create --base main --head update-hours --title "Update opening hours" --body "Updated the homepage and tested the displayed hours."</code></pre>
+        <p>
+          The final command is optional. Without GitHub CLI, open the pull request on
+          GitHub from the pushed branch. After merging, switch back to
+          <code>main</code> and pull to update your local copy.
+        </p>
+        <details>
+          <summary>Check your work</summary>
+          <p>
+            Use <code>git status</code> to check your branch and files,
+            <code>git log --oneline -3</code> to see recent commits, and
+            <code>git remote -v</code> to confirm the remote URL. On GitHub, open the
+            branch and confirm the latest commit is visible.
+          </p>
+        </details>
+        <details>
+          <summary>Troubleshoot terminal errors</summary>
+          <ul>
+            <li>
+              <strong>Git is unrecognised.</strong> Install Git and restart VS Code so the
+              terminal picks up your updated PATH.
+            </li>
+            <li>
+              <strong>Not a Git repository.</strong> Open the cloned project folder, then
+              run <code>git status</code> again.
+            </li>
+            <li>
+              <strong>Repository not found or access denied.</strong> Check the URL and
+              confirm the authenticated account has repository access.
+            </li>
+            <li>
+              <strong>Nothing to commit.</strong> Save the file in the editor and review
+              <code>git status</code> before staging.
+            </li>
+          </ul>
+        </details>
+        <p>
+          <a href="https://code.visualstudio.com/docs/terminal/basics"
+            >VS Code terminal documentation</a
+          >
+          .
+          <a
+            href="https://docs.github.com/en/github-cli/github-cli/authenticating-with-github-cli"
+            >GitHub CLI authentication documentation</a
+          >
+        </p>
+      </section>
       <section class="panel" id="repository">
         <h2>1. Create a repository</h2>
         <p>
@@ -65,8 +176,8 @@ git status</code></pre>
         <p>
           Add an <code>index.html</code> file with a title and the café opening hours. If
           Git asks for an author identity, set your name and a GitHub account email or the
-          no-reply address from your GitHub email settings. Use the same commands without
-          <code>--global</code> to apply them to this repository only.
+          no-reply address from your GitHub email settings. The commands below set the
+          identity for this repository.
         </p>
         <pre><code>git config user.name "Your Name"
 git config user.email "YOUR-EMAIL"
