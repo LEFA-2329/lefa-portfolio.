@@ -8,7 +8,7 @@ export const wedeUnits = [
   {
     id: 1,
     title: 'Introduction to web development',
-    sessions: '1–6',
+    sessions: '1-6',
     goal: 'Decide what a campus repair café needs from its website and how the team will know whether it helps visitors.',
     checkpoint:
       'Write a one-page brief naming the audience, their main task, one measure of success and the assets you need permission to use.',
@@ -16,7 +16,7 @@ export const wedeUnits = [
       {
         slug: 'online-presence',
         title: 'Choose an online presence',
-        outcomes: 'LO1–2',
+        outcomes: 'LO1-2',
         sections: [
           [
             'Start with a visitor',
@@ -61,7 +61,7 @@ export const wedeUnits = [
       {
         slug: 'measure-success',
         title: 'Measure visitor and organisation goals',
-        outcomes: 'LO3–4',
+        outcomes: 'LO3-4',
         sections: [
           [
             'Observe a real task',
@@ -114,7 +114,7 @@ export const wedeUnits = [
           ],
         ],
         example: 'Give one heading three roles',
-        code: '<!-- index.html -->\n<h1 id="session">Saturday repair café</h1>\n\n/* site.css */\n#session { color: #14534b; }\n\n// site.js, loaded after the heading exists\nconst heading = document.querySelector("#session");\nheading.textContent = "Saturday repair café · 09:00";',
+        code: '<!-- index.html -->\n<h1 id="session">Saturday repair café</h1>\n\n/* site.css */\n#session { color: #14534b; }\n\n// site.js, loaded after the heading exists\nconst heading = document.querySelector("#session");\nheading.textContent = "Saturday repair café . 09:00";',
         result:
           'The heading is present in the HTML. The style gives it a colour. The script changes the text inside the same heading.',
         task: 'Assign a language to each change: add a directions link, put space above it, and show a message when a visitor presses a separate button.',
@@ -143,7 +143,7 @@ export const wedeUnits = [
       {
         slug: 'prepare-assets',
         title: 'Source, credit and optimise assets',
-        outcomes: 'LO6–8',
+        outcomes: 'LO6-8',
         sections: [
           [
             'Keep an asset register',
@@ -190,7 +190,7 @@ export const wedeUnits = [
   {
     id: 2,
     title: 'Website files and Visual Studio Code',
-    sessions: '7–9',
+    sessions: '7-9',
     goal: 'Set up the project folder and trace the paths a browser uses to find its pages, images and styles.',
     checkpoint:
       'Open the project folder in VS Code. Add a second page and check a link in each direction before the folder grows.',
@@ -198,7 +198,7 @@ export const wedeUnits = [
       {
         slug: 'files-paths',
         title: 'Organise folders and follow relative paths',
-        outcomes: 'LO1–2',
+        outcomes: 'LO1-2',
         sections: [
           [
             'Work from one root folder',
@@ -239,7 +239,7 @@ export const wedeUnits = [
       {
         slug: 'vscode-workflow',
         title: 'Create and preview a project in VS Code',
-        outcomes: 'LO3–4',
+        outcomes: 'LO3-4',
         sections: [
           [
             'Start in the Explorer',
@@ -286,7 +286,7 @@ export const wedeUnits = [
   {
     id: 3,
     title: 'Introduction to HTML',
-    sessions: '10–19',
+    sessions: '10-19',
     goal: 'Build a linked, semantic website and verify that text, media and forms have a sensible reading order.',
     checkpoint:
       'Complete the HTML pages for the practice café. Include working navigation, a schedule table, a labelled enquiry form and an accessible media example. Validate each page.',
@@ -294,7 +294,7 @@ export const wedeUnits = [
       {
         slug: 'html-dom',
         title: 'Read HTML syntax and the document tree',
-        outcomes: 'LO1–5',
+        outcomes: 'LO1-5',
         sections: [
           [
             'Read an element',
@@ -339,7 +339,7 @@ export const wedeUnits = [
       {
         slug: 'html-elements',
         title: 'Use semantic elements, media, tables and forms',
-        outcomes: 'LO6–12',
+        outcomes: 'LO6-12',
         sections: [
           [
             'Choose an element by its purpose',
@@ -380,7 +380,7 @@ export const wedeUnits = [
       {
         slug: 'build-validate',
         title: 'Build linked pages and validate the HTML',
-        outcomes: 'LO13–18',
+        outcomes: 'LO13-18',
         sections: [
           [
             'Start with a working route',
@@ -427,7 +427,7 @@ export const wedeUnits = [
   {
     id: 4,
     title: 'Styling websites with CSS',
-    sessions: '20–27',
+    sessions: '20-27',
     goal: 'Give the café pages a consistent visual style and explain why a particular CSS declaration wins.',
     checkpoint:
       'Link the same stylesheet from every page. Style headings, navigation, focus indicators, form controls and the page layout, then inspect one rule in the browser.',
@@ -435,7 +435,7 @@ export const wedeUnits = [
       {
         slug: 'css-cascade',
         title: 'Link a stylesheet and trace the cascade',
-        outcomes: 'LO1–8',
+        outcomes: 'LO1-8',
         sections: [
           [
             'Write and attach a rule',
@@ -476,7 +476,7 @@ export const wedeUnits = [
       {
         slug: 'css-layout',
         title: 'Style boxes, type, links and layout',
-        outcomes: 'LO9–16',
+        outcomes: 'LO9-16',
         sections: [
           [
             'Measure the box',
@@ -517,7 +517,7 @@ export const wedeUnits = [
       {
         slug: 'css-devtools',
         title: 'Debug a shared stylesheet with DevTools',
-        outcomes: 'LO17–18',
+        outcomes: 'LO17-18',
         sections: [
           [
             'Inspect before editing',
@@ -564,7 +564,7 @@ export const wedeUnits = [
   {
     id: 5,
     title: 'Responsive web design',
-    sessions: '28–33',
+    sessions: '28-33',
     goal: 'Keep the timetable and enquiry link usable from a narrow phone to a wide desktop.',
     checkpoint:
       'Test a single-column base layout, a wider layout and the widths just below and at your breakpoint. Record what changes and why.',
@@ -572,7 +572,7 @@ export const wedeUnits = [
       {
         slug: 'responsive-layout',
         title: 'Build a mobile-first layout and test breakpoints',
-        outcomes: 'LO1–4',
+        outcomes: 'LO1-4',
         sections: [
           [
             'Design for small screens first',
@@ -619,7 +619,7 @@ export const wedeUnits = [
   {
     id: 6,
     title: 'Building functionality into websites',
-    sessions: '34–42',
+    sessions: '34-42',
     goal: 'Add a small JavaScript enhancement and choose how to collect a visitor’s response.',
     checkpoint:
       'Show a valid and an invalid enquiry. Explain where the data goes for a local demonstration, a form with a server endpoint and a published Google Form.',
@@ -627,7 +627,7 @@ export const wedeUnits = [
       {
         slug: 'javascript-jquery',
         title: 'Use JavaScript and jQuery for page behaviour',
-        outcomes: 'LO1–6',
+        outcomes: 'LO1-6',
         sections: [
           [
             'Read a short script',
@@ -672,7 +672,7 @@ export const wedeUnits = [
       {
         slug: 'forms-responses',
         title: 'Validate forms, embed Google Forms and collect responses',
-        outcomes: 'LO7–13',
+        outcomes: 'LO7-13',
         sections: [
           [
             'Follow a local form submission',
@@ -723,7 +723,7 @@ export const wedeUnits = [
   {
     id: 7,
     title: 'SEO, publishing and maintenance',
-    sessions: '43–48',
+    sessions: '43-48',
     goal: 'Publish a discoverable website, test its public pages and use evidence to decide what to improve.',
     checkpoint:
       'Prepare a release record with the site address, a successful navigation and form test, a title and description review, a metric and a maintenance owner.',
@@ -731,7 +731,7 @@ export const wedeUnits = [
       {
         slug: 'search-optimisation',
         title: 'Help visitors and search engines find a page',
-        outcomes: 'LO1–3',
+        outcomes: 'LO1-3',
         sections: [
           [
             'Answer a specific search',
@@ -772,7 +772,7 @@ export const wedeUnits = [
       {
         slug: 'publish-test',
         title: 'Choose a domain, publish and test a website',
-        outcomes: 'LO4–6',
+        outcomes: 'LO4-6',
         sections: [
           [
             'Choose a publishing method',
@@ -817,7 +817,7 @@ export const wedeUnits = [
       {
         slug: 'analytics-maintenance',
         title: 'Interpret analytics and maintain the site',
-        outcomes: 'LO7–9',
+        outcomes: 'LO7-9',
         sections: [
           [
             'Choose measurements for the goal',

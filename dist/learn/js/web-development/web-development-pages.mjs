@@ -1,7 +1,7 @@
-import { languageSteps, tutorials } from './content/tutorials.mjs?v=wede-63';
-import { wedeUnits, wedeLessons } from './content/course.mjs';
+import { languageSteps, tutorials } from './content/tutorials.mjs?v=wede-64';
+import { wedeUnits, wedeLessons } from './content/course.mjs?v=wede-64';
 import { escapeHTML as e } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=40';
-import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=wede-60';
+import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=wede-64';
 import { codeBlock } from '../shared/render-code-block.mjs';
 import { cleanQuizLesson } from '../shared/quiz-lesson-state.mjs';
 import { workStore } from '../shared/saved-work-storage.mjs?v=40';
@@ -104,35 +104,35 @@ const resourceFiles = [
 ];
 
 export const webReferences = [
-  ['W3Schools · HTML tutorial', 'https://www.w3schools.com/html/'],
-  ['MDN · CSS reference', 'https://developer.mozilla.org/en-US/docs/Web/CSS/Reference'],
-  ['W3Schools · CSS tutorial', 'https://www.w3schools.com/css/'],
-  ['W3Schools · JavaScript tutorial', 'https://www.w3schools.com/js/'],
-  ['W3Schools · Practice exercises', 'https://www.w3schools.com/exercises/'],
+  ['W3Schools . HTML tutorial', 'https://www.w3schools.com/html/'],
+  ['MDN . CSS reference', 'https://developer.mozilla.org/en-US/docs/Web/CSS/Reference'],
+  ['W3Schools . CSS tutorial', 'https://www.w3schools.com/css/'],
+  ['W3Schools . JavaScript tutorial', 'https://www.w3schools.com/js/'],
+  ['W3Schools . Practice exercises', 'https://www.w3schools.com/exercises/'],
   [
-    'MDN · HTML syntax',
+    'MDN . HTML syntax',
     'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Basic_HTML_syntax',
   ],
-  ['VS Code · Emmet abbreviations', 'https://code.visualstudio.com/docs/languages/emmet'],
-  ['Creative Commons · Licence conditions', 'https://creativecommons.org/cc-licenses/'],
-  ['Squoosh · Compress and resize an image', 'https://squoosh.app/'],
-  ['W3C · Nu HTML Checker', 'https://validator.w3.org/nu/'],
+  ['VS Code . Emmet abbreviations', 'https://code.visualstudio.com/docs/languages/emmet'],
+  ['Creative Commons . Licence conditions', 'https://creativecommons.org/cc-licenses/'],
+  ['Squoosh . Compress and resize an image', 'https://squoosh.app/'],
+  ['W3C . Nu HTML Checker', 'https://validator.w3.org/nu/'],
   [
-    'MDN · Responsive design',
+    'MDN . Responsive design',
     'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design',
   ],
-  ['jQuery · Event handlers', 'https://api.jquery.com/on/'],
+  ['jQuery . Event handlers', 'https://api.jquery.com/on/'],
   [
-    'Google Forms · Publish and embed a form',
+    'Google Forms . Publish and embed a form',
     'https://support.google.com/docs/answer/2839588',
   ],
-  ['Google Forms · Manage responses', 'https://support.google.com/docs/answer/139706'],
+  ['Google Forms . Manage responses', 'https://support.google.com/docs/answer/139706'],
   [
-    'Google Search Central · SEO starter guide',
+    'Google Search Central . SEO starter guide',
     'https://developers.google.com/search/docs/fundamentals/seo-starter-guide',
   ],
   [
-    'FileZilla · Connect to a server with SFTP',
+    'FileZilla . Connect to a server with SFTP',
     'https://filezillapro.com/docs/v3/basic-usage-instructions/connecting-to-a-server/',
   ],
 ];
@@ -167,7 +167,7 @@ function unitCard(unit, practice = false) {
 }
 export function wedeSidebar({ page, id }) {
   document.querySelector('#course-select').value = 'wede';
-  document.querySelector('#course-caption').textContent = 'WEDE5020 · WEB DEVELOPMENT';
+  document.querySelector('#course-caption').textContent = 'WEDE5020 . WEB DEVELOPMENT';
   document.querySelector('.brand').href = '#wede';
   document.querySelector('#progress-link').href = '#progress/wede';
   const destinations = {
@@ -404,9 +404,9 @@ function renderBoxLab(view) {
     view.querySelector('#wede-measurements').textContent =
       'Content ' +
       content +
-      ' px · Border box ' +
+      ' px . Border box ' +
       borderBox +
-      ' px · Total including margins ' +
+      ' px . Total including margins ' +
       (borderBox + 2 * margin) +
       ' px';
     view.querySelector('#wede-css').textContent =

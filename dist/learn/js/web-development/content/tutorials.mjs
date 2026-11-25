@@ -133,7 +133,7 @@ export const languageSteps = {
   'html-dom': [
     [
       'html',
-      'HTML 1 · Create your first page',
+      'HTML 1 . Create your first page',
       'Save this as index.html and open it in a browser. The doctype selects standards mode. The head supplies information such as the browser tab title. The body holds the content visitors see.',
       `<!doctype html>
 <html lang="en">
@@ -150,7 +150,7 @@ export const languageSteps = {
     ],
     [
       'html',
-      'HTML 2 · Organise text and lists',
+      'HTML 2 . Organise text and lists',
       'Use headings to identify sections and paragraphs for prose. An unordered list groups items whose order can change. Put each item inside li. Use ol when the order matters.',
       `<h2>What to bring</h2>
 <ul>
@@ -161,7 +161,7 @@ export const languageSteps = {
     ],
     [
       'html',
-      'HTML 3 · Add metadata and a viewport',
+      'HTML 3 . Add metadata and a viewport',
       'The title names the tab. A description summarises the page. The viewport setting lets mobile browsers use the device width for layout.',
       '<meta name="viewport" content="width=device-width, initial-scale=1">\n<meta name="description" content="Find Saturday repair sessions on campus.">',
       'Add these to head. Check the page in a narrow viewport.',
@@ -169,7 +169,7 @@ export const languageSteps = {
     ],
     [
       'html',
-      'HTML 4 · Use emphasis, quotations and character references',
+      'HTML 4 . Use emphasis, quotations and character references',
       'Use strong for importance, em for stress and blockquote for an extended quotation. Use &amp; and &lt; to display literal ampersands and less-than signs.',
       '<p><strong>Bring a charger.</strong> We accept lamps &amp; fans.</p>\n<blockquote><p>Repair keeps useful items in service.</p></blockquote>',
       'Add text displaying 2 < 3 without introducing a tag.',
@@ -177,7 +177,7 @@ export const languageSteps = {
     ],
     [
       'html',
-      'HTML 5 · Nest elements and add comments',
+      'HTML 5 . Nest elements and add comments',
       'Elements form a tree. Close the inner element before its parent. Comments annotate source and are visible when someone inspects it.',
       '<!-- Confirm times before publishing. -->\n<p>Sessions start at <strong>10:00</strong>.</p>',
       'Move strong into a second paragraph and inspect both nodes.',
@@ -185,7 +185,7 @@ export const languageSteps = {
     ],
     [
       'html',
-      'HTML 6 · Build ordered, unordered and description lists',
+      'HTML 6 . Build ordered, unordered and description lists',
       'Use ol for a sequence, ul for a collection and dl for terms and descriptions. A description list pairs dt with dd.',
       '<dl>\n  <dt>Drop-off</dt>\n  <dd>Bring your item to the volunteer desk.</dd>\n</dl>',
       'Describe Collection, then list two ordered drop-off steps.',
@@ -195,7 +195,7 @@ export const languageSteps = {
   'html-elements': [
     [
       'html',
-      'HTML 7 · Add links and images',
+      'HTML 7 . Add links and images',
       'href gives a link its destination. src locates an image. alt communicates the relevant image content when a visitor cannot see it. These relative paths start beside the current HTML file.',
       `<a href="visit.html">Find the repair venue</a>
 <img src="images/bench.webp" alt="Repair bench with hand tools">`,
@@ -203,7 +203,7 @@ export const languageSteps = {
     ],
     [
       'html',
-      'HTML 8 · Give the page structure',
+      'HTML 8 . Give the page structure',
       'header introduces content or the site. nav groups navigation links. main identifies the page’s primary content. Use an h2 for a subsection within the main topic.',
       `<header>
   <nav aria-label="Main">
@@ -215,14 +215,14 @@ export const languageSteps = {
   <h1>Visit the repair café</h1>
   <section>
     <h2>Session times</h2>
-    <p>Saturday, 10:00–13:00.</p>
+    <p>Saturday, 10:00-13:00.</p>
   </section>
 </main>`,
       'Use Tab to reach both links. Add a second section with an h2 and directions to the venue.',
     ],
     [
       'html',
-      'HTML 9 · Build a labelled form',
+      'HTML 9 . Build a labelled form',
       'A label’s for value matches the field’s id. name identifies the value when the form is submitted. required and type="email" enable browser validation for this field.',
       `<form>
   <label for="email">Email address</label>
@@ -233,7 +233,7 @@ export const languageSteps = {
     ],
     [
       'html',
-      'HTML 10 · Link to sections and nested pages',
+      'HTML 10 . Link to sections and nested pages',
       'A fragment finds an element with a matching id. IDs should be unique within a page. Relative paths resolve from the current page.',
       '<a href="visit.html#venue">Find the venue</a>\n<!-- In visit.html -->\n<h2 id="venue">Student Centre</h2>',
       'Create the destination and follow the link from Home.',
@@ -241,7 +241,7 @@ export const languageSteps = {
     ],
     [
       'html',
-      'HTML 11 · Add captions and responsive images',
+      'HTML 11 . Add captions and responsive images',
       'figure groups media with its caption. alt describes essential visual information. srcset and sizes let the browser pick an image candidate.',
       '<figure>\n  <img src="bench-640.jpg" srcset="bench-640.jpg 640w, bench-1280.jpg 1280w" sizes="(max-width: 640px) 100vw, 640px" alt="Volunteer testing a desk lamp">\n  <figcaption>Electrical repairs station</figcaption>\n</figure>',
       'Provide both image files and inspect the currentSrc value at different widths.',
@@ -249,7 +249,7 @@ export const languageSteps = {
     ],
     [
       'html',
-      'HTML 12 · Structure a data table',
+      'HTML 12 . Structure a data table',
       'Use caption for the topic and th for headers. scope associates a simple row or column header with data cells.',
       '<table>\n  <caption>Saturday sessions</caption>\n  <thead><tr><th scope="col">Time</th><th scope="col">Station</th></tr></thead>\n  <tbody><tr><td>10:00</td><td>Electrical</td></tr></tbody>\n</table>',
       'Add a second session as a new row.',
@@ -257,7 +257,7 @@ export const languageSteps = {
     ],
     [
       'html',
-      'HTML 13 · Add audio, video and captions',
+      'HTML 13 . Add audio, video and captions',
       'The controls attribute exposes playback controls. Supply captions with a WebVTT track when speech or sounds convey information.',
       '<video controls width="480">\n  <source src="demo.mp4" type="video/mp4">\n  <track kind="captions" src="demo-en.vtt" srclang="en" label="English">\n</video>',
       'Create a short caption file and enable it in the player.',
@@ -265,7 +265,7 @@ export const languageSteps = {
     ],
     [
       'html',
-      'HTML 14 · Use details and summary',
+      'HTML 14 . Use details and summary',
       'A native disclosure opens and closes without JavaScript. The summary should say what the expanded content contains.',
       '<details>\n  <summary>What can I bring?</summary>\n  <p>Bring a lamp, fan or bicycle.</p>\n</details>',
       'Use Tab and Space to open the answer.',
@@ -273,7 +273,7 @@ export const languageSteps = {
     ],
     [
       'html',
-      'HTML 15 · Group choices and build useful forms',
+      'HTML 15 . Group choices and build useful forms',
       'fieldset groups related controls. Use a shared name for radios so only one option can be selected. Give every choice a label and a value.',
       '<fieldset>\n  <legend>Session</legend>\n  <label><input type="radio" name="session" value="10" required> 10:00</label>\n  <label><input type="radio" name="session" value="12"> 12:00</label>\n</fieldset>',
       'Place the fieldset in a form and try selecting both options.',
@@ -281,7 +281,7 @@ export const languageSteps = {
     ],
     [
       'html',
-      'HTML 16 · Choose a select list and textarea',
+      'HTML 16 . Choose a select list and textarea',
       'select offers a fixed set of options. textarea handles multiline text. Labels make both controls easier to identify.',
       '<label for="item">Item type</label>\n<select id="item" name="item"><option value="lamp">Lamp</option></select>\n<label for="notes">Repair notes</label>\n<textarea id="notes" name="notes" rows="4" maxlength="300"></textarea>',
       'Add Fan and enter a two-line note.',
@@ -291,7 +291,7 @@ export const languageSteps = {
   'build-validate': [
     [
       'html',
-      'HTML 17 · Verify a small website',
+      'HTML 17 . Verify a small website',
       'Add the navigation on each page, follow every link in both directions and check for spelling or case mismatches. Run a markup validator and fix the earliest reported error first because one missing tag can cause several messages.',
       `<!-- On visit.html -->
 <nav aria-label="Main">
@@ -302,7 +302,7 @@ export const languageSteps = {
     ],
     [
       'html',
-      'HTML 18 · Understand GET and POST forms',
+      'HTML 18 . Understand GET and POST forms',
       'GET appends successful controls to the URL query. POST puts form data in the request body. A server must accept and process submissions. Use a local test page and fictional text.',
       '<form method="get" action="search.html">\n  <label>Repair topic <input name="q" required></label>\n  <button>Search</button>\n</form>',
       'Create search.html and submit the word lamp.',
@@ -310,7 +310,7 @@ export const languageSteps = {
     ],
     [
       'html',
-      'HTML 19 · Embed an external page responsibly',
+      'HTML 19 . Embed an external page responsibly',
       'iframe displays another document. Give it a descriptive title. The remote provider can restrict embedding. Provide a normal link when visitors need another route.',
       '<iframe src="directions.html" title="Directions to the repair café" loading="lazy"></iframe>\n<p><a href="directions.html">Open directions separately</a></p>',
       'Open the page with and without using the embedded document.',
@@ -318,7 +318,7 @@ export const languageSteps = {
     ],
     [
       'html',
-      'HTML 20 · Build and audit a complete site',
+      'HTML 20 . Build and audit a complete site',
       'Combine semantic navigation, responsive media and a correctly labelled form. Use a markup validator and test keyboard order, headings and links in the browser.',
       '<a href="#main">Skip to content</a>\n<nav aria-label="Main"><a href="visit.html">Visit</a></nav>\n<main id="main"><h1>Repair café</h1></main>',
       'Build Home, Visit and Enquiries. Test the skip link and each direct URL.',
@@ -328,7 +328,7 @@ export const languageSteps = {
   'css-cascade': [
     [
       'css',
-      'CSS 1 · Connect a stylesheet',
+      'CSS 1 . Connect a stylesheet',
       'In the HTML head, add <link rel="stylesheet" href="site.css">. Put this rule in site.css next to the HTML page. body is the selector. Each property and value pair is a declaration.',
       `body {
   color: #18364a;
@@ -339,7 +339,7 @@ export const languageSteps = {
     ],
     [
       'css',
-      'CSS 2 · Select elements and classes',
+      'CSS 2 . Select elements and classes',
       'Add class="notice" to an important paragraph. The dot selects a class. With these ordinary rules in the same layer, the class has greater specificity than the element selector.',
       `p {
   color: #34495e;
@@ -352,7 +352,7 @@ export const languageSteps = {
     ],
     [
       'css',
-      'CSS 3 · Use combinators and attribute selectors',
+      'CSS 3 . Use combinators and attribute selectors',
       'A space selects any descendant. The > combinator limits a match to direct children. Attribute selectors can match presence or a specific value.',
       'nav > a[aria-current="page"] { font-weight: 700; }',
       'Move the current link inside a list item. The direct-child selector should stop matching.',
@@ -360,7 +360,7 @@ export const languageSteps = {
     ],
     [
       'css',
-      'CSS 4 · Combine selectors and add generated decoration',
+      'CSS 4 . Combine selectors and add generated decoration',
       'A comma joins independent selectors. :is() groups alternatives, while :where() does the same with zero specificity. ::before and ::after generate boxes when content is set. Keep essential labels in HTML.',
       '.notice :where(h2, h3)::after {\n  content: "";\n  display: block;\n  width: 2rem;\n  border-bottom: 3px solid currentColor;\n}',
       'Add an h3 and a paragraph inside .notice. Predict which gets an underline.',
@@ -368,7 +368,7 @@ export const languageSteps = {
     ],
     [
       'css',
-      'CSS 5 · Use colours, variables and cascade layers',
+      'CSS 5 . Use colours, variables and cascade layers',
       'Use custom properties for repeated design values. An element can inherit a custom property, and var() accepts a fallback. For normal author declarations in layers, later layers beat earlier layers before specificity is compared. Unlayered author rules can override those layers.',
       '@layer base, theme;\n@layer base {\n  :root { --accent: hsl(170 65% 25%); }\n  .notice { color: var(--accent, teal); }\n}\n@layer theme {\n  .notice { color: #5b316f; }\n}',
       'Remove the theme rule, then remove --accent. Check the notice after each change.',
@@ -376,7 +376,7 @@ export const languageSteps = {
     ],
     [
       'css',
-      'CSS 6 · Compare inheritance, specificity and source order',
+      'CSS 6 . Compare inheritance, specificity and source order',
       'Inherited properties such as color follow the parent when the child has no declaration. A declaration on the child wins over an inherited value. For equal specificity in the same origin and layer, the later matching declaration wins.',
       '.notice { color: teal; }\n.notice strong { color: maroon; }\n.notice strong { color: navy; }',
       'Put a strong element inside the notice. Change the order of the two strong rules.',
@@ -384,7 +384,7 @@ export const languageSteps = {
     ],
     [
       'css',
-      'CSS 7 · Choose units and fluid sizes',
+      'CSS 7 . Choose units and fluid sizes',
       'rem is relative to the root font size. em depends on the element’s font size, except on font-size itself where it uses the parent size. Percentages depend on the property. clamp() bounds a preferred value with a minimum and maximum.',
       'h1 { font-size: clamp(1.8rem, 1rem + 3vw, 3rem); }\nmain { width: min(100% - 2rem, 70rem); margin-inline: auto; }',
       'Resize the viewport and inspect the heading’s computed size.',
@@ -394,7 +394,7 @@ export const languageSteps = {
   'css-layout': [
     [
       'css',
-      'CSS 8 · Set the box size and spacing',
+      'CSS 8 . Set the box size and spacing',
       'Padding separates content from its border. Margin separates the box from neighbours. With border-box, the stated width includes padding and border. In this example the content is 206px wide when the border box reaches 240px.',
       `.card {
   box-sizing: border-box;
@@ -408,7 +408,7 @@ export const languageSteps = {
     ],
     [
       'css',
-      'CSS 9 · Lay out cards with Flexbox',
+      'CSS 9 . Lay out cards with Flexbox',
       'Place several .card elements inside an element with class cards. The parent controls layout and spacing. flex-wrap allows items to move onto a new row as room runs out.',
       `.cards {
   display: flex;
@@ -422,7 +422,7 @@ export const languageSteps = {
     ],
     [
       'css',
-      'CSS 10 · Style text, fonts and long words',
+      'CSS 10 . Style text, fonts and long words',
       'A font stack lists fallbacks in order. Unitless line-height scales with the element’s font size. A readable line length can be set in ch. overflow-wrap allows long unbroken text to wrap when needed.',
       '.article {\n  font: 1rem/1.6 system-ui, sans-serif;\n  max-inline-size: 65ch;\n  overflow-wrap: anywhere;\n}',
       'Paste a long unbroken URL into the article at phone width.',
@@ -430,7 +430,7 @@ export const languageSteps = {
     ],
     [
       'css',
-      'CSS 11 · Paint backgrounds, borders and shadows',
+      'CSS 11 . Paint backgrounds, borders and shadows',
       'Background layers are drawn from first to last. cover fills the background area while preserving aspect ratio, which can crop the image. Shadows paint around a box and leave its layout dimensions unchanged.',
       '.banner {\n  color: white;\n  background: linear-gradient(#081e2cbb, #081e2cee),\n    url("bench.webp") center / cover;\n  border-radius: 0.75rem;\n  box-shadow: 0 4px 16px #081e2c44;\n}',
       'Replace the photo and check heading contrast at a narrow width.',
@@ -438,7 +438,7 @@ export const languageSteps = {
     ],
     [
       'css',
-      'CSS 12 · Control display, overflow and visibility',
+      'CSS 12 . Control display, overflow and visibility',
       'Block boxes generally start on a new line. Inline-block can sit in a line while accepting explicit dimensions. overflow: auto adds scrolling as needed. display: none removes the box from layout. visibility: hidden keeps its space.',
       '.code-sample { max-block-size: 12rem; overflow: auto; }\n.badge { display: inline-block; padding: 0.25em 0.6em; }',
       'Put a long code sample in the box and tab through the page.',
@@ -446,7 +446,7 @@ export const languageSteps = {
     ],
     [
       'css',
-      'CSS 13 · Position elements and control stacking',
+      'CSS 13 . Position elements and control stacking',
       'A positioned ancestor can provide the containing block for an absolutely positioned child. Sticky positioning follows normal flow until its offset threshold within a scroll container. z-index operates within stacking contexts.',
       '.card { position: relative; }\n.card .badge { position: absolute; inset-block-start: .5rem; inset-inline-end: .5rem; }\n.site-nav { position: sticky; top: 0; z-index: 2; }',
       'Scroll the page and inspect the card badge and the navigation.',
@@ -454,7 +454,7 @@ export const languageSteps = {
     ],
     [
       'css',
-      'CSS 14 · Wrap text and contain floats',
+      'CSS 14 . Wrap text and contain floats',
       'Float is useful when prose should wrap around an image. A flow-root container creates a formatting context that contains its floats. Use Flexbox or Grid for component and page layouts.',
       '.story { display: flow-root; }\n.story img { float: inline-start; width: 8rem; margin-inline-end: 1rem; }',
       'Place a short paragraph after the image and give .story a border.',
@@ -462,7 +462,7 @@ export const languageSteps = {
     ],
     [
       'css',
-      'CSS 15 · Style lists, tables and links',
+      'CSS 15 . Style lists, tables and links',
       'List markers can be styled with ::marker. Border collapse lets adjacent table borders share an edge. Place a wide table inside a scrollable wrapper so the rest of the page stays fluid.',
       'li::marker { color: teal; }\n.table-wrap { overflow-x: auto; }\ntable { border-collapse: collapse; }\nth, td { padding: .5em; border: 1px solid #73818b; text-align: start; }\na { text-underline-offset: .15em; }',
       'Create a schedule with a caption, column headings and two rows. Test on a phone.',
@@ -470,7 +470,7 @@ export const languageSteps = {
     ],
     [
       'css',
-      'CSS 16 · Fit, crop and filter images',
+      'CSS 16 . Fit, crop and filter images',
       'object-fit: cover preserves proportions while cropping to fill an image box. object-position adjusts the focal point. filter changes the rendered appearance. Use meaningful alt text in the HTML.',
       '.card img {\n  display: block; width: 100%; aspect-ratio: 4 / 3;\n  object-fit: cover; object-position: center 35%;\n}\n.archived img { filter: grayscale(1); }',
       'Compare object-fit: cover with contain using a tall photo.',
@@ -480,7 +480,7 @@ export const languageSteps = {
   'css-devtools': [
     [
       'css',
-      'CSS 17 · Inspect states and debug rules',
+      'CSS 17 . Inspect states and debug rules',
       'A pseudo-class matches a state. The :focus-visible rule gives keyboard users a visible focus indicator. Use the Styles panel to locate a winning declaration and the Computed panel to confirm its result.',
       `a:hover {
   text-decoration-thickness: 0.2em;
@@ -493,7 +493,7 @@ a:focus-visible {
     ],
     [
       'css',
-      'CSS 18 · Style forms and keyboard states',
+      'CSS 18 . Style forms and keyboard states',
       'Use native controls and visible labels. :focus-visible highlights keyboard focus. :user-invalid can style fields after user interaction. Put error text next to the field so feedback has a meaning beyond colour.',
       'input, select, button { font: inherit; }\n:where(input, button, a):focus-visible { outline: 3px solid teal; outline-offset: 3px; }\ninput:user-invalid { border: 2px solid #aa1633; }',
       'Tab through a required email form and submit a malformed address.',
@@ -501,7 +501,7 @@ a:focus-visible {
     ],
     [
       'css',
-      'CSS 19 · Transform without moving surrounding boxes',
+      'CSS 19 . Transform without moving surrounding boxes',
       'translate moves the visual box, rotate turns it, and scale changes the painted size. The surrounding layout keeps its original positions. transform-origin sets the pivot.',
       '.icon {\n  display: inline-block;\n  transform-origin: center;\n  transform: translateY(-2px) rotate(8deg);\n}',
       'Set the rotation to 0deg and inspect the surrounding text.',
@@ -509,7 +509,7 @@ a:focus-visible {
     ],
     [
       'css',
-      'CSS 20 · Transition between states',
+      'CSS 20 . Transition between states',
       'A transition interpolates a property when the computed value changes. Its duration, easing and delay control how the change feels. Declare it on the base rule so it also applies when leaving hover or focus.',
       '.action { transition: transform 180ms ease-out, background-color 180ms ease-out; }\n.action:is(:hover, :focus-visible) {\n  transform: translateY(-2px);\n  background-color: #c4e9dd;\n}',
       'Hover and then tab to the action. Set the duration to 1s temporarily.',
@@ -517,7 +517,7 @@ a:focus-visible {
     ],
     [
       'css',
-      'CSS 21 · Create a multi-stage keyframe animation',
+      'CSS 21 . Create a multi-stage keyframe animation',
       '@keyframes defines the timeline for an animation. 0% and 100% mark its beginning and end. Intermediate percentages let you describe motion that changes direction. The base style should remain usable before and after the animation.',
       '@keyframes badge-arrive {\n  0% { opacity: 0; transform: translateY(12px); }\n  70% { opacity: 1; transform: translateY(-3px); }\n  100% { opacity: 1; transform: translateY(0); }\n}\n.badge { animation: badge-arrive 480ms ease-out; }',
       'Move the middle keyframe from 70% to 40% and reload.',
@@ -525,7 +525,7 @@ a:focus-visible {
     ],
     [
       'css',
-      'CSS 22 · Set animation timing, repetition and direction',
+      'CSS 22 . Set animation timing, repetition and direction',
       'animation-delay schedules the start. animation-iteration-count controls the number of cycles. alternate reverses every other cycle. animation-fill-mode controls which keyframe styles apply outside active playback.',
       '.signal {\n  animation-name: signal-glow;\n  animation-duration: 650ms;\n  animation-delay: 200ms;\n  animation-timing-function: ease-in-out;\n  animation-iteration-count: 2;\n  animation-direction: alternate;\n  animation-fill-mode: backwards;\n}\n@keyframes signal-glow { from { opacity: .6; } to { opacity: 1; } }',
       '.signal should pause while hovered. Add the rule and try again.',
@@ -533,7 +533,7 @@ a:focus-visible {
     ],
     [
       'css',
-      'CSS 23 · Respect reduced motion',
+      'CSS 23 . Respect reduced motion',
       'Some visitors ask their device to reduce motion. Use prefers-reduced-motion to remove optional movement while keeping the state or message visible. Prefer transform and opacity for common motion effects, and use DevTools to inspect the result.',
       '@media (prefers-reduced-motion: reduce) {\n  .badge, .signal { animation: none; opacity: 1; }\n  .action { transition: none; }\n  .action:is(:hover, :focus-visible) { transform: none; }\n}',
       'Emulate reduced motion in the browser and refocus the action.',
@@ -543,7 +543,7 @@ a:focus-visible {
   'responsive-layout': [
     [
       'css',
-      'CSS 24 · Build a responsive grid',
+      'CSS 24 . Build a responsive grid',
       'Add <meta name="viewport" content="width=device-width, initial-scale=1"> in the HTML head. Start with one column. Switch to two columns once the layout has room.',
       `.schedule {
   display: grid;
@@ -558,7 +558,7 @@ a:focus-visible {
     ],
     [
       'css',
-      'CSS 25 · Size responsive grids and span tracks',
+      'CSS 25 . Size responsive grids and span tracks',
       'minmax() gives tracks a permitted size range. auto-fit collapses empty repeated tracks. A grid item can span multiple columns by referring to grid lines.',
       '.gallery {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));\n  gap: 1rem;\n}\n.gallery > header { grid-column: 1 / -1; }',
       'Use a header and five cards and resize the page.',
@@ -566,7 +566,7 @@ a:focus-visible {
     ],
     [
       'css',
-      'CSS 26 · Adapt a component with container queries',
+      'CSS 26 . Adapt a component with container queries',
       'A media query reads conditions such as viewport width. A container size query can respond to the width available inside a component’s ancestor, which helps when cards appear in sidebars and full-width sections.',
       '.card-slot { container-type: inline-size; }\n.card-content { display: grid; gap: 1rem; }\n@container (min-width: 28rem) {\n  .card-content { grid-template-columns: 1fr 2fr; }\n}',
       'Place one card in a narrow sidebar and one in a wide main area at the same viewport width.',
@@ -574,7 +574,7 @@ a:focus-visible {
     ],
     [
       'css',
-      'CSS 27 · Use feature queries and print styles',
+      'CSS 27 . Use feature queries and print styles',
       '@supports checks whether the browser accepts a property-value pair. Keep usable base styles outside the feature query. @media print applies to printed output and print previews.',
       '.cards { display: block; }\n@supports (display: grid) { .cards { display: grid; gap: 1rem; } }\n@media print {\n  nav, .action { display: none; }\n  body { color: black; background: white; }\n  .card { break-inside: avoid; }\n}',
       'Open print preview for the café schedule.',
@@ -582,7 +582,7 @@ a:focus-visible {
     ],
     [
       'css',
-      'CSS 28 · Build and test the repair café stylesheet',
+      'CSS 28 . Build and test the repair café stylesheet',
       'Combine reusable design values, fluid layout, keyboard focus and responsive cards into one stylesheet. Inspect a phone-width layout, tab through it, and test optional motion both ways.',
       '.page { width: min(100% - 2rem, 70rem); margin-inline: auto; }\n.session-list { display: grid; gap: 1rem; }\n@media (min-width: 48rem) {\n  .session-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }\n}',
       'Build a schedule, a status badge and a booking link. Test at 320px, 768px and a desktop width.',
@@ -592,7 +592,7 @@ a:focus-visible {
   'javascript-jquery': [
     [
       'js',
-      'JavaScript 1 · Load and run a script',
+      'JavaScript 1 . Load and run a script',
       'Save the example in site.js. Add <script src="site.js" defer></script> in the HTML head. defer lets an external script run after the HTML has been parsed. Console output helps you confirm that the script loaded.',
       `const venue = 'Student Centre';
 console.log(venue);`,
@@ -600,7 +600,7 @@ console.log(venue);`,
     ],
     [
       'js',
-      'JavaScript 2 · Use variables and expressions',
+      'JavaScript 2 . Use variables and expressions',
       'Use const for a binding that stays assigned to the same value. Use let when reassigning a variable. A comparison evaluates to true or false and can control what happens next.',
       `const capacity = 12;
 let registrations = 9;
@@ -611,7 +611,7 @@ console.log(remaining > 0);`,
     ],
     [
       'js',
-      'JavaScript 3 · Make decisions with a function',
+      'JavaScript 3 . Make decisions with a function',
       'A function groups reusable behaviour. Its parameter receives an input and return supplies a result. An if block runs when the condition is true.',
       `function placesMessage(remaining) {
   if (remaining <= 0) {
@@ -626,19 +626,19 @@ console.log(placesMessage(0));`,
     ],
     [
       'js',
-      'JavaScript 4 · Update an element on click',
+      'JavaScript 4 . Update an element on click',
       'Add a button with id="show-hours" and a paragraph with id="status" to your HTML. querySelector finds a matching element. The click listener runs the callback. textContent writes plain text into the paragraph.',
       `const button = document.querySelector('#show-hours');
 const status = document.querySelector('#status');
 
 button.addEventListener('click', () => {
-  status.textContent = 'Saturday, 10:00–13:00';
+  status.textContent = 'Saturday, 10:00-13:00';
 });`,
       'Click the button and activate it with the keyboard. Change the hour in the script and confirm both inputs show the same new text.',
     ],
     [
       'js',
-      'JavaScript 5 · Work through a list',
+      'JavaScript 5 . Work through a list',
       'An array stores ordered values. A for...of loop visits each value in order. Create list elements with createElement and add them with append. Add a ul with id="repair-types" before trying this code.',
       `const types = ['Lamps', 'Fans', 'Bicycles'];
 const list = document.querySelector('#repair-types');
@@ -652,7 +652,7 @@ for (const type of types) {
     ],
     [
       'js',
-      'JavaScript 6 · Compare numbers, strings and booleans',
+      'JavaScript 6 . Compare numbers, strings and booleans',
       'Input values are often strings. Convert with Number when arithmetic is required. Strict equality compares both type and value.',
       "const raw = '12';\nconsole.log(raw === 12);\nconsole.log(Number(raw) === 12);",
       "Try 'twelve' and check the converted result.",
@@ -660,7 +660,7 @@ for (const type of types) {
     ],
     [
       'js',
-      'JavaScript 7 · Format messages with template literals',
+      'JavaScript 7 . Format messages with template literals',
       'Backticks create template literals. An expression inside interpolation braces is evaluated when the string is built.',
       'const count = 4;\nconst message = `Available places: ${count}`;\nconsole.log(message);',
       'Display how many places remain after one more booking.',
@@ -668,7 +668,7 @@ for (const type of types) {
     ],
     [
       'js',
-      'JavaScript 8 · Combine conditions',
+      'JavaScript 8 . Combine conditions',
       'Use && when both conditions must hold, ',
       '',
       ' when either can hold and ! to negate a boolean. Parentheses make a combined rule explicit.',
@@ -678,7 +678,7 @@ for (const type of types) {
     ],
     [
       'js',
-      'JavaScript 9 · Use object properties',
+      'JavaScript 9 . Use object properties',
       'Objects group related data. Dot notation accesses a known key. Brackets accept a runtime key.',
       "const session = { venue: 'Student Centre', capacity: 12 };\nconst field = 'capacity';\nconsole.log(session[field]);",
       'Add a day and print it using dot notation.',
@@ -686,7 +686,7 @@ for (const type of types) {
     ],
     [
       'js',
-      'JavaScript 10 · Filter, map and total arrays',
+      'JavaScript 10 . Filter, map and total arrays',
       'filter keeps matching elements. map produces one result for each element it visits. reduce combines elements into an accumulated value.',
       "const places = [4, 0, 2];\nconst open = places.filter(n => n > 0);\nconst labels = open.map(n => n + ' places');\nconst total = open.reduce((sum, n) => sum + n, 0);",
       'Add a session with one place. Predict open and total.',
@@ -694,7 +694,7 @@ for (const type of types) {
     ],
     [
       'js',
-      'JavaScript 11 · Distinguish block scope and mutation',
+      'JavaScript 11 . Distinguish block scope and mutation',
       'let and const are block scoped. An object held by const can still have its properties changed, while the binding cannot be reassigned.',
       'const session = { places: 2 };\nif (session.places > 0) {\n  const remaining = session.places - 1;\n  session.places = remaining;\n}\nconsole.log(session.places);',
       'Move console.log(remaining) outside the if block and inspect the error.',
@@ -702,7 +702,7 @@ for (const type of types) {
     ],
     [
       'js',
-      'JavaScript 12 · Use event delegation',
+      'JavaScript 12 . Use event delegation',
       'A click bubbles from a child to its ancestors. One listener on a list can handle nested buttons, including buttons added later.',
       "const list = document.querySelector('#sessions');\nlist.addEventListener('click', event => {\n  const button = event.target.closest('button[data-session]');\n  if (button) console.log(button.dataset.session);\n});",
       'Add a button with data-session="morning" inside #sessions and click it.',
@@ -710,7 +710,7 @@ for (const type of types) {
     ],
     [
       'js',
-      'JavaScript 13 · Toggle a class and synchronise state',
+      'JavaScript 13 . Toggle a class and synchronise state',
       'classList.toggle adds or removes a named class. Its return value tells you whether the class is present. Keep accessible button state aligned with the visible state.',
       "const button = document.querySelector('#compact');\nbutton.addEventListener('click', () => {\n  const active = document.body.classList.toggle('compact');\n  button.setAttribute('aria-pressed', String(active));\n});",
       'Add id="compact" and aria-pressed="false" to a button, then click twice.',
@@ -720,7 +720,7 @@ for (const type of types) {
   'forms-responses': [
     [
       'js',
-      'JavaScript 14 · Handle a practice form',
+      'JavaScript 14 . Handle a practice form',
       'Give your local form id="enquiry" and add a paragraph with id="feedback" and role="status". The submit event occurs after ordinary browser validation. preventDefault keeps this demonstration on the current page. A hosted form needs its own submission and response setup.',
       `const form = document.querySelector('#enquiry');
 const feedback = document.querySelector('#feedback');
@@ -733,7 +733,7 @@ form.addEventListener('submit', (event) => {
     ],
     [
       'js',
-      'JavaScript 15 · Read and validate form data',
+      'JavaScript 15 . Read and validate form data',
       'FormData reads named successful controls. Check empty text after trim and use built-in validation for types and required fields.',
       "function readEnquiry(form) {\n  const data = new FormData(form);\n  return String(data.get('item') ?? '').trim();\n}",
       'Read a textarea named item containing spaces only.',
@@ -741,7 +741,7 @@ form.addEventListener('submit', (event) => {
     ],
     [
       'js',
-      'JavaScript 16 · Parse and serialise JSON',
+      'JavaScript 16 . Parse and serialise JSON',
       'JSON.stringify writes JSON text and JSON.parse reads it. JSON represents data such as objects, arrays, strings and numbers.',
       "const saved = JSON.stringify({ item: 'lamp', places: 2 });\nconst restored = JSON.parse(saved);\nconsole.log(restored.item);",
       "Try JSON.parse('{invalid}') and inspect the error.",
@@ -749,7 +749,7 @@ form.addEventListener('submit', (event) => {
     ],
     [
       'js',
-      'JavaScript 17 · Save and restore a browser preference',
+      'JavaScript 17 . Save and restore a browser preference',
       'localStorage stores strings per origin. Save a simple preference and provide a default when it is missing. Use a normal local HTTP preview.',
       "function saveView(view) { localStorage.setItem('repair-view', view); }\nfunction loadView() { return localStorage.getItem('repair-view') ?? 'comfortable'; }",
       "Call saveView('compact'), reload, then call loadView().",
@@ -757,7 +757,7 @@ form.addEventListener('submit', (event) => {
     ],
     [
       'js',
-      'JavaScript 18 · Handle errors with try and catch',
+      'JavaScript 18 . Handle errors with try and catch',
       'Code in try runs first. catch handles a thrown error so the page can offer a useful fallback. Limit the try block to the operation you intend to recover from.',
       "function readSettings(text) {\n  try { return JSON.parse(text); }\n  catch (error) { return { view: 'comfortable' }; }\n}",
       'Call the function with valid JSON and then malformed text.',
@@ -765,7 +765,7 @@ form.addEventListener('submit', (event) => {
     ],
     [
       'js',
-      'JavaScript 19 · Fetch JSON with async and await',
+      'JavaScript 19 . Fetch JSON with async and await',
       'await pauses an async function until a promise settles. Check response.ok because fetch can resolve for an HTTP error. Use a local sessions.json file served over HTTP.',
       "async function loadSessions() {\n  const response = await fetch('./sessions.json');\n  if (!response.ok) throw new Error('Could not load sessions');\n  return await response.json();\n}",
       'Create sessions.json, log the result, then rename the file and catch the rejection.',
@@ -773,7 +773,7 @@ form.addEventListener('submit', (event) => {
     ],
     [
       'js',
-      'JavaScript 20 · Split code into modules',
+      'JavaScript 20 . Split code into modules',
       'export makes a binding importable. Import using a relative path with the file extension. Load the entry script with type="module" from an HTTP preview.',
       '// capacity.js\nexport const available = (limit, booked) => Math.max(0, limit - booked);\n// site.js\nimport { available } from ' +
         "'./capacity.js';\nconsole.log(available(12, 9));",
@@ -782,7 +782,7 @@ form.addEventListener('submit', (event) => {
     ],
     [
       'js',
-      'JavaScript 21 · Finish and debug an interactive schedule',
+      'JavaScript 21 . Finish and debug an interactive schedule',
       'Keep data, rendering and event handling separate. Test an empty list, a full session and a session with places. Use console output and breakpoints to inspect values.',
       "function bookingLabel(places) {\n  return places > 0 ? places + ' available' : 'Full';\n}\nconsole.assert(bookingLabel(0) === 'Full');\nconsole.assert(bookingLabel(2) === '2 available');",
       'Render the labels from sample data and add a test for one place.',
