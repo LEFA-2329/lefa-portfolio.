@@ -10,7 +10,7 @@ import {
   lessons,
 } from '../programming-logic/content/lessons-and-quizzes.mjs?v=40';
 import { escapeHTML as e } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=40';
-import { wedeSidebar } from '../web-development/web-development-pages.mjs?v=wede-62';
+import { wedeSidebar } from '../web-development/web-development-pages.mjs?v=wede-63';
 export function createNavigationSidebar({
   getActiveModule,
   setActiveModule,

@@ -1,4 +1,4 @@
-import { languageSteps, tutorials } from './content/tutorials.mjs?v=wede-62';
+import { languageSteps, tutorials } from './content/tutorials.mjs?v=wede-63';
 import { wedeUnits, wedeLessons } from './content/course.mjs';
 import { escapeHTML as e } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=40';
 import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=wede-60';
@@ -52,21 +52,30 @@ function stepByStep(lesson) {
   const nextLink = next
     ? `<p><a class="button secondary" href="#wede-lesson/wede-${next[0]}">Continue to ${e(next[1][0][1])}</a></p>`
     : '';
-  const cssChapters = [
-    'Syntax and selectors',
-    'Styling and layout',
-    'Forms and animation',
-    'Responsive design',
-  ];
-  const chapterLinks =
-    language === 'css'
-      ? `<nav class="button-row" aria-label="CSS chapters">${teachingLessons
-          .map(
-            ([slug], index) =>
-              `<a class="button secondary" href="#wede-lesson/wede-${slug}"${slug === lesson.slug ? ' aria-current="page"' : ''}>${cssChapters[index]}</a>`,
-          )
-          .join('')}</nav>`
-      : '';
+  const chapters = {
+    html: ['HTML', 'Page structure', 'Content and forms', 'Build and validate'],
+    css: [
+      'CSS',
+      'Syntax and selectors',
+      'Styling and layout',
+      'Forms and animation',
+      'Responsive design',
+    ],
+    js: ['JavaScript', 'Language and DOM', 'Forms, data and modules'],
+  };
+  const [languageName, ...chapterNames] = chapters[language];
+  const chapterLinks = `<nav class="button-row" aria-label="${languageName} chapters">${teachingLessons
+    .map(
+      ([slug], index) =>
+        `<a class="button secondary" href="#wede-lesson/wede-${slug}"${slug === lesson.slug ? ' aria-current="page"' : ''}>${chapterNames[index]}</a>`,
+    )
+    .join('')}</nav>`;
+  const lessonDemos = {
+    'html-elements':
+      '<details><summary>Try the native HTML disclosure</summary><p>Bring a lamp, fan or bicycle. Open and close this example with your keyboard or mouse.</p></details>',
+    'javascript-jquery':
+      '<section class="wede-teaching-step"><h3>Try a click event</h3><button type="button" class="button secondary" id="wede-book-demo">Reserve a practice place</button><p id="wede-demo-places" role="status">3 places available</p><button type="button" class="button secondary" id="wede-reset-demo">Reset demo</button></section>',
+  };
   const animationDemo =
     lesson.slug === 'css-devtools'
       ? '<details class="wede-motion-demo"><summary>Open the animation demo</summary><p><span>Saturday session open</span></p><p>Close and reopen this demo to replay. With reduced motion enabled, the badge appears immediately.</p></details>'
@@ -74,6 +83,7 @@ function stepByStep(lesson) {
   return (
     chapterLinks +
     animationDemo +
+    (lessonDemos[lesson.slug] || '') +
     steps
       .map(
         ([syntax, title, explanation, code, task, answer]) =>
@@ -295,6 +305,29 @@ function renderLesson(view, lesson, section) {
   });
   for (const panel of view.querySelectorAll('[data-wede-section]')) {
     panel.hidden = panel.dataset.wedeSection !== selectedSection;
+  }
+  const bookDemo = view.querySelector('#wede-book-demo');
+  if (bookDemo) {
+    const status = view.querySelector('#wede-demo-places');
+    let places = 3;
+    const update = () => {
+      status.textContent =
+        places === 0
+          ? 'Session full'
+          : places === 1
+            ? '1 place available'
+            : places + ' places available';
+      bookDemo.disabled = places === 0;
+    };
+    bookDemo.onclick = () => {
+      places--;
+      update();
+    };
+    view.querySelector('#wede-reset-demo').onclick = () => {
+      places = 3;
+      update();
+      bookDemo.focus();
+    };
   }
   const draft = view.querySelector('#wede-draft');
   draft.value = state.draft;
