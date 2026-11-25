@@ -1,5 +1,12 @@
 // Supplementary explanations, short drills and applied exercises in outline order.
 export const tutorials = {
+  github: [
+    'The integrated terminal runs commands from its current folder. GitHub shows the remote branches, pull requests and Pages status. The full VS Code walkthrough is also linked under Downloads.',
+    'Run git status, git branch --show-current and git remote -v. Explain each output.',
+    'They report working changes, the current branch and remote fetch and push URLs respectively.',
+    'The published site opens without CSS. Find the failing file request in DevTools.',
+    'Check the committed filename, path and capitalisation. A project site needs links that resolve under its published project URL.',
+  ],
   'online-presence': [
     'A website brief connects an audience, a need and a measurable outcome. A sitemap shows the hierarchy of pages. A wireframe shows where content and controls sit on one page. For the repair café, the sitemap might place Visit and Enquiries under Home, while the home wireframe puts the next date above the fold.',
     'Draw a sitemap with Home, Visit, Repair Rules and Enquiries. Which pages belong in primary navigation?',

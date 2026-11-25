@@ -127,7 +127,7 @@ test('WEDE restores a practical draft, checked quiz choices and independent cour
   assert.equal(restoredWork.read(key, {}).draft, answers.draft);
   assert.equal(progress.completed, 1);
   assert.equal(progress.correct, 2);
-  assert.equal(progress.quizTotal, 36);
+  assert.equal(progress.quizTotal, 38);
   assert.equal(
     courseProgress('database', restoredWork, restoredCompletions).completed,
     0,

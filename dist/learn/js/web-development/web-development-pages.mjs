@@ -1,5 +1,5 @@
-import { languageSteps, tutorials } from './content/tutorials.mjs?v=wede-64';
-import { wedeUnits, wedeLessons } from './content/course.mjs?v=wede-64';
+import { languageSteps, tutorials } from './content/tutorials.mjs?v=wede-66';
+import { wedeUnits, wedeLessons } from './content/course.mjs?v=wede-66';
 import { escapeHTML as e } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=40';
 import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=wede-64';
 import { codeBlock } from '../shared/render-code-block.mjs';
@@ -8,7 +8,7 @@ import { workStore } from '../shared/saved-work-storage.mjs?v=40';
 import {
   progressSummary,
   refreshLessonCompletion,
-} from '../shared/learning-progress.mjs?v=wede-60';
+} from '../shared/learning-progress.mjs?v=wede-66';
 
 const lessonsFor = (unit) => wedeLessons.filter((lesson) => lesson.unit === unit);
 const lessonHref = (lesson) => '#wede-lesson/' + lesson.id;
@@ -500,7 +500,7 @@ export function renderWedePage({ view, page, id, section }) {
               `<a class="button secondary" href="#wede-lesson/wede-${slug}">${label}</a>`,
           )
           .join('') +
-        '<a class="button secondary" href="/learn/github/">GitHub step by step</a></nav>',
+        '<a class="button secondary" href="#wede-lesson/wede-github">GitHub chapter</a></nav>',
       dynamic_2: wedeUnits.map((u) => unitCard(u)).join(''),
     });
     return;

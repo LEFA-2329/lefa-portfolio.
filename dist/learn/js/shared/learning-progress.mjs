@@ -4,7 +4,7 @@ import {
   advancedLessons,
 } from '../database/content/advanced-lessons.mjs?v=punctuation-43';
 import { cleanQuizLesson } from './quiz-lesson-state.mjs';
-import { wedeLessons, wedeUnits } from '../web-development/content/course.mjs';
+import { wedeLessons, wedeUnits } from '../web-development/content/course.mjs?v=wede-66';
 import { workStore } from './saved-work-storage.mjs?v=40';
 import {
   lessons as prldLessons,

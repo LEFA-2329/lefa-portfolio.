@@ -770,6 +770,26 @@ export const wedeUnits = [
         ],
       },
       {
+        slug: 'github',
+        title: 'GitHub and the VS Code terminal',
+        outcomes: 'Unit 7 companion chapter',
+        sections: [
+          ['Set up the terminal', 'Open Terminal > New Terminal in VS Code. Run git --version. Git records changes locally and GitHub hosts the remote copy. Sign in through the Git Credential Manager browser prompt or run gh auth login if GitHub CLI is installed.'],
+          ['Bring your website into Git', 'Clone an existing GitHub repository using its HTTPS URL from Code, then open the cloned folder in VS Code. For a new local project, use git init -b main and connect it to an empty GitHub repository with git remote add origin followed by its URL. Keep local secrets out of staged files.'],
+          ['Review and publish', 'Push your feature branch, open a pull request into main and review Files changed. After merging, use Settings > Pages to choose the publishing branch and folder containing index.html. Test the published website and check that linked file names match exactly.'],
+        ],
+        example: 'Update the repair café website from VS Code',
+        code: 'git status\ngit switch main\ngit pull --ff-only origin main\ngit switch -c update-hours\n# Edit and save index.html in VS Code.\ngit diff\ngit add index.html\ngit diff --staged\ngit commit -m "Update opening hours"\ngit push -u origin update-hours',
+        result: 'The feature branch appears on GitHub. Open a pull request into main. Once merged, switch to main and pull the updated version.',
+        task: 'Change the repair café venue on a feature branch. Push, review and merge the pull request, then confirm GitHub Pages shows the new venue.',
+        hint: 'Run git status before staging and check Settings > Pages for the publishing branch and folder.',
+        solution: 'The pull request shows the venue edit, main contains the merged change, and the public URL shows the updated venue after deployment.',
+        quizzes: [
+          question('Which command sends local commits to GitHub?', ['git status', 'git push', 'git diff'], 1, 'Push sends commits from a local branch to a remote branch.'),
+          question('Where does Pages look for index.html when main and /(root) are selected?', ['At the root of main', 'In a local folder', 'In an unmerged branch'], 0, 'Pages publishes the selected branch and folder.'),
+        ],
+      },
+      {
         slug: 'publish-test',
         title: 'Choose a domain, publish and test a website',
         outcomes: 'LO4-6',

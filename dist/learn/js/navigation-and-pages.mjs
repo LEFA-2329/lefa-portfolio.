@@ -1,6 +1,6 @@
 // Application composition root. Feature modules own their page state and events.
-import { renderWedePage } from './web-development/web-development-pages.mjs?v=wede-65';
-import { createNavigationSidebar } from './application/navigation-sidebar.mjs?v=wede-65';
+import { renderWedePage } from './web-development/web-development-pages.mjs?v=wede-66';
+import { createNavigationSidebar } from './application/navigation-sidebar.mjs?v=wede-66';
 import { createProgrammingLessonPages } from './programming-logic/programming-lesson-pages.mjs?v=breadcrumb-58';
 import { createProgrammingTaskPages } from './programming-logic/programming-task-pages.mjs?v=breadcrumb-58';
 import { createProgrammingOverviewPages } from './programming-logic/programming-overview-pages.mjs?v=breadcrumb-58';
@@ -25,7 +25,7 @@ import { renderHtmlPage } from '../../shared/render-html-page.mjs?v=wede-64';
 import { builderPage } from './database/normalisation/normalisation-diagram-builder.mjs?v=40';
 import { normalisationPracticePage } from './database/normalisation/normalisation-question-page.mjs?v=40';
 import { databaseExamPage } from './database/database-exam-page.mjs?v=40';
-import { progressPage } from './shared/learning-progress.mjs?v=wede-60';
+import { progressPage } from './shared/learning-progress.mjs?v=wede-66';
 import {
   databaseHome,
   databaseUnit,
