@@ -1,58 +1,195 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-5L0GrP9NDExVrIvT8BWSSAVpxJscTdTcCJIj2ja8yJk='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>Reflection, attributes and late binding | StudyLab</title><meta name="description" content="Reflection, attributes and late binding. Inspect a type and call a member using information discovered while the program runs."><meta name="robots" content="index,follow"><link rel="canonical" href="https://lefamalatji.co.za/learn/csharp/lessons/cs-reflection/"><meta property="og:type" content="website"><meta property="og:site_name" content="StudyLab"><meta property="og:title" content="Reflection, attributes and late binding | StudyLab"><meta property="og:description" content="Reflection, attributes and late binding. Inspect a type and call a member using information discovered while the program runs."><meta property="og:url" content="https://lefamalatji.co.za/learn/csharp/lessons/cs-reflection/"><meta property="og:image" content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1"><script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Reflection, attributes and late binding","description":"Reflection, attributes and late binding. Inspect a type and call a member using information discovered while the program runs.","url":"https://lefamalatji.co.za/learn/csharp/lessons/cs-reflection/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}</script></head><body><a class="skip" href="#content">Skip to content</a><header><a class="brand" href="/studylab/"><span class="portrait"><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42"></span>Study<span>Lab</span></a><nav aria-label="StudyLab links"><a href="/learn/study-packs/">Study Packs</a> . <a href="/learn/">Open learning app</a></nav></header><main id="content"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/studylab/">StudyLab</a> / <a href="/learn/csharp/">C# lessons</a></nav><h1>Reflection, attributes and late binding</h1><p class="lede">Inspect a type and call a member using information discovered while the program runs.</p><a class="button" href="/learn/#cs-lesson/cs-reflection">Open interactive lesson and complete code</a><section class="panel"><h2>What you are building</h2><h3>A shared toolbox and a console app that uses it</h3><p>Put reusable rules in a class library, then call them from a console project. Explore how C# can inspect types or create a small type at runtime.</p><p>The example prints results in the console; it does not use a database.</p><h3>Check the result</h3><p>Build both projects together, run the console app and check the rule and reflection output.</p></section><div class="theory">
-  <p>
-    Reflection lets a running program inspect a type’s description. It is like reading
-    labels on a toolbox before choosing a tool.
-  </p>
-  <section>
-    <h2>How to test this example in Visual Studio</h2>
-    <p>
-      Download the project below, extract it into its own folder, then open
-      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
-      Solution. For console projects choose Start Without Debugging. For API projects use
-      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
-      then run the command shown in the lesson. Do not paste all files into Program.cs:
-      use the exact file names displayed below.
-    </p>
-  </section>
-  <section>
-    <h2>Inspect and invoke</h2>
-    <pre><code>Type type = typeof(MarkRules);
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self' 'sha256-ck9bdn8YUYLlAxcKA0I3jkUTgBBf97Yxa3+hVKam2pY='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <title>Reflection, attributes and late binding | StudyLab</title>
+    <meta
+      name="description"
+      content="Reflection, attributes and late binding. Inspect a type and call a member using information discovered while the program runs."
+    />
+    <meta name="robots" content="index,follow" />
+    <link
+      rel="canonical"
+      href="https://lefamalatji.co.za/learn/csharp/lessons/cs-reflection/"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="StudyLab" />
+    <meta
+      property="og:title"
+      content="Reflection, attributes and late binding | StudyLab"
+    />
+    <meta
+      property="og:description"
+      content="Reflection, attributes and late binding. Inspect a type and call a member using information discovered while the program runs."
+    />
+    <meta
+      property="og:url"
+      content="https://lefamalatji.co.za/learn/csharp/lessons/cs-reflection/"
+    />
+    <meta
+      property="og:image"
+      content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1" />
+    <script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script>
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"LearningResource","name":"Reflection, attributes and late binding","description":"Reflection, attributes and late binding. Inspect a type and call a member using information discovered while the program runs.","url":"https://lefamalatji.co.za/learn/csharp/lessons/cs-reflection/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#content">Skip to content</a>
+    <header>
+      <a class="brand" href="/studylab/"
+        ><span class="portrait"
+          ><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42" /></span
+        >Study<span>Lab</span></a
+      >
+      <nav aria-label="StudyLab links">
+        <a href="/learn/study-packs/">Study Packs</a> .
+        <a href="/learn/">Open learning app</a>
+      </nav>
+    </header>
+    <main id="content">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/studylab/">StudyLab</a> / <a href="/learn/csharp/">C# lessons</a>
+      </nav>
+      <h1>Reflection, attributes and late binding</h1>
+      <p class="lede">
+        Inspect a type and call a member using information discovered while the program
+        runs.
+      </p>
+      <a class="button" href="/learn/#cs-lesson/cs-reflection"
+        >Open interactive lesson and complete code</a
+      >
+      <section class="panel">
+        <h2>What you are building</h2>
+        <h3>A shared toolbox and a console app that uses it</h3>
+        <p>
+          Put reusable rules in a class library, then call them from a console project.
+          Explore how C# can inspect types or create a small type at runtime.
+        </p>
+        <p>The example prints results in the console; it does not use a database.</p>
+        <h3>Check the result</h3>
+        <p>
+          Build both projects together, run the console app and check the rule and
+          reflection output.
+        </p>
+      </section>
+      <div class="theory">
+        <p>
+          Reflection lets a running program inspect a type’s description. It is like
+          reading labels on a toolbox before choosing a tool.
+        </p>
+        <section>
+          <h2>How to test this example in Visual Studio</h2>
+          <p>
+            Download the project below, extract it into its own folder, then open
+            <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+            Solution. For console projects choose Start Without Debugging. For API
+            projects use View → Terminal, make sure the terminal is in the folder
+            containing StudyLab.csproj, then run the command shown in the lesson. Do not
+            paste all files into Program.cs: use the exact file names displayed below.
+          </p>
+        </section>
+        <section>
+          <h2>Inspect and invoke</h2>
+          <pre><code>Type type = typeof(MarkRules);
 var method = type.GetMethod(nameof(MarkRules.IsPass))!;
 object? result = method.Invoke(null, new object[] { 40 });</code></pre>
-    <p>
-      Expected late-binding result: False. null is the target for a static method.
-      Parameters must match the signature. For an instance method create/provide an
-      instance. Check for a missing method instead of using null-forgiving syntax in
-      general dynamic input code. Invocation errors can wrap the inner failure in
-      TargetInvocationException.
-    </p>
-  </section>
-  <section>
-    <h2>Attributes are metadata</h2>
-    <p>
-      StudyTopicAttribute attaches a Title to MarkRules. AttributeUsage limits where it
-      can appear. GetCustomAttribute reads it; an attribute does not execute a rule by
-      magic. Reflection is useful for serializers, discovery, testing tools and plugin
-      contracts, but ordinary direct calls are clearer and checked earlier. Trimming and
-      Native AOT can require explicit metadata preservation; arbitrary reflection is not
-      always deployment-friendly.
-    </p>
-  </section>
-  <section>
-    <h2>Try it yourself</h2>
-    <details class="panel">
-      <summary>What changes if IsPass becomes an instance method?</summary>
-      <h3>Worked answer</h3>
-      <p>Create an instance and pass it as Invoke’s target instead of null.</p>
-    </details>
-    <details class="panel">
-      <summary>How do you handle a user-supplied method name?</summary>
-      <h3>Worked answer</h3>
+          <p>
+            Expected late-binding result: False. null is the target for a static method.
+            Parameters must match the signature. For an instance method create/provide an
+            instance. Check for a missing method instead of using null-forgiving syntax in
+            general dynamic input code. Invocation errors can wrap the inner failure in
+            TargetInvocationException.
+          </p>
+        </section>
+        <section>
+          <h2>Attributes are metadata</h2>
+          <p>
+            StudyTopicAttribute attaches a Title to MarkRules. AttributeUsage limits where
+            it can appear. GetCustomAttribute reads it; an attribute does not execute a
+            rule by magic. Reflection is useful for serializers, discovery, testing tools
+            and plugin contracts, but ordinary direct calls are clearer and checked
+            earlier. Trimming and Native AOT can require explicit metadata preservation;
+            arbitrary reflection is not always deployment-friendly.
+          </p>
+        </section>
+        <section>
+          <h2>Try it yourself</h2>
+          <details class="panel">
+            <summary>What changes if IsPass becomes an instance method?</summary>
+            <h3>Worked answer</h3>
+            <p>Create an instance and pass it as Invoke’s target instead of null.</p>
+          </details>
+          <details class="panel">
+            <summary>How do you handle a user-supplied method name?</summary>
+            <h3>Worked answer</h3>
+            <p>
+              Avoid unrestricted invocation. Allowlist approved operations and validate
+              arguments and access. Reflection is not an authorisation system.
+            </p>
+          </details>
+        </section>
+      </div>
+      <section class="panel">
+        <h2>Predict and practise</h2>
+        <p>Can reflection discover methods while a program is running?</p>
+        <details>
+          <summary>Check your prediction</summary>
+          <p>
+            Yes. It inspects type metadata and can invoke members when supplied suitable
+            arguments.
+          </p>
+        </details>
+        <h3>Make one change</h3>
+        <p>Locate GetType or typeof and inspect the discovered members.</p>
+        <details>
+          <summary>Worked guidance</summary>
+          <p>Compare the metadata name with the actual class or method declaration.</p>
+        </details>
+        <h3>Try independently</h3>
+        <p>Inspect your own small class and print its public property names.</p>
+      </section>
+      <section class="panel">
+        <h2>Full code and downloads</h2>
+        <p>
+          The interactive lesson contains the numbered code parts, commented complete
+          files, project ZIP, practice tasks and quiz. Keep each project in its own folder
+          in Visual Studio.
+        </p>
+        <a class="button" href="/learn/#cs-lesson/cs-reflection"
+          >View code and download the project</a
+        >
+      </section>
+      <section class="panel">
+        <h2>Explore StudyLab subjects</h2>
+        <nav class="subject-links" aria-label="Related learning subjects">
+          <a href="/learn/pseudocode/">Learn pseudocode and programming logic</a
+          ><a href="/learn/databases/">Learn databases and SQL</a
+          ><a href="/learn/csharp/">Learn C# step by step - PROG6212</a
+          ><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a
+          ><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a
+          ><a href="/learn/docker/">Learn Docker for .NET applications</a
+          ><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a>
+        </nav>
+      </section>
+    </main>
+    <footer>
       <p>
-        Avoid unrestricted invocation. Allowlist approved operations and validate
-        arguments and access. Reflection is not an authorisation system.
+        StudyLab. Original learning materials by Lefa Malatji. Practice code in the
+        environment stated in each lesson.
       </p>
-    </details>
-  </section>
-</div>
-<section class="panel"><h2>Predict and practise</h2><p>Can reflection discover methods while a program is running?</p><details><summary>Check your prediction</summary><p>Yes. It inspects type metadata and can invoke members when supplied suitable arguments.</p></details><h3>Make one change</h3><p>Locate GetType or typeof and inspect the discovered members.</p><details><summary>Worked guidance</summary><p>Compare the metadata name with the actual class or method declaration.</p></details><h3>Try independently</h3><p>Inspect your own small class and print its public property names.</p></section><section class="panel"><h2>Full code and downloads</h2><p>The interactive lesson contains the numbered code parts, commented complete files, project ZIP, practice tasks and quiz. Keep each project in its own folder in Visual Studio.</p><a class="button" href="/learn/#cs-lesson/cs-reflection">View code and download the project</a></section><section class="panel"><h2>Explore StudyLab subjects</h2><nav class="subject-links" aria-label="Related learning subjects"><a href="/learn/pseudocode/">Learn pseudocode and programming logic</a><a href="/learn/databases/">Learn databases and SQL</a><a href="/learn/csharp/">Learn C# step by step - PROG6212</a><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a><a href="/learn/docker/">Learn Docker for .NET applications</a><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a></nav></section></main><footer><p>StudyLab. Original learning materials by Lefa Malatji. Practice code in the environment stated in each lesson.</p><a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a></footer></body></html>
+      <a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a>
+    </footer>
+  </body>
+</html>

@@ -1,71 +1,220 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-+SN+Yow9EVoCXq7e1RlHL5eQHuvHJu7ly9un6c0DJRQ='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>Processes, AppDomains and object contexts | StudyLab</title><meta name="description" content="Processes, AppDomains and object contexts. Inspect a running process and distinguish process information from older .NET Framework AppDomain concepts."><meta name="robots" content="index,follow"><link rel="canonical" href="https://lefamalatji.co.za/learn/csharp/lessons/cs-processes/"><meta property="og:type" content="website"><meta property="og:site_name" content="StudyLab"><meta property="og:title" content="Processes, AppDomains and object contexts | StudyLab"><meta property="og:description" content="Processes, AppDomains and object contexts. Inspect a running process and distinguish process information from older .NET Framework AppDomain concepts."><meta property="og:url" content="https://lefamalatji.co.za/learn/csharp/lessons/cs-processes/"><meta property="og:image" content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1"><script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Processes, AppDomains and object contexts","description":"Processes, AppDomains and object contexts. Inspect a running process and distinguish process information from older .NET Framework AppDomain concepts.","url":"https://lefamalatji.co.za/learn/csharp/lessons/cs-processes/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}</script></head><body><a class="skip" href="#content">Skip to content</a><header><a class="brand" href="/studylab/"><span class="portrait"><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42"></span>Study<span>Lab</span></a><nav aria-label="StudyLab links"><a href="/learn/study-packs/">Study Packs</a> . <a href="/learn/">Open learning app</a></nav></header><main id="content"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/studylab/">StudyLab</a> / <a href="/learn/csharp/">C# lessons</a></nav><h1>Processes, AppDomains and object contexts</h1><p class="lede">Inspect a running process and distinguish process information from older .NET Framework AppDomain concepts.</p><a class="button" href="/learn/#cs-lesson/cs-processes">Open interactive lesson and complete code</a><section class="panel"><h2>What you are building</h2><h3>A console playground for C# features</h3><p>Run small experiments with objects, reusable helpers, lists and work that takes time. Each experiment prints results in the console.</p><p>These experiments use temporary values rather than a student database.</p><h3>Check the result</h3><p>Run the console app, find the part for this lesson and compare its printed result with the explanation.</p></section><div class="theory">
-  <p>
-    A process is a running program with its own operating-system resources. A thread is a
-    worker inside that process. These ideas are related, but they are not interchangeable.
-  </p>
-  <section>
-    <h2>How to test this example in Visual Studio</h2>
-    <p>
-      Download the project below, extract it into its own folder, then open
-      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
-      Solution. For console projects choose Start Without Debugging. For API projects use
-      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
-      then run the command shown in the lesson. Do not paste all files into Program.cs:
-      use the exact file names displayed below.
-    </p>
-  </section>
-  <section>
-    <h2>Modern .NET and older textbook terminology</h2>
-    <ul>
-      <li>
-        System.Diagnostics.Process inspects processes and can start other programs.
-        Dispose Process objects you create. Do not start arbitrary commands from untrusted
-        input.
-      </li>
-      <li>
-        The CLR runs managed code and manages type safety, exceptions and garbage
-        collection. AppDomain.CurrentDomain is still available for information. Creating
-        and unloading secondary AppDomains is a .NET Framework technique, not a modern
-        .NET isolation recipe.
-      </li>
-      <li>
-        Modern .NET uses AssemblyLoadContext for loading assemblies. A collectible context
-        can support unloadable plugins but is not a security sandbox.
-      </li>
-      <li>
-        Object contexts in older .NET Framework remoting describe groups of context-bound
-        objects with shared services. ContextBoundObject and remoting are legacy subjects.
-        In ASP.NET Core, an HTTP context and an EF DbContext are different concepts.
-      </li>
-    </ul>
-  </section>
-  <section>
-    <h2>Try it</h2>
-    <pre><code>using var process = Process.GetCurrentProcess();
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self' 'sha256-W24Rn7svPJv7PzOeYAUc1XVQLvTKAymQm7zjBZbxI28='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <title>Processes, AppDomains and object contexts | StudyLab</title>
+    <meta
+      name="description"
+      content="Processes, AppDomains and object contexts. Inspect a running process and distinguish process information from older .NET Framework AppDomain concepts."
+    />
+    <meta name="robots" content="index,follow" />
+    <link
+      rel="canonical"
+      href="https://lefamalatji.co.za/learn/csharp/lessons/cs-processes/"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="StudyLab" />
+    <meta
+      property="og:title"
+      content="Processes, AppDomains and object contexts | StudyLab"
+    />
+    <meta
+      property="og:description"
+      content="Processes, AppDomains and object contexts. Inspect a running process and distinguish process information from older .NET Framework AppDomain concepts."
+    />
+    <meta
+      property="og:url"
+      content="https://lefamalatji.co.za/learn/csharp/lessons/cs-processes/"
+    />
+    <meta
+      property="og:image"
+      content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1" />
+    <script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script>
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"LearningResource","name":"Processes, AppDomains and object contexts","description":"Processes, AppDomains and object contexts. Inspect a running process and distinguish process information from older .NET Framework AppDomain concepts.","url":"https://lefamalatji.co.za/learn/csharp/lessons/cs-processes/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#content">Skip to content</a>
+    <header>
+      <a class="brand" href="/studylab/"
+        ><span class="portrait"
+          ><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42" /></span
+        >Study<span>Lab</span></a
+      >
+      <nav aria-label="StudyLab links">
+        <a href="/learn/study-packs/">Study Packs</a> .
+        <a href="/learn/">Open learning app</a>
+      </nav>
+    </header>
+    <main id="content">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/studylab/">StudyLab</a> / <a href="/learn/csharp/">C# lessons</a>
+      </nav>
+      <h1>Processes, AppDomains and object contexts</h1>
+      <p class="lede">
+        Inspect a running process and distinguish process information from older .NET
+        Framework AppDomain concepts.
+      </p>
+      <a class="button" href="/learn/#cs-lesson/cs-processes"
+        >Open interactive lesson and complete code</a
+      >
+      <section class="panel">
+        <h2>What you are building</h2>
+        <h3>A console playground for C# features</h3>
+        <p>
+          Run small experiments with objects, reusable helpers, lists and work that takes
+          time. Each experiment prints results in the console.
+        </p>
+        <p>These experiments use temporary values rather than a student database.</p>
+        <h3>Check the result</h3>
+        <p>
+          Run the console app, find the part for this lesson and compare its printed
+          result with the explanation.
+        </p>
+      </section>
+      <div class="theory">
+        <p>
+          A process is a running program with its own operating-system resources. A thread
+          is a worker inside that process. These ideas are related, but they are not
+          interchangeable.
+        </p>
+        <section>
+          <h2>How to test this example in Visual Studio</h2>
+          <p>
+            Download the project below, extract it into its own folder, then open
+            <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+            Solution. For console projects choose Start Without Debugging. For API
+            projects use View → Terminal, make sure the terminal is in the folder
+            containing StudyLab.csproj, then run the command shown in the lesson. Do not
+            paste all files into Program.cs: use the exact file names displayed below.
+          </p>
+        </section>
+        <section>
+          <h2>Modern .NET and older textbook terminology</h2>
+          <ul>
+            <li>
+              System.Diagnostics.Process inspects processes and can start other programs.
+              Dispose Process objects you create. Do not start arbitrary commands from
+              untrusted input.
+            </li>
+            <li>
+              The CLR runs managed code and manages type safety, exceptions and garbage
+              collection. AppDomain.CurrentDomain is still available for information.
+              Creating and unloading secondary AppDomains is a .NET Framework technique,
+              not a modern .NET isolation recipe.
+            </li>
+            <li>
+              Modern .NET uses AssemblyLoadContext for loading assemblies. A collectible
+              context can support unloadable plugins but is not a security sandbox.
+            </li>
+            <li>
+              Object contexts in older .NET Framework remoting describe groups of
+              context-bound objects with shared services. ContextBoundObject and remoting
+              are legacy subjects. In ASP.NET Core, an HTTP context and an EF DbContext
+              are different concepts.
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h2>Try it</h2>
+          <pre><code>using var process = Process.GetCurrentProcess();
 Console.WriteLine(process.ProcessName);
 Console.WriteLine(AppDomain.CurrentDomain.FriendlyName);</code></pre>
-    <p>
-      Expected output includes the executable or host name. It varies by machine and
-      launch method. Do not memorise a fixed process ID.
-    </p>
-  </section>
-  <section>
-    <h2>Try it yourself</h2>
-    <details class="panel">
-      <summary>Is an EF DbContext a separate process?</summary>
-      <h3>Worked answer</h3>
+          <p>
+            Expected output includes the executable or host name. It varies by machine and
+            launch method. Do not memorise a fixed process ID.
+          </p>
+        </section>
+        <section>
+          <h2>Try it yourself</h2>
+          <details class="panel">
+            <summary>Is an EF DbContext a separate process?</summary>
+            <h3>Worked answer</h3>
+            <p>
+              No. It is an object that tracks database work inside your application
+              process.
+            </p>
+          </details>
+          <details class="panel">
+            <summary>What should isolate an untrusted plugin?</summary>
+            <h3>Worked answer</h3>
+            <p>
+              A separately secured process or container boundary, with carefully
+              controlled permissions. AssemblyLoadContext alone is not a security
+              boundary.
+            </p>
+          </details>
+        </section>
+      </div>
+      <section class="panel">
+        <h2>Predict and practise</h2>
+        <p>Is an AssemblyLoadContext a secure sandbox for untrusted code?</p>
+        <details>
+          <summary>Check your prediction</summary>
+          <p>
+            No. It helps organise assembly loading; it does not enforce a security
+            boundary.
+          </p>
+        </details>
+        <h3>Make one change</h3>
+        <p>
+          Find the line that reads the current process ID and compare it after restarting.
+        </p>
+        <details>
+          <summary>Worked guidance</summary>
+          <p>
+            Process.GetCurrentProcess identifies this running process. IDs may change
+            after restart.
+          </p>
+        </details>
+        <h3>Try independently</h3>
+        <p>
+          Print the current process name and ID, then explain how a process differs from
+          an object.
+        </p>
+      </section>
+      <section class="panel">
+        <h2>Full code and downloads</h2>
+        <p>
+          The interactive lesson contains the numbered code parts, commented complete
+          files, project ZIP, practice tasks and quiz. Keep each project in its own folder
+          in Visual Studio.
+        </p>
+        <a class="button" href="/learn/#cs-lesson/cs-processes"
+          >View code and download the project</a
+        >
+      </section>
+      <section class="panel">
+        <h2>Explore StudyLab subjects</h2>
+        <nav class="subject-links" aria-label="Related learning subjects">
+          <a href="/learn/pseudocode/">Learn pseudocode and programming logic</a
+          ><a href="/learn/databases/">Learn databases and SQL</a
+          ><a href="/learn/csharp/">Learn C# step by step - PROG6212</a
+          ><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a
+          ><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a
+          ><a href="/learn/docker/">Learn Docker for .NET applications</a
+          ><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a>
+        </nav>
+      </section>
+    </main>
+    <footer>
       <p>
-        No. It is an object that tracks database work inside your application process.
+        StudyLab. Original learning materials by Lefa Malatji. Practice code in the
+        environment stated in each lesson.
       </p>
-    </details>
-    <details class="panel">
-      <summary>What should isolate an untrusted plugin?</summary>
-      <h3>Worked answer</h3>
-      <p>
-        A separately secured process or container boundary, with carefully controlled
-        permissions. AssemblyLoadContext alone is not a security boundary.
-      </p>
-    </details>
-  </section>
-</div>
-<section class="panel"><h2>Predict and practise</h2><p>Is an AssemblyLoadContext a secure sandbox for untrusted code?</p><details><summary>Check your prediction</summary><p>No. It helps organise assembly loading; it does not enforce a security boundary.</p></details><h3>Make one change</h3><p>Find the line that reads the current process ID and compare it after restarting.</p><details><summary>Worked guidance</summary><p>Process.GetCurrentProcess identifies this running process. IDs may change after restart.</p></details><h3>Try independently</h3><p>Print the current process name and ID, then explain how a process differs from an object.</p></section><section class="panel"><h2>Full code and downloads</h2><p>The interactive lesson contains the numbered code parts, commented complete files, project ZIP, practice tasks and quiz. Keep each project in its own folder in Visual Studio.</p><a class="button" href="/learn/#cs-lesson/cs-processes">View code and download the project</a></section><section class="panel"><h2>Explore StudyLab subjects</h2><nav class="subject-links" aria-label="Related learning subjects"><a href="/learn/pseudocode/">Learn pseudocode and programming logic</a><a href="/learn/databases/">Learn databases and SQL</a><a href="/learn/csharp/">Learn C# step by step - PROG6212</a><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a><a href="/learn/docker/">Learn Docker for .NET applications</a><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a></nav></section></main><footer><p>StudyLab. Original learning materials by Lefa Malatji. Practice code in the environment stated in each lesson.</p><a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a></footer></body></html>
+      <a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a>
+    </footer>
+  </body>
+</html>

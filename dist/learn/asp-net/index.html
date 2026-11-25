@@ -1,6 +1,215 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-fErnDcAdj5DTTzYpMj+4iO3r3ZsFGDDEUhdVHmFl6ys='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>Learn ASP.NET Core, REST APIs and CRUD | StudyLab</title><meta name="description" content="Build ASP.NET Core APIs in C#: beginner CRUD, controllers, validation, EF Core, SQL Server, authentication, Swagger and MVC examples."><meta name="robots" content="index,follow"><link rel="canonical" href="https://lefamalatji.co.za/learn/asp-net/"><meta property="og:type" content="website"><meta property="og:site_name" content="StudyLab"><meta property="og:title" content="Learn ASP.NET Core, REST APIs and CRUD | StudyLab"><meta property="og:description" content="Build ASP.NET Core APIs in C#: beginner CRUD, controllers, validation, EF Core, SQL Server, authentication, Swagger and MVC examples."><meta property="og:url" content="https://lefamalatji.co.za/learn/asp-net/"><meta property="og:image" content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1"><script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Learn ASP.NET Core, REST APIs and CRUD","description":"Build ASP.NET Core APIs in C#: beginner CRUD, controllers, validation, EF Core, SQL Server, authentication, Swagger and MVC examples.","url":"https://lefamalatji.co.za/learn/asp-net/","inLanguage":"en"}</script></head><body><a class="skip" href="#content">Skip to content</a><header><a class="brand" href="/studylab/"><span class="portrait"><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42"></span>Study<span>Lab</span></a><nav aria-label="StudyLab links"><a href="/learn/study-packs/">Study Packs</a> . <a href="/learn/">Open learning app</a></nav></header><main id="content"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/studylab/">StudyLab</a> / <a href="/studylab/">Learning guides</a></nav><h1>Learn ASP.NET Core, REST APIs and CRUD</h1><p class="lede">ASP.NET Core helps C# programs receive web requests and send responses. A student API can add, show, change and delete students. An MVC website adds pages and forms that people use to call that API.</p><a class="button" href="/learn/#cs-unit/csharp-2">Start interactive learning</a><p>Free learning guides, practice questions and worked explanations for students. Interactive activities run in the StudyLab app; C# and Docker projects run locally using the lesson setup instructions.</p><section class="panel"><h2>Learn the request and response</h2><p>A client sends an HTTP method and address. The API matches that request to an endpoint. The endpoint checks input, performs work and returns a status and optional data. A normal browser address bar sends GET; use an HTTP client for the other CRUD actions.</p></section><section class="panel"><h2>Build CRUD before adding a database</h2><p>Use GET to read, POST to create, PUT to replace editable data and DELETE to remove a resource. Start with the supplied in-memory example. Test a missing ID and invalid input as well as the successful path.</p></section><section class="panel"><h2>Add persistence and access control in stages</h2><p>Then move to EF Core with SQLite or SQL Server, or use ADO.NET with typed SQL parameters. Later examples cover Identity access tokens, ownership, paging and concurrency. OpenAPI describes endpoints; Swagger UI provides a development testing interface.</p></section><section class="panel"><h2>Worked example</h2><pre tabindex="0"><code>// In an ASP.NET Core Empty project:
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self' 'sha256-aTRI1ZyXrd8ySEb7yTgmNr2PWLaGyjqAmUvIkbLx50Y='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <title>Learn ASP.NET Core, REST APIs and CRUD | StudyLab</title>
+    <meta
+      name="description"
+      content="Build ASP.NET Core APIs in C#: beginner CRUD, controllers, validation, EF Core, SQL Server, authentication, Swagger and MVC examples."
+    />
+    <meta name="robots" content="index,follow" />
+    <link rel="canonical" href="https://lefamalatji.co.za/learn/asp-net/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="StudyLab" />
+    <meta
+      property="og:title"
+      content="Learn ASP.NET Core, REST APIs and CRUD | StudyLab"
+    />
+    <meta
+      property="og:description"
+      content="Build ASP.NET Core APIs in C#: beginner CRUD, controllers, validation, EF Core, SQL Server, authentication, Swagger and MVC examples."
+    />
+    <meta property="og:url" content="https://lefamalatji.co.za/learn/asp-net/" />
+    <meta
+      property="og:image"
+      content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1" />
+    <script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script>
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"WebPage","name":"Learn ASP.NET Core, REST APIs and CRUD","description":"Build ASP.NET Core APIs in C#: beginner CRUD, controllers, validation, EF Core, SQL Server, authentication, Swagger and MVC examples.","url":"https://lefamalatji.co.za/learn/asp-net/","inLanguage":"en"}
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#content">Skip to content</a>
+    <header>
+      <a class="brand" href="/studylab/"
+        ><span class="portrait"
+          ><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42" /></span
+        >Study<span>Lab</span></a
+      >
+      <nav aria-label="StudyLab links">
+        <a href="/learn/study-packs/">Study Packs</a> .
+        <a href="/learn/">Open learning app</a>
+      </nav>
+    </header>
+    <main id="content">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/studylab/">StudyLab</a> / <a href="/studylab/">Learning guides</a>
+      </nav>
+      <h1>Learn ASP.NET Core, REST APIs and CRUD</h1>
+      <p class="lede">
+        ASP.NET Core helps C# programs receive web requests and send responses. A student
+        API can add, show, change and delete students. An MVC website adds pages and forms
+        that people use to call that API.
+      </p>
+      <a class="button" href="/learn/#cs-unit/csharp-2">Start interactive learning</a>
+      <p>
+        Free learning guides, practice questions and worked explanations for students.
+        Interactive activities run in the StudyLab app; C# and Docker projects run locally
+        using the lesson setup instructions.
+      </p>
+      <section class="panel">
+        <h2>Learn the request and response</h2>
+        <p>
+          A client sends an HTTP method and address. The API matches that request to an
+          endpoint. The endpoint checks input, performs work and returns a status and
+          optional data. A normal browser address bar sends GET; use an HTTP client for
+          the other CRUD actions.
+        </p>
+      </section>
+      <section class="panel">
+        <h2>Build CRUD before adding a database</h2>
+        <p>
+          Use GET to read, POST to create, PUT to replace editable data and DELETE to
+          remove a resource. Start with the supplied in-memory example. Test a missing ID
+          and invalid input as well as the successful path.
+        </p>
+      </section>
+      <section class="panel">
+        <h2>Add persistence and access control in stages</h2>
+        <p>
+          Then move to EF Core with SQLite or SQL Server, or use ADO.NET with typed SQL
+          parameters. Later examples cover Identity access tokens, ownership, paging and
+          concurrency. OpenAPI describes endpoints; Swagger UI provides a development
+          testing interface.
+        </p>
+      </section>
+      <section class="panel">
+        <h2>Worked example</h2>
+        <pre tabindex="0"><code>// In an ASP.NET Core Empty project:
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 // Reply to GET /api/hello.
 app.MapGet(&quot;/api/hello&quot;, () =&gt; new { message = &quot;Hello, student&quot; });
-app.Run();</code></pre><p>When the project is running, a GET request to /api/hello returns a JSON object containing the message Hello, student.</p><h3>Try it yourself</h3><p>Why is a successful GET response different from the response used after creating a new resource?</p><details><summary>Check the explanation</summary><p>A successful read commonly uses 200 OK. Creating a new resource commonly uses 201 Created and supplies its location.</p></details></section><section class="panel"><h2>Read the lessons</h2><ul><li><a href="/learn/csharp/lessons/cs-web-foundations/">Start here: ASP.NET Core, MVC and HTTP</a></li><li><a href="/learn/csharp/lessons/cs-crud-minimal/">Beginner CRUD with Minimal APIs</a></li><li><a href="/learn/csharp/lessons/cs-crud-controllers/">Controller-based CRUD and DTO validation</a></li><li><a href="/learn/csharp/lessons/cs-openapi/">OpenAPI and Swagger UI: a complete working project</a></li><li><a href="/learn/csharp/lessons/cs-ef-sqlite/">Persistent CRUD with EF Core and SQLite</a></li><li><a href="/learn/csharp/lessons/cs-sqlserver/">Connect CRUD to SQL Server and SQL Express</a></li><li><a href="/learn/csharp/lessons/cs-ado-api/">CRUD using ADO.NET without Entity Framework</a></li><li><a href="/learn/csharp/lessons/cs-api-auth/">Registration, login and bearer-token testing</a></li><li><a href="/learn/csharp/lessons/cs-advanced-api/">Advanced CRUD: paging, ownership and concurrency</a></li><li><a href="/learn/csharp/lessons/cs-mvc-client/">Build a full MVC website that calls your API</a></li><li><a href="/learn/csharp/lessons/cs-api-testing/">Test, document and debug CRUD APIs</a></li></ul></section><section class="panel"><h2>Practise in the application</h2><div class="actions"><a class="button" href="/learn/#cs-lesson/cs-web-foundations">Understand ASP.NET Core</a><a class="button" href="/learn/#cs-lesson/cs-crud-minimal">Build beginner CRUD</a><a class="button" href="/learn/#cs-lesson/cs-mvc-client">Build an MVC client</a></div></section><section class="panel"><h2>Explore StudyLab subjects</h2><nav class="subject-links" aria-label="Related learning subjects"><a href="/learn/pseudocode/">Learn pseudocode and programming logic</a><a href="/learn/databases/">Learn databases and SQL</a><a href="/learn/csharp/">Learn C# step by step - PROG6212</a><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a><a href="/learn/docker/">Learn Docker for .NET applications</a><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a></nav></section></main><footer><p>StudyLab. Original learning materials by Lefa Malatji. Practice code in the environment stated in each lesson.</p><a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a></footer></body></html>
+app.Run();</code></pre>
+        <p>
+          When the project is running, a GET request to /api/hello returns a JSON object
+          containing the message Hello, student.
+        </p>
+        <h3>Try it yourself</h3>
+        <p>
+          Why is a successful GET response different from the response used after creating
+          a new resource?
+        </p>
+        <details>
+          <summary>Check the explanation</summary>
+          <p>
+            A successful read commonly uses 200 OK. Creating a new resource commonly uses
+            201 Created and supplies its location.
+          </p>
+        </details>
+      </section>
+      <section class="panel">
+        <h2>Read the lessons</h2>
+        <ul>
+          <li>
+            <a href="/learn/csharp/lessons/cs-web-foundations/"
+              >Start here: ASP.NET Core, MVC and HTTP</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-crud-minimal/"
+              >Beginner CRUD with Minimal APIs</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-crud-controllers/"
+              >Controller-based CRUD and DTO validation</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-openapi/"
+              >OpenAPI and Swagger UI: a complete working project</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-ef-sqlite/"
+              >Persistent CRUD with EF Core and SQLite</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-sqlserver/"
+              >Connect CRUD to SQL Server and SQL Express</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-ado-api/"
+              >CRUD using ADO.NET without Entity Framework</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-api-auth/"
+              >Registration, login and bearer-token testing</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-advanced-api/"
+              >Advanced CRUD: paging, ownership and concurrency</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-mvc-client/"
+              >Build a full MVC website that calls your API</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-api-testing/"
+              >Test, document and debug CRUD APIs</a
+            >
+          </li>
+        </ul>
+      </section>
+      <section class="panel">
+        <h2>Practise in the application</h2>
+        <div class="actions">
+          <a class="button" href="/learn/#cs-lesson/cs-web-foundations"
+            >Understand ASP.NET Core</a
+          ><a class="button" href="/learn/#cs-lesson/cs-crud-minimal"
+            >Build beginner CRUD</a
+          ><a class="button" href="/learn/#cs-lesson/cs-mvc-client"
+            >Build an MVC client</a
+          >
+        </div>
+      </section>
+      <section class="panel">
+        <h2>Explore StudyLab subjects</h2>
+        <nav class="subject-links" aria-label="Related learning subjects">
+          <a href="/learn/pseudocode/">Learn pseudocode and programming logic</a
+          ><a href="/learn/databases/">Learn databases and SQL</a
+          ><a href="/learn/csharp/">Learn C# step by step - PROG6212</a
+          ><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a
+          ><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a
+          ><a href="/learn/docker/">Learn Docker for .NET applications</a
+          ><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a>
+        </nav>
+      </section>
+    </main>
+    <footer>
+      <p>
+        StudyLab. Original learning materials by Lefa Malatji. Practice code in the
+        environment stated in each lesson.
+      </p>
+      <a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a>
+    </footer>
+  </body>
+</html>

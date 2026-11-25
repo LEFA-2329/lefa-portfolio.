@@ -1,53 +1,194 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-hNrZPEhY0x3VbhBcs2qLsvme5NnYsMkfEDtrfkRugRU='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>Dynamic assemblies and Reflection.Emit | StudyLab</title><meta name="description" content="Dynamic assemblies and Reflection.Emit. Create a tiny type in memory and inspect the result."><meta name="robots" content="index,follow"><link rel="canonical" href="https://lefamalatji.co.za/learn/csharp/lessons/cs-dynamic-assemblies/"><meta property="og:type" content="website"><meta property="og:site_name" content="StudyLab"><meta property="og:title" content="Dynamic assemblies and Reflection.Emit | StudyLab"><meta property="og:description" content="Dynamic assemblies and Reflection.Emit. Create a tiny type in memory and inspect the result."><meta property="og:url" content="https://lefamalatji.co.za/learn/csharp/lessons/cs-dynamic-assemblies/"><meta property="og:image" content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1"><script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Dynamic assemblies and Reflection.Emit","description":"Dynamic assemblies and Reflection.Emit. Create a tiny type in memory and inspect the result.","url":"https://lefamalatji.co.za/learn/csharp/lessons/cs-dynamic-assemblies/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}</script></head><body><a class="skip" href="#content">Skip to content</a><header><a class="brand" href="/studylab/"><span class="portrait"><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42"></span>Study<span>Lab</span></a><nav aria-label="StudyLab links"><a href="/learn/study-packs/">Study Packs</a> . <a href="/learn/">Open learning app</a></nav></header><main id="content"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/studylab/">StudyLab</a> / <a href="/learn/csharp/">C# lessons</a></nav><h1>Dynamic assemblies and Reflection.Emit</h1><p class="lede">Create a tiny type in memory and inspect the result.</p><a class="button" href="/learn/#cs-lesson/cs-dynamic-assemblies">Open interactive lesson and complete code</a><section class="panel"><h2>What you are building</h2><h3>A shared toolbox and a console app that uses it</h3><p>Put reusable rules in a class library, then call them from a console project. Explore how C# can inspect types or create a small type at runtime.</p><p>The example prints results in the console; it does not use a database.</p><h3>Check the result</h3><p>Build both projects together, run the console app and check the rule and reflection output.</p></section><div class="theory">
-  <p>
-    A dynamic assembly is a code container built while the program is running. This is a
-    specialised tool; start with a tiny method that simply returns a number.
-  </p>
-  <section>
-    <h2>How to test this example in Visual Studio</h2>
-    <p>
-      Download the project below, extract it into its own folder, then open
-      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
-      Solution. For console projects choose Start Without Debugging. For API projects use
-      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
-      then run the command shown in the lesson. Do not paste all files into Program.cs:
-      use the exact file names displayed below.
-    </p>
-  </section>
-  <section>
-    <h2>Build a method in steps</h2>
-    <p>
-      AssemblyBuilder creates a dynamic assembly; DefineDynamicModule creates its module;
-      DefineType creates a type; DefineMethod declares a method. ILGenerator writes CIL
-      instructions. Ldc_I4_7 pushes the integer7 onto the evaluation stack; Ret returns
-      it. CreateType finishes the generated type so reflection can call it.
-    </p>
-  </section>
-  <section>
-    <h2>Expected result and limits</h2>
-    <p>
-      The full downloadable program emits a public static Seven method and prints Emitted
-      result:7. Dynamic assemblies can support proxies, runtime adapters and generated
-      methods. They are not required for ordinary CRUD and do not automatically compile
-      pasted C# source. Reflection.Emit may be unavailable in restricted/AOT environments.
-      Prefer a normal class when the behaviour is known at build time.
-    </p>
-  </section>
-  <section>
-    <h2>Try it yourself</h2>
-    <details class="panel">
-      <summary>Change the generated method to return 9.</summary>
-      <h3>Worked answer</h3>
-      <p>Use il.Emit(OpCodes.Ldc_I4,9) before Ret, keeping the return type int.</p>
-    </details>
-    <details class="panel">
-      <summary>Why is loading arbitrary generated code dangerous?</summary>
-      <h3>Worked answer</h3>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self' 'sha256-Js6J+HjUyyVCz5rTToGgo5cyFF/rjDDUR+rx96YmdOs='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <title>Dynamic assemblies and Reflection.Emit | StudyLab</title>
+    <meta
+      name="description"
+      content="Dynamic assemblies and Reflection.Emit. Create a tiny type in memory and inspect the result."
+    />
+    <meta name="robots" content="index,follow" />
+    <link
+      rel="canonical"
+      href="https://lefamalatji.co.za/learn/csharp/lessons/cs-dynamic-assemblies/"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="StudyLab" />
+    <meta
+      property="og:title"
+      content="Dynamic assemblies and Reflection.Emit | StudyLab"
+    />
+    <meta
+      property="og:description"
+      content="Dynamic assemblies and Reflection.Emit. Create a tiny type in memory and inspect the result."
+    />
+    <meta
+      property="og:url"
+      content="https://lefamalatji.co.za/learn/csharp/lessons/cs-dynamic-assemblies/"
+    />
+    <meta
+      property="og:image"
+      content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1" />
+    <script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script>
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"LearningResource","name":"Dynamic assemblies and Reflection.Emit","description":"Dynamic assemblies and Reflection.Emit. Create a tiny type in memory and inspect the result.","url":"https://lefamalatji.co.za/learn/csharp/lessons/cs-dynamic-assemblies/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#content">Skip to content</a>
+    <header>
+      <a class="brand" href="/studylab/"
+        ><span class="portrait"
+          ><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42" /></span
+        >Study<span>Lab</span></a
+      >
+      <nav aria-label="StudyLab links">
+        <a href="/learn/study-packs/">Study Packs</a> .
+        <a href="/learn/">Open learning app</a>
+      </nav>
+    </header>
+    <main id="content">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/studylab/">StudyLab</a> / <a href="/learn/csharp/">C# lessons</a>
+      </nav>
+      <h1>Dynamic assemblies and Reflection.Emit</h1>
+      <p class="lede">Create a tiny type in memory and inspect the result.</p>
+      <a class="button" href="/learn/#cs-lesson/cs-dynamic-assemblies"
+        >Open interactive lesson and complete code</a
+      >
+      <section class="panel">
+        <h2>What you are building</h2>
+        <h3>A shared toolbox and a console app that uses it</h3>
+        <p>
+          Put reusable rules in a class library, then call them from a console project.
+          Explore how C# can inspect types or create a small type at runtime.
+        </p>
+        <p>The example prints results in the console; it does not use a database.</p>
+        <h3>Check the result</h3>
+        <p>
+          Build both projects together, run the console app and check the rule and
+          reflection output.
+        </p>
+      </section>
+      <div class="theory">
+        <p>
+          A dynamic assembly is a code container built while the program is running. This
+          is a specialised tool; start with a tiny method that simply returns a number.
+        </p>
+        <section>
+          <h2>How to test this example in Visual Studio</h2>
+          <p>
+            Download the project below, extract it into its own folder, then open
+            <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+            Solution. For console projects choose Start Without Debugging. For API
+            projects use View → Terminal, make sure the terminal is in the folder
+            containing StudyLab.csproj, then run the command shown in the lesson. Do not
+            paste all files into Program.cs: use the exact file names displayed below.
+          </p>
+        </section>
+        <section>
+          <h2>Build a method in steps</h2>
+          <p>
+            AssemblyBuilder creates a dynamic assembly; DefineDynamicModule creates its
+            module; DefineType creates a type; DefineMethod declares a method. ILGenerator
+            writes CIL instructions. Ldc_I4_7 pushes the integer7 onto the evaluation
+            stack; Ret returns it. CreateType finishes the generated type so reflection
+            can call it.
+          </p>
+        </section>
+        <section>
+          <h2>Expected result and limits</h2>
+          <p>
+            The full downloadable program emits a public static Seven method and prints
+            Emitted result:7. Dynamic assemblies can support proxies, runtime adapters and
+            generated methods. They are not required for ordinary CRUD and do not
+            automatically compile pasted C# source. Reflection.Emit may be unavailable in
+            restricted/AOT environments. Prefer a normal class when the behaviour is known
+            at build time.
+          </p>
+        </section>
+        <section>
+          <h2>Try it yourself</h2>
+          <details class="panel">
+            <summary>Change the generated method to return 9.</summary>
+            <h3>Worked answer</h3>
+            <p>Use il.Emit(OpCodes.Ldc_I4,9) before Ret, keeping the return type int.</p>
+          </details>
+          <details class="panel">
+            <summary>Why is loading arbitrary generated code dangerous?</summary>
+            <h3>Worked answer</h3>
+            <p>
+              It runs with process permissions. Do not accept untrusted instructions or
+              assemblies as if they were harmless data.
+            </p>
+          </details>
+        </section>
+      </div>
+      <section class="panel">
+        <h2>Predict and practise</h2>
+        <p>
+          Does Reflection.Emit create a source file that you must compile manually here?
+        </p>
+        <details>
+          <summary>Check your prediction</summary>
+          <p>
+            No. This example emits a small type into an in-memory assembly at runtime.
+          </p>
+        </details>
+        <h3>Make one change</h3>
+        <p>Follow the assembly, type and method creation in order.</p>
+        <details>
+          <summary>Worked guidance</summary>
+          <p>
+            Read the emitted instructions alongside the simple behaviour they implement.
+          </p>
+        </details>
+        <h3>Try independently</h3>
+        <p>
+          Describe the generated type and compare its result with an ordinary C# method.
+        </p>
+      </section>
+      <section class="panel">
+        <h2>Full code and downloads</h2>
+        <p>
+          The interactive lesson contains the numbered code parts, commented complete
+          files, project ZIP, practice tasks and quiz. Keep each project in its own folder
+          in Visual Studio.
+        </p>
+        <a class="button" href="/learn/#cs-lesson/cs-dynamic-assemblies"
+          >View code and download the project</a
+        >
+      </section>
+      <section class="panel">
+        <h2>Explore StudyLab subjects</h2>
+        <nav class="subject-links" aria-label="Related learning subjects">
+          <a href="/learn/pseudocode/">Learn pseudocode and programming logic</a
+          ><a href="/learn/databases/">Learn databases and SQL</a
+          ><a href="/learn/csharp/">Learn C# step by step - PROG6212</a
+          ><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a
+          ><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a
+          ><a href="/learn/docker/">Learn Docker for .NET applications</a
+          ><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a>
+        </nav>
+      </section>
+    </main>
+    <footer>
       <p>
-        It runs with process permissions. Do not accept untrusted instructions or
-        assemblies as if they were harmless data.
+        StudyLab. Original learning materials by Lefa Malatji. Practice code in the
+        environment stated in each lesson.
       </p>
-    </details>
-  </section>
-</div>
-<section class="panel"><h2>Predict and practise</h2><p>Does Reflection.Emit create a source file that you must compile manually here?</p><details><summary>Check your prediction</summary><p>No. This example emits a small type into an in-memory assembly at runtime.</p></details><h3>Make one change</h3><p>Follow the assembly, type and method creation in order.</p><details><summary>Worked guidance</summary><p>Read the emitted instructions alongside the simple behaviour they implement.</p></details><h3>Try independently</h3><p>Describe the generated type and compare its result with an ordinary C# method.</p></section><section class="panel"><h2>Full code and downloads</h2><p>The interactive lesson contains the numbered code parts, commented complete files, project ZIP, practice tasks and quiz. Keep each project in its own folder in Visual Studio.</p><a class="button" href="/learn/#cs-lesson/cs-dynamic-assemblies">View code and download the project</a></section><section class="panel"><h2>Explore StudyLab subjects</h2><nav class="subject-links" aria-label="Related learning subjects"><a href="/learn/pseudocode/">Learn pseudocode and programming logic</a><a href="/learn/databases/">Learn databases and SQL</a><a href="/learn/csharp/">Learn C# step by step - PROG6212</a><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a><a href="/learn/docker/">Learn Docker for .NET applications</a><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a></nav></section></main><footer><p>StudyLab. Original learning materials by Lefa Malatji. Practice code in the environment stated in each lesson.</p><a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a></footer></body></html>
+      <a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a>
+    </footer>
+  </body>
+</html>

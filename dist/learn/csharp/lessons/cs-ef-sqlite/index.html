@@ -1,111 +1,252 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-c+z0rSxHGtKgf5AbXIQi+hWuY0sWeGgOaQrI/C8L77Y='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>Persistent CRUD with EF Core and SQLite | StudyLab</title><meta name="description" content="Persistent CRUD with EF Core and SQLite. Connect C# student objects to rows in a small local SQLite file."><meta name="robots" content="index,follow"><link rel="canonical" href="https://lefamalatji.co.za/learn/csharp/lessons/cs-ef-sqlite/"><meta property="og:type" content="website"><meta property="og:site_name" content="StudyLab"><meta property="og:title" content="Persistent CRUD with EF Core and SQLite | StudyLab"><meta property="og:description" content="Persistent CRUD with EF Core and SQLite. Connect C# student objects to rows in a small local SQLite file."><meta property="og:url" content="https://lefamalatji.co.za/learn/csharp/lessons/cs-ef-sqlite/"><meta property="og:image" content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1"><script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Persistent CRUD with EF Core and SQLite","description":"Persistent CRUD with EF Core and SQLite. Connect C# student objects to rows in a small local SQLite file.","url":"https://lefamalatji.co.za/learn/csharp/lessons/cs-ef-sqlite/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}</script></head><body><a class="skip" href="#content">Skip to content</a><header><a class="brand" href="/studylab/"><span class="portrait"><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42"></span>Study<span>Lab</span></a><nav aria-label="StudyLab links"><a href="/learn/study-packs/">Study Packs</a> . <a href="/learn/">Open learning app</a></nav></header><main id="content"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/studylab/">StudyLab</a> / <a href="/learn/csharp/">C# lessons</a></nav><h1>Persistent CRUD with EF Core and SQLite</h1><p class="lede">Connect C# student objects to rows in a small local SQLite file.</p><a class="button" href="/learn/#cs-lesson/cs-ef-sqlite">Open interactive lesson and complete code</a><section class="panel"><h2>What you are building</h2><h3>A student register that remembers its data</h3><p>Build a student API that uses EF Core to read and write a SQLite database file.</p><p>Student data stays in a local database file after the API closes.</p><h3>Check the result</h3><p>Add a student, restart the API, then use GET to check that the student is still there.</p></section><div class="theory">
-  <p>
-    Entity Framework Core is a translator between C# objects and database rows. SQLite
-    stores the database in one file, so you can learn persistence without first setting up
-    a database server.
-  </p>
-  <section>
-    <h2>How to test this example in Visual Studio</h2>
-    <p>
-      Download the project below, extract it into its own folder, then open
-      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
-      Solution. For console projects choose Start Without Debugging. For API projects use
-      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
-      then run the command shown in the lesson. Do not paste all files into Program.cs:
-      use the exact file names displayed below.
-    </p>
-  </section>
-  <section>
-    <h2>Install and create the right project</h2>
-    <ul>
-      <li>
-        Install Visual Studio with ASP.NET and web development and a .NET 10-compatible
-        SDK. For WPF also install .NET desktop development. Check Tools → Get Tools and
-        Features if templates are missing.
-      </li>
-      <li>
-        Create ASP.NET Core Empty for the Minimal API, or ASP.NET Core Web API with Use
-        controllers for a controller project. Select .NET 10. Alternatively open the
-        supplied .csproj to get exactly the lesson files.
-      </li>
-      <li>
-        Use a separate folder for every example. Delete the generated weather sample if it
-        conflicts with the supplied files. Restore NuGet packages before building.
-      </li>
-      <li>
-        In View → Terminal, cd into the folder containing StudyLab.csproj. For local API
-        testing run dotnet run --urls http://localhost:5100. Open requests.http and use
-        Send Request above each request. Use the actual port from the console if you
-        launch with a different profile.
-      </li>
-    </ul>
-  </section>
-  <section>
-    <h2>Your first request</h2>
-    <pre><code>GET http://localhost:5100/api/students</code></pre>
-    <p>
-      Initially expect 200 OK with []. A browser address bar can send GET, but cannot
-      conveniently send all CRUD methods. Use the .http editor, Postman, curl.exe or a
-      Swagger UI. The JSON object is a data packet, not an HTML page.
-    </p>
-  </section>
-  <section>
-    <h2>Libraries and schema setup</h2>
-    <p>
-      Microsoft.EntityFrameworkCore.Sqlite is the database provider.
-      Microsoft.EntityFrameworkCore.Design supplies design-time services for migrations.
-      Keep EF packages and dotnet-ef on matching major versions. The project pins package
-      versions in StudyLab.csproj; restore installs them. Built-in System types do not
-      need separate packages.
-    </p>
-    <pre><code>dotnet tool install --global dotnet-ef --version 10.0.15
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self' 'sha256-73uEzkPrBKbfzOxawpKuofA+XSEvQnOmEo/+q+xbfmo='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <title>Persistent CRUD with EF Core and SQLite | StudyLab</title>
+    <meta
+      name="description"
+      content="Persistent CRUD with EF Core and SQLite. Connect C# student objects to rows in a small local SQLite file."
+    />
+    <meta name="robots" content="index,follow" />
+    <link
+      rel="canonical"
+      href="https://lefamalatji.co.za/learn/csharp/lessons/cs-ef-sqlite/"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="StudyLab" />
+    <meta
+      property="og:title"
+      content="Persistent CRUD with EF Core and SQLite | StudyLab"
+    />
+    <meta
+      property="og:description"
+      content="Persistent CRUD with EF Core and SQLite. Connect C# student objects to rows in a small local SQLite file."
+    />
+    <meta
+      property="og:url"
+      content="https://lefamalatji.co.za/learn/csharp/lessons/cs-ef-sqlite/"
+    />
+    <meta
+      property="og:image"
+      content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1" />
+    <script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script>
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"LearningResource","name":"Persistent CRUD with EF Core and SQLite","description":"Persistent CRUD with EF Core and SQLite. Connect C# student objects to rows in a small local SQLite file.","url":"https://lefamalatji.co.za/learn/csharp/lessons/cs-ef-sqlite/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#content">Skip to content</a>
+    <header>
+      <a class="brand" href="/studylab/"
+        ><span class="portrait"
+          ><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42" /></span
+        >Study<span>Lab</span></a
+      >
+      <nav aria-label="StudyLab links">
+        <a href="/learn/study-packs/">Study Packs</a> .
+        <a href="/learn/">Open learning app</a>
+      </nav>
+    </header>
+    <main id="content">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/studylab/">StudyLab</a> / <a href="/learn/csharp/">C# lessons</a>
+      </nav>
+      <h1>Persistent CRUD with EF Core and SQLite</h1>
+      <p class="lede">Connect C# student objects to rows in a small local SQLite file.</p>
+      <a class="button" href="/learn/#cs-lesson/cs-ef-sqlite"
+        >Open interactive lesson and complete code</a
+      >
+      <section class="panel">
+        <h2>What you are building</h2>
+        <h3>A student register that remembers its data</h3>
+        <p>
+          Build a student API that uses EF Core to read and write a SQLite database file.
+        </p>
+        <p>Student data stays in a local database file after the API closes.</p>
+        <h3>Check the result</h3>
+        <p>
+          Add a student, restart the API, then use GET to check that the student is still
+          there.
+        </p>
+      </section>
+      <div class="theory">
+        <p>
+          Entity Framework Core is a translator between C# objects and database rows.
+          SQLite stores the database in one file, so you can learn persistence without
+          first setting up a database server.
+        </p>
+        <section>
+          <h2>How to test this example in Visual Studio</h2>
+          <p>
+            Download the project below, extract it into its own folder, then open
+            <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+            Solution. For console projects choose Start Without Debugging. For API
+            projects use View → Terminal, make sure the terminal is in the folder
+            containing StudyLab.csproj, then run the command shown in the lesson. Do not
+            paste all files into Program.cs: use the exact file names displayed below.
+          </p>
+        </section>
+        <section>
+          <h2>Install and create the right project</h2>
+          <ul>
+            <li>
+              Install Visual Studio with ASP.NET and web development and a .NET
+              10-compatible SDK. For WPF also install .NET desktop development. Check
+              Tools → Get Tools and Features if templates are missing.
+            </li>
+            <li>
+              Create ASP.NET Core Empty for the Minimal API, or ASP.NET Core Web API with
+              Use controllers for a controller project. Select .NET 10. Alternatively open
+              the supplied .csproj to get exactly the lesson files.
+            </li>
+            <li>
+              Use a separate folder for every example. Delete the generated weather sample
+              if it conflicts with the supplied files. Restore NuGet packages before
+              building.
+            </li>
+            <li>
+              In View → Terminal, cd into the folder containing StudyLab.csproj. For local
+              API testing run dotnet run --urls http://localhost:5100. Open requests.http
+              and use Send Request above each request. Use the actual port from the
+              console if you launch with a different profile.
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h2>Your first request</h2>
+          <pre><code>GET http://localhost:5100/api/students</code></pre>
+          <p>
+            Initially expect 200 OK with []. A browser address bar can send GET, but
+            cannot conveniently send all CRUD methods. Use the .http editor, Postman,
+            curl.exe or a Swagger UI. The JSON object is a data packet, not an HTML page.
+          </p>
+        </section>
+        <section>
+          <h2>Libraries and schema setup</h2>
+          <p>
+            Microsoft.EntityFrameworkCore.Sqlite is the database provider.
+            Microsoft.EntityFrameworkCore.Design supplies design-time services for
+            migrations. Keep EF packages and dotnet-ef on matching major versions. The
+            project pins package versions in StudyLab.csproj; restore installs them.
+            Built-in System types do not need separate packages.
+          </p>
+          <pre><code>dotnet tool install --global dotnet-ef --version 10.0.15
 dotnet ef migrations add InitialCreate
 dotnet ef database update
 dotnet run --urls http://localhost:5100</code></pre>
-    <p>
-      If dotnet-ef is already installed, use dotnet tool update --global dotnet-ef
-      --version 10.0.15 instead. Run migrations inside the project folder. The supplied
-      project has no initial migration until you generate it.
-    </p>
-  </section>
-  <section>
-    <h2>Follow the data</h2>
-    <p>
-      appsettings.json contains ConnectionStrings:School = Data Source=school.db.
-      AddDbContext registers SchoolDb as scoped. DbSet&lt;Student&gt; represents the
-      table. Add marks a new entity; SaveChangesAsync sends the INSERT. FindAsync reads a
-      key; changing a tracked entity and saving sends an UPDATE. Remove and save sends
-      DELETE. AsNoTracking makes read-only lists cheaper. CancellationToken can cancel
-      work when a request is abandoned.
-    </p>
-  </section>
-  <section>
-    <h2>Expected result</h2>
-    <p>
-      Run the same six CRUD requests. Stop and restart the app without deleting school.db;
-      the rows you kept should remain. GET after DELETE still returns 404. A migration
-      changes schema; ordinary CRUD changes rows. EnsureCreated is a convenient separate
-      demo shortcut, but do not mix it into a migrations-managed database.
-    </p>
-  </section>
-  <section>
-    <h2>Try it yourself</h2>
-    <details class="panel">
-      <summary>You see “no such table: Students”. What is missing?</summary>
-      <h3>Worked answer</h3>
+          <p>
+            If dotnet-ef is already installed, use dotnet tool update --global dotnet-ef
+            --version 10.0.15 instead. Run migrations inside the project folder. The
+            supplied project has no initial migration until you generate it.
+          </p>
+        </section>
+        <section>
+          <h2>Follow the data</h2>
+          <p>
+            appsettings.json contains ConnectionStrings:School = Data Source=school.db.
+            AddDbContext registers SchoolDb as scoped. DbSet&lt;Student&gt; represents the
+            table. Add marks a new entity; SaveChangesAsync sends the INSERT. FindAsync
+            reads a key; changing a tracked entity and saving sends an UPDATE. Remove and
+            save sends DELETE. AsNoTracking makes read-only lists cheaper.
+            CancellationToken can cancel work when a request is abandoned.
+          </p>
+        </section>
+        <section>
+          <h2>Expected result</h2>
+          <p>
+            Run the same six CRUD requests. Stop and restart the app without deleting
+            school.db; the rows you kept should remain. GET after DELETE still returns
+            404. A migration changes schema; ordinary CRUD changes rows. EnsureCreated is
+            a convenient separate demo shortcut, but do not mix it into a
+            migrations-managed database.
+          </p>
+        </section>
+        <section>
+          <h2>Try it yourself</h2>
+          <details class="panel">
+            <summary>You see “no such table: Students”. What is missing?</summary>
+            <h3>Worked answer</h3>
+            <p>
+              Run dotnet ef migrations add InitialCreate and dotnet ef database update
+              from this project directory before starting the API.
+            </p>
+          </details>
+          <details class="panel">
+            <summary>Where is school.db?</summary>
+            <h3>Worked answer</h3>
+            <p>
+              The relative connection-string path is resolved from the process working
+              directory. Run from a consistent project folder or configure an absolute
+              path.
+            </p>
+          </details>
+        </section>
+      </div>
+      <section class="panel">
+        <h2>Predict and practise</h2>
+        <p>Should a student remain after restarting this API?</p>
+        <details>
+          <summary>Check your prediction</summary>
+          <p>
+            Yes, if the database file is preserved and the app connects to that same file.
+          </p>
+        </details>
+        <h3>Make one change</h3>
+        <p>Generate and apply the migration, create a student and restart.</p>
+        <details>
+          <summary>Worked guidance</summary>
+          <p>
+            Use the migration commands from the lesson in the project folder, then GET the
+            saved ID.
+          </p>
+        </details>
+        <h3>Try independently</h3>
+        <p>
+          Create two students, restart and verify both remain. Identify the SQLite
+          database file.
+        </p>
+      </section>
+      <section class="panel">
+        <h2>Full code and downloads</h2>
+        <p>
+          The interactive lesson contains the numbered code parts, commented complete
+          files, project ZIP, practice tasks and quiz. Keep each project in its own folder
+          in Visual Studio.
+        </p>
+        <a class="button" href="/learn/#cs-lesson/cs-ef-sqlite"
+          >View code and download the project</a
+        >
+      </section>
+      <section class="panel">
+        <h2>Explore StudyLab subjects</h2>
+        <nav class="subject-links" aria-label="Related learning subjects">
+          <a href="/learn/pseudocode/">Learn pseudocode and programming logic</a
+          ><a href="/learn/databases/">Learn databases and SQL</a
+          ><a href="/learn/csharp/">Learn C# step by step - PROG6212</a
+          ><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a
+          ><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a
+          ><a href="/learn/docker/">Learn Docker for .NET applications</a
+          ><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a>
+        </nav>
+      </section>
+    </main>
+    <footer>
       <p>
-        Run dotnet ef migrations add InitialCreate and dotnet ef database update from this
-        project directory before starting the API.
+        StudyLab. Original learning materials by Lefa Malatji. Practice code in the
+        environment stated in each lesson.
       </p>
-    </details>
-    <details class="panel">
-      <summary>Where is school.db?</summary>
-      <h3>Worked answer</h3>
-      <p>
-        The relative connection-string path is resolved from the process working
-        directory. Run from a consistent project folder or configure an absolute path.
-      </p>
-    </details>
-  </section>
-</div>
-<section class="panel"><h2>Predict and practise</h2><p>Should a student remain after restarting this API?</p><details><summary>Check your prediction</summary><p>Yes, if the database file is preserved and the app connects to that same file.</p></details><h3>Make one change</h3><p>Generate and apply the migration, create a student and restart.</p><details><summary>Worked guidance</summary><p>Use the migration commands from the lesson in the project folder, then GET the saved ID.</p></details><h3>Try independently</h3><p>Create two students, restart and verify both remain. Identify the SQLite database file.</p></section><section class="panel"><h2>Full code and downloads</h2><p>The interactive lesson contains the numbered code parts, commented complete files, project ZIP, practice tasks and quiz. Keep each project in its own folder in Visual Studio.</p><a class="button" href="/learn/#cs-lesson/cs-ef-sqlite">View code and download the project</a></section><section class="panel"><h2>Explore StudyLab subjects</h2><nav class="subject-links" aria-label="Related learning subjects"><a href="/learn/pseudocode/">Learn pseudocode and programming logic</a><a href="/learn/databases/">Learn databases and SQL</a><a href="/learn/csharp/">Learn C# step by step - PROG6212</a><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a><a href="/learn/docker/">Learn Docker for .NET applications</a><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a></nav></section></main><footer><p>StudyLab. Original learning materials by Lefa Malatji. Practice code in the environment stated in each lesson.</p><a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a></footer></body></html>
+      <a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a>
+    </footer>
+  </body>
+</html>

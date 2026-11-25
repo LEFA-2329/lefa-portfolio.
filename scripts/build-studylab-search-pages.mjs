@@ -1,5 +1,6 @@
 // Build readable, indexable HTML from the same lessons used in the application.
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { format } from 'prettier';
 import { createHash } from 'node:crypto';
 import {
   courseLessons,
@@ -25,6 +26,7 @@ const subjectLinks = searchTopics
   .map((t) => `<a href="/learn/${t.slug}/">${escape(t.title)}</a>`)
   .join('');
 const urls = [];
+const pageWrites = [];
 function page(path, title, description, body, { lesson = false } = {}) {
   const url = origin + path;
   urls.push(url);
@@ -46,7 +48,24 @@ function page(path, title, description, body, { lesson = false } = {}) {
   const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-${hash}'; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>${escape(title)} | StudyLab</title><meta name="description" content="${escape(description)}"><meta name="robots" content="index,follow"><link rel="canonical" href="${url}"><meta property="og:type" content="website"><meta property="og:site_name" content="StudyLab"><meta property="og:title" content="${escape(title)} | StudyLab"><meta property="og:description" content="${escape(description)}"><meta property="og:url" content="${url}"><meta property="og:image" content="${origin}/images/studylab-dashboard.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1">${path === '/learn/study-packs/' ? '<link rel="stylesheet" href="/learn/css/study-pack-library.css?v=2">' : ''}<script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script><script type="application/ld+json">${schema}</script>${path === '/learn/prld5121/' ? '<link rel="stylesheet" href="/learn/css/prld-study-route.css?v=1">' : ''}</head><body><a class="skip" href="#content">Skip to content</a><header><a class="brand" href="/studylab/"><span class="portrait"><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42"></span>Study<span>Lab</span></a><nav aria-label="StudyLab links"><a href="/learn/study-packs/">Study Packs</a> . <a href="/learn/">Open learning app</a></nav></header><main id="content"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/studylab/">StudyLab</a> / <a href="${lesson ? (path.includes('/docker/') ? '/learn/docker/' : '/learn/csharp/') : '/studylab/'}">${lesson ? (path.includes('/docker/') ? 'Docker lessons' : 'C# lessons') : 'Learning guides'}</a></nav><h1>${escape(title)}</h1>${body}<section class="panel"><h2>Explore StudyLab subjects</h2><nav class="subject-links" aria-label="Related learning subjects">${subjectLinks}</nav></section></main><footer><p>StudyLab. Original learning materials by Lefa Malatji. Practice code in the environment stated in each lesson.</p><a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a></footer></body></html>`;
   const folder = new URL('../dist' + path, import.meta.url);
   mkdirSync(folder, { recursive: true });
-  writeFileSync(new URL('index.html', folder), html);
+  const output = new URL('index.html', folder);
+  pageWrites.push(
+    format(html, {
+      parser: 'html',
+      printWidth: 90,
+      embeddedLanguageFormatting: 'off',
+    }).then((formatted) => {
+      const script = formatted.match(
+        /<script type="application\/ld\+json">([\s\S]*?)<\/script>/,
+      );
+      if (!script) throw new Error('Missing structured data in ' + path);
+      const formattedHash = createHash('sha256').update(script[1]).digest('base64');
+      writeFileSync(
+        output,
+        formatted.replace('sha256-' + hash, 'sha256-' + formattedHash),
+      );
+    }),
+  );
 }
 for (const topic of searchTopics) {
   const related =
@@ -121,6 +140,7 @@ page(
     )}</section><section class="panel"><h2>Study resources</h2><div class="actions"><a class="button" href="/learn/study-packs/#pack-wede5020">Download the WEDE5020 study pack</a>${app('#wede-tools', 'Try the CSS box model lab')}</div></section>`,
 );
 prldLearningPage(page, escape);
+await Promise.all(pageWrites);
 // Preserve existing portfolio entries; include only real page URLs, never hash routes.
 const sitemapPath = new URL('../dist/sitemap.xml', import.meta.url);
 const prior = readFileSync(sitemapPath, 'utf8');

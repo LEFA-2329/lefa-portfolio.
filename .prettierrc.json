@@ -5,5 +5,6 @@
   "singleQuote": true,
   "printWidth": 90,
   "trailingComma": "all",
-  "htmlWhitespaceSensitivity": "css"
+  "htmlWhitespaceSensitivity": "css",
+  "overrides": [{ "files": "*.html", "options": { "embeddedLanguageFormatting": "off" } }]
 }

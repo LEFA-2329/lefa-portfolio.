@@ -22,14 +22,18 @@ test('StudyLab permits indexing and public guides are crawlable without JavaScri
   const titles = new Set();
   for (const path of paths) {
     const html = read(path + 'index.html');
-    const title = html.match(/<title>(.*?)<\/title>/)[1];
+    const title = html.match(/<title>(.*?)<\/title>/s)[1].trim();
     assert.ok(!titles.has(title), title);
     titles.add(title);
     assert.ok(!html.includes('noindex'));
     assert.ok(!html.includes('{{dynamic_'));
     assert.match(html, /<h1>/);
     assert.match(html, /name="description"/);
-    assert.ok(html.includes(`rel="canonical" href="https://lefamalatji.co.za/${path}"`));
+    assert.ok(
+      html
+        .replace(/\s+/g, ' ')
+        .includes(`rel="canonical" href="https://lefamalatji.co.za/${path}"`),
+    );
     assert.ok(html.includes('href="/learn/'));
     const schema = html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1];
     assert.equal(JSON.parse(schema).url, 'https://lefamalatji.co.za/' + path);

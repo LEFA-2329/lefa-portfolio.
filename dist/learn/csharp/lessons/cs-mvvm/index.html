@@ -1,68 +1,208 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-+wSDXXd7i0XMu7CyMy/I5V3qSEPxrC0O22hcDdPn138='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>WPF and the Model View ViewModel pattern | StudyLab</title><meta name="description" content="WPF and the Model View ViewModel pattern. Locate the Model, View and ViewModel, then follow one binding between them."><meta name="robots" content="index,follow"><link rel="canonical" href="https://lefamalatji.co.za/learn/csharp/lessons/cs-mvvm/"><meta property="og:type" content="website"><meta property="og:site_name" content="StudyLab"><meta property="og:title" content="WPF and the Model View ViewModel pattern | StudyLab"><meta property="og:description" content="WPF and the Model View ViewModel pattern. Locate the Model, View and ViewModel, then follow one binding between them."><meta property="og:url" content="https://lefamalatji.co.za/learn/csharp/lessons/cs-mvvm/"><meta property="og:image" content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1"><script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"WPF and the Model View ViewModel pattern","description":"WPF and the Model View ViewModel pattern. Locate the Model, View and ViewModel, then follow one binding between them.","url":"https://lefamalatji.co.za/learn/csharp/lessons/cs-mvvm/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}</script></head><body><a class="skip" href="#content">Skip to content</a><header><a class="brand" href="/studylab/"><span class="portrait"><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42"></span>Study<span>Lab</span></a><nav aria-label="StudyLab links"><a href="/learn/study-packs/">Study Packs</a> . <a href="/learn/">Open learning app</a></nav></header><main id="content"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/studylab/">StudyLab</a> / <a href="/learn/csharp/">C# lessons</a></nav><h1>WPF and the Model View ViewModel pattern</h1><p class="lede">Locate the Model, View and ViewModel, then follow one binding between them.</p><a class="button" href="/learn/#cs-lesson/cs-mvvm">Open interactive lesson and complete code</a><section class="panel"><h2>What you are building</h2><h3>A desktop student form with clear responsibilities</h3><p>Build a WPF screen whose values and buttons connect to a ViewModel. The form checks input and refreshes when values change.</p><p>This example keeps its working student list in memory.</p><h3>Check the result</h3><p>Type a name and age, watch whether the Add button is enabled, then add a student to the list.</p></section><div class="theory">
-  <p>
-    MVVM keeps the screen separate from the decisions behind it. The View displays; the
-    ViewModel offers screen-friendly properties and commands; the Model holds the
-    underlying data and rules.
-  </p>
-  <section>
-    <h2>How to test this example in Visual Studio</h2>
-    <p>
-      Download the project below, extract it into its own folder, then open
-      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
-      Solution. For console projects choose Start Without Debugging. For API projects use
-      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
-      then run the command shown in the lesson. Do not paste all files into Program.cs:
-      use the exact file names displayed below.
-    </p>
-  </section>
-  <section>
-    <h2>Open the Windows example</h2>
-    <p>
-      Open this project on Windows with .NET desktop development installed.
-      MainWindow.xaml is the View. StudentViewModel.cs holds the ViewModel and a reusable
-      command helper. App.xaml chooses the startup window. The window’s DataContext is the
-      object the bindings read. The tiny code-behind only calls InitializeComponent.
-    </p>
-  </section>
-  <section>
-    <h2>Read a binding</h2>
-    <pre><code>&lt;TextBox Text=&quot;{Binding Name, UpdateSourceTrigger=PropertyChanged}&quot;/&gt;
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self' 'sha256-Xim3uf2ieDFHcTJawDMFgSHgkPhkfyc2H5Pn0X6f6XY='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <title>WPF and the Model View ViewModel pattern | StudyLab</title>
+    <meta
+      name="description"
+      content="WPF and the Model View ViewModel pattern. Locate the Model, View and ViewModel, then follow one binding between them."
+    />
+    <meta name="robots" content="index,follow" />
+    <link
+      rel="canonical"
+      href="https://lefamalatji.co.za/learn/csharp/lessons/cs-mvvm/"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="StudyLab" />
+    <meta
+      property="og:title"
+      content="WPF and the Model View ViewModel pattern | StudyLab"
+    />
+    <meta
+      property="og:description"
+      content="WPF and the Model View ViewModel pattern. Locate the Model, View and ViewModel, then follow one binding between them."
+    />
+    <meta
+      property="og:url"
+      content="https://lefamalatji.co.za/learn/csharp/lessons/cs-mvvm/"
+    />
+    <meta
+      property="og:image"
+      content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1" />
+    <script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script>
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"LearningResource","name":"WPF and the Model View ViewModel pattern","description":"WPF and the Model View ViewModel pattern. Locate the Model, View and ViewModel, then follow one binding between them.","url":"https://lefamalatji.co.za/learn/csharp/lessons/cs-mvvm/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#content">Skip to content</a>
+    <header>
+      <a class="brand" href="/studylab/"
+        ><span class="portrait"
+          ><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42" /></span
+        >Study<span>Lab</span></a
+      >
+      <nav aria-label="StudyLab links">
+        <a href="/learn/study-packs/">Study Packs</a> .
+        <a href="/learn/">Open learning app</a>
+      </nav>
+    </header>
+    <main id="content">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/studylab/">StudyLab</a> / <a href="/learn/csharp/">C# lessons</a>
+      </nav>
+      <h1>WPF and the Model View ViewModel pattern</h1>
+      <p class="lede">
+        Locate the Model, View and ViewModel, then follow one binding between them.
+      </p>
+      <a class="button" href="/learn/#cs-lesson/cs-mvvm"
+        >Open interactive lesson and complete code</a
+      >
+      <section class="panel">
+        <h2>What you are building</h2>
+        <h3>A desktop student form with clear responsibilities</h3>
+        <p>
+          Build a WPF screen whose values and buttons connect to a ViewModel. The form
+          checks input and refreshes when values change.
+        </p>
+        <p>This example keeps its working student list in memory.</p>
+        <h3>Check the result</h3>
+        <p>
+          Type a name and age, watch whether the Add button is enabled, then add a student
+          to the list.
+        </p>
+      </section>
+      <div class="theory">
+        <p>
+          MVVM keeps the screen separate from the decisions behind it. The View displays;
+          the ViewModel offers screen-friendly properties and commands; the Model holds
+          the underlying data and rules.
+        </p>
+        <section>
+          <h2>How to test this example in Visual Studio</h2>
+          <p>
+            Download the project below, extract it into its own folder, then open
+            <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+            Solution. For console projects choose Start Without Debugging. For API
+            projects use View → Terminal, make sure the terminal is in the folder
+            containing StudyLab.csproj, then run the command shown in the lesson. Do not
+            paste all files into Program.cs: use the exact file names displayed below.
+          </p>
+        </section>
+        <section>
+          <h2>Open the Windows example</h2>
+          <p>
+            Open this project on Windows with .NET desktop development installed.
+            MainWindow.xaml is the View. StudentViewModel.cs holds the ViewModel and a
+            reusable command helper. App.xaml chooses the startup window. The window’s
+            DataContext is the object the bindings read. The tiny code-behind only calls
+            InitializeComponent.
+          </p>
+        </section>
+        <section>
+          <h2>Read a binding</h2>
+          <pre><code>&lt;TextBox Text=&quot;{Binding Name, UpdateSourceTrigger=PropertyChanged}&quot;/&gt;
 &lt;Button Content=&quot;Add student&quot; Command=&quot;{Binding AddCommand}&quot;/&gt;</code></pre>
-    <p>
-      Binding Name reads and writes the ViewModel’s Name property. PropertyChanged updates
-      the source while typing. A command expresses an action without putting all business
-      logic in a click handler. ObservableCollection tells the View when items are added
-      or removed. Expected: Add remains disabled until a valid name and age are entered;
-      after adding, a new list entry appears.
-    </p>
-  </section>
-  <section>
-    <h2>Keep layers understandable</h2>
-    <p>
-      Use services/repositories for database work rather than building SQL strings in
-      XAML. The Model is not always an EF entity: it can be a domain object or DTO. MVVM
-      and MVC solve related separation problems for different UI styles; their third parts
-      have different jobs.
-    </p>
-  </section>
-  <section>
-    <h2>Try it yourself</h2>
-    <details class="panel">
-      <summary>Where should a “Can enrol?” rule live?</summary>
-      <h3>Worked answer</h3>
+          <p>
+            Binding Name reads and writes the ViewModel’s Name property. PropertyChanged
+            updates the source while typing. A command expresses an action without putting
+            all business logic in a click handler. ObservableCollection tells the View
+            when items are added or removed. Expected: Add remains disabled until a valid
+            name and age are entered; after adding, a new list entry appears.
+          </p>
+        </section>
+        <section>
+          <h2>Keep layers understandable</h2>
+          <p>
+            Use services/repositories for database work rather than building SQL strings
+            in XAML. The Model is not always an EF entity: it can be a domain object or
+            DTO. MVVM and MVC solve related separation problems for different UI styles;
+            their third parts have different jobs.
+          </p>
+        </section>
+        <section>
+          <h2>Try it yourself</h2>
+          <details class="panel">
+            <summary>Where should a “Can enrol?” rule live?</summary>
+            <h3>Worked answer</h3>
+            <p>
+              In a model/domain service, used by the ViewModel. Avoid burying reusable
+              rules only in a UI control.
+            </p>
+          </details>
+          <details class="panel">
+            <summary>What happens if DataContext is missing?</summary>
+            <h3>Worked answer</h3>
+            <p>
+              Bindings may have no source. Inspect the Visual Studio Output window for
+              binding errors; set the intended ViewModel.
+            </p>
+          </details>
+        </section>
+      </div>
+      <section class="panel">
+        <h2>Predict and practise</h2>
+        <p>Should the ViewModel need to draw the WPF buttons itself?</p>
+        <details>
+          <summary>Check your prediction</summary>
+          <p>
+            No. XAML defines the View; bindings connect it to ViewModel values and
+            actions.
+          </p>
+        </details>
+        <h3>Make one change</h3>
+        <p>Find the textbox binding and its matching ViewModel property.</p>
+        <details>
+          <summary>Worked guidance</summary>
+          <p>Trace DataContext, the property name and its change notification.</p>
+        </details>
+        <h3>Try independently</h3>
+        <p>
+          Add one new bound property and show it in the screen without adding business
+          logic to code-behind.
+        </p>
+      </section>
+      <section class="panel">
+        <h2>Full code and downloads</h2>
+        <p>
+          The interactive lesson contains the numbered code parts, commented complete
+          files, project ZIP, practice tasks and quiz. Keep each project in its own folder
+          in Visual Studio.
+        </p>
+        <a class="button" href="/learn/#cs-lesson/cs-mvvm"
+          >View code and download the project</a
+        >
+      </section>
+      <section class="panel">
+        <h2>Explore StudyLab subjects</h2>
+        <nav class="subject-links" aria-label="Related learning subjects">
+          <a href="/learn/pseudocode/">Learn pseudocode and programming logic</a
+          ><a href="/learn/databases/">Learn databases and SQL</a
+          ><a href="/learn/csharp/">Learn C# step by step - PROG6212</a
+          ><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a
+          ><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a
+          ><a href="/learn/docker/">Learn Docker for .NET applications</a
+          ><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a>
+        </nav>
+      </section>
+    </main>
+    <footer>
       <p>
-        In a model/domain service, used by the ViewModel. Avoid burying reusable rules
-        only in a UI control.
+        StudyLab. Original learning materials by Lefa Malatji. Practice code in the
+        environment stated in each lesson.
       </p>
-    </details>
-    <details class="panel">
-      <summary>What happens if DataContext is missing?</summary>
-      <h3>Worked answer</h3>
-      <p>
-        Bindings may have no source. Inspect the Visual Studio Output window for binding
-        errors; set the intended ViewModel.
-      </p>
-    </details>
-  </section>
-</div>
-<section class="panel"><h2>Predict and practise</h2><p>Should the ViewModel need to draw the WPF buttons itself?</p><details><summary>Check your prediction</summary><p>No. XAML defines the View; bindings connect it to ViewModel values and actions.</p></details><h3>Make one change</h3><p>Find the textbox binding and its matching ViewModel property.</p><details><summary>Worked guidance</summary><p>Trace DataContext, the property name and its change notification.</p></details><h3>Try independently</h3><p>Add one new bound property and show it in the screen without adding business logic to code-behind.</p></section><section class="panel"><h2>Full code and downloads</h2><p>The interactive lesson contains the numbered code parts, commented complete files, project ZIP, practice tasks and quiz. Keep each project in its own folder in Visual Studio.</p><a class="button" href="/learn/#cs-lesson/cs-mvvm">View code and download the project</a></section><section class="panel"><h2>Explore StudyLab subjects</h2><nav class="subject-links" aria-label="Related learning subjects"><a href="/learn/pseudocode/">Learn pseudocode and programming logic</a><a href="/learn/databases/">Learn databases and SQL</a><a href="/learn/csharp/">Learn C# step by step - PROG6212</a><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a><a href="/learn/docker/">Learn Docker for .NET applications</a><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a></nav></section></main><footer><p>StudyLab. Original learning materials by Lefa Malatji. Practice code in the environment stated in each lesson.</p><a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a></footer></body></html>
+      <a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a>
+    </footer>
+  </body>
+</html>

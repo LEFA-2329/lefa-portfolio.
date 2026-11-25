@@ -9,21 +9,3 @@ dist/shared/compiled-html-pages.mjs
 
 # Generated from complete editable C# project files.
 dist/learn/js/csharp/complete-example-files.mjs
-
-# Generated public learning pages. Edit scripts/build-studylab-search-pages.mjs and scripts/studylab-search-topics.mjs.
-dist/studylab/
-dist/learn/pseudocode/
-dist/learn/databases/
-dist/learn/csharp/
-dist/learn/asp-net/
-dist/learn/normalisation/
-dist/learn/docker/
-dist/learn/hadoop/
-
-dist/learn/study-packs/
-
-# Generated PRLD5121 companion study route.
-dist/learn/prld5121/
-
-# Generated WEDE5020 study route.
-dist/learn/wede5020/

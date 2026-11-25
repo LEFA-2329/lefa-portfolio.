@@ -1,4 +1,102 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-29fwATtNSho5/vGzWDguRgEirnhzKGdrs1YR7a0VV94='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>Database normalisation: 1NF, 2NF and 3NF | StudyLab</title><meta name="description" content="Learn 1NF, 2NF and 3NF with keys, partial and transitive dependencies, worked schemas and dependency diagram practice."><meta name="robots" content="index,follow"><link rel="canonical" href="https://lefamalatji.co.za/learn/normalisation/"><meta property="og:type" content="website"><meta property="og:site_name" content="StudyLab"><meta property="og:title" content="Database normalisation: 1NF, 2NF and 3NF | StudyLab"><meta property="og:description" content="Learn 1NF, 2NF and 3NF with keys, partial and transitive dependencies, worked schemas and dependency diagram practice."><meta property="og:url" content="https://lefamalatji.co.za/learn/normalisation/"><meta property="og:image" content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1"><script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Database normalisation: 1NF, 2NF and 3NF","description":"Learn 1NF, 2NF and 3NF with keys, partial and transitive dependencies, worked schemas and dependency diagram practice.","url":"https://lefamalatji.co.za/learn/normalisation/","inLanguage":"en"}</script></head><body><a class="skip" href="#content">Skip to content</a><header><a class="brand" href="/studylab/"><span class="portrait"><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42"></span>Study<span>Lab</span></a><nav aria-label="StudyLab links"><a href="/learn/study-packs/">Study Packs</a> . <a href="/learn/">Open learning app</a></nav></header><main id="content"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/studylab/">StudyLab</a> / <a href="/studylab/">Learning guides</a></nav><h1>Database normalisation: 1NF, 2NF and 3NF</h1><p class="lede">Normalisation organises relational tables so facts are stored in sensible places. It reduces repeated facts and helps prevent inconsistent updates. State the business rules and functional dependencies before deciding which tables to split.</p><a class="button" href="/learn/#db-intermediate">Start interactive learning</a><p>Free learning guides, practice questions and worked explanations for students. Interactive activities run in the StudyLab app; C# and Docker projects run locally using the lesson setup instructions.</p><section class="panel"><h2>First normal form: one value in each cell</h2><p>Use atomic values for the chosen domain and remove repeating groups. Identify the candidate key or keys. A table can be in 1NF and still repeat names or contain partial dependencies.</p></section><section class="panel"><h2>Second normal form: depend on the whole key</h2><p>A table is in 2NF when it is in 1NF and every non-prime attribute depends on every candidate key as a whole, rather than on a proper subset of a candidate key. For the simple composite-key examples, move facts that depend on only one key component into their own tables.</p></section><section class="panel"><h2>Third normal form: remove problematic transitive dependencies</h2><p>In beginner examples, move a non-key fact that depends on another non-key attribute into a separate table. More precisely, for each non-trivial functional dependency X determines A, X must be a superkey or A must be a prime attribute. Keep keys that reconnect the decomposed tables.</p></section><section class="panel"><h2>Worked example</h2><pre tabindex="0"><code>Assume (ProjectId, StudentId) identifies an assignment.
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self' 'sha256-gIepcJKONqp87ombxFhAuYinnuNafsjriJS87q2C/Nc='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <title>Database normalisation: 1NF, 2NF and 3NF | StudyLab</title>
+    <meta
+      name="description"
+      content="Learn 1NF, 2NF and 3NF with keys, partial and transitive dependencies, worked schemas and dependency diagram practice."
+    />
+    <meta name="robots" content="index,follow" />
+    <link rel="canonical" href="https://lefamalatji.co.za/learn/normalisation/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="StudyLab" />
+    <meta
+      property="og:title"
+      content="Database normalisation: 1NF, 2NF and 3NF | StudyLab"
+    />
+    <meta
+      property="og:description"
+      content="Learn 1NF, 2NF and 3NF with keys, partial and transitive dependencies, worked schemas and dependency diagram practice."
+    />
+    <meta property="og:url" content="https://lefamalatji.co.za/learn/normalisation/" />
+    <meta
+      property="og:image"
+      content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1" />
+    <script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script>
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"WebPage","name":"Database normalisation: 1NF, 2NF and 3NF","description":"Learn 1NF, 2NF and 3NF with keys, partial and transitive dependencies, worked schemas and dependency diagram practice.","url":"https://lefamalatji.co.za/learn/normalisation/","inLanguage":"en"}
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#content">Skip to content</a>
+    <header>
+      <a class="brand" href="/studylab/"
+        ><span class="portrait"
+          ><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42" /></span
+        >Study<span>Lab</span></a
+      >
+      <nav aria-label="StudyLab links">
+        <a href="/learn/study-packs/">Study Packs</a> .
+        <a href="/learn/">Open learning app</a>
+      </nav>
+    </header>
+    <main id="content">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/studylab/">StudyLab</a> / <a href="/studylab/">Learning guides</a>
+      </nav>
+      <h1>Database normalisation: 1NF, 2NF and 3NF</h1>
+      <p class="lede">
+        Normalisation organises relational tables so facts are stored in sensible places.
+        It reduces repeated facts and helps prevent inconsistent updates. State the
+        business rules and functional dependencies before deciding which tables to split.
+      </p>
+      <a class="button" href="/learn/#db-intermediate">Start interactive learning</a>
+      <p>
+        Free learning guides, practice questions and worked explanations for students.
+        Interactive activities run in the StudyLab app; C# and Docker projects run locally
+        using the lesson setup instructions.
+      </p>
+      <section class="panel">
+        <h2>First normal form: one value in each cell</h2>
+        <p>
+          Use atomic values for the chosen domain and remove repeating groups. Identify
+          the candidate key or keys. A table can be in 1NF and still repeat names or
+          contain partial dependencies.
+        </p>
+      </section>
+      <section class="panel">
+        <h2>Second normal form: depend on the whole key</h2>
+        <p>
+          A table is in 2NF when it is in 1NF and every non-prime attribute depends on
+          every candidate key as a whole, rather than on a proper subset of a candidate
+          key. For the simple composite-key examples, move facts that depend on only one
+          key component into their own tables.
+        </p>
+      </section>
+      <section class="panel">
+        <h2>Third normal form: remove problematic transitive dependencies</h2>
+        <p>
+          In beginner examples, move a non-key fact that depends on another non-key
+          attribute into a separate table. More precisely, for each non-trivial functional
+          dependency X determines A, X must be a superkey or A must be a prime attribute.
+          Keep keys that reconnect the decomposed tables.
+        </p>
+      </section>
+      <section class="panel">
+        <h2>Worked example</h2>
+        <pre tabindex="0"><code>Assume (ProjectId, StudentId) identifies an assignment.
 ProjectId determines ProjectName.
 StudentId determines StudentName.
 (ProjectId, StudentId) determines Hours.
@@ -6,4 +104,54 @@ StudentId determines StudentName.
 2NF tables:
 Project(ProjectId, ProjectName)
 Student(StudentId, StudentName)
-Assignment(ProjectId, StudentId, Hours)</code></pre><p>ProjectName and StudentName depend on only part of the original composite key. Hours belongs to the full assignment key. Under the stated dependencies, these three tables are also in 3NF.</p><h3>Try it yourself</h3><p>If StudentId determines DepartmentId and DepartmentId determines DepartmentName, where should DepartmentName be stored?</p><details><summary>Check the explanation</summary><p>Create Department(DepartmentId, DepartmentName). Store DepartmentId as a foreign key in Student. This removes the transitive dependence of DepartmentName on StudentId in the student table.</p></details></section><section class="panel"><h2>Practise in the application</h2><div class="actions"><a class="button" href="/learn/#db-practice">Open database practice</a><a class="button" href="/learn/#db-intermediate">Find dependency diagram lessons</a></div></section><section class="panel"><h2>Explore StudyLab subjects</h2><nav class="subject-links" aria-label="Related learning subjects"><a href="/learn/pseudocode/">Learn pseudocode and programming logic</a><a href="/learn/databases/">Learn databases and SQL</a><a href="/learn/csharp/">Learn C# step by step - PROG6212</a><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a><a href="/learn/docker/">Learn Docker for .NET applications</a><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a></nav></section></main><footer><p>StudyLab. Original learning materials by Lefa Malatji. Practice code in the environment stated in each lesson.</p><a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a></footer></body></html>
+Assignment(ProjectId, StudentId, Hours)</code></pre>
+        <p>
+          ProjectName and StudentName depend on only part of the original composite key.
+          Hours belongs to the full assignment key. Under the stated dependencies, these
+          three tables are also in 3NF.
+        </p>
+        <h3>Try it yourself</h3>
+        <p>
+          If StudentId determines DepartmentId and DepartmentId determines DepartmentName,
+          where should DepartmentName be stored?
+        </p>
+        <details>
+          <summary>Check the explanation</summary>
+          <p>
+            Create Department(DepartmentId, DepartmentName). Store DepartmentId as a
+            foreign key in Student. This removes the transitive dependence of
+            DepartmentName on StudentId in the student table.
+          </p>
+        </details>
+      </section>
+      <section class="panel">
+        <h2>Practise in the application</h2>
+        <div class="actions">
+          <a class="button" href="/learn/#db-practice">Open database practice</a
+          ><a class="button" href="/learn/#db-intermediate"
+            >Find dependency diagram lessons</a
+          >
+        </div>
+      </section>
+      <section class="panel">
+        <h2>Explore StudyLab subjects</h2>
+        <nav class="subject-links" aria-label="Related learning subjects">
+          <a href="/learn/pseudocode/">Learn pseudocode and programming logic</a
+          ><a href="/learn/databases/">Learn databases and SQL</a
+          ><a href="/learn/csharp/">Learn C# step by step - PROG6212</a
+          ><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a
+          ><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a
+          ><a href="/learn/docker/">Learn Docker for .NET applications</a
+          ><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a>
+        </nav>
+      </section>
+    </main>
+    <footer>
+      <p>
+        StudyLab. Original learning materials by Lefa Malatji. Practice code in the
+        environment stated in each lesson.
+      </p>
+      <a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a>
+    </footer>
+  </body>
+</html>

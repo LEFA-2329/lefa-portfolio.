@@ -1,6 +1,292 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-yHdvG7CuHbet+qHV+fW4DEp0yWCqPkL4AnxBonUf2IQ='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>Learn C# step by step - PROG6212 | StudyLab</title><meta name="description" content="Learn C# with beginner explanations, commented examples, downloadable Visual Studio projects and guided PROG6212 practice."><meta name="robots" content="index,follow"><link rel="canonical" href="https://lefamalatji.co.za/learn/csharp/"><meta property="og:type" content="website"><meta property="og:site_name" content="StudyLab"><meta property="og:title" content="Learn C# step by step - PROG6212 | StudyLab"><meta property="og:description" content="Learn C# with beginner explanations, commented examples, downloadable Visual Studio projects and guided PROG6212 practice."><meta property="og:url" content="https://lefamalatji.co.za/learn/csharp/"><meta property="og:image" content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1"><script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Learn C# step by step - PROG6212","description":"Learn C# with beginner explanations, commented examples, downloadable Visual Studio projects and guided PROG6212 practice.","url":"https://lefamalatji.co.za/learn/csharp/","inLanguage":"en"}</script></head><body><a class="skip" href="#content">Skip to content</a><header><a class="brand" href="/studylab/"><span class="portrait"><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42"></span>Study<span>Lab</span></a><nav aria-label="StudyLab links"><a href="/learn/study-packs/">Study Packs</a> . <a href="/learn/">Open learning app</a></nav></header><main id="content"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/studylab/">StudyLab</a> / <a href="/studylab/">Learning guides</a></nav><h1>Learn C# step by step - PROG6212</h1><p class="lede">C# is a programming language used for console programs, websites, APIs and Windows desktop applications. StudyLab starts with small student register examples, then builds towards database access and web development.</p><a class="button" href="/learn/#cs/csharp">Start interactive learning</a><p>Free learning guides, practice questions and worked explanations for students. Interactive activities run in the StudyLab app; C# and Docker projects run locally using the lesson setup instructions.</p><section class="panel"><h2>Begin with a console student register</h2><p>Learn variables, conditions, loops, methods, classes and lists. Predict a small program before running it. Change one value and explain what changed instead of memorising the whole file.</p></section><section class="panel"><h2>Follow the PROG6212 learning units</h2><p>The course covers object lifetime and language features, ASP.NET Core APIs, files and database access, WPF with MVVM, and reusable class libraries with reflection and dynamic programming. A foundations lesson gives beginners a starting point before the advanced units.</p></section><section class="panel"><h2>Use the same learning cycle</h2><p>Each C# lesson includes prerequisites, a prediction question, a guided change, complete example files, an independent task and readiness checks. Download each project into its own folder and open its .csproj file in Visual Studio.</p></section><section class="panel"><h2>Worked example</h2><pre tabindex="0"><code>// Store the student mark.
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self' 'sha256-QVmSEtL/5Qgh0Uw6XSHFBDmtXyvq1ZyqAXgVx+zf2hw='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <title>Learn C# step by step - PROG6212 | StudyLab</title>
+    <meta
+      name="description"
+      content="Learn C# with beginner explanations, commented examples, downloadable Visual Studio projects and guided PROG6212 practice."
+    />
+    <meta name="robots" content="index,follow" />
+    <link rel="canonical" href="https://lefamalatji.co.za/learn/csharp/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="StudyLab" />
+    <meta property="og:title" content="Learn C# step by step - PROG6212 | StudyLab" />
+    <meta
+      property="og:description"
+      content="Learn C# with beginner explanations, commented examples, downloadable Visual Studio projects and guided PROG6212 practice."
+    />
+    <meta property="og:url" content="https://lefamalatji.co.za/learn/csharp/" />
+    <meta
+      property="og:image"
+      content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1" />
+    <script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script>
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"WebPage","name":"Learn C# step by step - PROG6212","description":"Learn C# with beginner explanations, commented examples, downloadable Visual Studio projects and guided PROG6212 practice.","url":"https://lefamalatji.co.za/learn/csharp/","inLanguage":"en"}
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#content">Skip to content</a>
+    <header>
+      <a class="brand" href="/studylab/"
+        ><span class="portrait"
+          ><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42" /></span
+        >Study<span>Lab</span></a
+      >
+      <nav aria-label="StudyLab links">
+        <a href="/learn/study-packs/">Study Packs</a> .
+        <a href="/learn/">Open learning app</a>
+      </nav>
+    </header>
+    <main id="content">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/studylab/">StudyLab</a> / <a href="/studylab/">Learning guides</a>
+      </nav>
+      <h1>Learn C# step by step - PROG6212</h1>
+      <p class="lede">
+        C# is a programming language used for console programs, websites, APIs and Windows
+        desktop applications. StudyLab starts with small student register examples, then
+        builds towards database access and web development.
+      </p>
+      <a class="button" href="/learn/#cs/csharp">Start interactive learning</a>
+      <p>
+        Free learning guides, practice questions and worked explanations for students.
+        Interactive activities run in the StudyLab app; C# and Docker projects run locally
+        using the lesson setup instructions.
+      </p>
+      <section class="panel">
+        <h2>Begin with a console student register</h2>
+        <p>
+          Learn variables, conditions, loops, methods, classes and lists. Predict a small
+          program before running it. Change one value and explain what changed instead of
+          memorising the whole file.
+        </p>
+      </section>
+      <section class="panel">
+        <h2>Follow the PROG6212 learning units</h2>
+        <p>
+          The course covers object lifetime and language features, ASP.NET Core APIs,
+          files and database access, WPF with MVVM, and reusable class libraries with
+          reflection and dynamic programming. A foundations lesson gives beginners a
+          starting point before the advanced units.
+        </p>
+      </section>
+      <section class="panel">
+        <h2>Use the same learning cycle</h2>
+        <p>
+          Each C# lesson includes prerequisites, a prediction question, a guided change,
+          complete example files, an independent task and readiness checks. Download each
+          project into its own folder and open its .csproj file in Visual Studio.
+        </p>
+      </section>
+      <section class="panel">
+        <h2>Worked example</h2>
+        <pre tabindex="0"><code>// Store the student mark.
 int mark = 65;
 // Choose a result message.
 string result = mark &gt;= 50 ? &quot;Pass&quot; : &quot;Try again&quot;;
 // Show the message in a Console App.
-Console.WriteLine(result);</code></pre><p>The console prints Pass. This small example belongs in a separate Console App, rather than underneath an existing API startup file.</p><h3>Try it yourself</h3><p>Change the mark to 45. Explain what the conditional expression returns.</p><details><summary>Check the explanation</summary><p>The expression returns Try again because 45 &gt;= 50 is false.</p></details></section><section class="panel"><h2>Read the lessons</h2><ul><li><a href="/learn/csharp/lessons/cs-foundations/">Start here: C# foundations and your first student register</a></li><li><a href="/learn/csharp/lessons/cs-lifetime/">Garbage collection and using disposable objects</a></li><li><a href="/learn/csharp/lessons/cs-language-tools/">Operator overloading, custom exceptions and extension methods</a></li><li><a href="/learn/csharp/lessons/cs-linq/">Anonymous types and LINQ queries</a></li><li><a href="/learn/csharp/lessons/cs-processes/">Processes, AppDomains and object contexts</a></li><li><a href="/learn/csharp/lessons/cs-threads/">Threads, parallel work and shared data</a></li><li><a href="/learn/csharp/lessons/cs-async/">Async, await, cancellation and Task.WhenAll</a></li><li><a href="/learn/csharp/lessons/cs-web-foundations/">Start here: ASP.NET Core, MVC and HTTP</a></li><li><a href="/learn/csharp/lessons/cs-crud-minimal/">Beginner CRUD with Minimal APIs</a></li><li><a href="/learn/csharp/lessons/cs-crud-controllers/">Controller-based CRUD and DTO validation</a></li><li><a href="/learn/csharp/lessons/cs-openapi/">OpenAPI and Swagger UI: a complete working project</a></li><li><a href="/learn/csharp/lessons/cs-ef-sqlite/">Persistent CRUD with EF Core and SQLite</a></li><li><a href="/learn/csharp/lessons/cs-sqlserver/">Connect CRUD to SQL Server and SQL Express</a></li><li><a href="/learn/csharp/lessons/cs-ado-api/">CRUD using ADO.NET without Entity Framework</a></li><li><a href="/learn/csharp/lessons/cs-api-auth/">Registration, login and bearer-token testing</a></li><li><a href="/learn/csharp/lessons/cs-advanced-api/">Advanced CRUD: paging, ownership and concurrency</a></li><li><a href="/learn/csharp/lessons/cs-mvc-client/">Build a full MVC website that calls your API</a></li><li><a href="/learn/csharp/lessons/cs-api-testing/">Test, document and debug CRUD APIs</a></li><li><a href="/learn/csharp/lessons/cs-files-json/">Desktop file I/O, text and JSON serialization</a></li><li><a href="/learn/csharp/lessons/cs-desktop-ado/">Build desktop CRUD with ADO.NET</a></li><li><a href="/learn/csharp/lessons/cs-desktop-ef/">ORM, DbContext, tracking and desktop EF CRUD</a></li><li><a href="/learn/csharp/lessons/cs-code-database-first/">Code-first, database-first and schema changes</a></li><li><a href="/learn/csharp/lessons/cs-mvvm/">WPF and the Model View ViewModel pattern</a></li><li><a href="/learn/csharp/lessons/cs-notifications-validation/">Binding notifications and input validation</a></li><li><a href="/learn/csharp/lessons/cs-commands-mvc/">Custom commands and the MVC comparison</a></li><li><a href="/learn/csharp/lessons/cs-class-libraries/">Build and configure reusable class libraries</a></li><li><a href="/learn/csharp/lessons/cs-reflection/">Reflection, attributes and late binding</a></li><li><a href="/learn/csharp/lessons/cs-dynamic-dlr/">Dynamic types, the DLR and CIL</a></li><li><a href="/learn/csharp/lessons/cs-dynamic-assemblies/">Dynamic assemblies and Reflection.Emit</a></li></ul></section><section class="panel"><h2>Practise in the application</h2><div class="actions"><a class="button" href="/learn/#cs-lesson/cs-foundations">Start C# foundations</a><a class="button" href="/learn/#cs-practice/csharp">Try C# unit practicals</a><a class="button" href="/learn/#cs-downloads/csharp">Download example projects</a></div></section><section class="panel"><h2>Explore StudyLab subjects</h2><nav class="subject-links" aria-label="Related learning subjects"><a href="/learn/pseudocode/">Learn pseudocode and programming logic</a><a href="/learn/databases/">Learn databases and SQL</a><a href="/learn/csharp/">Learn C# step by step - PROG6212</a><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a><a href="/learn/docker/">Learn Docker for .NET applications</a><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a></nav></section></main><footer><p>StudyLab. Original learning materials by Lefa Malatji. Practice code in the environment stated in each lesson.</p><a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a></footer></body></html>
+Console.WriteLine(result);</code></pre>
+        <p>
+          The console prints Pass. This small example belongs in a separate Console App,
+          rather than underneath an existing API startup file.
+        </p>
+        <h3>Try it yourself</h3>
+        <p>Change the mark to 45. Explain what the conditional expression returns.</p>
+        <details>
+          <summary>Check the explanation</summary>
+          <p>The expression returns Try again because 45 &gt;= 50 is false.</p>
+        </details>
+      </section>
+      <section class="panel">
+        <h2>Read the lessons</h2>
+        <ul>
+          <li>
+            <a href="/learn/csharp/lessons/cs-foundations/"
+              >Start here: C# foundations and your first student register</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-lifetime/"
+              >Garbage collection and using disposable objects</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-language-tools/"
+              >Operator overloading, custom exceptions and extension methods</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-linq/">Anonymous types and LINQ queries</a>
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-processes/"
+              >Processes, AppDomains and object contexts</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-threads/"
+              >Threads, parallel work and shared data</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-async/"
+              >Async, await, cancellation and Task.WhenAll</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-web-foundations/"
+              >Start here: ASP.NET Core, MVC and HTTP</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-crud-minimal/"
+              >Beginner CRUD with Minimal APIs</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-crud-controllers/"
+              >Controller-based CRUD and DTO validation</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-openapi/"
+              >OpenAPI and Swagger UI: a complete working project</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-ef-sqlite/"
+              >Persistent CRUD with EF Core and SQLite</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-sqlserver/"
+              >Connect CRUD to SQL Server and SQL Express</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-ado-api/"
+              >CRUD using ADO.NET without Entity Framework</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-api-auth/"
+              >Registration, login and bearer-token testing</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-advanced-api/"
+              >Advanced CRUD: paging, ownership and concurrency</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-mvc-client/"
+              >Build a full MVC website that calls your API</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-api-testing/"
+              >Test, document and debug CRUD APIs</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-files-json/"
+              >Desktop file I/O, text and JSON serialization</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-desktop-ado/"
+              >Build desktop CRUD with ADO.NET</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-desktop-ef/"
+              >ORM, DbContext, tracking and desktop EF CRUD</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-code-database-first/"
+              >Code-first, database-first and schema changes</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-mvvm/"
+              >WPF and the Model View ViewModel pattern</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-notifications-validation/"
+              >Binding notifications and input validation</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-commands-mvc/"
+              >Custom commands and the MVC comparison</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-class-libraries/"
+              >Build and configure reusable class libraries</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-reflection/"
+              >Reflection, attributes and late binding</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-dynamic-dlr/"
+              >Dynamic types, the DLR and CIL</a
+            >
+          </li>
+          <li>
+            <a href="/learn/csharp/lessons/cs-dynamic-assemblies/"
+              >Dynamic assemblies and Reflection.Emit</a
+            >
+          </li>
+        </ul>
+      </section>
+      <section class="panel">
+        <h2>Practise in the application</h2>
+        <div class="actions">
+          <a class="button" href="/learn/#cs-lesson/cs-foundations"
+            >Start C# foundations</a
+          ><a class="button" href="/learn/#cs-practice/csharp">Try C# unit practicals</a
+          ><a class="button" href="/learn/#cs-downloads/csharp"
+            >Download example projects</a
+          >
+        </div>
+      </section>
+      <section class="panel">
+        <h2>Explore StudyLab subjects</h2>
+        <nav class="subject-links" aria-label="Related learning subjects">
+          <a href="/learn/pseudocode/">Learn pseudocode and programming logic</a
+          ><a href="/learn/databases/">Learn databases and SQL</a
+          ><a href="/learn/csharp/">Learn C# step by step - PROG6212</a
+          ><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a
+          ><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a
+          ><a href="/learn/docker/">Learn Docker for .NET applications</a
+          ><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a>
+        </nav>
+      </section>
+    </main>
+    <footer>
+      <p>
+        StudyLab. Original learning materials by Lefa Malatji. Practice code in the
+        environment stated in each lesson.
+      </p>
+      <a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a>
+    </footer>
+  </body>
+</html>

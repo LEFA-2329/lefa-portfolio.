@@ -1,59 +1,196 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-y58UMdw5ZpxhKKIIBdQTjU0QRI1ranMAJkGntMxLMR4='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>Dynamic types, the DLR and CIL | StudyLab</title><meta name="description" content="Dynamic types, the DLR and CIL. Compare ordinary type checking with an operation checked when the program runs."><meta name="robots" content="index,follow"><link rel="canonical" href="https://lefamalatji.co.za/learn/csharp/lessons/cs-dynamic-dlr/"><meta property="og:type" content="website"><meta property="og:site_name" content="StudyLab"><meta property="og:title" content="Dynamic types, the DLR and CIL | StudyLab"><meta property="og:description" content="Dynamic types, the DLR and CIL. Compare ordinary type checking with an operation checked when the program runs."><meta property="og:url" content="https://lefamalatji.co.za/learn/csharp/lessons/cs-dynamic-dlr/"><meta property="og:image" content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1"><script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Dynamic types, the DLR and CIL","description":"Dynamic types, the DLR and CIL. Compare ordinary type checking with an operation checked when the program runs.","url":"https://lefamalatji.co.za/learn/csharp/lessons/cs-dynamic-dlr/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}</script></head><body><a class="skip" href="#content">Skip to content</a><header><a class="brand" href="/studylab/"><span class="portrait"><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42"></span>Study<span>Lab</span></a><nav aria-label="StudyLab links"><a href="/learn/study-packs/">Study Packs</a> . <a href="/learn/">Open learning app</a></nav></header><main id="content"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/studylab/">StudyLab</a> / <a href="/learn/csharp/">C# lessons</a></nav><h1>Dynamic types, the DLR and CIL</h1><p class="lede">Compare ordinary type checking with an operation checked when the program runs.</p><a class="button" href="/learn/#cs-lesson/cs-dynamic-dlr">Open interactive lesson and complete code</a><section class="panel"><h2>What you are building</h2><h3>A shared toolbox and a console app that uses it</h3><p>Put reusable rules in a class library, then call them from a console project. Explore how C# can inspect types or create a small type at runtime.</p><p>The example prints results in the console; it does not use a database.</p><h3>Check the result</h3><p>Build both projects together, run the console app and check the rule and reflection output.</p></section><div class="theory">
-  <p>
-    var and dynamic are not the same. var asks the compiler to work out a fixed type.
-    dynamic postpones many member checks until runtime.
-  </p>
-  <section>
-    <h2>How to test this example in Visual Studio</h2>
-    <p>
-      Download the project below, extract it into its own folder, then open
-      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
-      Solution. For console projects choose Start Without Debugging. For API projects use
-      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
-      then run the command shown in the lesson. Do not paste all files into Program.cs:
-      use the exact file names displayed below.
-    </p>
-  </section>
-  <section>
-    <h2>Try an expandable object</h2>
-    <pre><code>dynamic student = new System.Dynamic.ExpandoObject();
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self' 'sha256-SBuhUsjI6jDJVxoxxQqHC9orr+F9NHKzn5g9noUOgTc='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <title>Dynamic types, the DLR and CIL | StudyLab</title>
+    <meta
+      name="description"
+      content="Dynamic types, the DLR and CIL. Compare ordinary type checking with an operation checked when the program runs."
+    />
+    <meta name="robots" content="index,follow" />
+    <link
+      rel="canonical"
+      href="https://lefamalatji.co.za/learn/csharp/lessons/cs-dynamic-dlr/"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="StudyLab" />
+    <meta property="og:title" content="Dynamic types, the DLR and CIL | StudyLab" />
+    <meta
+      property="og:description"
+      content="Dynamic types, the DLR and CIL. Compare ordinary type checking with an operation checked when the program runs."
+    />
+    <meta
+      property="og:url"
+      content="https://lefamalatji.co.za/learn/csharp/lessons/cs-dynamic-dlr/"
+    />
+    <meta
+      property="og:image"
+      content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1" />
+    <script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script>
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"LearningResource","name":"Dynamic types, the DLR and CIL","description":"Dynamic types, the DLR and CIL. Compare ordinary type checking with an operation checked when the program runs.","url":"https://lefamalatji.co.za/learn/csharp/lessons/cs-dynamic-dlr/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#content">Skip to content</a>
+    <header>
+      <a class="brand" href="/studylab/"
+        ><span class="portrait"
+          ><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42" /></span
+        >Study<span>Lab</span></a
+      >
+      <nav aria-label="StudyLab links">
+        <a href="/learn/study-packs/">Study Packs</a> .
+        <a href="/learn/">Open learning app</a>
+      </nav>
+    </header>
+    <main id="content">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/studylab/">StudyLab</a> / <a href="/learn/csharp/">C# lessons</a>
+      </nav>
+      <h1>Dynamic types, the DLR and CIL</h1>
+      <p class="lede">
+        Compare ordinary type checking with an operation checked when the program runs.
+      </p>
+      <a class="button" href="/learn/#cs-lesson/cs-dynamic-dlr"
+        >Open interactive lesson and complete code</a
+      >
+      <section class="panel">
+        <h2>What you are building</h2>
+        <h3>A shared toolbox and a console app that uses it</h3>
+        <p>
+          Put reusable rules in a class library, then call them from a console project.
+          Explore how C# can inspect types or create a small type at runtime.
+        </p>
+        <p>The example prints results in the console; it does not use a database.</p>
+        <h3>Check the result</h3>
+        <p>
+          Build both projects together, run the console app and check the rule and
+          reflection output.
+        </p>
+      </section>
+      <div class="theory">
+        <p>
+          var and dynamic are not the same. var asks the compiler to work out a fixed
+          type. dynamic postpones many member checks until runtime.
+        </p>
+        <section>
+          <h2>How to test this example in Visual Studio</h2>
+          <p>
+            Download the project below, extract it into its own folder, then open
+            <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+            Solution. For console projects choose Start Without Debugging. For API
+            projects use View → Terminal, make sure the terminal is in the folder
+            containing StudyLab.csproj, then run the command shown in the lesson. Do not
+            paste all files into Program.cs: use the exact file names displayed below.
+          </p>
+        </section>
+        <section>
+          <h2>Try an expandable object</h2>
+          <pre><code>dynamic student = new System.Dynamic.ExpandoObject();
 student.Name = &quot;Lefa&quot;;
 Console.WriteLine(student.Name);</code></pre>
-    <p>
-      Expected: Lefa. A misspelled student.Nmae can fail at runtime. With var student =
-      new { Name = "Lefa" }, Name is compiler checked and the anonymous object has a fixed
-      read-only shape. dynamic can help with dynamic-object interoperability, but should
-      not replace clear types in normal domain/API code.
-    </p>
-  </section>
-  <section>
-    <h2>DLR, CLR and intermediate code</h2>
-    <p>
-      C# compiles to Common Intermediate Language and metadata in an assembly. The Common
-      Language Runtime executes managed code, often through JIT compilation; ahead-of-time
-      compilation is another deployment option. The Dynamic Language Runtime supplies
-      dynamic binding infrastructure and call-site caching. It does not turn dynamic into
-      a separate database or make unknown member access safe.
-    </p>
-  </section>
-  <section>
-    <h2>Try it yourself</h2>
-    <details class="panel">
-      <summary>Choose var or dynamic for a normal Student DTO.</summary>
-      <h3>Worked answer</h3>
+          <p>
+            Expected: Lefa. A misspelled student.Nmae can fail at runtime. With var
+            student = new { Name = "Lefa" }, Name is compiler checked and the anonymous
+            object has a fixed read-only shape. dynamic can help with dynamic-object
+            interoperability, but should not replace clear types in normal domain/API
+            code.
+          </p>
+        </section>
+        <section>
+          <h2>DLR, CLR and intermediate code</h2>
+          <p>
+            C# compiles to Common Intermediate Language and metadata in an assembly. The
+            Common Language Runtime executes managed code, often through JIT compilation;
+            ahead-of-time compilation is another deployment option. The Dynamic Language
+            Runtime supplies dynamic binding infrastructure and call-site caching. It does
+            not turn dynamic into a separate database or make unknown member access safe.
+          </p>
+        </section>
+        <section>
+          <h2>Try it yourself</h2>
+          <details class="panel">
+            <summary>Choose var or dynamic for a normal Student DTO.</summary>
+            <h3>Worked answer</h3>
+            <p>
+              Use a named Student type (possibly held in a var local). Keep compile-time
+              checks for routine structured data.
+            </p>
+          </details>
+          <details class="panel">
+            <summary>What does a runtime binder exception suggest?</summary>
+            <h3>Worked answer</h3>
+            <p>
+              A member name, argument list or runtime type did not support the requested
+              operation. Inspect the actual value/type.
+            </p>
+          </details>
+        </section>
+      </div>
+      <section class="panel">
+        <h2>Predict and practise</h2>
+        <p>Does dynamic guarantee that a requested method exists?</p>
+        <details>
+          <summary>Check your prediction</summary>
+          <p>No. Some checks happen at runtime and may fail then.</p>
+        </details>
+        <h3>Make one change</h3>
+        <p>Compare a normal call and the example dynamic call.</p>
+        <details>
+          <summary>Worked guidance</summary>
+          <p>
+            Try a wrong member name in a separate experiment and observe the runtime
+            failure.
+          </p>
+        </details>
+        <h3>Try independently</h3>
+        <p>
+          Explain a useful dynamic scenario and rewrite a simple example using a known
+          type.
+        </p>
+      </section>
+      <section class="panel">
+        <h2>Full code and downloads</h2>
+        <p>
+          The interactive lesson contains the numbered code parts, commented complete
+          files, project ZIP, practice tasks and quiz. Keep each project in its own folder
+          in Visual Studio.
+        </p>
+        <a class="button" href="/learn/#cs-lesson/cs-dynamic-dlr"
+          >View code and download the project</a
+        >
+      </section>
+      <section class="panel">
+        <h2>Explore StudyLab subjects</h2>
+        <nav class="subject-links" aria-label="Related learning subjects">
+          <a href="/learn/pseudocode/">Learn pseudocode and programming logic</a
+          ><a href="/learn/databases/">Learn databases and SQL</a
+          ><a href="/learn/csharp/">Learn C# step by step - PROG6212</a
+          ><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a
+          ><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a
+          ><a href="/learn/docker/">Learn Docker for .NET applications</a
+          ><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a>
+        </nav>
+      </section>
+    </main>
+    <footer>
       <p>
-        Use a named Student type (possibly held in a var local). Keep compile-time checks
-        for routine structured data.
+        StudyLab. Original learning materials by Lefa Malatji. Practice code in the
+        environment stated in each lesson.
       </p>
-    </details>
-    <details class="panel">
-      <summary>What does a runtime binder exception suggest?</summary>
-      <h3>Worked answer</h3>
-      <p>
-        A member name, argument list or runtime type did not support the requested
-        operation. Inspect the actual value/type.
-      </p>
-    </details>
-  </section>
-</div>
-<section class="panel"><h2>Predict and practise</h2><p>Does dynamic guarantee that a requested method exists?</p><details><summary>Check your prediction</summary><p>No. Some checks happen at runtime and may fail then.</p></details><h3>Make one change</h3><p>Compare a normal call and the example dynamic call.</p><details><summary>Worked guidance</summary><p>Try a wrong member name in a separate experiment and observe the runtime failure.</p></details><h3>Try independently</h3><p>Explain a useful dynamic scenario and rewrite a simple example using a known type.</p></section><section class="panel"><h2>Full code and downloads</h2><p>The interactive lesson contains the numbered code parts, commented complete files, project ZIP, practice tasks and quiz. Keep each project in its own folder in Visual Studio.</p><a class="button" href="/learn/#cs-lesson/cs-dynamic-dlr">View code and download the project</a></section><section class="panel"><h2>Explore StudyLab subjects</h2><nav class="subject-links" aria-label="Related learning subjects"><a href="/learn/pseudocode/">Learn pseudocode and programming logic</a><a href="/learn/databases/">Learn databases and SQL</a><a href="/learn/csharp/">Learn C# step by step - PROG6212</a><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a><a href="/learn/docker/">Learn Docker for .NET applications</a><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a></nav></section></main><footer><p>StudyLab. Original learning materials by Lefa Malatji. Practice code in the environment stated in each lesson.</p><a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a></footer></body></html>
+      <a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a>
+    </footer>
+  </body>
+</html>

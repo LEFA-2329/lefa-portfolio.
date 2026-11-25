@@ -1,111 +1,251 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-zQlJTiE5jJecN50h9dXtYtQ264hsRIy4o9J171CC454='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>Controller-based CRUD and DTO validation | StudyLab</title><meta name="description" content="Controller-based CRUD and DTO validation. Find the route, input rules and response for each action inside the controller."><meta name="robots" content="index,follow"><link rel="canonical" href="https://lefamalatji.co.za/learn/csharp/lessons/cs-crud-controllers/"><meta property="og:type" content="website"><meta property="og:site_name" content="StudyLab"><meta property="og:title" content="Controller-based CRUD and DTO validation | StudyLab"><meta property="og:description" content="Controller-based CRUD and DTO validation. Find the route, input rules and response for each action inside the controller."><meta property="og:url" content="https://lefamalatji.co.za/learn/csharp/lessons/cs-crud-controllers/"><meta property="og:image" content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1"><script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Controller-based CRUD and DTO validation","description":"Controller-based CRUD and DTO validation. Find the route, input rules and response for each action inside the controller.","url":"https://lefamalatji.co.za/learn/csharp/lessons/cs-crud-controllers/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}</script></head><body><a class="skip" href="#content">Skip to content</a><header><a class="brand" href="/studylab/"><span class="portrait"><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42"></span>Study<span>Lab</span></a><nav aria-label="StudyLab links"><a href="/learn/study-packs/">Study Packs</a> . <a href="/learn/">Open learning app</a></nav></header><main id="content"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/studylab/">StudyLab</a> / <a href="/learn/csharp/">C# lessons</a></nav><h1>Controller-based CRUD and DTO validation</h1><p class="lede">Find the route, input rules and response for each action inside the controller.</p><a class="button" href="/learn/#cs-lesson/cs-crud-controllers">Open interactive lesson and complete code</a><section class="panel"><h2>What you are building</h2><h3>A student register organised with a controller</h3><p>Build the same four student actions in a StudentsController file. A small input object checks the name and age before changes are accepted.</p><p>Student data is kept in memory and is lost when the app restarts.</p><h3>Check the result</h3><p>Create a valid student, then send an invalid age and compare the responses.</p></section><div class="theory">
-  <p>
-    A controller puts related endpoints in one named class. It is like putting all
-    student-counter instructions in one labelled folder.
-  </p>
-  <section>
-    <h2>How to test this example in Visual Studio</h2>
-    <p>
-      Download the project below, extract it into its own folder, then open
-      <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
-      Solution. For console projects choose Start Without Debugging. For API projects use
-      View → Terminal, make sure the terminal is in the folder containing StudyLab.csproj,
-      then run the command shown in the lesson. Do not paste all files into Program.cs:
-      use the exact file names displayed below.
-    </p>
-  </section>
-  <section>
-    <h2>Install and create the right project</h2>
-    <ul>
-      <li>
-        Install Visual Studio with ASP.NET and web development and a .NET 10-compatible
-        SDK. For WPF also install .NET desktop development. Check Tools → Get Tools and
-        Features if templates are missing.
-      </li>
-      <li>
-        Create ASP.NET Core Empty for the Minimal API, or ASP.NET Core Web API with Use
-        controllers for a controller project. Select .NET 10. Alternatively open the
-        supplied .csproj to get exactly the lesson files.
-      </li>
-      <li>
-        Use a separate folder for every example. Delete the generated weather sample if it
-        conflicts with the supplied files. Restore NuGet packages before building.
-      </li>
-      <li>
-        In View → Terminal, cd into the folder containing StudyLab.csproj. For local API
-        testing run dotnet run --urls http://localhost:5100. Open requests.http and use
-        Send Request above each request. Use the actual port from the console if you
-        launch with a different profile.
-      </li>
-    </ul>
-  </section>
-  <section>
-    <h2>Your first request</h2>
-    <pre><code>GET http://localhost:5100/api/students</code></pre>
-    <p>
-      Initially expect 200 OK with []. A browser address bar can send GET, but cannot
-      conveniently send all CRUD methods. Use the .http editor, Postman, curl.exe or a
-      Swagger UI. The JSON object is a data packet, not an HTML page.
-    </p>
-  </section>
-  <section>
-    <h2>Read the controller from top to bottom</h2>
-    <ul>
-      <li>
-        [ApiController] turns model-validation failures into 400 responses.
-        [Route("api/students")] is the shared URL prefix.
-      </li>
-      <li>
-        [HttpGet], [HttpPost], [HttpPut] and [HttpDelete] choose the HTTP verb. {id:int}
-        accepts an integer route parameter.
-      </li>
-      <li>
-        Constructor injection supplies StudentStore from the container. Singleton means
-        one store per application process; Scoped normally means one per HTTP request;
-        Transient means a new instance when resolved.
-      </li>
-      <li>
-        StudentInput uses Required, StringLength and Range from
-        System.ComponentModel.DataAnnotations. A DTO limits what clients can set. Do not
-        accept an entire database entity just because it is convenient.
-      </li>
-      <li>
-        CreatedAtAction uses the read-one action to build the Location URL. Action names
-        are C# method names; route names and action names are not always the same thing.
-      </li>
-    </ul>
-  </section>
-  <section>
-    <h2>Response shape and failure cases</h2>
-    <pre><code>POST /api/students
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self' 'sha256-BMnCn15dnAqf3sFgZleVybPfJxuBNUdfek/Q3CTUjeo='; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <title>Controller-based CRUD and DTO validation | StudyLab</title>
+    <meta
+      name="description"
+      content="Controller-based CRUD and DTO validation. Find the route, input rules and response for each action inside the controller."
+    />
+    <meta name="robots" content="index,follow" />
+    <link
+      rel="canonical"
+      href="https://lefamalatji.co.za/learn/csharp/lessons/cs-crud-controllers/"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="StudyLab" />
+    <meta
+      property="og:title"
+      content="Controller-based CRUD and DTO validation | StudyLab"
+    />
+    <meta
+      property="og:description"
+      content="Controller-based CRUD and DTO validation. Find the route, input rules and response for each action inside the controller."
+    />
+    <meta
+      property="og:url"
+      content="https://lefamalatji.co.za/learn/csharp/lessons/cs-crud-controllers/"
+    />
+    <meta
+      property="og:image"
+      content="https://lefamalatji.co.za/images/studylab-dashboard.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/learn/images/studylab-sl-icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1" />
+    <script src="/learn/js/shared/restore-theme-before-paint.js?v=40"></script>
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"LearningResource","name":"Controller-based CRUD and DTO validation","description":"Controller-based CRUD and DTO validation. Find the route, input rules and response for each action inside the controller.","url":"https://lefamalatji.co.za/learn/csharp/lessons/cs-crud-controllers/","inLanguage":"en","learningResourceType":"Tutorial","author":{"@type":"Person","name":"Lefa Malatji"}}
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#content">Skip to content</a>
+    <header>
+      <a class="brand" href="/studylab/"
+        ><span class="portrait"
+          ><img src="/images/lefa-blue-suit.jpg" alt="" width="42" height="42" /></span
+        >Study<span>Lab</span></a
+      >
+      <nav aria-label="StudyLab links">
+        <a href="/learn/study-packs/">Study Packs</a> .
+        <a href="/learn/">Open learning app</a>
+      </nav>
+    </header>
+    <main id="content">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/studylab/">StudyLab</a> / <a href="/learn/csharp/">C# lessons</a>
+      </nav>
+      <h1>Controller-based CRUD and DTO validation</h1>
+      <p class="lede">
+        Find the route, input rules and response for each action inside the controller.
+      </p>
+      <a class="button" href="/learn/#cs-lesson/cs-crud-controllers"
+        >Open interactive lesson and complete code</a
+      >
+      <section class="panel">
+        <h2>What you are building</h2>
+        <h3>A student register organised with a controller</h3>
+        <p>
+          Build the same four student actions in a StudentsController file. A small input
+          object checks the name and age before changes are accepted.
+        </p>
+        <p>Student data is kept in memory and is lost when the app restarts.</p>
+        <h3>Check the result</h3>
+        <p>Create a valid student, then send an invalid age and compare the responses.</p>
+      </section>
+      <div class="theory">
+        <p>
+          A controller puts related endpoints in one named class. It is like putting all
+          student-counter instructions in one labelled folder.
+        </p>
+        <section>
+          <h2>How to test this example in Visual Studio</h2>
+          <p>
+            Download the project below, extract it into its own folder, then open
+            <strong>StudyLab.csproj</strong>. Wait for NuGet restore. Choose Build → Build
+            Solution. For console projects choose Start Without Debugging. For API
+            projects use View → Terminal, make sure the terminal is in the folder
+            containing StudyLab.csproj, then run the command shown in the lesson. Do not
+            paste all files into Program.cs: use the exact file names displayed below.
+          </p>
+        </section>
+        <section>
+          <h2>Install and create the right project</h2>
+          <ul>
+            <li>
+              Install Visual Studio with ASP.NET and web development and a .NET
+              10-compatible SDK. For WPF also install .NET desktop development. Check
+              Tools → Get Tools and Features if templates are missing.
+            </li>
+            <li>
+              Create ASP.NET Core Empty for the Minimal API, or ASP.NET Core Web API with
+              Use controllers for a controller project. Select .NET 10. Alternatively open
+              the supplied .csproj to get exactly the lesson files.
+            </li>
+            <li>
+              Use a separate folder for every example. Delete the generated weather sample
+              if it conflicts with the supplied files. Restore NuGet packages before
+              building.
+            </li>
+            <li>
+              In View → Terminal, cd into the folder containing StudyLab.csproj. For local
+              API testing run dotnet run --urls http://localhost:5100. Open requests.http
+              and use Send Request above each request. Use the actual port from the
+              console if you launch with a different profile.
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h2>Your first request</h2>
+          <pre><code>GET http://localhost:5100/api/students</code></pre>
+          <p>
+            Initially expect 200 OK with []. A browser address bar can send GET, but
+            cannot conveniently send all CRUD methods. Use the .http editor, Postman,
+            curl.exe or a Swagger UI. The JSON object is a data packet, not an HTML page.
+          </p>
+        </section>
+        <section>
+          <h2>Read the controller from top to bottom</h2>
+          <ul>
+            <li>
+              [ApiController] turns model-validation failures into 400 responses.
+              [Route("api/students")] is the shared URL prefix.
+            </li>
+            <li>
+              [HttpGet], [HttpPost], [HttpPut] and [HttpDelete] choose the HTTP verb.
+              {id:int} accepts an integer route parameter.
+            </li>
+            <li>
+              Constructor injection supplies StudentStore from the container. Singleton
+              means one store per application process; Scoped normally means one per HTTP
+              request; Transient means a new instance when resolved.
+            </li>
+            <li>
+              StudentInput uses Required, StringLength and Range from
+              System.ComponentModel.DataAnnotations. A DTO limits what clients can set. Do
+              not accept an entire database entity just because it is convenient.
+            </li>
+            <li>
+              CreatedAtAction uses the read-one action to build the Location URL. Action
+              names are C# method names; route names and action names are not always the
+              same thing.
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h2>Response shape and failure cases</h2>
+          <pre><code>POST /api/students
 Content-Type: application/json
 
 {&quot;name&quot;:&quot;Lefa&quot;,&quot;age&quot;:22}</code></pre>
-    <p>
-      Expected: 201 Created and {"id":1,"name":"Lefa","age":22} on a fresh store. Invalid
-      JSON can fail before your action runs. A blank name or age outside 16-100 returns
-      400. An unknown ID returns 404. A successful PUT/DELETE returns 204; an empty
-      response is correct.
-    </p>
-  </section>
-  <section>
-    <h2>Try it yourself</h2>
-    <details class="panel">
-      <summary>Why not let POST accept an Id chosen by the user?</summary>
-      <h3>Worked answer</h3>
+          <p>
+            Expected: 201 Created and {"id":1,"name":"Lefa","age":22} on a fresh store.
+            Invalid JSON can fail before your action runs. A blank name or age outside
+            16-100 returns 400. An unknown ID returns 404. A successful PUT/DELETE returns
+            204; an empty response is correct.
+          </p>
+        </section>
+        <section>
+          <h2>Try it yourself</h2>
+          <details class="panel">
+            <summary>Why not let POST accept an Id chosen by the user?</summary>
+            <h3>Worked answer</h3>
+            <p>
+              The server should own identity assignment. A create DTO excludes Id and
+              prevents accidental overwriting.
+            </p>
+          </details>
+          <details class="panel">
+            <summary>Add a course field safely.</summary>
+            <h3>Worked answer</h3>
+            <p>
+              Add Course to the model and input DTO, validate its length, map it in
+              POST/PUT, then add request tests. A database-backed model also needs a
+              migration.
+            </p>
+          </details>
+        </section>
+      </div>
+      <section class="panel">
+        <h2>Predict and practise</h2>
+        <p>Should an age below the allowed range be accepted?</p>
+        <details>
+          <summary>Check your prediction</summary>
+          <p>No. The input rules reject it with a bad-request response.</p>
+        </details>
+        <h3>Make one change</h3>
+        <p>
+          Find the DTO age rule. Send an invalid age and compare with a valid request.
+        </p>
+        <details>
+          <summary>Worked guidance</summary>
+          <p>
+            The DTO carries input. ApiController checks validation before running the
+            action for invalid input.
+          </p>
+        </details>
+        <h3>Try independently</h3>
+        <p>
+          Create a new input validation rule and show one passing and one failing request.
+        </p>
+      </section>
+      <section class="panel">
+        <h2>Full code and downloads</h2>
+        <p>
+          The interactive lesson contains the numbered code parts, commented complete
+          files, project ZIP, practice tasks and quiz. Keep each project in its own folder
+          in Visual Studio.
+        </p>
+        <a class="button" href="/learn/#cs-lesson/cs-crud-controllers"
+          >View code and download the project</a
+        >
+      </section>
+      <section class="panel">
+        <h2>Explore StudyLab subjects</h2>
+        <nav class="subject-links" aria-label="Related learning subjects">
+          <a href="/learn/pseudocode/">Learn pseudocode and programming logic</a
+          ><a href="/learn/databases/">Learn databases and SQL</a
+          ><a href="/learn/csharp/">Learn C# step by step - PROG6212</a
+          ><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a
+          ><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a
+          ><a href="/learn/docker/">Learn Docker for .NET applications</a
+          ><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a>
+        </nav>
+      </section>
+    </main>
+    <footer>
       <p>
-        The server should own identity assignment. A create DTO excludes Id and prevents
-        accidental overwriting.
+        StudyLab. Original learning materials by Lefa Malatji. Practice code in the
+        environment stated in each lesson.
       </p>
-    </details>
-    <details class="panel">
-      <summary>Add a course field safely.</summary>
-      <h3>Worked answer</h3>
-      <p>
-        Add Course to the model and input DTO, validate its length, map it in POST/PUT,
-        then add request tests. A database-backed model also needs a migration.
-      </p>
-    </details>
-  </section>
-</div>
-<section class="panel"><h2>Predict and practise</h2><p>Should an age below the allowed range be accepted?</p><details><summary>Check your prediction</summary><p>No. The input rules reject it with a bad-request response.</p></details><h3>Make one change</h3><p>Find the DTO age rule. Send an invalid age and compare with a valid request.</p><details><summary>Worked guidance</summary><p>The DTO carries input. ApiController checks validation before running the action for invalid input.</p></details><h3>Try independently</h3><p>Create a new input validation rule and show one passing and one failing request.</p></section><section class="panel"><h2>Full code and downloads</h2><p>The interactive lesson contains the numbered code parts, commented complete files, project ZIP, practice tasks and quiz. Keep each project in its own folder in Visual Studio.</p><a class="button" href="/learn/#cs-lesson/cs-crud-controllers">View code and download the project</a></section><section class="panel"><h2>Explore StudyLab subjects</h2><nav class="subject-links" aria-label="Related learning subjects"><a href="/learn/pseudocode/">Learn pseudocode and programming logic</a><a href="/learn/databases/">Learn databases and SQL</a><a href="/learn/csharp/">Learn C# step by step - PROG6212</a><a href="/learn/asp-net/">Learn ASP.NET Core, REST APIs and CRUD</a><a href="/learn/normalisation/">Database normalisation: 1NF, 2NF and 3NF</a><a href="/learn/docker/">Learn Docker for .NET applications</a><a href="/learn/hadoop/">Learn Hadoop and distributed data concepts</a></nav></section></main><footer><p>StudyLab. Original learning materials by Lefa Malatji. Practice code in the environment stated in each lesson.</p><a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a></footer></body></html>
+      <a href="/learn/#about">About and privacy</a> . <a href="/">Meet the creator</a>
+    </footer>
+  </body>
+</html>
