@@ -1,3 +1,4 @@
+import { appendCourseGuides } from '../shared/learning-guides.mjs?v=71';
 // Module navigation, sidebar rendering and topic filtering.
 import {
   newCourseSidebar,
@@ -24,6 +25,7 @@ export function createNavigationSidebar({
     const sharedWebRoute =
       activeModule === 'wede' &&
       [
+        'learning-guide',
         'study-break',
         'helpful-resources',
         'saved-work',
@@ -37,12 +39,13 @@ export function createNavigationSidebar({
         localStorage.setItem('studylab-module', 'wede');
       } catch {}
       wedeSidebar({ page: newPage, id: newId });
+      appendCourseGuides($('#unit-nav'), activeModule, newPage === 'learning-guide' ? newId : undefined);
       filterTopics();
       return;
     }
     const isNewCourse =
       newPage?.startsWith('cs') ||
-      (['study-break', 'helpful-resources', 'saved-work', 'about', 'backup'].includes(
+      (['learning-guide', 'study-break', 'helpful-resources', 'saved-work', 'about', 'backup'].includes(
         newPage,
       ) &&
         ['csharp', 'docker'].includes(activeModule));
@@ -57,11 +60,13 @@ export function createNavigationSidebar({
         localStorage.setItem('studylab-module', activeModule);
       } catch {}
       setActiveModule(activeModule);
+      appendCourseGuides($('#unit-nav'), activeModule, newPage === 'learning-guide' ? newId : undefined);
       filterTopics();
       return;
     }
     const page = location.hash.slice(1).split('/')[0] || 'home',
       shared = [
+        'learning-guide',
         'saved-work',
         'backup',
         'about',
@@ -169,6 +174,7 @@ export function createNavigationSidebar({
             .join('')}</details>`,
       )
       .join('');
+    appendCourseGuides($('#unit-nav'), activeModule, newPage === 'learning-guide' ? newId : undefined);
     filterTopics();
   }
   function filterTopics() {

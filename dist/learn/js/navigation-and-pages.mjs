@@ -1,6 +1,7 @@
+import { guideCourse, learningGuideLink, renderLearningGuide } from './shared/learning-guides.mjs?v=71';
 // Application composition root. Feature modules own their page state and events.
 import { renderWedePage } from './web-development/web-development-pages.mjs?v=wede-69';
-import { createNavigationSidebar } from './application/navigation-sidebar.mjs?v=wede-70';
+import { createNavigationSidebar } from './application/navigation-sidebar.mjs?v=guides-71';
 import { createProgrammingLessonPages } from './programming-logic/programming-lesson-pages.mjs?v=breadcrumb-58';
 import { createProgrammingTaskPages } from './programming-logic/programming-task-pages.mjs?v=breadcrumb-58';
 import { createProgrammingOverviewPages } from './programming-logic/programming-overview-pages.mjs?v=breadcrumb-58';
@@ -155,7 +156,12 @@ function route() {
   )
     activeModule = id;
   const webRoute = page === 'wede' || page?.startsWith('wede-');
-  if (webRoute) {
+  if (page === 'learning-guide') {
+    const course = guideCourse(id);
+    if (course && !(['database', 'intermediate', 'advanced'].includes(activeModule) && course === 'database')) activeModule = course;
+    sidebar();
+    pageCleanup = renderLearningGuide(view, id, task);
+  } else if (webRoute) {
     activeModule = 'wede';
     sidebar();
     pageCleanup = renderWedePage({ view, page, id, section: task }) || (() => {});
@@ -324,3 +330,15 @@ $('#course-select').onchange = (event) => {
                 : 'home';
 };
 $('#lesson-search').addEventListener('input', filterTopics);
+
+document.addEventListener('click', (event) => {
+  if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  const link = event.target.closest?.('a[href]');
+  if (!link || link.hasAttribute('download') || link.target) return;
+  const url = new URL(link.href);
+  if (url.searchParams.has('standalone')) return;
+  const destination = learningGuideLink(url);
+  if (!destination) return;
+  event.preventDefault();
+  location.hash = destination.slice(1);
+});
