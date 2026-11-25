@@ -1,4 +1,4 @@
-import { languageSteps, tutorials } from './content/tutorials.mjs?v=wede-61';
+import { languageSteps, tutorials } from './content/tutorials.mjs?v=wede-62';
 import { wedeUnits, wedeLessons } from './content/course.mjs';
 import { escapeHTML as e } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=40';
 import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=wede-60';
@@ -52,13 +52,35 @@ function stepByStep(lesson) {
   const nextLink = next
     ? `<p><a class="button secondary" href="#wede-lesson/wede-${next[0]}">Continue to ${e(next[1][0][1])}</a></p>`
     : '';
+  const cssChapters = [
+    'Syntax and selectors',
+    'Styling and layout',
+    'Forms and animation',
+    'Responsive design',
+  ];
+  const chapterLinks =
+    language === 'css'
+      ? `<nav class="button-row" aria-label="CSS chapters">${teachingLessons
+          .map(
+            ([slug], index) =>
+              `<a class="button secondary" href="#wede-lesson/wede-${slug}"${slug === lesson.slug ? ' aria-current="page"' : ''}>${cssChapters[index]}</a>`,
+          )
+          .join('')}</nav>`
+      : '';
+  const animationDemo =
+    lesson.slug === 'css-devtools'
+      ? '<details class="wede-motion-demo"><summary>Open the animation demo</summary><p><span>Saturday session open</span></p><p>Close and reopen this demo to replay. With reduced motion enabled, the badge appears immediately.</p></details>'
+      : '';
   return (
+    chapterLinks +
+    animationDemo +
     steps
       .map(
-        ([syntax, title, explanation, code, task]) =>
-          `<section class="wede-teaching-step"><h3>${e(title)}</h3><p>${e(explanation)}</p>${highlightedCode(code, syntax)}<h4>Try it</h4><p>${e(task)}</p></section>`,
+        ([syntax, title, explanation, code, task, answer]) =>
+          `<section class="wede-teaching-step"><h3>${e(title)}</h3><p>${e(explanation)}</p>${highlightedCode(code, syntax)}<h4>Try it</h4><p>${e(task)}</p>${answer ? `<details><summary>Check your result</summary><p>${e(answer)}</p></details>` : ''}</section>`,
       )
-      .join('') + nextLink
+      .join('') +
+    nextLink
   );
 }
 
@@ -73,6 +95,7 @@ const resourceFiles = [
 
 export const webReferences = [
   ['W3Schools · HTML tutorial', 'https://www.w3schools.com/html/'],
+  ['MDN · CSS reference', 'https://developer.mozilla.org/en-US/docs/Web/CSS/Reference'],
   ['W3Schools · CSS tutorial', 'https://www.w3schools.com/css/'],
   ['W3Schools · JavaScript tutorial', 'https://www.w3schools.com/js/'],
   ['W3Schools · Practice exercises', 'https://www.w3schools.com/exercises/'],

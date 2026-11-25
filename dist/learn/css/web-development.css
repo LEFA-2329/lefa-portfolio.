@@ -100,3 +100,41 @@
   color: #b9c6d6;
   font-style: italic;
 }
+
+.wede-motion-demo {
+  margin-block: 1rem;
+}
+
+.wede-motion-demo span {
+  display: inline-block;
+  padding: 0.45em 0.75em;
+  border-radius: 0.5em;
+  background: #c1ebdb;
+  color: #173b31;
+  font-weight: 700;
+}
+
+.wede-motion-demo[open] span {
+  animation: wede-badge-arrive 480ms ease-out;
+}
+
+@keyframes wede-badge-arrive {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wede-motion-demo[open] span {
+    animation: none;
+  }
+}
