@@ -182,7 +182,8 @@ export function createNavigationSidebar({
       });
       group.hidden = !!q && !count;
       if (q) group.open = !!count;
-      group.querySelector('.unit-overview').hidden = !!q;
+      const overview = group.querySelector('.unit-overview');
+      if (overview) overview.hidden = !!q;
       matches += count;
     });
     $('#search-empty').hidden = !!matches;
