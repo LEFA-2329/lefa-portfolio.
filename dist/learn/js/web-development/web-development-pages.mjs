@@ -1,4 +1,4 @@
-import { tutorials } from './content/tutorials.mjs';
+import { languageSteps, tutorials } from './content/tutorials.mjs?v=wede-61';
 import { wedeUnits, wedeLessons } from './content/course.mjs';
 import { escapeHTML as e } from '../programming-logic/pseudocode-parser-and-diagrams.mjs?v=40';
 import { renderHtmlPage } from '../../../shared/render-html-page.mjs?v=wede-60';
@@ -13,6 +13,54 @@ import {
 const lessonsFor = (unit) => wedeLessons.filter((lesson) => lesson.unit === unit);
 const lessonHref = (lesson) => '#wede-lesson/' + lesson.id;
 const unitHref = (unit) => '#wede-unit/' + unit.id;
+
+const languageStarts = [
+  ['HTML step by step', 'html-dom'],
+  ['CSS step by step', 'css-cascade'],
+  ['JavaScript step by step', 'javascript-jquery'],
+];
+
+const tokenPatterns = {
+  html: /(?<comment><!--[\s\S]*?-->)|(?<string>"[^"]*"|'[^']*')|(?<keyword><\/?[!\w-]+|\/?>)|(?<property>[\w-]+(?=\s*=))/g,
+  css: /(?<comment>\/\*[\s\S]*?\*\/)|(?<string>"[^"]*"|'[^']*')|(?<property>[\w-]+(?=\s*:(?![\w-]+\s*\{)))|(?<number>#[\da-fA-F]{3,8}\b|\b\d+(?:\.\d+)?(?:px|rem|em|fr|%)?)|(?<keyword>[@.#][\w-]+|\b(?:grid|flex|repeat|minmax)\b)/g,
+  js: /(?<comment>\/\/[^\n]*|\/\*[\s\S]*?\*\/)|(?<string>"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')|(?<keyword>\b(?:const|let|function|return|if|else|for|of|new|true|false|null)\b)|(?<number>\b\d+(?:\.\d+)?\b)|(?<property>[A-Za-z_$][\w$]*(?=\s*\())/g,
+};
+
+function highlightedCode(code, language) {
+  let output = '';
+  let end = 0;
+  for (const match of code.matchAll(tokenPatterns[language])) {
+    const kind = Object.keys(match.groups).find(
+      (name) => match.groups[name] !== undefined,
+    );
+    output += e(code.slice(end, match.index));
+    output += `<span class="wede-token-${kind}">${e(match[0])}</span>`;
+    end = match.index + match[0].length;
+  }
+  return `<pre class="wede-highlight"><code>${output + e(code.slice(end))}</code></pre>`;
+}
+
+function stepByStep(lesson) {
+  const steps = languageSteps[lesson.slug];
+  if (!steps) return '';
+  const language = steps[0][0];
+  const teachingLessons = Object.entries(languageSteps).filter(
+    ([, group]) => group[0][0] === language,
+  );
+  const next =
+    teachingLessons[teachingLessons.findIndex(([slug]) => slug === lesson.slug) + 1];
+  const nextLink = next
+    ? `<p><a class="button secondary" href="#wede-lesson/wede-${next[0]}">Continue to ${e(next[1][0][1])}</a></p>`
+    : '';
+  return (
+    steps
+      .map(
+        ([syntax, title, explanation, code, task]) =>
+          `<section class="wede-teaching-step"><h3>${e(title)}</h3><p>${e(explanation)}</p>${highlightedCode(code, syntax)}<h4>Try it</h4><p>${e(task)}</p></section>`,
+      )
+      .join('') + nextLink
+  );
+}
 
 const resourceFiles = [
   ['Study guide', 'WEDE5020-Study-Guide.pdf'],
@@ -167,11 +215,14 @@ function renderLesson(view, lesson, section) {
     dynamic_1: lesson.unit,
     dynamic_2: e(lesson.outcomes),
     dynamic_3: e(lesson.title),
-    dynamic_4: lesson.sections
-      .map(([title, body]) => '<h2>' + e(title) + '</h2><p>' + e(body) + '</p>')
-      .join(''),
+    dynamic_4:
+      lesson.sections
+        .map(([title, body]) => '<h2>' + e(title) + '</h2><p>' + e(body) + '</p>')
+        .join('') + stepByStep(lesson),
     dynamic_5: e(lesson.example),
-    dynamic_6: codeBlock(lesson.code),
+    dynamic_6: languageSteps[lesson.slug]
+      ? highlightedCode(lesson.code, languageSteps[lesson.slug][0][0])
+      : codeBlock(lesson.code),
     dynamic_7: e(lesson.result),
     dynamic_8: e(lesson.task),
     dynamic_9: e(lesson.hint),
@@ -383,7 +434,16 @@ export function renderWedePage({ view, page, id, section }) {
     return;
   } else if (page === 'wede') {
     view.innerHTML = renderHtmlPage('studylab/wede-home', {
-      dynamic_1: progressSummary('wede'),
+      dynamic_1:
+        progressSummary('wede') +
+        '<nav class="button-row" aria-label="Step-by-step tutorials">' +
+        languageStarts
+          .map(
+            ([label, slug]) =>
+              `<a class="button secondary" href="#wede-lesson/wede-${slug}">${label}</a>`,
+          )
+          .join('') +
+        '</nav>',
       dynamic_2: wedeUnits.map((u) => unitCard(u)).join(''),
     });
     return;

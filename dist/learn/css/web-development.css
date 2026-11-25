@@ -66,3 +66,37 @@
     gap: 0;
   }
 }
+
+.wede-teaching-step {
+  margin-block: 1.5rem;
+  padding-block-start: 1rem;
+  border-block-start: 1px solid var(--line);
+}
+
+.wede-lesson .wede-highlight {
+  background: #142333;
+  color: #eef4fc;
+  border: 1px solid #425a71;
+}
+
+.wede-lesson .wede-highlight code {
+  color: inherit;
+  background: transparent;
+}
+
+.wede-token-keyword {
+  color: #ffb1ce;
+}
+.wede-token-property {
+  color: #8fdbff;
+}
+.wede-token-string {
+  color: #b8ed9c;
+}
+.wede-token-number {
+  color: #ffe197;
+}
+.wede-token-comment {
+  color: #b9c6d6;
+  font-style: italic;
+}
