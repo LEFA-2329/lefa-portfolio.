@@ -367,7 +367,7 @@
         "label": "Study guide",
         "format": "PDF",
         "detail": "19 pages \u00b7 18 worked lessons",
-        "bytes": 40508
+        "bytes": 40471
       },
       {
         "file": "WEDE5020-Practice-Questions.pdf",
@@ -399,6 +399,6 @@
       }
     ],
     "archive": "WEDE5020-Complete-Free-Revision.zip",
-    "archiveBytes": 212282
+    "archiveBytes": 212237
   }
 ]
