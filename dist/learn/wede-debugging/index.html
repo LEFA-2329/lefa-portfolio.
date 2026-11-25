@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WEDE5020 Debugging Lab . StudyLab</title>
+    <link rel="stylesheet" href="/learn/css/search-learning-guides.css?v=1" />
+  </head>
+  <body>
+    <a class="skip" href="#content">Skip to content</a>
+    <header><a class="brand" href="/learn/#wede">Study<span>Lab</span></a></header>
+    <main id="content">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/learn/#wede">WEDE5020</a> / Debugging Lab</nav>
+      <h1>WEDE5020 Debugging Lab</h1>
+      <p class="lede">Fix seven problems from the repair café website. Work in a scratch folder in VS Code. Copy each starter into its own test page, reproduce the problem, change one thing and retest before revealing the worked fix.</p>
+      <p>Keep a short test log with the symptom, cause, change and retest result. Use Elements for HTML and CSS, Console for JavaScript, and Network for failed file requests.</p>
+      <nav class="subject-links" aria-label="Debugging challenges">
+        <a href="#broken-link">HTML . Fix a broken navigation link</a>
+        <a href="#form-label">HTML . Connect a label to its field</a>
+        <a href="#card-overflow">CSS . Stop a card from overflowing on mobile</a>
+        <a href="#selector">CSS . Fix a selector that targets the wrong element</a>
+        <a href="#button">JavaScript . Make the hours button work</a>
+        <a href="#empty-filter">JavaScript . Show feedback when a filter finds nothing</a>
+        <a href="#pages-css">GitHub Pages . Restore a stylesheet on the published site</a>
+      </nav>
+      <section class="panel" id="broken-link">
+        <h2>1. Fix a broken navigation link</h2>
+        <p>Open index.html in the browser and follow the Visit link. The real file is pages/visit.html beside the homepage’s pages folder.</p>
+        <h3>Broken starter</h3>
+        <pre><code>&lt;a href="page/visit.html"&gt;Visit&lt;/a&gt;</code></pre>
+        <p><strong>Expected result</strong> Clicking Visit opens pages/visit.html.</p>
+        <details>
+          <summary>Show hint</summary>
+          <p>Compare each directory segment in href with the project tree.</p>
+        </details>
+        <details>
+          <summary>Show worked fix</summary>
+          <pre><code>&lt;a href="pages/visit.html"&gt;Visit&lt;/a&gt;</code></pre>
+          <p>The link is relative to index.html. From the nested Visit page, a link back home would use ../index.html.</p>
+        </details>
+      </section>
+      <section class="panel" id="form-label">
+        <h2>2. Connect a label to its field</h2>
+        <p>Paste the fragment into a practice page. Click the label and observe whether focus moves to the field.</p>
+        <h3>Broken starter</h3>
+        <pre><code>&lt;label for="email"&gt;Email address&lt;/label&gt;
+&lt;input id="contact" name="email" type="email"&gt;</code></pre>
+        <p><strong>Expected result</strong> Clicking the label focuses the email input, which has the accessible name Email address.</p>
+        <details>
+          <summary>Show hint</summary>
+          <p>Compare the label’s for value with the input’s id.</p>
+        </details>
+        <details>
+          <summary>Show worked fix</summary>
+          <pre><code>&lt;label for="contact"&gt;Email address&lt;/label&gt;
+&lt;input id="contact" name="email" type="email"&gt;</code></pre>
+          <p>The attribute for references id. The name attribute identifies the field in submitted data.</p>
+        </details>
+      </section>
+      <section class="panel" id="card-overflow">
+        <h2>3. Stop a card from overflowing on mobile</h2>
+        <p>Paste this into an HTML file and set the viewport to 320px in DevTools. Look for sideways scrolling.</p>
+        <h3>Broken starter</h3>
+        <pre><code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+&lt;style&gt;
+  .card { width: 420px; padding: 24px; border: 1px solid; }
+&lt;/style&gt;
+&lt;article class="card"&gt;Saturday repair session&lt;/article&gt;</code></pre>
+        <p><strong>Expected result</strong> The card fits its container at phone width and has a maximum width of 420px.</p>
+        <details>
+          <summary>Show hint</summary>
+          <p>A fixed width can exceed the viewport. The default box model also adds padding and borders to the stated width.</p>
+        </details>
+        <details>
+          <summary>Show worked fix</summary>
+          <pre><code>.card {
+  width: 100%;
+  max-width: 420px;
+  box-sizing: border-box;
+  padding: 24px;
+  border: 1px solid;
+}</code></pre>
+          <p>Replace only the rule inside style. Check the Computed box model, then confirm the page fits at 320px and 768px.</p>
+        </details>
+      </section>
+      <section class="panel" id="selector">
+        <h2>4. Fix a selector that targets the wrong element</h2>
+        <p>Open the fragment in the browser. In Elements, select the paragraph and see which CSS rules matched it.</p>
+        <h3>Broken starter</h3>
+        <pre><code>&lt;style&gt;
+  #notice { font-weight: 700; }
+&lt;/style&gt;
+&lt;p class="notice"&gt;Bring your charger.&lt;/p&gt;</code></pre>
+        <p><strong>Expected result</strong> The notice appears bold through the CSS rule.</p>
+        <details>
+          <summary>Show hint</summary>
+          <p>Does # select an ID or a class?</p>
+        </details>
+        <details>
+          <summary>Show worked fix</summary>
+          <pre><code>.notice { font-weight: 700; }</code></pre>
+          <p>The dot matches class="notice". Keep the class so more than one notice can reuse the rule.</p>
+        </details>
+      </section>
+      <section class="panel" id="button">
+        <h2>5. Make the hours button work</h2>
+        <p>Run this fragment, open DevTools Console and click the button. Read the first error and the line it points to.</p>
+        <h3>Broken starter</h3>
+        <pre><code>&lt;button id="show-hours" type="button"&gt;Show hours&lt;/button&gt;
+&lt;p id="hours" role="status"&gt;&lt;/p&gt;
+&lt;script&gt;
+  const button = document.querySelector('#showHours');
+  button.addEventListener('click', () =&gt; {
+    document.querySelector('#hours').textContent = 'Saturday, 10:00-13:00';
+  });
+&lt;/script&gt;</code></pre>
+        <p><strong>Expected result</strong> Clicking or pressing Enter on the button displays the Saturday hours.</p>
+        <details>
+          <summary>Show hint</summary>
+          <p>Check what querySelector returns when no element matches.</p>
+        </details>
+        <details>
+          <summary>Show worked fix</summary>
+          <pre><code>const button = document.querySelector('#show-hours');
+button.addEventListener('click', () =&gt; {
+  document.querySelector('#hours').textContent = 'Saturday, 10:00-13:00';
+});</code></pre>
+          <p>The ID and selector must match. Replace the JavaScript inside script and retest with mouse and keyboard.</p>
+        </details>
+      </section>
+      <section class="panel" id="empty-filter">
+        <h2>6. Show feedback when a filter finds nothing</h2>
+        <p>Paste the fragment into a page. Search for fan, then radio, and note what appears below the buttons.</p>
+        <h3>Broken starter</h3>
+        <pre><code>&lt;button type="button" data-query="fan"&gt;Find fan&lt;/button&gt;
+&lt;button type="button" data-query="radio"&gt;Find radio&lt;/button&gt;
+&lt;p id="results" role="status"&gt;&lt;/p&gt;
+&lt;script&gt;
+  const items = ['fan', 'lamp'];
+  document.querySelectorAll('[data-query]').forEach(button =&gt; {
+    button.addEventListener('click', () =&gt; {
+      const matches = items.filter(item =&gt; item === button.dataset.query);
+      document.querySelector('#results').textContent = matches.join(', ');
+    });
+  });
+&lt;/script&gt;</code></pre>
+        <p><strong>Expected result</strong> Find fan shows fan. Find radio shows No matching repair items.</p>
+        <details>
+          <summary>Show hint</summary>
+          <p>What does join return for an empty array?</p>
+        </details>
+        <details>
+          <summary>Show worked fix</summary>
+          <pre><code>const results = document.querySelector('#results');
+results.textContent = matches.length
+  ? matches.join(', ')
+  : 'No matching repair items.';</code></pre>
+          <p>Replace the results assignment inside the click handler with this block. Try fan, radio, then fan again to verify the message updates each time.</p>
+        </details>
+      </section>
+      <section class="panel" id="pages-css">
+        <h2>7. Restore a stylesheet on the published site</h2>
+        <p>Assume the site lives at https://YOUR-USERNAME.github.io/repair-cafe/ and the stylesheet is committed at css/Site.css. Inspect the CSS request in Network and compare its URL with that path.</p>
+        <h3>Broken starter</h3>
+        <pre><code>&lt;link rel="stylesheet" href="/css/site.css"&gt;</code></pre>
+        <p><strong>Expected result</strong> The published homepage loads its stylesheet from /repair-cafe/css/Site.css.</p>
+        <details>
+          <summary>Show hint</summary>
+          <p>A leading slash starts at the domain root. The filename also has a capital S.</p>
+        </details>
+        <details>
+          <summary>Show worked fix</summary>
+          <pre><code>&lt;link rel="stylesheet" href="./css/Site.css"&gt;</code></pre>
+          <p>Use this from the homepage. From pages/visit.html use ../css/Site.css. After pushing and deploying, reload and confirm Network shows a successful stylesheet response.</p>
+        </details>
+      </section>
+      <p><a href="/learn/wede-portfolio/">Apply these checks to your portfolio project</a></p>
+    </main>
+  </body>
+</html>

@@ -500,7 +500,7 @@ export function renderWedePage({ view, page, id, section }) {
               `<a class="button secondary" href="#wede-lesson/wede-${slug}">${label}</a>`,
           )
           .join('') +
-        '<a class="button secondary" href="#wede-lesson/wede-github">GitHub chapter</a><a class="button secondary" href="/learn/wede-portfolio/">Portfolio project</a></nav>',
+        '<a class="button secondary" href="#wede-lesson/wede-github">GitHub chapter</a><a class="button secondary" href="/learn/wede-portfolio/">Portfolio project</a><a class="button secondary" href="/learn/wede-debugging/">Debugging Lab</a></nav>',
       dynamic_2: wedeUnits.map((u) => unitCard(u)).join(''),
     });
     return;
