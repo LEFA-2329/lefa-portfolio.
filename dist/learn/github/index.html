@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Learn Git, GitHub and GitHub Pages with the WEDE5020 repair café project."
+    />
+    <title>GitHub step by step . StudyLab</title>
+    <link rel="stylesheet" href="../css/search-learning-guides.css?v=1" />
+  </head>
+  <body>
+    <a class="skip" href="#content">Skip to content</a>
+    <header>
+      <a class="brand" href="/learn/#wede">Study<span>Lab</span></a>
+    </header>
+    <main id="content">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/learn/#wede">WEDE5020</a> / GitHub
+      </nav>
+      <h1>GitHub step by step</h1>
+      <p class="lede">
+        Track changes to your repair café website, review a teammate’s update and publish
+        a static site with GitHub Pages.
+      </p>
+      <nav class="subject-links" aria-label="GitHub lessons">
+        <a href="#repository">1. Repositories</a>
+        <a href="#commits">2. Commits</a>
+        <a href="#remote">3. Push and pull</a>
+        <a href="#review">4. Branches and pull requests</a>
+        <a href="#pages">5. GitHub Pages</a>
+        <a href="#practice">6. Project and troubleshooting</a>
+      </nav>
+      <section class="panel" id="repository">
+        <h2>1. Create a repository</h2>
+        <p>
+          Git records versions of files. GitHub hosts repositories online so you can share
+          the files and their history. A repository is a project with its version history.
+        </p>
+        <ol>
+          <li>On GitHub, choose New repository and name it <code>repair-cafe</code>.</li>
+          <li>
+            For this publishing exercise, use a public repository containing fictional
+            content you own or have permission to publish. Initialise it with a README.
+          </li>
+          <li>
+            Copy the HTTPS clone URL from Code. In your terminal, replace
+            <code>YOUR-USERNAME</code> below, then open the cloned folder in VS Code.
+          </li>
+        </ol>
+        <pre><code>git clone https://github.com/YOUR-USERNAME/repair-cafe.git
+cd repair-cafe
+git status</code></pre>
+        <details>
+          <summary>Check your understanding</summary>
+          <p>
+            Where can you make and commit changes while offline? In the local clone. A
+            push needs access to the remote repository.
+          </p>
+        </details>
+      </section>
+      <section class="panel" id="commits">
+        <h2>2. Stage and commit your first page</h2>
+        <p>
+          Add an <code>index.html</code> file with a title and the café opening hours. If
+          Git asks for an author identity, set your name and a GitHub account email or the
+          no-reply address from your GitHub email settings. Use the same commands without
+          <code>--global</code> to apply them to this repository only.
+        </p>
+        <pre><code>git config user.name "Your Name"
+git config user.email "YOUR-EMAIL"
+git status
+git add index.html
+git diff --staged
+git commit -m "Add the repair cafe home page"
+git log --oneline -3</code></pre>
+        <p>
+          The working tree holds your current files. Staging selects changes for the next
+          snapshot. A commit records that snapshot locally with its message.
+        </p>
+        <details>
+          <summary>Exercise and expected result</summary>
+          <p>
+            Edit both README.md and index.html. Stage only index.html, then run git
+            status. The HTML change should be staged, while the README change remains
+            unstaged.
+          </p>
+        </details>
+      </section>
+      <section class="panel" id="remote">
+        <h2>3. Push and pull changes</h2>
+        <p>
+          <code>origin</code> is the remote name created by clone. These examples assume
+          the default branch is <code>main</code>. Check your branch name and use the one
+          your repository actually uses. Sign in through your Git credential manager or an
+          authenticated GitHub CLI session if prompted.
+        </p>
+        <pre><code>git branch --show-current
+git remote -v
+git push origin main
+git pull --ff-only origin main</code></pre>
+        <p>
+          Push sends local commits to GitHub. Pull brings remote changes into the current
+          branch. Run pull from a clean working tree. The fast-forward-only option stops
+          when the histories have diverged so you can inspect the situation before
+          integrating changes.
+        </p>
+        <details>
+          <summary>Exercise and expected result</summary>
+          <p>
+            Edit README.md on GitHub and commit it. With a clean local working tree on
+            main, pull. The README should update locally and git log should show the new
+            commit.
+          </p>
+        </details>
+      </section>
+      <section class="panel" id="review">
+        <h2>4. Use a branch and pull request</h2>
+        <p>
+          Start on an up-to-date main branch. Use a feature branch to isolate a change.
+          Add a venue section to index.html before staging it.
+        </p>
+        <pre><code>git switch -c add-venue
+git add index.html
+git commit -m "Add venue directions"
+git push -u origin add-venue</code></pre>
+        <p>
+          Open a pull request on GitHub with <code>main</code> as the base and
+          <code>add-venue</code> as the compare branch. Describe the change, how you
+          tested it and how someone can verify it. Review the Files changed tab. Merge
+          after the change has been checked, then switch back to main and pull.
+        </p>
+        <details>
+          <summary>Resolve a simple merge conflict</summary>
+          <p>
+            If both branches change the same lines, inspect the conflict markers in the
+            file. Agree on the final wording, remove the markers, test the page, stage the
+            resolved file and finish the merge. Use git status to see what Git expects
+            next.
+          </p>
+        </details>
+        <details>
+          <summary>Exercise and expected result</summary>
+          <p>
+            Open a pull request that edits the venue only. The diff should show that
+            change. After merging and pulling, main should include the new directions.
+          </p>
+        </details>
+      </section>
+      <section class="panel" id="pages">
+        <h2>5. Publish with GitHub Pages</h2>
+        <ol>
+          <li>
+            Check that <code>index.html</code> and its linked CSS and JavaScript files are
+            committed on <code>main</code>.
+          </li>
+          <li>
+            In repository Settings, open Pages. Under Build and deployment, choose Deploy
+            from a branch. Select <code>main</code> and <code>/(root)</code>, then save.
+          </li>
+          <li>
+            Wait for the deployment and open the URL shown in Pages. For a project named
+            repair-cafe, it normally follows
+            <code>https://YOUR-USERNAME.github.io/repair-cafe/</code>.
+          </li>
+          <li>
+            Test the published site on a phone and desktop. If CSS is missing, compare the
+            linked path and filename case. Use <code>./css/site.css</code> from the root
+            page when your files follow that layout.
+          </li>
+        </ol>
+        <p>
+          GitHub Pages serves static files. A form that stores submissions needs a
+          separate service.
+        </p>
+        <details>
+          <summary>Exercise and expected result</summary>
+          <p>
+            Update the opening hours on main and push. After the next successful
+            deployment, the public page should show the new hours.
+          </p>
+        </details>
+      </section>
+      <section class="panel" id="practice">
+        <h2>6. Complete the repair café project</h2>
+        <p>
+          Submit your repository link, your Pages link and the link to a merged pull
+          request. Include the opening hours and venue, a stylesheet and a README
+          explaining how to run and test the website.
+        </p>
+        <ul>
+          <li>
+            <strong>Push rejected.</strong> Run git status and git fetch, then inspect the
+            remote changes before integrating them.
+          </li>
+          <li>
+            <strong>Pages shows 404.</strong> Check the deployment status, selected branch
+            and folder, and exact <code>index.html</code> filename.
+          </li>
+          <li>
+            <strong>Styles work locally only.</strong> Check case, confirm the file was
+            committed, and verify the CSS URL under the repository’s Pages path.
+          </li>
+        </ul>
+        <p>
+          Read the
+          <a href="https://docs.github.com/en/get-started/start-your-journey/hello-world"
+            >GitHub Hello World guide</a
+          >
+          and the
+          <a
+            href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site"
+            >GitHub Pages publishing guide</a
+          >.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

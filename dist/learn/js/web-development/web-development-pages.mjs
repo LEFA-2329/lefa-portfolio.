@@ -104,6 +104,7 @@ const resourceFiles = [
 ];
 
 export const webReferences = [
+  ['GitHub step by step', '/learn/github/'],
   ['W3Schools . HTML tutorial', 'https://www.w3schools.com/html/'],
   ['MDN . CSS reference', 'https://developer.mozilla.org/en-US/docs/Web/CSS/Reference'],
   ['W3Schools . CSS tutorial', 'https://www.w3schools.com/css/'],
@@ -499,7 +500,7 @@ export function renderWedePage({ view, page, id, section }) {
               `<a class="button secondary" href="#wede-lesson/wede-${slug}">${label}</a>`,
           )
           .join('') +
-        '</nav>',
+        '<a class="button secondary" href="/learn/github/">GitHub step by step</a></nav>',
       dynamic_2: wedeUnits.map((u) => unitCard(u)).join(''),
     });
     return;
